@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AuthController extends Controller
 {
     public function authenticate(Request $request)
@@ -68,7 +70,16 @@ class AuthController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
-            $userData = User::updateOrCreate(['email' => $user->email], ['fullname' => $user->name, 'photo' => $user->avatar, 'is_verified' => true]);
+            $userData = User::updateOrCreate(['email' => $user->email], ['is_verified' => true]);
+            if (empty($userData->fullname)) {
+                $userData->fullname = $user->name;
+                $userData->save();
+            }
+            if (empty($userData->photo)) {
+                $userData->photo = $user->avatar;
+                $userData->save();
+            }
+
             Auth::login($userData);
             session()->regenerate();
             return redirect()->route('auth.index');

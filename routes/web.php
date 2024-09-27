@@ -34,3 +34,11 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('google', [AuthController::class, 'google'])->name('auth.google');
     Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
 });
+
+Route::get('/admin', function () {
+    return 'ok';
+})->middleware('admin');
+
+Route::get('/user', function () {
+    return 'ok';
+})->middleware('auth');
