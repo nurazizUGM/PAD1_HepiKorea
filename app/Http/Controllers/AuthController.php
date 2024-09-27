@@ -86,7 +86,7 @@ class AuthController extends Controller
             session()->regenerate();
             return redirect()->route('auth.index');
         } catch (\Exception $e) {
-            error_log("Exception caught: " . $e->getMessage() .
+            error_log("[Exception] " . $e->getMessage() .
                 " in " . $e->getFile() .
                 " on line " . $e->getLine());
 
