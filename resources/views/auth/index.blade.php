@@ -35,6 +35,11 @@
                 <th>:</th>
                 <td>{{ auth()->user()->email }}</td>
             </tr>
+            <tr>
+                <th>Role</th>
+                <th>:</th>
+                <td>{{ auth()->user()->role }}</td>
+            </tr>
         </table>
     @else
         <a href="{{ route('auth.loginView') }}"><button>Login</button></a>
