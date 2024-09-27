@@ -6,10 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
-
-use function PHPUnit\Framework\isEmpty;
 
 class AuthController extends Controller
 {
@@ -70,20 +67,29 @@ class AuthController extends Controller
     {
         try {
             $user = Socialite::driver('google')->user();
-            $userData = User::updateOrCreate(['email' => $user->email], ['is_verified' => true]);
-            if (empty($userData->fullname)) {
-                $userData->fullname = $user->name;
-                $userData->save();
-            }
-            if (empty($userData->photo)) {
-                $userData->photo = $user->avatar;
-                $userData->save();
+            $userData = User::where('email', $user->email)->first();
+            if (!$userData) {
+                $userData = User::create([
+                    'fullname' => $user->name,
+                    'email' => $user->email,
+                    'photo' => $user->avatar,
+                    'is_verified' => true
+                ]);
+            } else if (!$userData->is_verified || !$userData->photo) {
+                $userData->update([
+                    'photo' => $user->avatar,
+                    'is_verified' => true
+                ]);
             }
 
             Auth::login($userData);
             session()->regenerate();
             return redirect()->route('auth.index');
-        } catch (\Exception $error) {
+        } catch (\Exception $e) {
+            error_log("Exception caught: " . $e->getMessage() .
+                " in " . $e->getFile() .
+                " on line " . $e->getLine());
+
             return redirect()->route('auth.login')->withErrors([
                 'message' => 'Failed to login with Google',
             ]);
