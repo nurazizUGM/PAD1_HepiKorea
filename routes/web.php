@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Models\User;
-use GuzzleHttp\Psr7\Request;
-use Illuminate\Http\Request as HttpRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\InvalidStateException;
@@ -22,25 +23,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['prefix' => 'auth'], function () {
+    Route::view('login', 'auth.login')->name('auth.loginView');
+    Route::post('login', [AuthController::class, 'authenticate'])->name('auth.login');
+    Route::view('register', 'auth.register')->name('auth.registerView');
+    Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 
-Route::get('/auth/redirect', function () {
-    return Socialite::driver('google')->redirect();
-});
-
-Route::get('/auth/callback', function (HttpRequest $request) {
-    try {
-        $user = Socialite::driver('google')->user();
-        // $token = $user->token;
-        // $user = Socialite::driver('github')->userFromToken($token);
-
-        $userData = User::updateOrCreate(['email' => $user->email], ['fullname' => $user->name, 'photo' => $user->avatar, 'is_verified' => true]);
-        dump($userData);
-    } catch (\Exception $error) {
-        // $request->get('error') == 'access_denied'
-        if ($error instanceof InvalidStateException) {
-            dump('Authentication failed');
-        } else {
-            dump($error);
-        }
-    }
+    Route::view('/', 'auth.index')->name('auth.index');
+    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
+    Route::get('google', [AuthController::class, 'google'])->name('auth.google');
+    Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
 });
