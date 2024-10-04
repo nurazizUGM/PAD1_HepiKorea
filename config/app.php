@@ -186,4 +186,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
+    'g_client_id' => env('GOOGLE_CLIENT_ID'),
 ];

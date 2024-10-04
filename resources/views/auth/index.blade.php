@@ -15,7 +15,26 @@
 </head>
 
 <body>
-    @if (auth()->check())
+    @if (!auth()->check())
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <script>
+            function handleCredentialResponse(response) {
+                console.log("Encoded JWT ID token: " + response.credential);
+                window.location.href = "{{ route('auth.callback') }}?credential=" + response.credential;
+            }
+            window.onload = function() {
+                google.accounts.id.initialize({
+                    client_id: "{{ config('app.g_client_id') }}",
+                    callback: handleCredentialResponse,
+                    cancel_on_tap_outside: true
+                });
+                google.accounts.id.prompt();
+            }
+        </script>
+        <a href="{{ route('auth.loginView') }}"><button>Login</button></a>
+        <a href="{{ route('auth.registerView') }}"><button>Register</button></a>
+        <a href="{{ route('auth.google') }}"><button>Google</button></a>
+    @else
         <a href="{{ route('auth.logout') }}"><button>Logout</button></a>
         <table>
             @if (!empty(auth()->user()->photo))
@@ -41,10 +60,6 @@
                 <td>{{ auth()->user()->role }}</td>
             </tr>
         </table>
-    @else
-        <a href="{{ route('auth.loginView') }}"><button>Login</button></a>
-        <a href="{{ route('auth.registerView') }}"><button>Register</button></a>
-        <a href="{{ route('auth.google') }}"><button>Google</button></a>
     @endif
 </body>
 

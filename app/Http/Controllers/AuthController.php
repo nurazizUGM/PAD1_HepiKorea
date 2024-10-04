@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Google\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -63,16 +64,34 @@ class AuthController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function callback()
+    public function callback(Request $request)
     {
         try {
-            $user = Socialite::driver('google')->user();
-            $userData = User::where('email', $user->email)->first();
+            if ($request->has('credential')) {
+                $token = $request->get('credential');
+                $client = new Client();
+                $user = $client->verifyIdToken($token);
+                if (!$user) {
+                    return redirect()->route('auth.login')->withErrors([
+                        'message' => 'Failed to login with Google',
+                    ]);
+                }
+            } else {
+                $user = Socialite::driver('google')->user();
+                if (!$user) {
+                    return redirect()->route('auth.login')->withErrors([
+                        'message' => 'Failed to login with Google',
+                    ]);
+                }
+                $user = $user->user;
+            }
+
+            $userData = User::where('email', $user['email'])->first();
             if (!$userData) {
                 $userData = User::create([
-                    'fullname' => $user->name,
-                    'email' => $user->email,
-                    'photo' => $user->avatar,
+                    'fullname' => $user['name'],
+                    'email' => $user['email'],
+                    'photo' => $user['picture'],
                     'is_verified' => true
                 ]);
             } else if (!$userData->is_verified || !$userData->photo) {
