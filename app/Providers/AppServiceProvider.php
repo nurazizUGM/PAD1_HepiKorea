@@ -25,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
         if (env('FORCE_HTTPS')) {
             URL::forceScheme('https');
         }
+
+        if (env('DEBUGBAR_ENABLED', false)) {
+            config()->push('app.providers', 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
+        }
     }
 }
