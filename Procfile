@@ -1,2 +1,2 @@
 web: heroku-php-apache2 public/
-release: php artisan migrate && npm install && npm run build
+release: echo $PWD
