@@ -1,2 +1,2 @@
 web: heroku-php-apache2 public/
-release: "echo $PWD"
+release: npm install && npm run build
