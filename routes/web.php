@@ -42,3 +42,22 @@ Route::get('/admin', function () {
 Route::get('/user', function () {
     return 'ok';
 })->middleware('auth');
+
+
+// route hanya untuk test tampilan
+Route::get('/test/login', function () {
+    return view('auth.login2');
+});
+Route::get('/test/register', function () {
+    return view('auth.register2');
+});
+Route::get('/test/passreset', function () {
+    return view('auth.passReset');
+});
+Route::get('/test/changepass', function () {
+    return view('auth.changePass');
+});
+Route::get('/test/otp', function () {
+    return view('auth.otp');
+});
+// 
