@@ -35,8 +35,8 @@ class AuthController extends Controller
     {
         $body = $request->validate([
             'fullname' => 'required|string',
-            'email' => 'required|string',
-            'password' => 'required|string',
+            'email' => 'required|string|unique:users',
+            'password' => 'required|string|confirmed',
         ]);
 
         $existingUser = User::where('email', $body['email'])->first();
