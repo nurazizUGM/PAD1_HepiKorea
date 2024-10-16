@@ -46,10 +46,10 @@ Route::get('/user', function () {
 
 // route hanya untuk test tampilan
 Route::get('/test/login', function () {
-    return view('auth.login2');
+    return view('auth.login');
 });
 Route::get('/test/register', function () {
-    return view('auth.register2');
+    return view('auth.register');
 });
 Route::get('/test/passreset', function () {
     return view('auth.passReset');

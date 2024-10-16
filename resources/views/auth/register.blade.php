@@ -12,7 +12,7 @@
             <!-- <input type="text" placeholder="Username" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 bg-[url('{{ asset('img/assets/icon/icon_user.png') }}')]"> -->
             <div class="relative w-full">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                    <img src="{{ asset('img/assets/icon/icon_user2.png') }}" alt="User Icon" class="h-6 w-6">
+                    <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
                 <input type="text" placeholder="Fullname" name="fullname"
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
@@ -22,7 +22,7 @@
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <!-- ganti asset nya jadi email -->
-                    <img src="{{ asset('img/assets/icon/icon_email.png') }}" alt="User Icon" class="h-6 w-6">
+                    <img src="{{ asset('img/assets/icon/icon_email_input.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
                 <input type="text" placeholder="Email" name="email"
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
@@ -32,13 +32,13 @@
             <!-- <input type="text" placeholder="Password" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 mt-5"> -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                    <img src="{{ asset('img/assets/icon/icon_lock.png') }}" alt="lock Icon" class="h-6 w-6">
+                    <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="lock Icon" class="h-6 w-6">
                 </span>
                 <input id="password" type="password" placeholder="Password" name="password"
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
-                    <img id="togglePassword" src="{{ asset('img/assets/icon/icon_hide_eye.png') }}" alt="eye hide Icon"
+                    <img id="togglePassword" src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}" alt="eye hide Icon"
                         class="h-6 w-6 cursor-pointer">
                 </span>
             </div>
@@ -46,13 +46,13 @@
             <!-- input text password confirm -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                    <img src="{{ asset('img/assets/icon/icon_lock.png') }}" alt="User Icon" class="h-6 w-6">
+                    <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
                 <input id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirm Password"
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
-                    <img id="toggleConfirmPassword" src="{{ asset('img/assets/icon/icon_hide_eye.png') }}"
+                    <img id="toggleConfirmPassword" src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}"
                         alt="eye hide Icon" class="h-6 w-6 cursor-pointer">
                 </span>
             </div>
@@ -92,7 +92,7 @@
             passwordField.type = type;
 
             // Optionally, change the icon based on password visibility
-            const eyeIcon = type === 'password' ? 'icon_hide_eye.png' : 'icon_show_eye.png';
+            const eyeIcon = type === 'password' ? 'icon_hide_eye.svg' : 'icon_show_eye.svg';
             togglePassword.src = `{{ asset('img/assets/icon/${eyeIcon}') }}`;
         });
 
@@ -106,7 +106,7 @@
             confirmPasswordField.type = type;
 
             // Optionally, change the icon based on password visibility
-            const eyeIcon = type === 'password' ? 'icon_hide_eye.png' : 'icon_show_eye.png';
+            const eyeIcon = type === 'password' ? 'icon_hide_eye.svg' : 'icon_show_eye.svg';
             confirmTogglePassword.src = `{{ asset('img/assets/icon/${eyeIcon}') }}`;
         });
     </script>
