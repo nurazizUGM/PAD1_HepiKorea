@@ -35,6 +35,9 @@
         <a href="{{ route('auth.registerView') }}"><button>Register</button></a>
         <a href="{{ route('auth.google') }}"><button>Google</button></a>
     @else
+        @if (auth()->user()->is_verified == 0)
+            <a href="{{ route('auth.verify') }}"><button>Verify</button></a>
+        @endif
         <a href="{{ route('auth.logout') }}"><button>Logout</button></a>
         <table>
             @if (!empty(auth()->user()->photo))

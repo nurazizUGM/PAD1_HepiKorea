@@ -33,6 +33,8 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('google', [AuthController::class, 'google'])->name('auth.google');
     Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
+    Route::get('verify', [AuthController::class, 'verify'])->name('auth.verify');
+    Route::post('verify', [AuthController::class, 'verify_code'])->name('auth.verify_code');
 });
 
 Route::get('/admin', function () {
@@ -43,21 +45,6 @@ Route::get('/user', function () {
     return 'ok';
 })->middleware('auth');
 
-
-// route hanya untuk test tampilan
-Route::get('/test/login', function () {
-    return view('auth.login');
+Route::get('/view/{view}', function ($view) {
+    return view($view);
 });
-Route::get('/test/register', function () {
-    return view('auth.register');
-});
-Route::get('/test/passreset', function () {
-    return view('auth.passReset');
-});
-Route::get('/test/changepass', function () {
-    return view('auth.changePass');
-});
-Route::get('/test/otp', function () {
-    return view('auth.otp');
-});
-// 

@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\Verification;
+use App\Models\Otp;
 use App\Models\User;
 use Google\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
@@ -47,7 +51,6 @@ class AuthController extends Controller
         }
 
         $user = User::create($body);
-
         Auth::login($user);
         session()->regenerate();
 
@@ -113,5 +116,49 @@ class AuthController extends Controller
                 'message' => 'Failed to login with Google',
             ]);
         }
+    }
+    public function verify()
+    {
+        $user = Auth::user();
+        $otp = Otp::where('user_id', $user->id)->first();
+        if (!$otp || $otp->expired_at < now()) {
+            $otp_code = rand(100000, 999999);
+            $otp = Otp::updateOrCreate([
+                'user_id' => $user->id
+            ], [
+                'code' => $otp_code,
+                'expired_at' => now()->addMinutes(1)
+            ]);
+            Mail::to($user->email)->send(new Verification($otp_code));
+        }
+
+        return view('auth.otp', [
+            'timeout' => $otp->expired_at->getTimestamp() - now()->getTimestamp(),
+            'email' => $user->email
+        ]);
+    }
+    public function verify_code(Request $request)
+    {
+        $body = $request->validate([
+            'code' => 'required|string'
+        ]);
+
+        $otp = Otp::where([
+            'code' => $body['code'],
+            'user_id' => Auth::id()
+        ])->where('expired_at', '>=', now())->first();
+
+        if (!$otp) {
+            return back()->withErrors([
+                'The provided OTP is invalid.',
+            ]);
+        }
+
+        $otp->delete();
+        $otp->user->update([
+            'is_verified' => true
+        ]);
+
+        return redirect()->route('auth.index');
     }
 }

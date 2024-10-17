@@ -16,12 +16,9 @@ return new class extends Migration
             $table->string('fullname');
             $table->string('email')->unique();
             $table->string('password')->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable();
             $table->string('phone')->nullable();
             $table->string('photo')->nullable();
-            $table->string('province')->nullable();
-            $table->string('city')->nullable();
-            $table->text('address')->nullable();
-            $table->string('postal_code')->nullable();
             $table->enum('role', array('ADMIN', 'USER'))->default('USER');
             $table->boolean('is_verified')->default(false);
             $table->timestamps();
