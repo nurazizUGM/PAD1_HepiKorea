@@ -35,6 +35,9 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
     Route::get('verify', [AuthController::class, 'verify'])->name('auth.verify');
     Route::post('verify', [AuthController::class, 'verify_code'])->name('auth.verify_code');
+
+    Route::view('reset_password', 'auth.reset_password')->name('auth.reset_password');
+    Route::post('reset_password', [AuthController::class, 'reset_password'])->name('auth.set_password');
 });
 
 Route::get('/admin', function () {

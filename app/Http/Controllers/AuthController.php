@@ -119,7 +119,12 @@ class AuthController extends Controller
     }
     public function verify(Request $request)
     {
-        $user = Auth::user();
+        if ($request->get('email')) {
+            $user = User::where('email', $request->get('email'))->first();
+        } else {
+            $user = Auth::user();
+        }
+
         $otp = Otp::where('user_id', $user->id)->first();
         if (!$otp || $otp->expired_at < now()) {
             $otp_code = rand(100000, 999999);
@@ -132,25 +137,47 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new Verification($otp_code));
         }
 
+        dump($otp->code);
         return view('auth.otp', [
             'timeout' => $otp->expired_at->getTimestamp() - now()->getTimestamp(),
+            'type' => $request->get('email') ? 'reset' : 'verify',
             'email' => $user->email
         ]);
     }
     public function verify_code(Request $request)
     {
         $body = $request->validate([
-            'code' => 'required|string'
+            'code' => 'required|string',
+            'type' => 'required|in:verify,reset',
+            'email' => 'email'
         ]);
 
-        $otp = Otp::where([
-            'code' => $body['code'],
-            'user_id' => Auth::id()
-        ])->where('expired_at', '>=', now())->first();
+        if ($request->get('email')) {
+            $user = User::where('email', $request->get('email'))->first();
+        } else {
+            $user = Auth::user();
+        }
+
+        if (!$user) {
+            return back()->withErrors([
+                'Invalid credentials.',
+            ]);
+        }
+
+        $otp = Otp::where('user_id', $user->id)
+            ->where('code', $body['code'])
+            ->first();
 
         if (!$otp) {
             return back()->withErrors([
                 'The provided OTP is invalid.',
+            ]);
+        }
+
+        if ($body['type'] == 'reset') {
+            return view('auth.set_password', [
+                'email' => $user->email,
+                'token' => base64_encode($body['code'])
             ]);
         }
 
@@ -160,5 +187,35 @@ class AuthController extends Controller
         ]);
 
         return redirect()->route('auth.index');
+    }
+
+    public function reset_password(Request $request)
+    {
+        $body = $request->validate([
+            'email' => 'required|string',
+            'token' => 'required|string',
+            'password' => 'required|string|confirmed'
+        ]);
+
+        $user = User::where('email', $body['email'])->first();
+        if (!$user) {
+            return back()->withErrors([
+                'The provided email is invalid.',
+            ]);
+        }
+        $otp = Otp::where('user_id', $user->id)
+            ->where('code', base64_decode($body['token']))
+            ->first();
+        if (!$otp) {
+            return back()->withErrors([
+                'The provided token is invalid.',
+            ]);
+        }
+
+        $user->update([
+            'password' => Hash::make($body['password'])
+        ]);
+
+        return redirect()->route('auth.login');
     }
 }

@@ -13,6 +13,11 @@
         <!-- start of form -->
         <form action="{{ route('auth.verify_code') }}" method="POST">
             @csrf
+            <input type="hidden" name="type" value="{{ $type }}">
+            @if ($type == 'reset')
+                <input type="hidden" name="email" value="{{ $email }}">
+            @endif
+
             <!-- input OTP -->
             <input type="text" name="code" minlength="6" maxlength="6" required
                 class="w-full rounded-xl border border-orange-400 h-14 mt-4 focus:outline-none focus:ring-0 focus:border-orange-400">
