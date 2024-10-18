@@ -1,6 +1,6 @@
 @extends('layout.auth')
 
-@section('title', 'change password test')
+@section('title', ' change password test')
 
 @section('content')
 
