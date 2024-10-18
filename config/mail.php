@@ -67,7 +67,7 @@ return [
 
         'sendmail' => [
             'transport' => 'sendmail',
-            'path' => env('MAIL_SENDMAIL_PATH', '/usr/sbin/sendmail -bs -i'),
+            'path' => env('MAIL_SENDMAIL_PATH', '/usr/bbin/sendmail -bs -i'),
         ],
 
         'log' => [
@@ -93,6 +93,10 @@ return [
                 'ses',
                 'postmark',
             ],
+        ],
+
+        'mailjet' => [
+            'transport' => 'mailjet',
         ],
     ],
 

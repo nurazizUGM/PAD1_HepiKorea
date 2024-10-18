@@ -117,7 +117,7 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function verify()
+    public function verify(Request $request)
     {
         $user = Auth::user();
         $otp = Otp::where('user_id', $user->id)->first();
@@ -127,7 +127,7 @@ class AuthController extends Controller
                 'user_id' => $user->id
             ], [
                 'code' => $otp_code,
-                'expired_at' => now()->addMinutes(1)
+                'expired_at' => now()->addMinutes(5)
             ]);
             Mail::to($user->email)->send(new Verification($otp_code));
         }
