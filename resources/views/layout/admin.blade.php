@@ -17,7 +17,7 @@
     <!-- nav antara pakai shadow atau engga -->
     <nav
         class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
-        <div class="px-5 py-5 lg:px-5 lg:pl-3">
+        <div class="px-5 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
@@ -81,7 +81,7 @@
         <div class="h-full flex flex-col pl-7 pr-2 py-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
                 <!-- Dashboard -->
-                <li class="mt-16">
+                <li class="mt-12">
                     <a href="#"
                         class="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 active:bg-white after: dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_admin.svg') }}" alt="dashboard Icon"
@@ -158,7 +158,7 @@
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 sm:ml-64 sm:mt-20">
+    <div class="p-4 sm:ml-64 sm:mt-14">
         @yield('content')
     </div>
 
