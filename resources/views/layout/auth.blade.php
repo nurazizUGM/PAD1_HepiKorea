@@ -15,7 +15,8 @@
     </style>
 </head>
 
-<body>
+<body class="w-screen h-screen bg-cover bg-no-repeat bg-center overflow-hidden" style="background-image:url('{{ asset('img/assets/bg/background_auth.svg') }}')">
+
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
