@@ -17,7 +17,7 @@
                     <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
                             class="h-12 w-12 grayscale">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white text-lg py-2 rounded-b-xl">Products</div>
+                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">Products</div>
         </div>
         <!-- Order -->
         <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl">
@@ -28,7 +28,7 @@
                     <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="product Icon"
                             class="h-12 w-12 grayscale">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white text-lg py-2 rounded-b-xl">Order</div>
+                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">Order</div>
         </div>
         <!-- customer -->
         <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl">
@@ -39,7 +39,7 @@
                     <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}" alt="product Icon"
                             class="h-12 w-12 grayscale">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white text-lg py-2 rounded-b-xl">Customer</div>
+                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">Customer</div>
         </div>
     </div>
     <!-- product ordered n most ordered -->
