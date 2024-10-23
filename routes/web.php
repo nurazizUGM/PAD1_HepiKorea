@@ -29,15 +29,17 @@ Route::group(['prefix' => 'auth'], function () {
     Route::view('register', 'auth.register')->name('auth.registerView');
     Route::post('register', [AuthController::class, 'register'])->name('auth.register');
 
-    Route::view('/', 'auth.index')->name('auth.index');
+    Route::get('/', [AuthController::class, 'index'])->name('auth.index');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
     Route::get('google', [AuthController::class, 'google'])->name('auth.google');
     Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
     Route::get('verify', [AuthController::class, 'verify'])->name('auth.verify');
     Route::post('verify', [AuthController::class, 'verify_code'])->name('auth.verify_code');
 
-    Route::view('reset_password', 'auth.reset_password')->name('auth.reset_password');
-    Route::post('reset_password', [AuthController::class, 'reset_password'])->name('auth.set_password');
+    Route::view('forgot_password', 'auth.forgot_password')->name('auth.forgot_password');
+    Route::post('forgot_password', [AuthController::class, 'forgot_password'])->name('auth.forgot_password');
+    Route::get('reset_password', [AuthController::class, 'reset_password'])->name('auth.reset_password');
+    Route::post('reset_password', [AuthController::class, 'set_password'])->name('auth.set_password');
 });
 
 Route::get('/admin', function () {

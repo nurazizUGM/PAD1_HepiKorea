@@ -1,9 +1,7 @@
 @extends('layout.auth')
-
 @section('title', ' test')
 
 @section('content')
-
     <div class="bg-white h-auto max-w-md p-10 m-auto shadow-lg mt-12 rounded-2xl">
         <!-- !!! kurang tambahin icon mail -->
         <img src="{{ asset('img/assets/icon/icon_email_orange.svg') }}" alt="email icon" class="mx-auto scale-150 mb-6 mt-4">
@@ -13,10 +11,6 @@
         <!-- start of form -->
         <form action="{{ route('auth.verify_code') }}" method="POST">
             @csrf
-            <input type="hidden" name="type" value="{{ $type }}">
-            @if ($type == 'reset')
-                <input type="hidden" name="email" value="{{ $email }}">
-            @endif
 
             <!-- input OTP -->
             <input type="text" name="code" minlength="6" maxlength="6" required
@@ -29,8 +23,8 @@
                 <img src="{{ asset('img/assets/icon/icon_email_white.svg') }}" alt="mail Icon" class="h-6 w-6 ml-3">
             </button>
             <p class="text-sm font-medium text-center text-[#B7B7B7]">Didn't receive the verification OTP?<a
-                    href="{{ route('auth.verify') }}"class="text-blue-600 ml-2" onclick="return false"
-                    id="resend_btn">Resend</a></p>
+                    href="{{ route('auth.verify') }}"class="text-blue-600 ml-2" onclick="return false" id="resend_btn"></a>
+            </p>
         </form>
     </div>
     <script>

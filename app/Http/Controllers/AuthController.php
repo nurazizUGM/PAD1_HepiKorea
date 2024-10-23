@@ -15,6 +15,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
+    public function index()
+    {
+        $users = User::all(['fullname', 'email']);
+        return view('auth.index', compact('users'));
+    }
     public function authenticate(Request $request)
     {
         $body = $request->validate([
@@ -30,7 +35,7 @@ class AuthController extends Controller
         }
 
         Auth::login($user);
-        session()->regenerate();
+        Session::regenerate();
 
         return redirect()->route('auth.index');
     }
@@ -52,7 +57,7 @@ class AuthController extends Controller
 
         $user = User::create($body);
         Auth::login($user);
-        session()->regenerate();
+        Session::regenerate();
 
         return redirect()->route('auth.index');
     }
@@ -105,7 +110,7 @@ class AuthController extends Controller
             }
 
             Auth::login($userData);
-            session()->regenerate();
+            Session::regenerate();
             return redirect()->route('auth.index');
         } catch (\Exception $e) {
             error_log("[Exception] " . $e->getMessage() .
@@ -117,12 +122,37 @@ class AuthController extends Controller
             ]);
         }
     }
-    public function verify(Request $request)
+
+    public function forgot_password(Request $request)
     {
-        if ($request->get('email')) {
-            $user = User::where('email', $request->get('email'))->first();
-        } else {
-            $user = Auth::user();
+        $body = $request->validate([
+            'email' => 'required|string'
+        ]);
+
+        $user = User::where('email', $body['email'])->first();
+        if (!$user) {
+            return back()->withErrors([
+                'The provided email is invalid.',
+            ]);
+        }
+
+        Session::forget(['userId', 'verified']);
+        Session::put('userId', $user->id);
+        return redirect()->route('auth.verify');
+    }
+
+    public function verify()
+    {
+        $user = Auth::user();
+        if (Session::has('userId')) {
+            $user = User::find(Session::get('userId'));
+        }
+
+        if (!$user) {
+            Session::forget('userId');
+            return redirect()->to('/')->withErrors([
+                'Invalid credentials.',
+            ]);
         }
 
         $otp = Otp::where('user_id', $user->id)->first();
@@ -137,27 +167,26 @@ class AuthController extends Controller
             Mail::to($user->email)->send(new Verification($otp_code));
         }
 
-        dump($otp->code);
+        if (env('APP_DEBUG') == true) {
+            dump($otp->code);
+        }
         return view('auth.otp', [
+            'email' => $user->email,
             'timeout' => $otp->expired_at->getTimestamp() - now()->getTimestamp(),
-            'type' => $request->get('email') ? 'reset' : 'verify',
-            'email' => $user->email
         ]);
     }
     public function verify_code(Request $request)
     {
         $body = $request->validate([
             'code' => 'required|string',
-            'type' => 'required|in:verify,reset',
-            'email' => 'email'
         ]);
 
-        if ($request->get('email')) {
-            $user = User::where('email', $request->get('email'))->first();
-        } else {
-            $user = Auth::user();
+        $user = Auth::user();
+        $type = 'verify';
+        if (Session::has('userId')) {
+            $user = User::find(Session::get('userId'));
+            $type = 'reset';
         }
-
         if (!$user) {
             return back()->withErrors([
                 'Invalid credentials.',
@@ -174,11 +203,10 @@ class AuthController extends Controller
             ]);
         }
 
-        if ($body['type'] == 'reset') {
-            return view('auth.set_password', [
-                'email' => $user->email,
-                'token' => base64_encode($body['code'])
-            ]);
+        $otp->delete();
+        if ($type == 'reset') {
+            Session::put('verified', true);
+            return redirect()->route('auth.reset_password');
         }
 
         $otp->delete();
@@ -189,26 +217,42 @@ class AuthController extends Controller
         return redirect()->route('auth.index');
     }
 
-    public function reset_password(Request $request)
+    public function reset_password()
     {
+        if (!Session::has('userId')) {
+            return redirect()->route('auth.forgot_password')->withErrors([
+                'You need to request a password reset first.',
+            ]);
+        } else if (!Session::has('verified') || Session::get('verified') !== true) {
+            return redirect()->route('auth.verify')->withErrors([
+                'You need to verify your account first.',
+            ]);
+        }
+
+        return view('auth.reset_password');
+    }
+
+    public function set_password(Request $request)
+    {
+
+        if (!Session::has('userId')) {
+            return redirect()->route('auth.forgot_password')->withErrors([
+                'You need to request a password reset first.',
+            ]);
+        } else if (!Session::has('verified')) {
+            return redirect()->route('auth.verify')->withErrors([
+                'You need to verify your account first.',
+            ]);
+        }
+
         $body = $request->validate([
-            'email' => 'required|string',
-            'token' => 'required|string',
             'password' => 'required|string|confirmed'
         ]);
 
-        $user = User::where('email', $body['email'])->first();
+        $user = User::find(Session::get('userId'));
         if (!$user) {
             return back()->withErrors([
                 'The provided email is invalid.',
-            ]);
-        }
-        $otp = Otp::where('user_id', $user->id)
-            ->where('code', base64_decode($body['token']))
-            ->first();
-        if (!$otp) {
-            return back()->withErrors([
-                'The provided token is invalid.',
             ]);
         }
 
@@ -216,6 +260,7 @@ class AuthController extends Controller
             'password' => Hash::make($body['password'])
         ]);
 
+        Session::forget(['userId', 'verified']);
         return redirect()->route('auth.login');
     }
 }

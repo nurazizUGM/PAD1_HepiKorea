@@ -33,7 +33,7 @@
                 </span>
             </div>
             <div class="text-right my-3">
-                <a href="{{ route('auth.reset_password') }}" class="text-sm text-blue-600 ">Forgot Password</a>
+                <a href="{{ route('auth.forgot_password') }}" class="text-sm text-blue-600 ">Forgot Password</a>
             </div>
             <!-- login button -->
             <button type="submit"

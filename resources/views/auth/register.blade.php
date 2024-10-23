@@ -57,12 +57,8 @@
                 </span>
             </div>
 
-            <!-- <div class="text-right my-3">
-                                                                                <a href="#" class="text-sm text-blue-600 ">Forgot Pasword</a>
-                                                                            </div> -->
-
-            <!-- login button -->
-            <button type="submit" href="{{ route('auth.reset_password') }}"
+            <!-- register button -->
+            <button type="submit"
                 class="w-full text-center bg-orange-400 h-12 rounded-xl mb-5 text-2xl font-bold text-white shadow-md mt-5">Register</button>
         </form>
         <p class="text-sm font-semibold text-center text-black">Have an account? <a
