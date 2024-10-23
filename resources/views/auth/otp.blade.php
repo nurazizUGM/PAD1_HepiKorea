@@ -2,7 +2,7 @@
 @section('title', ' test')
 
 @section('content')
-    <div class="bg-white h-auto max-w-md p-10 m-auto shadow-lg mt-12 rounded-2xl">
+    <div class="bg-white h-auto w-1/2 max-w-md p-10 m-auto shadow-lg rounded-2xl">
         <!-- !!! kurang tambahin icon mail -->
         <img src="{{ asset('img/assets/icon/icon_email_orange.svg') }}" alt="email icon" class="mx-auto scale-150 mb-6 mt-4">
         <h1 class="text-orange-400 text-2xl font-bold mb-1 text-center">Verification</h1>
@@ -23,7 +23,8 @@
                 <img src="{{ asset('img/assets/icon/icon_email_white.svg') }}" alt="mail Icon" class="h-6 w-6 ml-3">
             </button>
             <p class="text-sm font-medium text-center text-[#B7B7B7]">Didn't receive the verification OTP?<a
-                    href="{{ route('auth.verify') }}"class="text-blue-600 ml-2" onclick="return false" id="resend_btn"></a>
+                    href="{{ route('auth.verify', ['resend' => true]) }}"class="text-blue-600 ml-2" onclick="return false"
+                    id="resend_btn"></a>
             </p>
         </form>
     </div>

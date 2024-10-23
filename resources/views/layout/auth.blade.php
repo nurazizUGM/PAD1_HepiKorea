@@ -6,16 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config()->get('app.name') }}@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <!-- @vite('resources/css/app.css') -->
     <!-- <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"  rel="stylesheet" /> -->
     <style>
         input::-ms-reveal {
             display: none;
         }
+
+        body {
+            background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}');
+        }
     </style>
 </head>
 
-<body class="w-screen h-screen bg-cover bg-no-repeat bg-center overflow-hidden" style="background-image:url('{{ asset('img/assets/bg/background_auth.svg') }}')">
+<body
+    class="w-screen min-h-screen h-screen bg-cover bg-no-repeat bg-center overflow-hidden flex flex-col justify-center align-center">
 
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>

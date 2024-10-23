@@ -2,7 +2,7 @@
 @section('title', ' - Password Reset')
 
 @section('content')
-    <div class="bg-white h-auto max-w-lg p-10 m-auto shadow-lg mt-12 rounded-2xl">
+    <div class="bg-white h-auto w-1/2 max-w-lg p-10 m-auto shadow-lg rounded-2xl">
         <h1 class="text-black text-xl font-bold mb-5">Password Reset</h1>
         <!-- start of form -->
         <form action="{{ route('auth.forgot_password') }}" method="POST">
