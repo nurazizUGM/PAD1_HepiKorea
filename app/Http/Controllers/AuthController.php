@@ -123,7 +123,7 @@ class AuthController extends Controller
         }
     }
 
-    public function forgot_password(Request $request)
+    public function forgotPassword(Request $request)
     {
         $body = $request->validate([
             'email' => 'required|string'
@@ -175,7 +175,7 @@ class AuthController extends Controller
             'timeout' => $otp->expired_at->getTimestamp() - now()->getTimestamp(),
         ]);
     }
-    public function verify_code(Request $request)
+    public function verifyCode(Request $request)
     {
         $body = $request->validate([
             'code' => 'required|string',
@@ -217,7 +217,7 @@ class AuthController extends Controller
         return redirect()->route('auth.index');
     }
 
-    public function reset_password()
+    public function resetPassword()
     {
         if (!Session::has('userId')) {
             return redirect()->route('auth.forgot_password')->withErrors([
@@ -232,7 +232,7 @@ class AuthController extends Controller
         return view('auth.reset_password');
     }
 
-    public function set_password(Request $request)
+    public function setPassword(Request $request)
     {
 
         if (!Session::has('userId')) {
