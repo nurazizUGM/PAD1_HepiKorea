@@ -34,7 +34,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::get('google', [AuthController::class, 'google'])->name('auth.google');
     Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
     Route::get('verify', [AuthController::class, 'verify'])->name('auth.verify');
-    Route::post('verify', [AuthController::class, 'verify_code'])->name('auth.verify_code');
+    Route::post('verify', [AuthController::class, 'verifyCode'])->name('auth.verify_code');
 
     Route::view('forgot_password', 'auth.forgot_password')->name('auth.forgot_password');
     Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
