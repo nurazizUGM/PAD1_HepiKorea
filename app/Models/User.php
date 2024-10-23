@@ -17,10 +17,6 @@ class User extends Model implements Authenticatable
         'password',
         'phone',
         'photo',
-        'province',
-        'city',
-        'address',
-        'postal_code',
         'role',
         'is_verified',
     ];
@@ -28,4 +24,9 @@ class User extends Model implements Authenticatable
     protected $hidden = ['password'];
 
     protected $casts = ['password' => 'hashed'];
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
 }
