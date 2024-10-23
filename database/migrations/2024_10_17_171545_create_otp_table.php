@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('otp', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id')->index()->unique();
+            $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->char('code', 6);
             $table->timestamp('expired_at');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
