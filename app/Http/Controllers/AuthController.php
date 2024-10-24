@@ -31,7 +31,7 @@ class AuthController extends Controller
         $user = User::where('email', $body['email'])->first();
         if (!$user || !$user->password || !Hash::check($body['password'], $user->password)) {
             return back()->withErrors([
-                'The provided credentials do not match our records.',
+                'message' => 'Invalid credentials.',
             ])->withInput();
         }
 
@@ -51,13 +51,6 @@ class AuthController extends Controller
             'email' => 'required|string|unique:users',
             'password' => 'required|string|confirmed',
         ]);
-
-        $existingUser = User::where('email', $body['email'])->first();
-        if ($existingUser) {
-            return back()->withErrors([
-                'The email has already been taken.',
-            ])->withInput();
-        }
 
         $user = User::create($body);
         Auth::login($user);

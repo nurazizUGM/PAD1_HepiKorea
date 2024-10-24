@@ -12,7 +12,7 @@
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input type="text" placeholder="Fullname" name="fullname" value="{{ old('fullname') }}"
+                <input type="text" placeholder="Fullname" name="fullname" value="{{ old('fullname') }}" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('fullname') text-red-500 border-red-500 @else border-none @enderror h-14 focus:outline-none focus:ring-0">
             </div>
             @error('fullname')
@@ -24,7 +24,7 @@
                     <!-- ganti asset nya jadi email -->
                     <img src="{{ asset('img/assets/icon/icon_email_input.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input type="text" placeholder="Email" name="email" value="{{ old('email') }}"
+                <input type="text" placeholder="Email" name="email" value="{{ old('email') }}" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('email') text-red-500 border-red-500 @else border-none @enderror  h-14focus:outline-none focus:ring-0">
             </div>
             @error('email')
@@ -35,7 +35,7 @@
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="lock Icon" class="h-6 w-6">
                 </span>
-                <input id="password" type="password" placeholder="Password" name="password"
+                <input id="password" type="password" placeholder="Password" name="password" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('password') text-red-500 border-red-500 @else border-none @enderror h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
@@ -51,7 +51,7 @@
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirm Password"
+                <input id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirm Password" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">

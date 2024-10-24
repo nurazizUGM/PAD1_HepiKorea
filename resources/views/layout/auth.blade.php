@@ -24,16 +24,6 @@
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
-    <script>
-        @if ($errors->any())
-            document.addEventListener('DOMContentLoaded', function() {
-                @foreach ($errors->all() as $error)
-                    alert("{{ $error }}");
-                @endforeach
-            });
-        @endif
-    </script>
-
     @if (!auth()->check())
         <script src="https://accounts.google.com/gsi/client" async></script>
         <script>

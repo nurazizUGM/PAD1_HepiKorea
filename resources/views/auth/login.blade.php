@@ -5,26 +5,39 @@
     <div class="bg-white w-1/2 max-w-lg p-10 m-auto shadow-lg rounded-2xl">
         <h1 class="text-black text-xl font-bold mb-5">Masuk Ke <span class="text-orange-400">Hepi</span>Korea</h1>
         <!-- start of form -->
+        @error('message')
+            <div id="alert-1" class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                role="alert">
+                {{ $message }}
+                <button type="button"
+                    class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                    data-dismiss-target="#alert-1" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+        @enderror
+
         <form action="{{ route('auth.login') }}" method="POST">
             @csrf
             @method('POST')
-            <!-- input text username -->
-            <!-- <input type="text" placeholder="Username" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 bg-[url('{{ asset('img/assets/icon/icon_user.png') }}')]"> -->
             <div class="relative w-full">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input type="email" placeholder="Email" name="email"
+                <input type="email" placeholder="Email" name="email" value="{{ old('email') }}" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
             </div>
 
-            <!-- input text password -->
-            <!-- <input type="text" placeholder="Password" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 mt-5"> -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="lock Icon" class="h-6 w-6">
                 </span>
-                <input id="password" type="password" name="password" placeholder="Password"
+                <input id="password" type="password" name="password" placeholder="Password" required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
@@ -32,6 +45,7 @@
                         class="h-6 w-6 cursor-pointer">
                 </span>
             </div>
+
             <div class="text-right my-3">
                 <a href="{{ route('auth.forgot_password') }}" class="text-sm text-blue-600 ">Forgot Password</a>
             </div>
