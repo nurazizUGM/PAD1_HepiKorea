@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\AuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -24,7 +25,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::view('login', 'auth.login')->name('auth.loginView');
+    Route::view('login', 'auth.login')->name('auth.login');
     Route::post('login', [AuthController::class, 'authenticate'])->name('auth.login');
     Route::view('register', 'auth.register')->name('auth.registerView');
     Route::post('register', [AuthController::class, 'register'])->name('auth.register');
@@ -40,6 +41,10 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
     Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('auth.reset_password');
     Route::post('reset_password', [AuthController::class, 'setPassword'])->name('auth.set_password');
+});
+
+Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 });
 
 Route::get('/admin', function () {

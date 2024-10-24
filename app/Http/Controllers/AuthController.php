@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Mail\Verification;
 use App\Models\Otp;
 use App\Models\User;
@@ -37,6 +38,9 @@ class AuthController extends Controller
         Auth::login($user);
         Session::regenerate();
 
+        if ($user->role == Role::ADMIN) {
+            return redirect()->route('admin.dashboard');
+        }
         return redirect()->route('auth.index');
     }
 
@@ -111,6 +115,10 @@ class AuthController extends Controller
 
             Auth::login($userData);
             Session::regenerate();
+
+            if ($userData->role == Role::ADMIN) {
+                return redirect()->route('admin.dashboard');
+            }
             return redirect()->route('auth.index');
         } catch (\Exception $e) {
             error_log("[Exception] " . $e->getMessage() .
