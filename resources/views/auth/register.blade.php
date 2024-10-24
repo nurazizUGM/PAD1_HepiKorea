@@ -8,42 +8,45 @@
         <form action="{{ route('auth.register') }}" method="POST">
             @csrf
             @method('POST')
-            <!-- input text username -->
-            <!-- <input type="text" placeholder="Username" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 bg-[url('{{ asset('img/assets/icon/icon_user.png') }}')]"> -->
             <div class="relative w-full">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input type="text" placeholder="Fullname" name="fullname"
-                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
+                <input type="text" placeholder="Fullname" name="fullname" value="{{ old('fullname') }}"
+                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('fullname') text-red-500 border-red-500 @else border-none @enderror h-14 focus:outline-none focus:ring-0">
             </div>
+            @error('fullname')
+                <p class="mt-2 text-sm text-red-500 dark:text-red-500">{{ $message }}</p>
+            @enderror
 
-            <!-- input text email -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <!-- ganti asset nya jadi email -->
                     <img src="{{ asset('img/assets/icon/icon_email_input.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input type="text" placeholder="Email" name="email"
-                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
+                <input type="text" placeholder="Email" name="email" value="{{ old('email') }}"
+                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('email') text-red-500 border-red-500 @else border-none @enderror  h-14focus:outline-none focus:ring-0">
             </div>
+            @error('email')
+                <p class="mt-2 text-sm text-red-500 dark:text-red-500">{{ $message }}</p>
+            @enderror
 
-            <!-- input text password -->
-            <!-- <input type="text" placeholder="Password" class="w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 mt-5"> -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="lock Icon" class="h-6 w-6">
                 </span>
                 <input id="password" type="password" placeholder="Password" name="password"
-                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
+                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md @error('password') text-red-500 border-red-500 @else border-none @enderror h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
                     <img id="togglePassword" src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}" alt="eye hide Icon"
                         class="h-6 w-6 cursor-pointer">
                 </span>
             </div>
+            @error('password')
+                <p class="mt-2 text-sm text-red-500 dark:text-red-500">{{ $message }}</p>
+            @enderror
 
-            <!-- input text password confirm -->
             <div class="relative w-full mt-5">
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="User Icon" class="h-6 w-6">
@@ -57,7 +60,6 @@
                 </span>
             </div>
 
-            <!-- register button -->
             <button type="submit"
                 class="w-full text-center bg-orange-400 h-12 rounded-xl mb-5 text-2xl font-bold text-white shadow-md mt-5">Register</button>
         </form>
