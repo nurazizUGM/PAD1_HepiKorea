@@ -86,7 +86,7 @@
                 <!-- Dashboard -->
                 <li class="mt-12">
                     <a href="{{ route('admin.dashboard') }}"
-                        class="flex items-center p-2 rounded-lg dark:text-white  @if (request()->route()->getName() == 'admin.dashboard') bg-gray-100 @endif hover:bg-gray-100 active:bg-white after: dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white  @if (request()->route()->getName() == 'admin.dashboard') bg-gray-100 @endif hover:bg-gray-100 active:bg-white dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_admin.svg') }}" alt="dashboard Icon"
                             class="h-7 w-7 @if (request()->route()->getName() != 'admin.dashboard') grayscale @endif group-hover:grayscale-0">
                         <span
