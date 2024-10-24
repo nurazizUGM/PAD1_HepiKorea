@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        $status = ['unconfirmed', 'confirmed', 'unpaid', 'paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sending', 'sent', 'finished', 'cancelled'];
+        $status = \App\Models\Order::$status;
         Schema::create('orders', function (Blueprint $table) use ($status) {
             $table->id();
             $table->foreignId('user_id')->constrained('users', 'id')->cascadeOnDelete();

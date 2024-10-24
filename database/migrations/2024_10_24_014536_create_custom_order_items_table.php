@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('description');
             $table->integer('quantity');
             $table->integer('estimated_price');
-            $table->integer('total_price');
-            $table->boolean('is_available');
+            $table->integer('total_price')->nullable();
+            $table->boolean('is_available')->nullable();
             $table->timestamps();
         });
     }
