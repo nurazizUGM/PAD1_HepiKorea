@@ -31,7 +31,7 @@
                 google.accounts.id.prompt();
             }
         </script>
-        <a href="{{ route('auth.loginView') }}"><button>Login</button></a>
+        <a href="{{ route('auth.login') }}"><button>Login</button></a>
         <a href="{{ route('auth.registerView') }}"><button>Register</button></a>
         <a href="{{ route('auth.google') }}"><button>Google</button></a>
 

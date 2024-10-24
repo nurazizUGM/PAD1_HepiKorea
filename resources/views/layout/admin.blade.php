@@ -9,7 +9,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <title>{{ config()->get('app.name') }}@yield('title')</title>
+    <title>{{ config()->get('app.name') }} - Admin@yield('title')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -65,7 +65,7 @@
                                     <a href="#"
                                         class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Profile</a>
-                                        <a href="#"
+                                    <a href="#"
                                         class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Business Preference</a>
                                 </li>
@@ -146,7 +146,7 @@
             <!-- Logout -->
             <ul class="space-y-2 font-medium mt-auto">
                 <li>
-                    <a href="#"
+                    <a href="{{ route('auth.logout') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_logout.svg') }}" alt="Logout Icon"
                             class="h-7 w-7 scale-90 grayscale group-hover:grayscale-0">
