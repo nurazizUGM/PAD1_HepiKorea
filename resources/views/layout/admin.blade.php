@@ -54,10 +54,10 @@
                             id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    Neil Sims
+                                    {{ Auth::user()->fullname }}
                                 </p>
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    neil.sims@flowbite.com
+                                    {{ Auth::user()->email }}
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
@@ -85,11 +85,12 @@
             <ul class="space-y-2 font-medium">
                 <!-- Dashboard -->
                 <li class="mt-12">
-                    <a href="#"
-                        class="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 active:bg-white after: dark:hover:bg-gray-700 group">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="flex items-center p-2 rounded-lg dark:text-white  @if (request()->route()->getName() == 'admin.dashboard') bg-gray-100 @endif hover:bg-gray-100 active:bg-white after: dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_admin.svg') }}" alt="dashboard Icon"
-                            class="h-7 w-7 grayscale group-hover:grayscale-0">
-                        <span class="ms-3 text-[#B7B7B7] group-hover:text-orange-400">Dashboard</span>
+                            class="h-7 w-7 @if (request()->route()->getName() != 'admin.dashboard') grayscale @endif group-hover:grayscale-0">
+                        <span
+                            class="ms-3 @if (request()->route()->getName() == 'admin.dashboard') text-orange-400 @else text-[#B7B7B7] @endif  group-hover:text-orange-400">Dashboard</span>
                     </a>
                 </li>
                 <!-- Product -->
