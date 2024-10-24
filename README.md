@@ -36,27 +36,21 @@
     npm install
     ```
 
-3.  Build `tailwind` & `flowbite` assets
+3.  setup .env file
 
-    ```bash
-    npm run build
-    ```
-
-4.  setup .env file
-
-5.  generate session key
+4.  generate session key
 
     ```bash
     php artisan key:generate
     ```
 
-6.  migrate database
+5.  migrate database
 
     ```bash
     php artisan migrate:fresh
     ```
 
-7.  setup default administrator account
+6.  setup default administrator account
 
     email: `admin@admin.com`
 
@@ -65,6 +59,20 @@
     ```bash
     php artisan db:seed AdminSeeder
     ```
+
+7.  setup `tailwind` & `flowbite` UI framework
+
+    -   development
+
+        ```bash
+        npm run dev
+        ```
+
+    -   production
+
+        ```bash
+        npm run build
+        ```
 
 8.  serve project
 
