@@ -75,7 +75,7 @@
                                 <!-- end of input file image -->
                                 <!-- Input name -->
                                 <input type="text" placeholder="Name" name="" id=""
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-bold border-0 focus:outline-none focus:ring-0">
+                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
                                 <!-- input Info -->
                                 <textarea placeholder="Add info..." name="" id="" rows="3"
                                     class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">
