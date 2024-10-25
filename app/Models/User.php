@@ -20,6 +20,8 @@ class User extends Model implements Authenticatable
         'photo',
         'role',
         'is_verified',
+        'google_id',
+        'gender',
         'date_of_birth',
     ];
 
