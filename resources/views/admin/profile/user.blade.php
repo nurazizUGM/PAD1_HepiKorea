@@ -6,7 +6,9 @@
         <div class="grid grid-cols-[2fr_4fr] gap-4 bg-white h-full">
             <div class="items-start justify-start bg-white h-auto rounded-xl p-4">
                 <div class="w-5/6 h-3/6 rounded-xl bg-slate-300">
-                    <img src="" alt="">
+
+                    <img src="@if (!empty(Auth::user()->photo)) {{ asset('/storage/profile/' . Auth::user()->photo) }} @endif"
+                        alt="">
                 </div>
                 <button class="w-5/6 h-14 mt-4 rounded-xl bg-orange-400 p-2">
                     <h1 class="text-xl text-white font-semibold">Choose Photo</h1>
