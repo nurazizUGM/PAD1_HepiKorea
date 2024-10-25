@@ -77,9 +77,8 @@
                                 <input type="text" placeholder="Name" name="" id=""
                                     class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
                                 <!-- input Info -->
-                                <textarea placeholder="Add info..." name="" id="" rows="3"
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">
-                                </textarea>
+                                <textarea placeholder="Add info" name="" id="edit-info-carousel" rows="3"
+                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
                                 <!-- Button "add" -->
                                 <button type="submit" data-modal-hide="carousel-edit-modal"
                                     class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mt-auto mx-auto inline-block w-1/2 h-14 rounded-3xl">Save</button>
