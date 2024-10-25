@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-poppins w-screen h-screen overflow-hidden">
+<body class="flex font-poppins w-screen h-screen overflow-hidden">
     <!-- nav antara pakai shadow atau engga -->
     <nav
         class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
@@ -162,7 +162,7 @@
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 sm:ml-64 sm:mt-14">
+    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full">
         @yield('content')
     </div>
 

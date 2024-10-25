@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-lg dark:border-gray-700 h-auto w-full h-full overflow-y-scroll ">
+<div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-lg dark:border-gray-700 w-full ">
     <div class="flex items-center w-full mb-4">
         {{-- Text FAQ --}}
         <h1 class="text-black font-bold text-3xl mb-8 w-16 mr-6">FAQ</h1>
@@ -14,7 +14,7 @@
         </button>
     </div>
 
-    <div class="w-full h-full">
+    <div class="h-auto w-full">
         @for ($i=0; $i < 8; $i++)
         <div class="flex flex-col bg-gray-50 h-auto dark:bg-gray-800 rounded-xl p-4 mb-5 ">
             <div class="flex items-center justify-between mb-4">
@@ -104,7 +104,7 @@
             <!-- end of modal content -->
         </div>
     </div>
-    <!-- end of Carousel-edit-modal -->
+    <!-- end of FAQ-edit-modal -->
 
 </div>
 
