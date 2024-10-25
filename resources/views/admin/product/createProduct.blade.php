@@ -134,6 +134,12 @@
                                             class="w-full h-8 rounded-lg px-4 text-xs border-black focus:border-black focus:outline-none focus:ring-0">
                                             <option value="select category">Select Category</option>
                                             <option value="fashion">Fashion</option>
+                                            <option value="merchandise">Merchandise</option>
+                                            <option value="beauty">Beauty</option>
+                                            <option value="electronic">Electronic</option>
+                                            <option value="food">Food</option>
+                                            <option value="healthy">Healthy</option>
+                                            <option value="music">Music</option>
                                             <!-- !!! tambahin -->
                                         </select>
                                     </div>
