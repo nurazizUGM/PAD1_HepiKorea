@@ -25,10 +25,12 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => 'auth'], function () {
-    Route::view('login', 'auth.login')->name('auth.login');
-    Route::post('login', [AuthController::class, 'authenticate'])->name('auth.login');
-    Route::view('register', 'auth.register')->name('auth.registerView');
-    Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+    Route::middleware('guest')->group(function () {
+        Route::view('login', 'auth.login')->name('auth.login');
+        Route::post('login', [AuthController::class, 'authenticate'])->name('auth.login');
+        Route::view('register', 'auth.register')->name('auth.registerView');
+        Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+    });
 
     Route::get('/', [AuthController::class, 'index'])->name('auth.index');
     Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');

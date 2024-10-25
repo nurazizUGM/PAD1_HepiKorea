@@ -51,7 +51,8 @@
                 <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
-                <input id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirm Password" required
+                <input id="confirmPassword" type="password" name="password_confirmation" placeholder="Confirm Password"
+                    required
                     class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
@@ -70,7 +71,7 @@
             <div class="absolute -top-5 left-[30%] bg-[#FFFCFC] py-2 px-10">or login with</div>
         </div>
         <!-- button login google -->
-        <a href="{{ route('auth.google') }}"
+        <a href="{{ route('auth.google') }}" id="btn-google"
             class="w-full flex items-center justify-center bg-[#EFEFEF] h-12 rounded-xl mb-5 text-2xl font-bold text-black mt-10">
             <img src="{{ asset('img/assets/icon/icon_google.png') }}" alt="Google Icon" class="h-6 w-6 mr-3">
             Login With Google
@@ -106,6 +107,12 @@
             // Optionally, change the icon based on password visibility
             const eyeIcon = type === 'password' ? 'icon_hide_eye.svg' : 'icon_show_eye.svg';
             confirmTogglePassword.src = `{{ asset('img/assets/icon/${eyeIcon}') }}`;
+        });
+
+        document.getElementById('btn-google').addEventListener('click', function(e) {
+            e.preventDefault();
+            const googleSignin = window.open("{{ route('auth.google') }}", "google-signin",
+                "width=500,height=600");
         });
     </script>
 

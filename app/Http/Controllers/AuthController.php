@@ -141,10 +141,10 @@ class AuthController extends Controller
             Auth::login($user);
             Session::regenerate();
 
-            if ($user->role == Role::ADMIN) {
-                return redirect()->route('admin.dashboard');
+            if ($request->has('credential')) {
+                return redirect()->intended();
             }
-            return redirect()->route('auth.index');
+            return "<script>window.opener.location.reload();window.close();</script>";
         } catch (\Exception $e) {
             error_log("[Exception] " . $e->getMessage() .
                 " in " . $e->getFile() .
