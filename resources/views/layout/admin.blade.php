@@ -152,7 +152,7 @@
                         <img src="{{ asset('img/assets/icon/icon_dashboard_logout.svg') }}" alt="Logout Icon"
                             class="h-7 w-7 scale-90 grayscale group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-3 whitespace-nowrap text-[#B7B7B7] group-hover:text-[#FF0000]">Logout</span>
+                            class="flex-1 ms-3 whitespace-nowrap text-black group-hover:text-[#FF0000]">Logout</span>
                     </a>
                 </li>
             </ul>
