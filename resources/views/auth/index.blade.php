@@ -41,6 +41,7 @@
                     <th>#</th>
                     <th>Fullname</th>
                     <th>Email</th>
+                    <th>Role</th>
                 </tr>
             </thead>
             <tbody>
@@ -49,6 +50,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->fullname }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>{{ $user->role }}</td>
                     </tr>
                 @endforeach
             </tbody>

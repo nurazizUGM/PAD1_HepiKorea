@@ -18,7 +18,7 @@ class AuthController extends Controller
 {
     public function index()
     {
-        $users = User::all(['fullname', 'email']);
+        $users = User::all(['fullname', 'email', 'role']);
         return view('auth.index', compact('users'));
     }
     public function authenticate(Request $request)
@@ -41,7 +41,7 @@ class AuthController extends Controller
         if ($user->role == Role::ADMIN) {
             return redirect()->route('admin.dashboard');
         }
-        return redirect()->route('auth.index');
+        return redirect()->intended();
     }
 
     public function register(Request $request)
@@ -62,11 +62,13 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect();
+        return redirect()->intended();
     }
     public function google()
     {
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->with([
+            'redirect_uri' => route('auth.callback'),
+        ])->redirect();
     }
 
     public function callback(Request $request)
@@ -75,41 +77,48 @@ class AuthController extends Controller
             if ($request->has('credential')) {
                 $token = $request->get('credential');
                 $client = new Client();
-                $user = $client->verifyIdToken($token);
-                if (!$user) {
+                $googleUser = $client->verifyIdToken($token);
+                if (!$googleUser) {
                     return redirect()->route('auth.login')->withErrors([
                         'message' => 'Failed to login with Google',
                     ]);
                 }
+                $accountId = $googleUser['sub'];
             } else {
-                $user = Socialite::driver('google')->user();
-                if (!$user) {
+                $googleUser = Socialite::driver('google')->user();
+                if (!$googleUser) {
                     return redirect()->route('auth.login')->withErrors([
                         'message' => 'Failed to login with Google',
                     ]);
                 }
-                $user = $user->user;
+                $accountId = $googleUser->getId();
+                $googleUser = $googleUser->user;
             }
 
-            $userData = User::where('email', $user['email'])->first();
-            if (!$userData) {
-                $userData = User::create([
-                    'fullname' => $user['name'],
-                    'email' => $user['email'],
-                    'photo' => $user['picture'],
+            $user = User::where('google_id', $accountId)->orWhere('email', $googleUser['email'])->first();
+            if (!$user) {
+                $user = User::create([
+                    'fullname' => $googleUser['name'],
+                    'email' => $googleUser['email'],
+                    'photo' => $googleUser['picture'],
+                    'google_id' => $accountId,
                     'is_verified' => true
                 ]);
-            } else if (!$userData->is_verified || !$userData->photo) {
-                $userData->update([
-                    'photo' => $user->avatar,
+            } else if (empty($user->google_id)) {
+                $user->update([
+                    'google_id' => $accountId,
                     'is_verified' => true
+                ]);
+            } else if ($user->google_id != $accountId) {
+                return redirect()->route('auth.login')->withErrors([
+                    'message' => 'Failed to login with Google',
                 ]);
             }
 
-            Auth::login($userData);
+            Auth::login($user);
             Session::regenerate();
 
-            if ($userData->role == Role::ADMIN) {
+            if ($user->role == Role::ADMIN) {
                 return redirect()->route('admin.dashboard');
             }
             return redirect()->route('auth.index');
@@ -201,6 +210,10 @@ class AuthController extends Controller
         if (!$otp) {
             return back()->withErrors([
                 'The provided OTP is invalid.',
+            ]);
+        } else if ($otp->expired_at < now()) {
+            return back()->withErrors([
+                'The provided OTP is expired.',
             ]);
         }
 
