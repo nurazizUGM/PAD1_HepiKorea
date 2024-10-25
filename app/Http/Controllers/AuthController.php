@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
+use Ramsey\Uuid\Uuid;
 
 class AuthController extends Controller
 {
@@ -97,10 +99,31 @@ class AuthController extends Controller
 
             $user = User::where('google_id', $accountId)->orWhere('email', $googleUser['email'])->first();
             if (!$user) {
+                // if (empty($photo)) {
+                //     $photo = 'https://ui-avatars.com/api/?name=' . urlencode($googleUser['name']);
+                // }
+
+                $headers = get_headers($googleUser['picture'], 1);
+                $ext = explode('/', $headers['Content-Type'])[1];
+
+                try {
+                    $photo =  Uuid::uuid4() . '.' . $ext;
+                    if (!Storage::exists(storage_path('/app/public/profile'))) {
+                        Storage::makeDirectory(storage_path('/app/public/profile'));
+                    }
+
+                    file_put_contents(storage_path('/app/public/profile/' . $photo), file_get_contents($googleUser['picture']));
+                } catch (\Throwable $th) {
+                    error_log("[Exception] " . $th->getMessage() .
+                        " in " . $th->getFile() .
+                        " on line " . $th->getLine());
+                    $photo = null;
+                }
+
                 $user = User::create([
                     'fullname' => $googleUser['name'],
                     'email' => $googleUser['email'],
-                    'photo' => $googleUser['picture'],
+                    'photo' => $photo,
                     'google_id' => $accountId,
                     'is_verified' => true
                 ]);

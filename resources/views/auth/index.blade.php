@@ -64,7 +64,7 @@
             @if (!empty(auth()->user()->photo))
                 <tr>
                     <td colspan="3">
-                        <img src="{{ auth()->user()->photo }}" alt="">
+                        <img src="{{ asset('/storage/profile/' . auth()->user()->photo) }}" alt="">
                     </td>
                 </tr>
             @endif
