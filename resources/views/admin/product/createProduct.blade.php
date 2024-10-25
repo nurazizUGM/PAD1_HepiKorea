@@ -46,11 +46,18 @@
                         <div class="w-full h-full bg-red-900">
                             <div class="flex flex-col space-y-4">
                                 <div class="w-full h-96">
-                                    <img id="mainImage" src="{{ asset('img/assets/example/test_shirt.jpg') }}" class="w-full h-full object-cover rounded-lg"
-                                        alt="Main Image">
+                                    <img id="mainImage" src="{{ asset('img/example/test_shirt.jpg') }}"
+                                        class="w-full h-full object-cover rounded-lg" alt="Main Image">
                                 </div>
                                 <div class="flex space-x-2">
-                                    <img onclick="" src="">
+                                    <img onclick="changeImage({{ asset('img/example/test_shirt.jpg') }})" src="{{ asset('img/example/test_shirt.jpg') }}"
+                                        class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-gray-200">
+                                    <img onclick="changeImage({{ asset('img/example/test_shirt2.png') }})" src="{{ asset('img/example/test_shirt2.png') }}"
+                                        class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-gray-200">
+                                    <img onclick="changeImage({{ asset('img/example/test_shirt.jpg') }})" src="{{ asset('img/example/test_shirt.jpg') }}"
+                                        class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-gray-200">
+                                    <img onclick="changeImage({{ asset('img/example/test_shirt.jpg') }})" src="{{ asset('img/example/test_shirt.jpg') }}"
+                                        class="w-20 h-20 object-cover rounded-lg cursor-pointer border border-gray-200">
                                 </div>
                             </div>
                         </div>
@@ -185,7 +192,7 @@
     </div>
 
     <script>
-        function changeImage(imageSrc){
+        function changeImage(imageSrc) {
             document.getElementById('mainImage').src = imageSrc;
         }
     </script>
