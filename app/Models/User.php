@@ -20,6 +20,7 @@ class User extends Model implements Authenticatable
         'photo',
         'role',
         'is_verified',
+        'date_of_birth',
     ];
 
     protected $hidden = ['password'];
