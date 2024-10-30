@@ -6,19 +6,20 @@
         <div class="grid grid-cols-[1fr_5fr] rounded-lg gap-4 bg-white">
             <div class="bg-white h-auto rounded-xl p-4 mt-4">
                 <div class="rounded-xl bg-slate-300">
-                    <img class="w-full m-0 p-2"
+                    <img class="w-full min-h-[10rem] m-0 p-2" id="profile_picture"
                         src="@if (!empty($user->photo)) {{ asset('/storage/profile/' . $user->photo) }} @endif"
                         alt="Profile Picture">
                 </div>
-                <button class="w-full h-14 mt-4 rounded-xl bg-orange-400 p-2">
+                <button class="w-full h-14 mt-4 rounded-xl bg-orange-400 p-2" onclick="$('input[name=photo]').click()">
                     <h1 class="text-xl text-white font-semibold">Choose Photo</h1>
                 </button>
             </div>
             <div class="items-start justify-start bg-white h-auto rounded-xl p-4">
                 <div class="relative overflow-x-auto w-full">
-                    <form id="profile_form" action="{{ route('admin.profile.user') }}" method="post">
+                    <form id="profile_form" action="{{ route('admin.profile.user') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
+                        <input type="file" name="photo" id="photo" class="hidden">
                         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <tbody>
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -236,13 +237,14 @@
             $('textarea').removeAttr('disabled');
         }
 
-        function cancel() {
+        function cancel(firstLoad = false) {
             $('#btn-edit').removeClass('hidden');
             $('#btn-save').addClass('hidden');
             $('#btn-cancel').addClass('hidden');
             $('input[id!=email]').attr('disabled', true);
             $('textarea').attr('disabled', true);
 
+            if(firstLoad) return;
             $('input[name="fullname"]').val('{{ $user->fullname }}');
             $('input[name="date_of_birth"]').val('{{ $user->date_of_birth }}');
             $('input[name="gender"][value="{{ $user->gender }}"]').attr('checked', true);
@@ -252,9 +254,10 @@
             $('input[name="city"]').val('{{ $address->city }}');
             $('input[name="postal_code"]').val('{{ $address->postal_code }}');
             $('textarea[name="address"]').val('{{ $address->address }}');
+            $('#profile_picture').attr('src', e.target.result);
         }
 
-        cancel();
+        cancel(true);
         $('#btn-edit').click(edit);
         $('#btn-cancel').click(cancel);
 
@@ -275,6 +278,16 @@
             $(this).find('img').attr('src', type === 'password' ?
                 '{{ asset('img/assets/icon/icon_hide_eye.svg') }}' :
                 '{{ asset('img/assets/icon/icon_show_eye.svg') }}');
+        });
+
+        $('input[name=photo]').change(function(ev) {
+            ev.preventDefault();
+            const file = ev.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#profile_picture').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(file);
         });
     </script>
 @endsection
