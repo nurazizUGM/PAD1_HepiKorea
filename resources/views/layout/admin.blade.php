@@ -10,7 +10,7 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
     <title>{{ config()->get('app.name') }} - Admin @yield('title')</title>
-    <script src="{{asset('js/jquery-3.7.1.min.js')}}"></script>
+    <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -96,7 +96,7 @@
                 </li>
                 <!-- Product -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.product') }}"
                         class="flex items-center ms-0.5 p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.product')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
                             class="h-6 w-6 @if (request()->route()->getName() != 'admin.product') grayscale @endif group-hover:grayscale-0">
