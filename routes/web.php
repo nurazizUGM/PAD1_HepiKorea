@@ -52,6 +52,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::patch('profile', 'updateProfile')->name('admin.profile.user');
         Route::get('setting', 'setting')->name('admin.profile.setting');
     });
+    Route::view('product', 'admin.product')->name('admin.product');
 });
 
 Route::get('/admin', function () {
