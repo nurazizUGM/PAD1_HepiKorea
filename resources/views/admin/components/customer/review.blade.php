@@ -1,4 +1,4 @@
-<!-- start of product content -->
+<!-- start of Review content -->
 <div class="hidden px-10 rounded-lg h-[80vh]" id="review" role="tabpanel" aria-labelledby="review-tab">
     <div class="w-full flex items-center">
         <!-- search bar -->
@@ -14,22 +14,22 @@
         </div>
         <!-- end of search bar -->
     </div>
-    <!-- start of product card container -->
+    <!-- start of Review card container -->
     <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8">
-        <!-- card product -->
+        <!-- card Review -->
         <!-- ini for loop hanya untuk coba -->
         @for ($i = 0; $i < 20; $i++)
             <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col">
-                <!-- image product card -->
+                <!-- image Review card -->
                 <div class="w-full h-2/3 bg-cover bg-top"
                     style="background-image: url('{{ asset('img/example/test_shirt.jpg') }}');">
                 </div>
-                <!-- header & detail product card -->
+                <!-- header & detail Review card -->
                 <div class="p-2">
                     <p class="text-sm font-bold truncate">Korean Fashion Set</p>
                     <p class="text-sm font-semi">Blouse</p>
                 </div>
-                <!-- edit & delete product card -->
+                <!-- edit & delete Review card -->
                 <div class="flex mt-auto mx-3 mb-3">
                     <!-- edit icon -->
                     <a href="" class="ml-auto" data-modal-target="review-modal"
@@ -40,7 +40,7 @@
             </div>
         @endfor
     </div>
-    <!-- end of product card container -->
+    <!-- end of Review card container -->
 </div>
 
 <!-- review-modal -->
@@ -82,5 +82,4 @@ class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 
     </div>
     <!-- end of modal content -->
 </div>
-<!-- end of review-modal -->
-<!-- End of Product Content -->
+<!-- End of Review Content -->
