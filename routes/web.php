@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\AuthController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -52,7 +53,14 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::patch('profile', 'updateProfile')->name('admin.profile.user');
         Route::get('setting', 'setting')->name('admin.profile.setting');
     });
-    Route::view('product', 'admin.product')->name('admin.product');
+
+    Route::view('/product', 'admin.product')->name('admin.product');
+    Route::prefix('product')->controller('product', ProductController::class)->group(function () {
+        Route::post('/', 'store')->name('admin.product.store');
+        Route::get('edit/{product}', 'edit')->name('admin.product.edit');
+        Route::patch('update/{product}', 'update')->name('admin.product.update');
+        Route::delete('delete/{product}', 'destroy')->name('admin.product.delete');
+    });
 });
 
 Route::get('/admin', function () {
