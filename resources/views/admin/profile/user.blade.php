@@ -190,11 +190,11 @@
                                     <td class="px-6 py-4"> <!-- Change here to span two columns -->
                                         <div class="flex"> <!-- Flex container to arrange textareas side by side -->
                                             <input type="text" id="province" name="province"
-                                                value="{{ $address->province }}"
+                                                value="{{ $address->province ?? '' }}"
                                                 class="w-full h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block mr-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                                 placeholder="Your Province" />
                                             <input type="text" id="city" name="city"
-                                                value="{{ $address->city }}"
+                                                value="{{ $address->city ?? '' }}"
                                                 class="w-full h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                                 placeholder="Your City" />
                                         </div>
@@ -205,7 +205,7 @@
                                     <th scope="row"></th>
                                     <td class="px-6 py-4"> <!-- Change here to span two columns -->
                                         <input type="text" id="postal_code" name="postal_code"
-                                            value="{{ $address->postal_code }}"
+                                            value="{{ $address->postal_code ?? '' }}"
                                             class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                             placeholder="Your Postal Code" />
                                     </td>
@@ -216,7 +216,7 @@
                                     <td class="px-6 py-4"> <!-- Change here to span two columns -->
                                         <textarea name="address" id="address" cols="30" rows="10"
                                             class="h-56 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                            placeholder="Your Address">{{ $address->address }}</textarea>
+                                            placeholder="Your Address">{{ $address->address ?? '' }}</textarea>
                                     </td>
                                 </tr>
                             </tbody>
@@ -251,10 +251,10 @@
             $('input[name="gender"][value="{{ $user->gender }}"]').attr('checked', true);
             $('input[name="gender"][value!="{{ $user->gender }}"]').attr('checked', false);
             $('input[name="phone"]').val('{{ $user->phone }}');
-            $('input[name="province"]').val('{{ $address->province }}');
-            $('input[name="city"]').val('{{ $address->city }}');
-            $('input[name="postal_code"]').val('{{ $address->postal_code }}');
-            $('textarea[name="address"]').val('{{ $address->address }}');
+            $('input[name="province"]').val('{{ $address->province ?? '' }}');
+            $('input[name="city"]').val('{{ $address->city ?? '' }}');
+            $('input[name="postal_code"]').val('{{ $address->postal_code ?? '' }}');
+            $('textarea[name="address"]').val('{{ $address->address ?? '' }}');
             $('#profile_picture').attr('src', e.target.result);
         }
 
