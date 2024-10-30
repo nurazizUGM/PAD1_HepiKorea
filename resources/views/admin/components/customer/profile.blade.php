@@ -6,7 +6,7 @@
         <div class="bg-white h-auto rounded-xl p-4 mt-4">
             <div class="rounded-xl bg-slate-300">
                 <img class="w-full m-0 p-2"
-                    src="@if (!empty($user->photo)) {{ asset('/storage/profile/' . $user->photo) }} @endif"
+                    src="{{asset('img/example/test_tshirt4')}}"
                     alt="Profile Picture">
             </div>
             <button class="w-full h-14 mt-4 rounded-xl bg-orange-400 p-2">
@@ -17,7 +17,7 @@
         {{-- Bagian Informasi Pengguna --}}
         <div class="items-start justify-start bg-white h-auto rounded-xl p-4">
             <div class="relative overflow-x-auto w-full">
-                <form id="profile_form" action="{{ route('admin.profile.user') }}" method="post">
+                <form id="profile_form" method="post">
                     @csrf
                     @method('PATCH')
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
@@ -28,7 +28,7 @@
                                     <label for="fullname" class="flex items-center mb-2 text-lg font-medium text-gray-900 dark:text-white">Name</label>
                                 </th>
                                 <td class="px-6 py-4">
-                                    <input type="text" id="fullname" name="fullname" value="{{ $user->fullname }}"
+                                    <input type="text" id="fullname" name="fullname"
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Name" required />
                                 </td>
@@ -41,7 +41,7 @@
                                 </th>
                                 <td class="px-6 py-4">
                                     <input type="text" id="date_of_birth" name="date_of_birth"
-                                        value="{{ $user->date_of_birth }}"
+
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Birth Date" required />
                                 </td>
@@ -56,15 +56,15 @@
                                     <div class="flex items-center mr-5">
                                         <input id="genderMale" type="radio" name="gender" value="male"
                                             class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-500 dark:focus:bg-orange-500 dark:bg-gray-700 dark:border-gray-600 "
-                                            style="color:#FF9D66" @if ($user->gender == 'male') checked @endif disabled>
+                                            style="color:#FF9D66" disabled>
                                         <label for="genderMale" class="block ms-2 text-base font-medium text-gray-900 dark:text-gray-300">
- Laki-Laki
+                                            Laki-Laki
                                         </label>
                                     </div>
                                     <div class="flex items-center">
                                         <input id="genderFemale" type="radio" name="gender" value="female"
                                             class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-500 dark:focus:bg-orange-500 dark:bg-gray-700 dark:border-gray-600 "
-                                            style="color:#FF9D66" @if ($user->gender == 'female') checked @endif disabled>
+                                            style="color:#FF9D66" disabled>
                                         <label for="genderFemale" class="block ms-2 text-base font-medium text-gray-900 dark:text-gray-300">
                                             Perempuan
                                         </label>
@@ -78,7 +78,7 @@
                                     <label for="email" class="flex items-center mb-2 text-lg font-medium text-gray-900 dark:text-white">Email</label>
                                 </th>
                                 <td class="px-6 py-4">
-                                    <input type="email" id="email" value="{{ $user->email }}"
+                                    <input type="email" id="email"
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Email" disabled />
                                 </td>
@@ -127,7 +127,7 @@
                                 </th>
                                 <td class="px-6 py-4">
                                     <input type="text" id="phone" name="phone"
-                                        value="{{ $user->phone }}"
+
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Phone Number" />
                                 </td>
@@ -139,17 +139,17 @@
                                     <label for="address" class="flex items-center mb-2 text-lg font-medium text-gray-900 dark:text-white">Address</label>
                                 </th>
                                 <td class="px-6 py-4">
-                                    <input type="text" id="province" name="province" value="{{ $address->province }}"
+                                    <input type="text" id="province" name="province"
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Province" />
-                                    <input type="text" id="city" name="city" value="{{ $address->city }}"
+                                    <input type="text" id="city" name="city"
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your City" />
-                                    <input type="text" id="postal_code" name="postal_code" value="{{ $address->postal_code }}"
+                                    <input type="text" id="postal_code" name="postal_code"
                                         class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                         placeholder="Your Postal Code" />
                                     <textarea name="address" id="address" cols="30" rows="10"
-                                        class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400">{{ $address->address }}</textarea>
+                                        class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"></textarea>
                                 </td>
                             </tr>
                         </tbody>

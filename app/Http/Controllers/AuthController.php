@@ -33,7 +33,7 @@ class AuthController extends Controller
         $user = User::where('email', $body['email'])->first();
         if (!$user || !$user->password || !Hash::check($body['password'], $user->password)) {
             return back()->withErrors([
-                'message' => 'Invalid credentials.',
+                'message' => 'Your Account is not registered yet.',
             ])->withInput();
         }
 
