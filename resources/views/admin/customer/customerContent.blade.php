@@ -13,8 +13,6 @@
             </div>
         </div>
         <!-- end of search bar -->
-
-
     </div>
     <!-- start of product card container -->
     <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8">
@@ -42,6 +40,5 @@
         @endfor
     </div>
     <!-- end of product card container -->
-
 </div>
 <!-- End of Product Content -->

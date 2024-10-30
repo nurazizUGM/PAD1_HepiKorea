@@ -92,7 +92,7 @@
                         <h1 class="text-black font-bold text-2xl p-5 pb-2">Edit FAQ</h1>
                         <button type="button"
                             class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                            data-modal-hide="faq-add-modal">
+                            data-modal-hide="faq-edit-modal">
                             <p class="m-auto text-white text-sm">X</p>
                         </button>
                         <div class="w-full h-full flex flex-col">
