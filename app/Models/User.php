@@ -20,6 +20,9 @@ class User extends Model implements Authenticatable
         'photo',
         'role',
         'is_verified',
+        'google_id',
+        'gender',
+        'date_of_birth',
     ];
 
     protected $hidden = ['password'];
@@ -34,5 +37,10 @@ class User extends Model implements Authenticatable
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
     }
 }

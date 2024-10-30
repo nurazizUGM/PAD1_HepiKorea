@@ -1,6 +1,6 @@
 @extends('layout.admin')
 
-@section('title', 'Product')
+@section('title', 'Customer')
 
 @section('content')
 
@@ -13,24 +13,17 @@
             data-tabs-inactive-classes="dark:border-transparent text-black hover:text-orange-400 dark:text-gray-400 border-transparent hover:border-transparent dark:border-gray-700 dark:hover:text-gray-300"
             role="tablist">
             <!-- Tab product -->
-            <li class="ml-auto" role="presentation">
-                <button class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="product-tab"
-                    data-tabs-target="#product" type="button" role="tab" aria-controls="product"
-                    aria-selected="false">Product</button>
+            <li class="mr-auto ml-auto" role="presentation">
+                <button class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="customer-tab"
+                    data-tabs-target="#customer" type="button" role="tab" aria-controls="customer"
+                    aria-selected="false">Customer</button>
             </li>
             <!-- Tab  Category-->
-            <li class="md:mx-52 lg:mx-64" role="presentation">
+            <li class="mr-auto ml-auto" role="presentation">
                 <button
                     class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="category-tab" data-tabs-target="#category" type="button" role="tab" aria-controls="category"
-                    aria-selected="false">Category</button>
-            </li>
-            <!-- Tab Carousel -->
-            <li class="mr-auto" role="presentation">
-                <button
-                    class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                    id="carousel-tab" data-tabs-target="#carousel" type="button" role="tab" aria-controls="carousel"
-                    aria-selected="false">Carousel</button>
+                    id="review-tab" data-tabs-target="#review" type="button" role="tab" aria-controls="review"
+                    aria-selected="false">Review</button>
             </li>
         </ul>
     </div>
@@ -38,17 +31,12 @@
     <!-- Tab Content (showing the content) -->
     <div id="default-tab-content">
         <!-- Product Content -->
-        @include('admin.product.productContent')
+        @include('admin.customer.customerContent')
         <!-- end of product Content -->
 
         <!-- Category Content -->
-        @include('admin.product.categoryContent')
+        @include('admin.customer.reviewContent')
         <!-- End of Category Content -->
-        
-        
-        <!-- Carousel Content -->
-        @include('admin.product.carouselContent')
-        <!-- End of Carousel Content -->
     </div>
 </div>
 @endsection

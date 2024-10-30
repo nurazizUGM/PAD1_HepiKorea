@@ -108,11 +108,7 @@ class AuthController extends Controller
 
                 try {
                     $photo =  Uuid::uuid4() . '.' . $ext;
-                    if (!Storage::exists(storage_path('/app/public/profile'))) {
-                        Storage::makeDirectory(storage_path('/app/public/profile'));
-                    }
-
-                    file_put_contents(storage_path('/app/public/profile/' . $photo), file_get_contents($googleUser['picture']));
+                    Storage::put('public/profile/' . $photo, file_get_contents($googleUser['picture']));
                 } catch (\Throwable $th) {
                     error_log("[Exception] " . $th->getMessage() .
                         " in " . $th->getFile() .

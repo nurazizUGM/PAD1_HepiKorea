@@ -9,11 +9,12 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet">
-    <title>{{ config()->get('app.name') }} - Admin@yield('title')</title>
+    <title>{{ config()->get('app.name') }} - Admin @yield('title')</title>
+    <script src="{{asset('js/jquery-3.7.1.min.js')}}"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-poppins w-screen h-screen overflow-hidden">
+<body class="flex font-poppins w-screen h-screen overflow-hidden">
     <!-- nav antara pakai shadow atau engga -->
     <nav
         class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
@@ -151,8 +152,7 @@
                         class="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_logout.svg') }}" alt="Logout Icon"
                             class="h-7 w-7 scale-90 grayscale group-hover:grayscale-0">
-                        <span
-                            class="flex-1 ms-3 whitespace-nowrap text-black group-hover:text-[#FF0000]">Logout</span>
+                        <span class="flex-1 ms-3 whitespace-nowrap text-black group-hover:text-[#FF0000]">Logout</span>
                     </a>
                 </li>
             </ul>
@@ -162,11 +162,32 @@
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 sm:ml-64 sm:mt-14">
+    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full">
         @yield('content')
     </div>
 
-
+    @yield('script')
+    @if (config()->get('app.env') == 'local')
+        <script>
+            @if ($errors->any())
+                $(document).ready(function() {
+                    @foreach ($errors->all() as $error)
+                        alert('{{ $error }}');
+                    @endforeach
+                });
+            @endif
+            @if ($message = Session::get('message'))
+                $(document).ready(function() {
+                    alert('{{ $message }}');
+                });
+            @endif
+            @if ($message = Session::get('success'))
+                $(document).ready(function() {
+                    alert('{{ $message }}');
+                });
+            @endif
+        </script>
+    @endif
 </body>
 
 </html>
