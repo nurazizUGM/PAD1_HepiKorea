@@ -60,8 +60,7 @@
         </div>
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
-    <script>    
+    <script>
         document.addEventListener('DOMContentLoaded', function () {
             const ctx = document.getElementById('myChart').getContext('2d');
 
