@@ -1,22 +1,20 @@
+import flowbitePlugin from "flowbite/plugin";
+
 /** @type {import('tailwindcss').Config} */
 
-module.exports = {
-  content: [
+export const content = [
     "./resources/**/*.blade.php",
     "./resources/**/**/*.blade.php",
-    './storage/framework/views/*.php',
+    "./storage/framework/views/*.php",
     "./resources/**/*.js",
-    "./resources/**/*.vue", 
-    "./node_modules/flowbite/**/*.js"
-  ],
-  theme: {
+    "./resources/**/*.vue",
+    "./node_modules/flowbite/**/*.js",
+];
+export const theme = {
     extend: {
-      fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
-      },
+        fontFamily: {
+            poppins: ["Poppins", "sans-serif"],
+        },
     },
-  },
-  plugins: [
-      require('flowbite/plugin')
-  ],
-}
+};
+export const plugins = [flowbitePlugin];
