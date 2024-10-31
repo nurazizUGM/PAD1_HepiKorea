@@ -1,6 +1,6 @@
 <!-- start of product content -->
 <div class="hidden px-10 rounded-lg h-[80vh]" id="product" role="tabpanel" aria-labelledby="product-tab">
-    <div id="product_list">
+    <div id="list_product">
         <div class="w-full flex items-center">
             <!-- Category Dropdown -->
             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
@@ -49,7 +49,7 @@
             </div>
 
             <!-- plus button -->
-            <div class="flex gap-1 ms-3" onclick="showCreate()">
+            <div class="flex gap-1 ms-3" id="btn-add-product">
                 <img src="{{ asset('img/assets/icon/icon_admin_product_plus.svg') }}" alt="plus icon"
                     class="w-10 h-10 fill-orange-400">
 
@@ -83,37 +83,47 @@
 
         </div>
         <!-- start of product card container -->
-        <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8">
+        <div
+            class="container w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-8">
             <!-- card product -->
-            <!-- ini for loop hanya untuk coba -->
             @foreach (\App\Models\Product::where('is_deleted', false)->get() as $product)
-                <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col">
+                <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
                     <!-- image product card -->
-                    <div class="w-full h-2/3 bg-cover bg-top"
-                        style="background-image: url('{{ asset('img/example/test_shirt.jpg') }}');">
-                    </div>
+                    @if ($image = $product->images->first()?->path)
+                        <div class="w-full h-2/3 bg-cover bg-top"
+                            style="background-image: url('{{ Storage::exists('public/products/' . $image) ? asset('storage/products/' . $image) : $image }}');">
+                        </div>
+                    @else
+                        <div class="w-full h-2/3 bg-cover bg-top"
+                            style="background-image: url('https://placehold.co/200');">
+                        </div>
+                    @endif
                     <!-- header & detail product card -->
                     <div class="p-2">
-                        <p class="text-sm font-bold truncate">Korean Fashion Set</p>
-                        <p class="text-sm font-semi">Blouse</p>
+                        <p class="text-sm font-bold truncate">{{ $product->name }}</p>
+                        <p class="text-sm font-semi">Rp. {{ number_format($product->price, 0, ',', '.') }}</p>
                     </div>
                     <!-- edit & delete product card -->
                     <div class="flex mt-auto mx-3 mb-3">
                         <!-- edit icon -->
-                        <a href="#" class="mr-auto">
+                        <a href="#product_edit" onclick="editProduct({{ $product->id }})" class="mr-auto">
                             <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt="">
                         </a>
                         <!-- delete icon -->
-                        <a href="#" class="ml-auto">
-                            <img src="{{ asset('img/assets/icon/icon_admin_product_trash.svg') }}" alt="">
-                        </a>
+                        <form action="{{ route('admin.product.delete', $product->id) }}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="ml-auto">
+                                <img src="{{ asset('img/assets/icon/icon_admin_product_trash.svg') }}" alt="">
+                            </button>
+                        </form>
                     </div>
                 </div>
             @endforeach
         </div>
         <!-- end of product card container -->
     </div>
-    <div id="product_create" class="hidden">
+    <div id="add_product" class="hidden">
         @include('admin.components.product.create')
     </div>
 </div>
@@ -121,9 +131,41 @@
 
 @section('script')
     <script>
-        function showCreate() {
-            document.getElementById('product_list').classList.add('hidden');
-            document.getElementById('product_create').classList.remove('hidden');
+        $('#btn-add-product').click(function() {
+            $('#list_product').addClass('hidden');
+            $('#edit_product').addClass('hidden');
+            $('#add_product').removeClass('hidden');
+            window.location.href = '#add_product';
+        });
+
+        $('#btn-cancel-product').click(function() {
+            $('#add_product').addClass('hidden');
+            $('#edit_product').addClass('hidden');
+            $('#list_product').removeClass('hidden');
+            window.location.href = '#list_product';
+        });
+
+        function editProduct(id) {
+            $('#list_product').addClass('hidden');
+            $('#add_product').addClass('hidden');
+            $('#edit_product').removeClass('hidden');
+            window.location.href = '#edit_product';
         }
+
+        $(document).ready(function() {
+            if (window.location.href.includes('#add_product')) {
+                $('#add_product').addClass('hidden');
+                $('#edit_product').addClass('hidden');
+                $('#list_product').removeClass('hidden');
+            } else if (window.location.href.includes('#edit_product')) {
+                $('#list_product').addClass('hidden');
+                $('#add_product').addClass('hidden');
+                $('#edit_product').removeClass('hidden');
+            } else {
+                $('#add_product').addClass('hidden');
+                $('#edit_product').addClass('hidden');
+                $('#list_product').removeClass('hidden');
+            }
+        });
     </script>
 @endsection

@@ -1,9 +1,7 @@
 @extends('layout.admin')
-
 @section('title', 'Product')
 
 @section('content')
-
     <div class="bg-[#EFEFEF] border-gray-200 rounded-lg">
         <!-- Tabs (product, category, carousel) -->
         <div class="mb-3">
@@ -192,73 +190,8 @@
                     <!-- end of kolom 2/3 (form product) -->
                 </div>
             </div>
-
-            {{-- start of Edit Image Modal --}}
-            <div id="image-edit-modal" tabindex="-2" aria-hidden="true"
-                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-4 w-full max-w-2xl max-h-full">
-                    <!-- Modal content -->
-                    <div class="bg-white w-[50vw] h-[50vh] rounded-lg shadow">
-                        <div class="relative w-full h-full p-6 flex flex-row grid-cols-[4fr_2fr]">
-                            <!-- x button (exit modal) -->
-                            <button type="button"
-                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                                data-modal-hide="image-edit-modal">
-                                <p class="m-auto text-white text-sm">X</p>
-                            </button>
-                            <!-- image category -->
-                            <div class="w-full h-full bg-cover bg-no-repeat bg-top rounded-lg"
-                                style="background-image: url('{{ asset('img/example/test_shirt.jpg') }}');">
-                            </div>
-                            <div class="w-full h-full px-14 flex flex-col">
-                                <form action="" method="" class="flex flex-col h-full text-center py-4 px-5">
-                                    <!-- input file image -->
-                                    <div class="relative w-full mt-5">
-                                        <!-- Hidden file input -->
-                                        <input id="file-upload" type="file" class="hidden">
-                                        <!-- Custom file input label -->
-                                        <label for="file-upload"
-                                            class="flex items-center justify-between w-full rounded-3xl bg-gray-200 hover:bg-gray-300 h-14 pl-10 pr-4 cursor-pointer">
-                                            <span class="text-black font-semi">Icon</span>
-                                            <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
-                                                alt="Upload Icon" class="h-8 w-8">
-                                        </label>
-                                    </div>
-                                    <!-- end of input file image -->
-                                    <!-- Input name -->
-                                    <input type="text" placeholder="Name" name="" id=""
-                                        class="rounded-3xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-10 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">
-                                    <!-- flex grow untuk dorong button ke bawah -->
-                                    <div class="flex-grow"></div>
-                                    <!-- Button "add" -->
-                                    <button type="submit" data-modal-hide="image-edit-modal"
-                                        class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mt-auto mx-auto inline-block w-1/2 h-14 rounded-3xl">Edit</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end of modal content -->
-                </div>
-            </div>
-            {{-- End of Edit Image Modal --}}
-
             <!-- end of product Content -->
-
-            <!-- Category Content -->
-            @include('admin.product.categoryContent')
-            <!-- End of Category Content -->
-
-
-            <!-- Carousel Content -->
-            @include('admin.product.carouselContent')
-            <!-- End of Carousel Content -->
         </div>
         <!-- end of tab content -->
     </div>
-
-    <script>
-        function changeImage(imageSrc) {
-            document.getElementById('mainImage').src = imageSrc;
-        }
-    </script>
 @endsection

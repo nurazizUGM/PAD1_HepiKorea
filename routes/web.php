@@ -55,7 +55,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     });
 
     Route::view('/product', 'admin.product')->name('admin.product');
-    Route::prefix('product')->controller('product', ProductController::class)->group(function () {
+    Route::prefix('product')->controller(ProductController::class)->group(function () {
         Route::post('/', 'store')->name('admin.product.store');
         Route::get('edit/{product}', 'edit')->name('admin.product.edit');
         Route::patch('update/{product}', 'update')->name('admin.product.update');

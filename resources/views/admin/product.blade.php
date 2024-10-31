@@ -2,7 +2,7 @@
 @section('title', 'Product')
 
 @section('content')
-    <div class="bg-[#EFEFEF] border-gray-200 rounded-lg">
+    <div class="bg-[#EFEFEF] border-gray-200 rounded-lg overflow-y-auto">
         <!-- Tabs (product, category, carousel) -->
         <div class="mb-3">
             <ul class="flex flex-wrap -mb-px text-lg font-bold text-center text-black gap-x-16" id="default-tab"
