@@ -1,6 +1,6 @@
 <!-- start of customer content -->
-<div class="hidden px-10 rounded-lg h-[80vh]" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-    <div id="customer-list">
+<div class="hidden flex px-10 rounded-lg h-[80vh]" id="customer" role="tabpanel" aria-labelledby="customer-tab">
+    <div id="customer-list" class="h-full">
         <div class="w-full flex items-center">
             <!-- search bar -->
             <div class="flex items-center mr-auto">
@@ -16,9 +16,8 @@
             <!-- end of search bar -->
         </div>
         <!-- start of customer card container -->
-        <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8">
+        <div class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar">
             <!-- card customer -->
-            <!-- ini for loop hanya untuk coba -->
             @for ($i = 0; $i < 20; $i++)
                 <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col">
                     <!-- image customer card -->
@@ -33,7 +32,7 @@
                     <!-- edit & delete customer card -->
                     <div class="flex mt-auto mx-3 mb-3">
                         <!-- edit icon -->
-                        <a href="#" class="ml-auto" onclick="showCreate()">
+                        <a href="#" class="ml-auto" onclick="showCreate(event)">
                             <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt="">
                         </a>
                     </div>
@@ -43,18 +42,18 @@
     </div>
 
     <!-- end of product card container -->
-    <div id="customer-profile" class="hidden  overflow-y-auto">
+    <div id="customer-profile" class="hidden overflow-y-auto">
         @include('admin.components.customer.profile')
     </div>
 </div>
 
 @section('script')
     <script>
-        function showCreate() {
+        function showCreate(event) {
+            event.preventDefault();
             document.getElementById('customer-list').classList.add('hidden');
             document.getElementById('customer-profile').classList.remove('hidden');
         }
     </script>
 @endsection
-
 <!-- End of Product Content -->
