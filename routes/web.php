@@ -1,14 +1,11 @@
 <?php
 
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Laravel\Socialite\Facades\Socialite;
-use Laravel\Socialite\Two\InvalidStateException;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,21 +43,28 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('reset_password', [AuthController::class, 'setPassword'])->name('auth.set_password');
 });
 
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
-    Route::controller(\App\Http\Controllers\Admin\ProfileController::class)->group(function () {
-        Route::get('profile', 'index')->name('admin.profile.user');
-        Route::patch('profile', 'updateProfile')->name('admin.profile.user');
-        Route::get('setting', 'setting')->name('admin.profile.setting');
+Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profile', 'index')->name('profile.user');
+        Route::patch('profile', 'updateProfile')->name('profile.user');
+        Route::get('setting', 'setting')->name('profile.setting');
     });
 
-    Route::prefix('product')->controller(ProductController::class)->group(function () {
-        Route::get('/', 'index')->name('admin.product');
-        Route::get('create', 'create')->name('admin.product.create');
-        Route::post('store', 'store')->name('admin.product.store');
-        Route::get('edit/{product}', 'edit')->name('admin.product.edit');
-        Route::patch('update/{product}', 'update')->name('admin.product.update');
-        Route::delete('delete/{product}', 'destroy')->name('admin.product.delete');
+    Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('create', 'create')->name('create');
+        Route::post('store', 'store')->name('store');
+        Route::get('edit/{product}', 'edit')->name('edit');
+        Route::patch('update/{product}', 'update')->name('update');
+        Route::delete('delete/{product}', 'destroy')->name('delete');
+    });
+
+    Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('store', 'store')->name('store');
+        Route::patch('update/{category}', 'update')->name('update');
+        Route::delete('delete/{category}', 'destroy')->name('delete');
     });
 });
 

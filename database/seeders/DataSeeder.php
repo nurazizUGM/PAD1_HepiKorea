@@ -15,26 +15,16 @@ class DataSeeder extends Seeder
     {
         \App\Models\Category::insert([[
             'name' => 'Fashion',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ], [
             'name' => 'Electronics',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ],  [
             'name' => 'Health & Beauty',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ]]);
 
-        foreach (\App\Models\Category::all() as $category) {
-            $category->products()->saveMany(\Database\Factories\ProductFactory::new()->count(1)->make([
-                'category_id' => $category->id,
-            ]));
-        }
-
-        foreach (\App\Models\Product::all() as $product) {
-            $product->images()->saveMany(\Database\Factories\ProductImageFactory::new()->count(2)->make([
-                'product_id' => $product->id,
-            ]));
-        }
+        $this->call(ProductSeeder::class);
 
         \Database\Factories\UserFactory::new()->count(2)->create();
 

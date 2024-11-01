@@ -18,13 +18,13 @@
                 </li>
                 <!-- Tab  Category-->
                 <li class="md:mx-52 lg:mx-64" role="presentation">
-                    <a href="{{ route('admin.product') . '#category' }}"
+                    <a href="{{ route('admin.category.index') }}"
                         class="inline-block px-4 pt-4 pb-1 rounded-t-lg text-black hover:text-orange-400 " id="category-tab"
                         data-tabs-target="#category" type="button">Category</a>
                 </li>
                 <!-- Tab Carousel -->
                 <li class="mr-auto" role="presentation">
-                    <a href="{{ route('admin.product') . '#carousel' }}"
+                    <a href="{{ route('admin.product.index') }}"
                         class="inline-block px-4 pt-4 pb-1 rounded-t-lg text-black hover:text-orange-400 " id="carousel-tab"
                         data-tabs-target="#carousel" type="button">Carousel</a>
                 </li>
@@ -35,48 +35,38 @@
         <div id="default-tab-content">
             <!-- Product Content -->
             <div class="hidden px-10 pt-2 rounded-lg h-[80vh]" id="product" role="tabpanel" aria-labelledby="product-tab">
-                <h1 class="text-black font-semibold text-xl mb-2">Edit Product</h1>
+                <h1 class="text-black font-semibold text-xl mb-2">Add Product</h1>
                 <div class="w-full h-full flex flex-row">
                     <!-- Kolom 2/5 (image)-->
                     <div class="w-3/12 h-[90%]">
                         <div class="w-full h-full">
                             <div class="flex flex-col space-y-4">
-                                <div class="w-full h-72 mr-auto bg-white p-3 rounded-lg">
-                                    <img id="mainImage"
-                                        src="{{ asset('storage/products/' . $product->images->first()->path) }}"
-                                        class="w-full h-full object-contain rounded-lg" alt="Main Image">
+                                <div class="w-full h-[20rem] mr-auto bg-white rounded-lg p-3">
+                                    <img id="mainImage" class="hidden w-full h-full object-contain rounded-lg"
+                                        alt="Main Image">
                                 </div>
-                                <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-images">
-                                    @foreach ($product->images as $image)
-                                        <img src="{{ asset('storage/products/' . $image->path) }}"
-                                            class="w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100">
-                                    @endforeach
-                                </div>
+                                <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-image-preview"> </div>
                                 <div>
                                     <button id="btn-add-image"
                                         class="w-3/5 flex items-center justify-center bg-orange-400 h-10 rounded-xl mb-5 text-lg font-bold text-white mt-5S mx-auto">
-                                        <img src="{{ asset('img/assets/icon/icon_faq_edit.svg') }}" alt="Edit Icon"
-                                            class="h-6 w-6 mr-3">
+                                        <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
+                                            alt="Upload Icon" class="h-6 w-6 mr-3">
                                         Add Image
                                     </button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
 
-                    {{-- <div class="w-1/12 h-[90%]"></div> --}}
-
                     <!-- Kolom 3/5 (form create product) -->
                     <div class="w-9/12 h-[90%]">
-                        <div class="w-full h-full bg-[#FFFCFC] rounded-xl ml-5 p-5">
+                        <div class="w-full h-full bg-[#FFFCFC] rounded-lg ml-5 p-5">
                             <!-- header create product -->
-                            <h1 class="text-lg font-semibold">Edit Product</h1>
+                            <h1 class="text-lg font-semibold">Create Product</h1>
                             <!-- start of form -->
-                            <form action="{{ route('admin.product.update', $product->id) }}" method="POST"
-                                id="form-edit-product" enctype="multipart/form-data" class="w-full mt-3">
+                            <form action="{{ route('admin.product.store') }}" class="w-full mt-3" method="POST"
+                                enctype="multipart/form-data" id="form-create-product" enctype="multipart/form-data">
                                 @csrf
-                                @method('PATCH')
                                 <!-- Nama Produk -->
                                 <div class="flex items-center mb-4">
                                     <!-- Label -->
@@ -85,8 +75,7 @@
                                     </div>
                                     <!-- Input Field -->
                                     <div class="w-8/12">
-                                        <input type="text" name="name" id="nama-produk" value="{{ $product->name }}"
-                                            required
+                                        <input type="text" id="nama-produk" name="name"
                                             class="w-full h-8 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- Icon -->
@@ -104,8 +93,7 @@
                                     </div>
                                     <!-- input field -->
                                     <div class="w-8/12">
-                                        <input type="number" name="price" id="harga-produk" value="{{ $product->price }}"
-                                            required
+                                        <input type="number" id="harga-produk" name="price"
                                             class="w-full h-8 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- icon -->
@@ -126,10 +114,9 @@
                                         <select id="dropdown_add_category" name="category"
                                             class="w-full h-8 rounded-lg px-4 text-xs border-black focus:border-black focus:outline-none focus:ring-0">
                                             @foreach (\App\Models\Category::all() as $category)
-                                                <option value="{{ $category->id }}"
-                                                    @if ($category->id == $product->category_id) selected @endif>{{ $category->name }}
-                                                </option>
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
+                                            <!-- !!! tambahin -->
                                         </select>
                                     </div>
                                     <!-- icon (kosong) -->
@@ -145,8 +132,8 @@
                                             Description</label>
                                     </div>
                                     <div class="w-8/12">
-                                        <textarea id="product-description" rows="4" form="form-edit-product" name="description" required
-                                            class="w-full rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0 text-md">{{ $product->description }}</textarea>
+                                        <textarea id="product-description" rows="4" name="description" form="form-create-product"
+                                            class="w-full rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0 text-md"></textarea>
                                     </div>
                                     <div class="w-1/12 flex justify-end">
                                         <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}"
@@ -154,8 +141,14 @@
                                     </div>
                                 </div>
 
-                                <!-- Button Save -->
                                 <div class="flex mt-2 w-full">
+                                    <!-- Button Cancel -->
+                                    <button type="button"
+                                        onclick="window.location.href='{{ route('admin.product.index') }}'"
+                                        class="bg-red-400 hover:bg-red-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-14">
+                                        Cancel
+                                    </button>
+                                    <!-- Button Save -->
                                     <button type="submit"
                                         class="bg-orange-400 hover:bg-orange-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-14">
                                         Save
@@ -172,39 +165,36 @@
         </div>
         <!-- end of tab content -->
     </div>
-@endsection
-@section('script')
+
     <script>
-        $(document).ready(function() {
-            $('#product-images img').click(function() {
-                $('#mainImage').attr('src', $(this).attr('src'));
-            });
+        $('#btn-add-image').click(function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*';
+            input.name = 'images[]';
+            input.className = 'hidden';
+            input.click();
 
-            $('#btn-add-image').click(function() {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.className = 'hidden';
-                input.accept = 'image/*';
-                input.name = 'images[]';
-                input.click();
+            input.onchange = function() {
+                const file = input.files[0];
+                if (!file) return;
+                $('#form-create-product').append(input);
 
-                input.onchange = function() {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.className =
-                            'w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100';
-                        img.onclick = function() {
-                            $('#mainImage').attr('src', img.src);
-                        };
-                        $('#product-images').append(img);
-                        $('#mainImage').attr('src', img.src);
-                        $('#form-edit-product').append(input);
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className =
+                        'w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100';
+                    img.onclick = function() {
+                        $('#mainImage').attr('src', e.target.result);
                     };
-                    reader.readAsDataURL(input.files[0]);
-                };
-            });
+
+                    $('#mainImage').attr('src', e.target.result).show();
+                    $('#product-image-preview').append(img);
+                }
+                reader.readAsDataURL(file);
+            }
         });
     </script>
 @endsection
