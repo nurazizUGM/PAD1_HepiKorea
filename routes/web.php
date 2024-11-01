@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
+use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,7 +45,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::controller(\App\Http\Controllers\Admin\ProfileController::class)->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
         Route::get('profile', 'index')->name('profile.user');
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
@@ -59,14 +60,12 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::delete('delete/{product}', 'destroy')->name('delete');
     });
 
-    Route::resource('category', CategoryController::class)->names([
-        'index' => 'category.index',
-        'create' => 'category..create',
-        'store' => 'category..store',
-        'edit' => 'category..edit',
-        'update' => 'category..update',
-        'destroy' => 'category..delete',
-    ]);
+    Route::prefix('category')->name('category.')->controller(CategoryController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('store', 'store')->name('store');
+        Route::patch('update/{category}', 'update')->name('update');
+        Route::delete('delete/{category}', 'destroy')->name('delete');
+    });
 });
 
 Route::get('/admin', function () {

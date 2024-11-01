@@ -22,13 +22,13 @@
                     <button onclick="window.location.href='{{ route('admin.category.index') }}'"
                         class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="category-tab"
                         data-tabs-target="#category" type="button" role="tab" aria-controls="category"
-                        aria-selected="false">Category</button>
+                        aria-selected="{{ $tab == 'category' ? 'true' : 'false' }}">Category</button>
                 </li>
                 <!-- Tab Carousel -->
                 <li class="mr-auto" role="presentation">
                     <button href="#" class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="carousel-tab"
                         data-tabs-target="#carousel" type="button" role="tab" aria-controls="carousel"
-                        aria-selected="false">Carousel</button>
+                        aria-selected="{{ $tab == 'carousel' ? 'true' : 'false' }}">Carousel</button>
                 </li>
             </ul>
         </div>
@@ -52,7 +52,7 @@
             <div class="hidden px-10 rounded-lg h-[80vh] w-full" id="category" role="tabpanel"
                 aria-labelledby="category-tab">
                 @if ($tab == 'category')
-                    @include('admin.product.category')
+                    @include('admin.product.components.category')
                 @endif
             </div>
             <!-- End of Product Content -->
@@ -61,7 +61,7 @@
             <div class="hidden px-10 rounded-lg h-[80vh] w-full" id="carousel" role="tabpanel"
                 aria-labelledby="carousel-tab">
                 @if ($tab == 'carousel')
-                    @include('admin.product.carousel')
+                    @include('admin.product.components.carousel')
                 @endif
             </div>
             <!-- End of Product Content -->
