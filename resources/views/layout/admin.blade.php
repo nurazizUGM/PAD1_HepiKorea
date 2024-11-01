@@ -1,5 +1,22 @@
 @php
     $user = Auth::user();
+    if (request()->routeIs('admin.dashboard')) {
+        $route = 'dashboard';
+    } elseif (
+        request()->routeIs('admin.product.*') ||
+        request()->routeIs('admin.category.*') ||
+        request()->routeIs('admin.carousel.*')
+    ) {
+        $route = 'product';
+    } elseif (request()->routeIs('admin.order.*')) {
+        $route = 'order';
+    } elseif (request()->routeIs('admin.analytics.*')) {
+        $route = 'analytics';
+    } elseif (request()->routeIs('admin.customer.*')) {
+        $route = 'customer';
+    } elseif (request()->routeIs('admin.faq.*')) {
+        $route = 'faq';
+    }
 @endphp
 
 <!DOCTYPE html>
@@ -91,61 +108,61 @@
                 <!-- Dashboard -->
                 <li class="mt-12">
                     <a href="{{ route('admin.dashboard') }}"
-                        class="flex items-center p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.dashboard')) bg-gray-100 @endif hover:bg-gray-100 active:bg-white dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'dashboard') bg-gray-100 @endif hover:bg-gray-100 active:bg-white dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_admin.svg') }}" alt="dashboard Icon"
-                            class="h-7 w-7 @if (request()->route()->getName() != 'admin.dashboard') grayscale @endif group-hover:grayscale-0">
+                            class="h-7 w-7 @if ($route != 'dashboard') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="ms-3 @if (request()->routeIs('admin.dashboard')) text-orange-400 @else text-[#B7B7B7] @endif  group-hover:text-orange-400">Dashboard</span>
+                            class="ms-3 @if ($route == 'dashboard') text-orange-400 @else text-[#B7B7B7] @endif  group-hover:text-orange-400">Dashboard</span>
                     </a>
                 </li>
                 <!-- Product -->
                 <li>
                     <a href="{{ route('admin.product.index') }}"
-                        class="flex items-center ms-0.5 p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.product.*')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center ms-0.5 p-2 rounded-lg dark:text-white @if ($route == 'product') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
-                            class="h-6 w-6 @if (request()->route()->getName() != 'admin.product.*') grayscale @endif group-hover:grayscale-0">
+                            class="h-6 w-6 @if ($route != 'product') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-4 whitespace-nowrap @if (request()->routeIs('admin.product.*')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Product</span>
+                            class="flex-1 ms-4 whitespace-nowrap @if ($route == 'product') text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Product</span>
                     </a>
                 </li>
                 <!-- Order -->
                 <li>
                     <a href="#"
-                        class="flex items-center p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.order')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'order') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="product Icon"
-                            class="h-7 w-7 @if (request()->route()->getName() != 'admin.order') grayscale @endif group-hover:grayscale-0">
+                            class="h-7 w-7 @if ($route != 'order') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-3 whitespace-nowrap @if (request()->routeIs('admin.order')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Order</span>
+                            class="flex-1 ms-3 whitespace-nowrap @if ($route == 'order') text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Order</span>
                     </a>
                 </li>
                 <!-- Analytic -->
                 <li>
                     <a href="#"
-                        class="flex items-center p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.analytics')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'analytic') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_analytic.svg') }}" alt="product Icon"
-                            class="h-7 w-7 @if (request()->route()->getName() != 'admin.analytics') grayscale @endif group-hover:grayscale-0">
+                            class="h-7 w-7 @if ($route != 'analytic') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-2.5 whitespace-nowrap @if (request()->routeIs('admin.analytics')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Analytic</span>
+                            class="flex-1 ms-2.5 whitespace-nowrap @if ($route == 'analytic') text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Analytic</span>
                     </a>
                 </li>
                 <!-- Customer -->
                 <li>
                     <a href="#"
-                        class="flex items-center p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.customer')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'customer') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}" alt="product Icon"
-                            class="h-7 w-7 scale-90 @if (request()->route()->getName() != 'admin.customer') grayscale @endif group-hover:grayscale-0">
+                            class="h-7 w-7 scale-90 @if ($route != 'customer') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-3 whitespace-nowrap @if (request()->routeIs('admin.customer')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Customer</span>
+                            class="flex-1 ms-3 whitespace-nowrap @if ($route == 'customer') text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Customer</span>
                     </a>
                 </li>
                 <!-- FAQ -->
                 <li>
                     <a href="#"
-                        class="flex items-center p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.faq')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                        class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'faq') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_faq.svg') }}" alt="product Icon"
-                            class="h-7 w-7 scale-90 @if (request()->route()->getName() != 'admin.faq') grayscale @endif group-hover:grayscale-0">
+                            class="h-7 w-7 scale-90 @if ($route != 'faq') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-3 whitespace-nowrap @if (request()->routeIs('admin.faq')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">FAQ</span>
+                            class="flex-1 ms-3 whitespace-nowrap @if ($route == 'faq') text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">FAQ</span>
                     </a>
                 </li>
             </ul>
