@@ -1,4 +1,4 @@
-<h1 class="text-black font-semibold text-xl mb-2">Add Product Detail</h1>
+<h1 class="text-black font-semibold text-xl mb-2">Add Product</h1>
 <div class="w-full h-full flex flex-row">
     <!-- Kolom 2/5 (image)-->
     <div class="w-3/12 h-[90%]">

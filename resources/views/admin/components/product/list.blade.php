@@ -1,6 +1,6 @@
 <!-- start of product content -->
 <div class="hidden px-10 rounded-lg h-[80vh]" id="product" role="tabpanel" aria-labelledby="product-tab">
-    <div id="list_product">
+    <div id="list_product" class="h-full flex flex-col">
         <div class="w-full flex items-center">
             <!-- Category Dropdown -->
             <button id="dropdownDefaultButton" data-dropdown-toggle="dropdown"
@@ -83,8 +83,8 @@
 
         </div>
         <!-- start of product card container -->
-        <div
-            class="container w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-8">
+        <div class="container w-full h-full mt-5 mb-8 overflow-y-auto gap-8",
+            style="display: grid; grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr))">
             <!-- card product -->
             @foreach (\App\Models\Product::where('is_deleted', false)->get() as $product)
                 <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
@@ -106,7 +106,7 @@
                     <!-- edit & delete product card -->
                     <div class="flex mt-auto mx-3 mb-3">
                         <!-- edit icon -->
-                        <a href="#product_edit" onclick="editProduct({{ $product->id }})" class="mr-auto">
+                        <a href="{{ route('admin.product.edit', $product->id) }}" class="mr-auto">
                             <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt="">
                         </a>
                         <!-- delete icon -->
@@ -145,22 +145,11 @@
             window.location.href = '#list_product';
         });
 
-        function editProduct(id) {
-            $('#list_product').addClass('hidden');
-            $('#add_product').addClass('hidden');
-            $('#edit_product').removeClass('hidden');
-            window.location.href = '#edit_product';
-        }
-
         $(document).ready(function() {
             if (window.location.href.includes('#add_product')) {
                 $('#add_product').addClass('hidden');
                 $('#edit_product').addClass('hidden');
                 $('#list_product').removeClass('hidden');
-            } else if (window.location.href.includes('#edit_product')) {
-                $('#list_product').addClass('hidden');
-                $('#add_product').addClass('hidden');
-                $('#edit_product').removeClass('hidden');
             } else {
                 $('#add_product').addClass('hidden');
                 $('#edit_product').addClass('hidden');

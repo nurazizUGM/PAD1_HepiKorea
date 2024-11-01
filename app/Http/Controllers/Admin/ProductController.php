@@ -22,10 +22,9 @@ class ProductController extends Controller
         $product  = Product::create($data);
 
         if ($request->has('images')) {
-            for ($i = 0; $i < count($request->images); $i++) {
-                $image = $request->file('images')[$i];
+            foreach ($request->file('images') as $image) {
                 $filename = $image->hashName();
-                $request->file('images')[$i]->storeAs('products', $filename, 'public');
+                $image->storeAs('products', $filename, 'public');
                 $product->images()->create([
                     'path' => $filename
                 ]);
@@ -33,6 +32,37 @@ class ProductController extends Controller
         }
 
         return redirect()->route('admin.product')->with('success', 'Product created successfully');
+    }
+
+    public function edit(Product $product)
+    {
+        return view('admin.product_edit', compact('product'));
+    }
+
+    public function update(Request $request, Product $product)
+    {
+        $data = $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric',
+            'description' => 'required|string',
+            'category' => 'required|exists:categories,id',
+            'images' => 'array',
+        ]);
+
+        $data['category_id'] = $data['category'];
+        $product->update($data);
+
+        if ($request->has('images')) {
+            foreach ($request->file('images') as $image) {
+                $filename = $image->hashName();
+                $image->storeAs('products', $filename, 'public');
+                $product->images()->create([
+                    'path' => $filename
+                ]);
+            }
+        }
+
+        return redirect()->route('admin.product')->with('success', 'Product updated successfully');
     }
 
     public function destroy(Product $product)
