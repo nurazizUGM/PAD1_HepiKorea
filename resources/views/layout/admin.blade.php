@@ -25,8 +25,8 @@
         <div class="px-5 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
-                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
-                        aria-controls="logo-sidebar" type="button"
+                    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
+                        aria-controls="default-sidebar" type="button"
                         class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
@@ -51,7 +51,8 @@
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
                                 <img class="w-8 h-8 rounded-full"
-                                    src="{{ $user->photo ? asset('storage/profile/' . $user->photo) : asset('img/assets/icon/icon_user2.png') }}" alt="user photo">
+                                    src="{{ $user->photo ? asset('storage/profile/' . $user->photo) : asset('img/assets/icon/icon_user2.png') }}"
+                                    alt="user photo">
                             </button>
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
