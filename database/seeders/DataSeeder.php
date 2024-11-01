@@ -15,13 +15,13 @@ class DataSeeder extends Seeder
     {
         \App\Models\Category::insert([[
             'name' => 'Fashion',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ], [
             'name' => 'Electronics',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ],  [
             'name' => 'Health & Beauty',
-            'logo' => 'https://via.placeholder.com/150',
+            'icon' => 'https://via.placeholder.com/150',
         ]]);
 
         foreach (\App\Models\Category::all() as $category) {
