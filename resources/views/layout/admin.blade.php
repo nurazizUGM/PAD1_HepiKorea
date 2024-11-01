@@ -100,12 +100,12 @@
                 </li>
                 <!-- Product -->
                 <li>
-                    <a href="{{ route('admin.product') }}"
-                        class="flex items-center ms-0.5 p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.product')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
+                    <a href="{{ route('admin.product.index') }}"
+                        class="flex items-center ms-0.5 p-2 rounded-lg dark:text-white @if (request()->routeIs('admin.product.*')) bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
-                            class="h-6 w-6 @if (request()->route()->getName() != 'admin.product') grayscale @endif group-hover:grayscale-0">
+                            class="h-6 w-6 @if (request()->route()->getName() != 'admin.product.*') grayscale @endif group-hover:grayscale-0">
                         <span
-                            class="flex-1 ms-4 whitespace-nowrap @if (request()->routeIs('admin.product')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Product</span>
+                            class="flex-1 ms-4 whitespace-nowrap @if (request()->routeIs('admin.product.*')) text-orange-400 @else text-[#B7B7B7] @endif group-hover:text-orange-400">Product</span>
                     </a>
                 </li>
                 <!-- Order -->

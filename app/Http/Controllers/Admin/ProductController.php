@@ -23,13 +23,15 @@ class ProductController extends Controller
         }
 
         $products = $products->get();
-        return view('admin.product.index', compact('products', 'categories', 'category'));
+        $tab = 'product';
+        return view('admin.product.index', compact('products', 'categories', 'category', 'tab'));
     }
 
     public function create()
     {
         $categories = Category::all();
-        return view('admin.product.create', compact('categories'));
+        $tab = 'create';
+        return view('admin.product.index', compact('categories', 'tab'));
     }
 
     public function store(Request $request)
@@ -55,17 +57,18 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.product')->with('success', 'Product created successfully');
+        return redirect()->route('admin.product.index')->with('success', 'Product created successfully');
     }
 
     public function edit(Request $request, string $product)
     {
         $product = Product::find($product);
         if (!$product) {
-            return redirect()->route('admin.product')->with('error', 'Product not found');
+            return redirect()->route('admin.product.index')->with('error', 'Product not found');
         }
 
-        return view('admin.product.edit', compact('product'));
+        $tab = 'edit';
+        return view('admin.product.index', compact('product', 'tab'));
     }
 
     public function update(Request $request, Product $product)
@@ -91,12 +94,17 @@ class ProductController extends Controller
             }
         }
 
-        return redirect()->route('admin.product')->with('success', 'Product updated successfully');
+        return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
     }
 
-    public function destroy(Product $product)
+    public function destroy(string $product)
     {
-        $product->delete();
-        return redirect()->route('admin.product')->with('success', 'Product deleted successfully');
+        $product = Product::find($product);
+        if (!$product) {
+            return redirect()->route('admin.product.index')->with('error', 'Product not found');
+        }
+
+        $product->update(['is_deleted' => true]);
+        return redirect()->route('admin.product.index')->with('success', 'Product deleted successfully');
     }
 }
