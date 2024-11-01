@@ -1,12 +1,13 @@
-<div class="w-full flex items-center">
+<div class="w-full flex items-center cursor-pointer" data-modal-target="category-add-modal"
+    data-modal-toggle="category-add-modal">
     <!-- plus button -->
-    <a href="#" class="ml-5" data-modal-target="category-add-modal" data-modal-toggle="category-add-modal">
+    <a href="#" class="ml-5">
         <img src="{{ asset('img/assets/icon/icon_admin_product_plus.svg') }}" alt="plus icon"
             class="w-10 h-10 fill-orange-400">
     </a>
 
     <!-- text Add Product -->
-    <h2 class="text-black text-md ml-3 font-semibold">Category</h2>
+    <h2 class="text-black text-md ml-3 font-semibold">Add Category</h2>
 </div>
 
 <!-- start of product card container -->
@@ -113,8 +114,7 @@
                         <p class="m-auto text-white text-sm">X</p>
                     </button>
                     <!-- image category -->
-                    <div class="w-full h-full bg-cover bg-no-repeat bg-top rounded-lg" id="add-category-image"
-                        style="background-image: url('{{ asset('img/example/test_shirt.jpg') }}');">
+                    <div class="w-full h-full bg-cover bg-no-repeat bg-top rounded-lg" id="add-category-image">
                     </div>
                     <div class="w-full h-full px-14 flex flex-col">
                         <form action="{{ route('admin.category.store') }}" method="POST" enctype="multipart/form-data"
