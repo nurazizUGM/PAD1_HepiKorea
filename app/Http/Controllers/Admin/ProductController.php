@@ -3,11 +3,35 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    public function index(Request $request)
+    {
+        $categories = Category::all();
+        $products = Product::where('is_deleted', false);
+        $category = $request->has('category') ? Category::find(request()->query('category')) : null;
+
+        if (!empty(request()->query('category'))) {
+            $products = $products->where('category_id', request()->query('category'));
+        }
+        if (!empty(request()->query('search'))) {
+            $products = $products->where('name', 'like', '%' . request()->query('search') . '%');
+        }
+
+        $products = $products->get();
+        return view('admin.product.index', compact('products', 'categories', 'category'));
+    }
+
+    public function create()
+    {
+        $categories = Category::all();
+        return view('admin.product.create', compact('categories'));
+    }
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -34,9 +58,14 @@ class ProductController extends Controller
         return redirect()->route('admin.product')->with('success', 'Product created successfully');
     }
 
-    public function edit(Product $product)
+    public function edit(Request $request, string $product)
     {
-        return view('admin.product_edit', compact('product'));
+        $product = Product::find($product);
+        if (!$product) {
+            return redirect()->route('admin.product')->with('error', 'Product not found');
+        }
+
+        return view('admin.product.edit', compact('product'));
     }
 
     public function update(Request $request, Product $product)

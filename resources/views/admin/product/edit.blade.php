@@ -172,6 +172,8 @@
         </div>
         <!-- end of tab content -->
     </div>
+@endsection
+@section('script')
     <script>
         $(document).ready(function() {
             $('#product-images img').click(function() {

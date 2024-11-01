@@ -54,9 +54,10 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         Route::get('setting', 'setting')->name('admin.profile.setting');
     });
 
-    Route::view('/product', 'admin.product')->name('admin.product');
     Route::prefix('product')->controller(ProductController::class)->group(function () {
-        Route::post('/', 'store')->name('admin.product.store');
+        Route::get('/', 'index')->name('admin.product');
+        Route::get('create', 'create')->name('admin.product.create');
+        Route::post('store', 'store')->name('admin.product.store');
         Route::get('edit/{product}', 'edit')->name('admin.product.edit');
         Route::patch('update/{product}', 'update')->name('admin.product.update');
         Route::delete('delete/{product}', 'destroy')->name('admin.product.delete');
