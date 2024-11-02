@@ -17,6 +17,10 @@
     } elseif (request()->routeIs('admin.faq.*')) {
         $route = 'faq';
     }
+
+    if (!isset($route)) {
+        $route = '';
+    }
 @endphp
 
 <!DOCTYPE html>
