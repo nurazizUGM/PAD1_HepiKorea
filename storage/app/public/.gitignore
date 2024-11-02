@@ -1,3 +1,6 @@
 *
 !.gitignore
 !profile/
+!products/
+!category/
+!carousel/
