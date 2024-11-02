@@ -1,5 +1,7 @@
 @php
     $user = Auth::user();
+    $route = '';
+
     if (request()->routeIs('admin.dashboard')) {
         $route = 'dashboard';
     } elseif (
@@ -16,10 +18,6 @@
         $route = 'customer';
     } elseif (request()->routeIs('admin.faq.*')) {
         $route = 'faq';
-    }
-
-    if (!isset($route)) {
-        $route = '';
     }
 @endphp
 
