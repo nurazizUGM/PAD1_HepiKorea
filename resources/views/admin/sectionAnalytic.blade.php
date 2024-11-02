@@ -136,7 +136,6 @@
 
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const productOrderedChart = document.getElementById('chartProductOrdered').getContext('2d');
@@ -229,7 +228,9 @@
             new Chart(LineChart, {
                 type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
+                        'September', 'October', 'November', 'December'
+                    ],
                     datasets: [{
                         label: 'My First Dataset',
                         data: [65, 59, 80, 81, 56, 55, 40, 30, 40, 60, 80, 40],
@@ -238,8 +239,8 @@
                         tension: 0.1
                     }]
                 },
-                options : {
-                    responsive : true,
+                options: {
+                    responsive: true,
                     maintainAspectRatio: false
                 }
             });

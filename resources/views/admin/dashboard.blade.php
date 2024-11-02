@@ -80,7 +80,6 @@
         </div>
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const productOrderedChart = document.getElementById('chartProductOrdered').getContext('2d');
