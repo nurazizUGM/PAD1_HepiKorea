@@ -26,7 +26,8 @@
                 </li>
                 <!-- Tab Carousel -->
                 <li class="mr-auto" role="presentation">
-                    <button href="#" class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="carousel-tab"
+                    <button onclick="window.location.href='{{ route('admin.carousel.index') }}'"
+                        class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="carousel-tab"
                         data-tabs-target="#carousel" type="button" role="tab" aria-controls="carousel"
                         aria-selected="{{ $tab == 'carousel' ? 'true' : 'false' }}">Carousel</button>
                 </li>

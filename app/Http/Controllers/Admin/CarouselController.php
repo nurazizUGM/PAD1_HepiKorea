@@ -17,7 +17,7 @@ class CarouselController extends Controller
         if (!empty($request->search)) {
             $carousels = Carousel::where('title', 'like', "%$request->search%")->get();
         }
-        return view('admin.carousel.index', compact('carousels'));
+        return view('admin.product.index', ['carousels' => $carousels, 'tab' => 'carousel']);
     }
 
     /**
@@ -25,7 +25,6 @@ class CarouselController extends Controller
      */
     public function create()
     {
-        $mediaTypes = ['image', 'youtube'];
         //
     }
 
@@ -34,7 +33,23 @@ class CarouselController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'media_type' => 'required|in:image,video,youtube',
+            'media' => 'required_if:media_type,image,video|file|mimes:jpeg,jpg,png,mp4|max:2048',
+            'youtube_url' => 'required_if:media_type,youtube',
+        ]);
+
+        if ($request->media_type == 'youtube') {
+            $data['media'] = $request->youtube_url;
+        } else if ($request->hasFile('media')) {
+            $media = $request->file('media');
+            $data['media'] = $media->storeAs('carousel', $media->hashName(), 'public');
+        }
+
+        Carousel::create($data);
+        return redirect()->route('admin.carousel.index')->with('success', 'Carousel created successfully');
     }
 
     /**

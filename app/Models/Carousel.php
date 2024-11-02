@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Carousel extends Model
 {
     use HasFactory;
+    public static $type = ['image', 'video', 'youtube'];
+    protected $fillable = ['title', 'description', 'media', 'media_type'];
 }

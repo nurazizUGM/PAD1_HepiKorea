@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
@@ -65,6 +66,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('store', 'store')->name('store');
         Route::patch('update/{category}', 'update')->name('update');
         Route::delete('delete/{category}', 'destroy')->name('delete');
+    });
+
+    Route::prefix('carousel')->name('carousel.')->controller(CarouselController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::post('store', 'store')->name('store');
+        Route::patch('update/{carousel}', 'update')->name('update');
+        Route::delete('delete/{carousel}', 'destroy')->name('delete');
     });
 });
 
