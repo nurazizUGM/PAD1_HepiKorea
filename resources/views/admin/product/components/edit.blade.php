@@ -47,8 +47,15 @@
                                 </div>
                                 <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-images">
                                     @foreach ($product->images as $image)
-                                        <img src="{{ asset('storage/products/' . $image->path) }}"
-                                            class="w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100">
+                                        <div class="relative w-14 h-14">
+                                            <button type="button" onclick="deleteImage(this, {{ $image->id }})"
+                                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"
+                                                data-modal-hide="category-add-modal">
+                                                <p class="m-auto text-white text-sm">x</p>
+                                            </button>
+                                            <img src="{{ asset('storage/products/' . $image->path) }}"
+                                                class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
+                                        </div>
                                     @endforeach
                                 </div>
                                 <div>
@@ -210,5 +217,11 @@
                 };
             });
         });
+
+        function deleteImage(element, id) {
+            $(element).parent().remove();
+            const input = $('<input>').attr('type', 'hidden').attr('name', 'deleted_images[]').val(id);
+            $('#form-edit-product').append(input);
+        }
     </script>
 @endsection

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -79,6 +80,7 @@ class ProductController extends Controller
             'description' => 'required|string',
             'category' => 'required|exists:categories,id',
             'images' => 'array',
+            'deleted_images' => 'array',
         ]);
 
         $data['category_id'] = $data['category'];
@@ -93,6 +95,18 @@ class ProductController extends Controller
                 ]);
             }
         }
+        if ($request->has('deleted_images')) {
+            foreach ($request->input('deleted_images') as $image) {
+                $image = $product->images()->find($image);
+                if ($image && Storage::exists('public/products/' . $image->path)) {
+                    Storage::delete('public/products/' . $image->path);
+                }
+                if ($image) {
+                    $image->delete();
+                }
+            }
+        }
+
 
         return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
     }
