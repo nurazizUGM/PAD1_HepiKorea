@@ -78,7 +78,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     Route::prefix('customer')->name('customer.')->controller(CustomerController::class)->group(function () {
         Route::get('/', 'index')->name('index');
-        Route::get('edit/{id}', 'edit')->name('edit');
+        Route::get('show/{id}', 'show')->name('show');
     });
 });
 

@@ -11,16 +11,21 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $customers = User::where('role', Role::USER)->get();
+        $customers = User::where('role', Role::USER);
+        if (request()->has('search')) {
+            $customers->where('fullname', 'like', '%' . request('search') . '%');
+        }
+        $customers = $customers->get();
         $tab = 'customer';
         return view('admin.customer.index', compact('customers', 'tab'));
     }
 
-    public function edit(string $id)
+    public function show(string $id)
     {
-        $edit = User::findOrFail($id);
-        $tab = 'customer';
-        dd($edit);
-        return view('admin.customer.index', compact('edit', 'tab'));
+        $customer = User::where('id', $id)->with('addresses')->first();
+        $address = $customer->addresses->first();
+        $tab = 'customer.profile';
+
+        return view('admin.customer.index', compact('customer', 'address', 'tab'));
     }
 }

@@ -14,7 +14,7 @@
                 <li class="mr-auto ml-auto" role="presentation">
                     <button class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="customer-tab"
                         data-tabs-target="#customer" type="button" role="tab" aria-controls="customer"
-                        aria-selected="false">Customer</button>
+                        aria-selected="{{ isset($tab) && str_starts_with($tab, 'customer') ? 'true' : 'false' }}">Customer</button>
                 </li>
                 <!-- Tab  review-->
                 <li class="mr-auto ml-auto" role="presentation">
