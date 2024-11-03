@@ -14,7 +14,7 @@
         $route = 'order';
     } elseif (request()->routeIs('admin.analytics.*')) {
         $route = 'analytics';
-    } elseif (request()->routeIs('admin.customer.*')) {
+    } elseif (request()->routeIs('admin.customer.*') || request()->routeIs('admin.review.*')) {
         $route = 'customer';
     } elseif (request()->routeIs('admin.faq.*')) {
         $route = 'faq';
@@ -149,7 +149,7 @@
                 </li>
                 <!-- Customer -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.customer.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'customer') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}" alt="product Icon"
                             class="h-7 w-7 scale-90 @if ($route != 'customer') grayscale @endif group-hover:grayscale-0">
