@@ -141,11 +141,11 @@
                         </div>
                         {{-- two button container --}}
                         <div class="flex flex-row mt-auto">
-                            <button class="w-1/3 h-9 border border-orange-400 rounded-md flex"
+                            <button class="w-1/3 h-9 border border-orange-400 rounded-md flex "
                                 data-modal-target="check-order-detail-modal"
                                 data-modal-toggle="check-order-detail-modal">
                                 <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
-                                    alt="see_detail_icon" class="m-auto">
+                                    alt="see_detail_icon" class="m-auto border-orange-400">
                                 {{-- icon_admin_order_see_detail.svg --}}
                             </button>
                             <button
@@ -326,8 +326,8 @@
                                 {{-- end of tooltip name --}}
                                 {{-- Product detail order --}}
                                 <td class="w-[20%] max-w-[20%] flex flex-row items-center align-top">
-                                    <img src="{{ asset('img/assets/icon/icon_admin_order_product.svg') }}"
-                                        alt="user icon" class="h-5 w-5 fill-black ml-2 mr-2 mb-auto">
+                                    <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
+                                        alt="user icon" class="h-5 w-5 fill-black ml-4 mr-3 mb-auto">
                                     <div class="w-full h-fit mb-auto">
                                         <p class="text-orange-400 font-semibold text-sm">
                                             teh hijau warna hijau yang warnanya hijau banget tapi tidak sehijau
