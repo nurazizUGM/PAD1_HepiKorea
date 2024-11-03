@@ -397,7 +397,7 @@
                     <h1 class="text-black text-base font-semibold">Estimation Arrival</h1>
 
                     {{-- datepicker --}}
-                    <div id="datepicker-inline" inline-datepicker data-date="02/25/2024"
+                    <div id="datepicker-inline-order" inline-datepicker data-date="02/25/2024"
                         class="mt-1 w-full h-full mx-auto"></div>
                     {{-- end of datepicker --}}
 
