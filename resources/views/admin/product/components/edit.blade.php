@@ -185,6 +185,9 @@
 @endsection
 @section('script')
     <script>
+        const btn =
+            `<button type="button" class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
+
         $(document).ready(function() {
             $('#product-images img').click(function() {
                 $('#mainImage').attr('src', $(this).attr('src'));
@@ -201,14 +204,24 @@
                 input.onchange = function() {
                     const reader = new FileReader();
                     reader.onload = function(e) {
+                        const imgContainer = $(`<div class="w-14 h-14 relative"></div>`);
+                        const deleteBtn = $(btn)
+                        deleteBtn.click(function() {
+                            input.remove()
+                            imgContainer.remove()
+                        })
+
                         const img = document.createElement('img');
                         img.src = e.target.result;
                         img.className =
-                            'w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100';
+                            'w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100';
                         img.onclick = function() {
                             $('#mainImage').attr('src', img.src);
                         };
-                        $('#product-images').append(img);
+
+                        imgContainer.append(deleteBtn);
+                        imgContainer.append(img)
+                        $('#product-images').append(imgContainer);
                         $('#mainImage').attr('src', img.src);
                         $('#form-edit-product').append(input);
                     };

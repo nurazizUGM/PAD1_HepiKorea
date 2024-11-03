@@ -167,21 +167,16 @@
     </div>
 
     <script>
+        const btn =
+            `<button type="button" class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
         $('#btn-add-image').click(function() {
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = 'image/*';
             input.name = 'images[]';
             input.className = 'hidden';
-            input.click(); <
-            button type = "button"
-            onclick = "deleteImage(this, {{ $image->id }})"
-            class =
-            "absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"
-            data - modal - hide = "category-add-modal" >
-                <
-                p class = "m-auto text-white text-sm" > x < /p> <
-                /button>
+            input.click();
+
             input.onchange = function() {
                 const file = input.files[0];
                 if (!file) return;
@@ -189,16 +184,25 @@
 
                 const reader = new FileReader();
                 reader.onload = function(e) {
+                    const imgContainer = $(`<div class="w-14 h-14 relative"></div>`);
+                    const deleteBtn = $(btn)
+                    deleteBtn.click(function() {
+                        input.remove()
+                        imgContainer.remove()
+                    })
+
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.className =
-                        'w-14 h-14 object-cover rounded-lg cursor-pointer border border-gray-100';
+                        'w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100';
                     img.onclick = function() {
                         $('#mainImage').attr('src', e.target.result);
                     };
 
                     $('#mainImage').attr('src', e.target.result).show();
-                    $('#product-image-preview').append(img);
+                    imgContainer.append(deleteBtn);
+                    imgContainer.append(img)
+                    $('#product-image-preview').append(imgContainer);
                 }
                 reader.readAsDataURL(file);
             }
