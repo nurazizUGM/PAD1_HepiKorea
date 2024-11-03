@@ -173,8 +173,15 @@
             input.accept = 'image/*';
             input.name = 'images[]';
             input.className = 'hidden';
-            input.click();
-
+            input.click(); <
+            button type = "button"
+            onclick = "deleteImage(this, {{ $image->id }})"
+            class =
+            "absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"
+            data - modal - hide = "category-add-modal" >
+                <
+                p class = "m-auto text-white text-sm" > x < /p> <
+                /button>
             input.onchange = function() {
                 const file = input.files[0];
                 if (!file) return;
