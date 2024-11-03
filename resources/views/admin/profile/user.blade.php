@@ -51,7 +51,7 @@
                                         </button>
                                     </td>
                                     <td>
-                                        <button id="btn-cancel"
+                                        <button id="btn-cancel" onclick="window.location.reload()"
                                             class="flex items-center justify-center w-auto h-auto rounded-lg bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-orange-300 text-xl mr-1 px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 text-white hidden"
                                             type="button">
                                             Cancel
@@ -65,14 +65,21 @@
                                         class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         <label for="date_of_birth"
                                             class="flex items-center mb-2 text-lg font-medium text-gray-900 dark:text-white">Date
-                                            of
-                                            Birth</label>
+                                            of Birth</label>
                                     </th>
-                                    <td class="px-6 py-4">
-                                        <input type="text" id="date_of_birth" name="date_of_birth"
-                                            value="{{ $user->date_of_birth }}"
+                                    <td class="px-6 py-4 relative">
+                                        <input type="text" id="date_of_birth" name="date_of_birth" datepicker
+                                            datepicker-format="yyyy-mm-dd" value="{{ $user->date_of_birth }}"
                                             class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                             placeholder="Your Birth Date" required />
+                                        <div
+                                            class="absolute inset-y-0 right-6 pe-6 flex items-center ps-3.5 pointer-events-none">
+                                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                                <path
+                                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                            </svg>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -238,29 +245,14 @@
             $('textarea').removeAttr('disabled');
         }
 
-        function cancel(firstLoad = false) {
+        $('#btn-edit').click(edit);
+        $(document).ready(function() {
             $('#btn-edit').removeClass('hidden');
             $('#btn-save').addClass('hidden');
             $('#btn-cancel').addClass('hidden');
-            $('input[id!=email]').attr('disabled', true);
+            $('input').attr('disabled', true);
             $('textarea').attr('disabled', true);
-
-            if (firstLoad) return;
-            $('input[name="fullname"]').val('{{ $user->fullname }}');
-            $('input[name="date_of_birth"]').val('{{ $user->date_of_birth }}');
-            $('input[name="gender"][value="{{ $user->gender }}"]').attr('checked', true);
-            $('input[name="gender"][value!="{{ $user->gender }}"]').attr('checked', false);
-            $('input[name="phone"]').val('{{ $user->phone }}');
-            $('input[name="province"]').val('{{ $address->province ?? '' }}');
-            $('input[name="city"]').val('{{ $address->city ?? '' }}');
-            $('input[name="postal_code"]').val('{{ $address->postal_code ?? '' }}');
-            $('textarea[name="address"]').val('{{ $address->address ?? '' }}');
-            $('#profile_picture').attr('src', e.target.result);
-        }
-
-        cancel(true);
-        $('#btn-edit').click(edit);
-        $('#btn-cancel').click(cancel);
+        })
 
         $('#new_password').on('input', function() {
             if ($('#new_password').val() != '') {
