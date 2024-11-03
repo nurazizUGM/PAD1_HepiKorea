@@ -168,7 +168,7 @@
 
     <script>
         const btn =
-            `<button type="button" class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
+            `<button type="button" class="absolute bg-black bg-opacity-50 w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
         $('#btn-add-image').click(function() {
             const input = document.createElement('input');
             input.type = 'file';

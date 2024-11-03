@@ -49,7 +49,7 @@
                                     @foreach ($product->images as $image)
                                         <div class="relative w-14 h-14">
                                             <button type="button" onclick="deleteImage(this, {{ $image->id }})"
-                                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0">
+                                                class="absolute bg-black bg-opacity-50 w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0">
                                                 <p class="m-auto text-white text-sm">x</p>
                                             </button>
                                             <img src="{{ asset('storage/products/' . $image->path) }}"
@@ -186,7 +186,7 @@
 @section('script')
     <script>
         const btn =
-            `<button type="button" class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
+            `<button type="button" class="absolute bg-black bg-opacity-50 w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0"><p class="m-auto text-white text-sm">x</p></button>`
 
         $(document).ready(function() {
             $('#product-images img').click(function() {
