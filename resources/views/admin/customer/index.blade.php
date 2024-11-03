@@ -1,59 +1,40 @@
-<!-- start of customer content -->
-<div class="hidden flex px-10 rounded-lg h-[80vh]" id="customer" role="tabpanel" aria-labelledby="customer-tab">
-    <div id="customer-list" class="h-full">
-        <div class="w-full flex items-center">
-            <!-- search bar -->
-            <div class="flex items-center mr-auto">
-                <!-- Search input -->
-                <div class="relative flex items-center w-full">
-                    <img src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="search icon"
-                        class="absolute left-3 w-5 h-5 text-gray-500">
-                    <input type="text" id="search"
-                        class="block w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
-                        placeholder="Search...">
-                </div>
-            </div>
-            <!-- end of search bar -->
+@extends('layout.admin')
+@section('title', 'Customer')
+
+@section('content')
+    <div class="bg-[#EFEFEF] border-gray-200 rounded-lg">
+        <!-- Tabs (customer, review) -->
+        <div class="mb-3">
+            <ul class="flex flex-wrap -mb-px text-lg font-bold text-center text-black gap-x-16" id="default-tab"
+                data-tabs-toggle="#default-tab-content"
+                data-tabs-active-classes="text-black hover:text-black dark:text-purple-500 dark:hover:text-purple-500 border-b-4 border-orange-400 hover:border-orange-400 dark:border-purple-500"
+                data-tabs-inactive-classes="dark:border-transparent text-black hover:text-orange-400 dark:text-gray-400 border-transparent hover:border-transparent dark:border-gray-700 dark:hover:text-gray-300"
+                role="tablist">
+                <!-- Tab customer -->
+                <li class="mr-auto ml-auto" role="presentation">
+                    <button class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="customer-tab"
+                        data-tabs-target="#customer" type="button" role="tab" aria-controls="customer"
+                        aria-selected="false">Customer</button>
+                </li>
+                <!-- Tab  review-->
+                <li class="mr-auto ml-auto" role="presentation">
+                    <button
+                        class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                        id="review-tab" data-tabs-target="#review" type="button" role="tab" aria-controls="review"
+                        aria-selected="false">Review</button>
+                </li>
+            </ul>
         </div>
-        <!-- start of customer card container -->
-        <div class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar">
-            <!-- card customer -->
-            @for ($i = 0; $i < 20; $i++)
-                <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col">
-                    <!-- image customer card -->
-                    <div class="w-full h-2/3 bg-cover bg-top"
-                        style="background-image: url('{{ asset('img/example/test_shirt.jpg') }}');">
-                    </div>
-                    <!-- header & detail customer card -->
-                    <div class="p-2">
-                        <p class="text-sm font-bold truncate">Korean Fashion Set</p>
-                        <p class="text-sm font-semi">Blouse</p>
-                    </div>
-                    <!-- edit & delete customer card -->
-                    <div class="flex mt-auto mx-3 mb-3">
-                        <!-- edit icon -->
-                        <a href="#" class="ml-auto" onclick="showCreate(event)">
-                            <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt="">
-                        </a>
-                    </div>
-                </div>
-            @endfor
+
+        <!-- Tab Content (showing the content) -->
+        <div id="default-tab-content">
+            <!-- customer Content -->
+            @include('admin.customer.list')
+            <!-- end of customer Content -->
+
+            <!-- review Content -->
+            @include('admin.customer.review')
+            <!-- End of review Content -->
         </div>
     </div>
-
-    <!-- end of product card container -->
-    <div id="customer-profile" class="hidden overflow-y-auto">
-        @include('admin.components.customer.profile')
-    </div>
-</div>
-
-@section('script')
-    <script>
-        function showCreate(event) {
-            event.preventDefault();
-            document.getElementById('customer-list').classList.add('hidden');
-            document.getElementById('customer-profile').classList.remove('hidden');
-        }
-    </script>
 @endsection
-<!-- End of Product Content -->

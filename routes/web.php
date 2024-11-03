@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -73,6 +74,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::post('store', 'store')->name('store');
         Route::patch('update/{carousel}', 'update')->name('update');
         Route::delete('delete/{carousel}', 'destroy')->name('delete');
+    });
+
+    Route::prefix('customer')->name('customer.')->controller(CustomerController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('edit/{id}', 'edit')->name('edit');
     });
 });
 
