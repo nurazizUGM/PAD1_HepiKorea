@@ -26,21 +26,16 @@
                     <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col"
                         onclick="window.location.href='{{ route('admin.customer.show', $customer->id) }}'">
                         <!-- image customer card -->
-                        <div class="w-full h-2/3">
-                            @if ($customer->photo)
-                                <img src="{{ Storage::exists('public/profile/' . $customer->photo) ? asset('storage/profile/' . $customer->photo) : $customer->photo }}"
-                                    alt="customer photo" class="w-full h-full object-cover object-top">
-                            @else
-                                <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="customer photo"
-                                    class="w-full h-full object-cover object-top">
-                            @endif
+                        <div class="w-full h-4/6">
+                            <img src="{{ $customer->photo && Storage::exists('public/profile/' . $customer->photo) ? asset('storage/profile/' . $customer->photo) : asset('img/assets/icon/icon_user.svg') }}"
+                                alt="customer photo" class="w-full h-full object-cover object-top">
                         </div>
                         <!-- header & detail customer card -->
-                        <div class="p-2">
+                        <div class="p-2 h-1/6">
                             <p class="text-sm font-bold truncate">{{ $customer->fullname }}</p>
                         </div>
                         <!-- edit & delete customer card -->
-                        <div class="flex mx-3 mb-2 h-full">
+                        <div class="flex mx-3 mb-2 h-1/6">
                             <!-- edit icon -->
                             <a href="{{ route('admin.customer.show', $customer->id) }}" class="ml-auto">
                                 <img src="{{ asset('img/assets/icon/icon_user_profile.svg') }}" alt="Customer Profile"
