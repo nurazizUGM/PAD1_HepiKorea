@@ -61,11 +61,19 @@
                             <form action="{{ route('admin.faq.store') }}" method="POST"
                                 class="flex flex-col h-full text-center py-2 px-5">
                                 @csrf
-                                <input type="text" placeholder="FAQ Title" name="new_question" id="add-faq-name"
+                                <input type="text" placeholder="FAQ" name="new_question" id="add-faq-name"
                                     value="{{ old('new_question') }}"
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                    class="rounded-2xl w-full bg-gray-200 h-14 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                @error('new_question')
+                                    <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+
                                 <textarea placeholder="FAQ answer ..." name="new_answer" id="add-faq-answer" rows="12"
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('new_answer') }}</textarea>
+                                    class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('new_answer') }}</textarea>
+                                @error('new_answer')
+                                    <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+
                                 <button type="submit"
                                     class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mx-auto mt-5 mb-3 inline-block w-1/2 h-14 rounded-3xl">Save</button>
                             </form>
@@ -95,10 +103,19 @@
                                 id="edit-faq-form">
                                 @csrf
                                 @method('patch')
-                                <input type="text" placeholder="FAQ question" name="question" id="edit-question"
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                <input type="text" placeholder="FAQ" name="question" id="edit-question"
+                                    value="{{ old('question') }}"
+                                    class="rounded-2xl w-full bg-gray-200 h-14 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                @error('question')
+                                    <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+
                                 <textarea placeholder="FAQ answer..." name="answer" id="edit-answer" rows="12"
-                                    class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
+                                    class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('answer') }}</textarea>
+                                @error('answer')
+                                    <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}</p>
+                                @enderror
+
                                 <button type="submit"
                                     class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mx-auto mt-5 mb-3 inline-block w-1/2 h-14 rounded-3xl">Save</button>
                             </form>
@@ -119,10 +136,17 @@
             $('#edit-faq-form').attr('action', "{{ route('admin.faq.update', '') }}" + '/' + id);
         }
 
-        @if (old('new_question') || old('new_answer'))
-            const addModal = $('#faq-add-modal');
-            addModal.ready(() => {
-                new Modal(addModal.get(0)).show();
+        @if ($errors->has('new_question') || $errors->has('new_answer'))
+            $(document).ready(function() {
+                setTimeout(function() {
+                    new Modal($('#faq-add-modal')[0]).show();
+                }, 100);
+            });
+        @elseif ($errors->has('question') || $errors->has('answer'))
+            $(document).ready(function() {
+                setTimeout(function() {
+                    new Modal($('#faq-edit-modal')[0]).show();
+                }, 100);
             });
         @endif
     </script>
