@@ -83,7 +83,7 @@
                                 @csrf
                                 @method('PATCH')
                                 <!-- Nama Produk -->
-                                <div class="flex items-center mb-4">
+                                <div class="flex items-center mb-10">
                                     <!-- Label -->
                                     <div class="w-3/12">
                                         <label for="nama-produk" class="text-black font-semibold">Nama Produk</label>
@@ -92,7 +92,7 @@
                                     <div class="w-8/12">
                                         <input type="text" name="name" id="nama-produk" value="{{ $product->name }}"
                                             required
-                                            class="w-full h-8 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
+                                            class="w-full h-10 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- Icon -->
                                     <div class="w-1/12 flex justify-end">
@@ -102,7 +102,7 @@
                                 </div>
 
                                 <!-- Harga Produk -->
-                                <div class="flex items-center mb-4">
+                                <div class="flex items-center mb-10">
                                     <!-- label -->
                                     <div class="w-3/12">
                                         <label for="harga-produk" class="text-black font-semibold">Harga Produk</label>
@@ -111,7 +111,7 @@
                                     <div class="w-8/12">
                                         <input type="number" name="price" id="harga-produk" value="{{ $product->price }}"
                                             required
-                                            class="w-full h-8 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
+                                            class="w-full h-10 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- icon -->
                                     <div class="w-1/12 flex justify-end">
@@ -121,7 +121,7 @@
                                 </div>
 
                                 <!-- Category -->
-                                <div class="flex items-center mb-4">
+                                <div class="flex items-center mb-10">
                                     <!-- label -->
                                     <div class="w-3/12">
                                         <label for="category" class="text-black font-semibold">Category</label>
@@ -129,7 +129,7 @@
                                     <!-- input filed -->
                                     <div class="w-8/12">
                                         <select id="dropdown_add_category" name="category"
-                                            class="w-full h-8 rounded-lg px-4 text-xs border-black focus:border-black focus:outline-none focus:ring-0">
+                                            class="w-full h-10 rounded-lg px-4 text-xs border-black focus:border-black focus:outline-none focus:ring-0">
                                             @foreach (\App\Models\Category::all() as $category)
                                                 <option value="{{ $category->id }}"
                                                     @if ($category->id == $product->category_id) selected @endif>{{ $category->name }}
@@ -145,12 +145,12 @@
 
                                 <!-- Product Description -->
                                 <div class="flex items-center">
-                                    <div class="w-3/12">
+                                    <div class="w-3/12 mb-auto">
                                         <label for="product-description" class="text-black font-semibold">Product
                                             Description</label>
                                     </div>
                                     <div class="w-8/12">
-                                        <textarea id="product-description" rows="4" form="form-edit-product" name="description" required
+                                        <textarea id="product-description" rows="5" form="form-edit-product" name="description" required
                                             class="w-full rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0 text-md">{{ $product->description }}</textarea>
                                     </div>
                                     <div class="w-1/12 flex justify-end">
@@ -160,14 +160,14 @@
                                 </div>
 
                                 <!-- Button Save -->
-                                <div class="flex mt-2 w-full">
+                                <div class="flex mt-4 w-full">
                                     <button type="button"
                                         onclick="window.location.href='{{ route('admin.product.index') }}'"
-                                        class="bg-red-400 hover:bg-red-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-14">
+                                        class="bg-red-400 hover:bg-red-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-2">
                                         Cancel
                                     </button>
                                     <button type="submit"
-                                        class="bg-orange-400 hover:bg-orange-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-14">
+                                        class="bg-orange-400 hover:bg-orange-500 text-white font-semibold w-1/3 h-10 rounded-lg mr-16">
                                         Save
                                     </button>
                                 </div>
