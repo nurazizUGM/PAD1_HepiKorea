@@ -13,7 +13,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         foreach (\App\Models\Category::all() as $category) {
-            $category->products()->saveMany(\Database\Factories\ProductFactory::new()->count(3)->make([
+            $category->products()->saveMany(\Database\Factories\ProductFactory::new()->count(5)->make([
                 'category_id' => $category->id,
             ]));
         }

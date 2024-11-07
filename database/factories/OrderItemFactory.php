@@ -18,7 +18,7 @@ class OrderItemFactory extends Factory
     {
         return [
             'product_id' => $this->faker->randomElement(\App\Models\Product::pluck('id')->toArray()),
-            'quantity' => $this->faker->randomNumber(1),
+            'quantity' => $this->faker->numberBetween(1, 10),
             'price' => $this->faker->randomNumber(7),
         ];
     }

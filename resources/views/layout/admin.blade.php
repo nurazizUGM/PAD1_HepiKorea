@@ -12,8 +12,8 @@
         $route = 'product';
     } elseif (request()->routeIs('admin.order.*')) {
         $route = 'order';
-    } elseif (request()->routeIs('admin.analytics.*')) {
-        $route = 'analytics';
+    } elseif (request()->routeIs('admin.analytic.*')) {
+        $route = 'analytic';
     } elseif (request()->routeIs('admin.customer.*') || request()->routeIs('admin.review.*')) {
         $route = 'customer';
     } elseif (request()->routeIs('admin.faq.*')) {
@@ -139,7 +139,7 @@
                 </li>
                 <!-- Analytic -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.analytic.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'analytic') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_analytic.svg') }}" alt="product Icon"
                             class="h-7 w-7 @if ($route != 'analytic') grayscale @endif group-hover:grayscale-0">

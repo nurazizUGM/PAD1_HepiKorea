@@ -20,6 +20,11 @@ class Order extends Model
         'type'
     ];
 
+    public $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -35,20 +40,20 @@ class Order extends Model
         return $this->hasMany(CustomOrderItem::class);
     }
 
-    // public function orderDetail()
-    // {
-    //     return $this->hasOne(OrderDetail::class);
-    // }
+    public function orderDetail()
+    {
+        return $this->hasOne(OrderDetail::class);
+    }
 
-    // public function orderShipment()
-    // {
-    //     return $this->hasOne(OrderShipment::class);
-    // }
+    public function orderShipment()
+    {
+        return $this->hasOne(OrderShipment::class);
+    }
 
-    // public function orderPayment()
-    // {
-    //     return $this->hasMany(OrderPayment::class);
-    // }
+    public function orderPayment()
+    {
+        return $this->hasMany(OrderPayment::class);
+    }
 
     // public function orderStatus()
     // {

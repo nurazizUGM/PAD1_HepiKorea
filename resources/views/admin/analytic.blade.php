@@ -1,5 +1,4 @@
 @extends('layout.admin')
-
 @section('title', 'Analytic')
 
 @section('content')
@@ -13,15 +12,17 @@
                 <!-- Tab product -->
                 <li class="ml-auto mr-auto" role="presentation">
                     <button class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg" id="chart-tab"
+                        onclick="window.history.pushState({}, '', '{{ route('admin.analytic.index', ['tab' => 'chart']) }}')"
                         data-tabs-target="#chart" type="button" role="tab" aria-controls="chart"
-                        aria-selected="false">Chart</button>
+                        aria-selected="{{ $tab == 'chart' ? 'true' : 'false' }}">Chart</button>
                 </li>
                 <!-- Tab  Category-->
                 <li class="ml-auto mr-auto" role="presentation">
                     <button
+                        onclick="window.history.pushState({}, '', '{{ route('admin.analytic.index', ['tab' => 'table']) }}')"
                         class="inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
                         id="table-tab" data-tabs-target="#table" type="button" role="tab" aria-controls="table"
-                        aria-selected="false">Table</button>
+                        aria-selected="{{ $tab == 'table' ? 'true' : 'false' }}">Table</button>
                 </li>
             </ul>
         </div>
@@ -37,14 +38,15 @@
                     <div class="flex flex-col h-56 bg-gray-50 dark:bg-gray-800 rounded-xl">
                         <div class="w-full h-[15%] text-center mb-auto mt-3">
                             <h1 class="text-black font-bold text-md">
-                                Product Ordered
+                                Completed Orders
                             </h1>
                         </div>
                         <div class="w-full h-[85%] relative flex items-center justify-center pb-3">
                             <canvas id="chartProductOrdered"></canvas>
                             <div class="absolute flex flex-col items-center justify-center text-center z-10">
                                 {{-- text Product Ordered Percent --}}
-                                <h2 class="text-3xl font-bold text-black text-opacity-50">55%</h2>
+                                <h2 class="text-3xl font-bold text-black text-opacity-50">
+                                    {{ number_format(($completedOrder / $totalOrder) * 100, 0) }}%</h2>
                                 <h3 class="text-xs font-semibold text-black text-opacity-50">Complete</h3>
                             </div>
                         </div>
@@ -90,12 +92,41 @@
         </div>
         <!-- end of chart Content -->
 
-
-
-
-
         <!-- Table Content -->
         <div class="hidden px-5 pt-2 rounded-lg h-[80vh]" id="table" role="tabpanel" aria-labelledby="table-tab">
+            <div class="flex justify-between items-center mb-2">
+                <h1 class="text-black font-semibold text-xl ml-1">Orders</h1>
+                <div class="flex">
+                    <form id="form-filter" action="{{ route('admin.analytic.index') }}" method="get" class="flex">
+                        <input type="hidden" name="category" value="{{ request()->query('category') }}">
+                        <div class="relative flex items-center w-full">
+                            <img src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="search icon"
+                                class="absolute left-3 w-5 h-5 text-gray-500">
+                            <input type="hidden" name="tab" value="table">
+                            <input type="text" id="search" name="search" value="{{ request()->query('search') }}"
+                                class="block w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
+                                placeholder="Search...">
+                        </div>
+
+                        <!-- Filter button -->
+                        <button type="submit"
+                            class="inline-flex items-center pl-4 pr-6 py-2 font-semibold text-white bg-orange-400 hover:bg-orange-500 rounded-full -ml-20 z-10">
+                            <img class="w-4 h-4 mr-2"
+                                style="filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(107%) contrast(101%);"
+                                src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="">
+                            Search
+                        </button>
+                    </form>
+                    <button onclick="window.location.href='{{ route('admin.analytic.export') }}'"
+                        class="font-semibold text-white bg-orange-400 hover:bg-orange-500 px-4 py-2 ml-2 rounded-full inline-flex align-middle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 mr-1" width="1.13em" height="1em"
+                            viewBox="0 0 576 512">
+                            <path fill="currentColor"
+                                d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v128H216c-13.3 0-24 10.7-24 24s10.7 24 24 24h168v112c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm384 272v-48h110.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39zm0-208H256V0z" />
+                        </svg>
+                        Export</button>
+                </div>
+            </div>
             <div class="w-full h-[98%] rounded-xl bg-white px-3 py-3 overflow-y-scroll no-scrollbar">
                 {{-- start of table --}}
                 <table class="w-full rtl:text-right rounded-xl overflow-hidden">
@@ -104,42 +135,81 @@
                         <tr>
                             <th class="px-6 py-3 border-white border">No</th>
                             <th class="px-6 py-3 border-white border">Date</th>
-                            <th class="px-6 py-3 border-white border">Order ID</th>
+                            <th class="px-6 py-3 border-white border">Type</th>
                             <th class="px-6 py-3 border-white border">Product Name</th>
                             <th class="px-6 py-3 border-white border">Selling Price</th>
-                            <th class="px-6 py-3 border-white border">ID Customer</th>
+                            <th class="px-6 py-3 border-white border">Customer Name</th>
                         </tr>
                     </thead>
                     {{-- table body --}}
                     <tbody>
                         {{-- temporart dummy (for example) --}}
-                        @for ($i = 0; $i < 20; $i++)
+                        @foreach ($orders as $order)
                             <tr class="odd:bg-[#D9D9D9] even:bg-[#EFEFEF]">
-                                <td class="px-6 py-3 border-white border"> {{ $i + 1 }}</td>
-                                <td class="px-6 py-3 border-white border">14/04/45</td>
-                                <td class="px-6 py-3 border-white border">28398</td>
-                                <td class="px-6 py-3 border-white border">Korean Shirt</td>
-                                <td class="px-6 py-3 border-white border">$90909</td>
-                                <td class="px-6 py-3 border-white border">123131</td>
+                                <td rowspan="{{ $order->type == 'order' ? $order->orderItems->count() : $order->customOrderItems->count() }}"
+                                    class="px-6 py-3 border-white border"> {{ $loop->iteration }}</td>
+                                <td rowspan="{{ $order->type == 'order' ? $order->orderItems->count() : $order->customOrderItems->count() }}"
+                                    class="px-6 py-3 border-white border">{{ $order->created_at->format('d/m/o') }}</td>
+                                <td rowspan="{{ $order->type == 'order' ? $order->orderItems->count() : $order->customOrderItems->count() }}"
+                                    class="px-6 py-3 border-white border text-center">
+                                    {{ $order->type == 'order' ? 'Regular Order' : 'Custom Request' }}</td>
+                                @if ($order->type == 'order')
+                                    <td class="px-6 py-3 border-white border">
+                                        {{ $order->orderItems->first()->product->name }}
+                                    </td>
+                                    <td class="px-6 py-3 border-white border text-right">
+                                        Rp {{ number_format($order->orderItems->first()->price, 0, ',', '.') }}
+                                    </td>
+                                @else
+                                    <td class="px-6 py-3 border-white border">
+                                        {{ $order->customOrderItems->first()->name }}
+                                    </td>
+                                    <td class="px-6 py-3 border-white border text-right">
+                                        Rp {{ number_format($order->customOrderItems->first()->total_price, 0, ',', '.') }}
+                                    </td>
+                                @endif
+                                <td rowspan="{{ $order->type == 'order' ? $order->orderItems->count() : $order->customOrderItems->count() }}"
+                                    class="px-6 py-3 border-white border">
+                                    {{ $order->user->fullname }}
+                                </td>
                             </tr>
-                        @endfor
+                            @if ($order->type == 'order' && $order->orderItems->count() > 1)
+                                @foreach ($order->orderItems->skip(1) as $item)
+                                    <tr class="odd:bg-[#D9D9D9] even:bg-[#EFEFEF]">
+                                        <td class="px-6 py-3 border-white border">
+                                            {{ $item->product->name }}
+                                        </td>
+                                        <td class="px-6 py-3 border-white border text-right">
+                                            Rp {{ number_format($item->price, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @elseif ($order->type == 'custom' && $order->customOrderItems->count() > 1)
+                                @foreach ($order->customOrderItems->skip(1) as $item)
+                                    <tr class="odd:bg-[#D9D9D9] even:bg-[#EFEFEF]">
+                                        <td class="px-6 py-3 border-white border">
+                                            {{ $item->name }}
+                                        </td>
+                                        <td class="px-6 py-3 border-white border text-right">
+                                            Rp {{ number_format($item->total_price, 0, ',', '.') }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
                 {{-- end of table --}}
             </div>
         </div>
         {{-- end of table content --}}
-
-    </div>
-    <!-- end of tab content -->
-    </div>
-
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const productOrderedChart = document.getElementById('chartProductOrdered').getContext('2d');
 
+            // 
             new Chart(productOrderedChart, {
                 type: 'doughnut',
                 data: {
@@ -148,7 +218,7 @@
                         'Completed'
                     ],
                     datasets: [{
-                        data: [45, 55],
+                        data: [{{ $totalOrder - $completedOrder }}, {{ $completedOrder }}],
                         backgroundColor: [
                             'rgb(217, 217, 217)',
                             'rgb(255, 157, 102)'
@@ -175,18 +245,10 @@
             new Chart(productMostChart, {
                 type: 'pie',
                 data: {
-                    labels: [
-                        'Music',
-                        'Beauty',
-                        'Electronic',
-                        'Healthy',
-                        'Fashion',
-                        'Merchandise',
-                        'Food'
-                    ],
+                    labels: {!! $categories->pluck('name')->toJson() !!},
                     datasets: [{
-                        label: 'percent',
-                        data: [5, 5, 10, 10, 40, 10, 20],
+                        label: 'Orders:',
+                        data: {!! $categories->pluck('total_order')->toJson() !!},
                         backgroundColor: [
                             'rgb(255, 243, 131)',
                             'rgb(255, 208, 87)',
@@ -228,12 +290,10 @@
             new Chart(LineChart, {
                 type: 'line',
                 data: {
-                    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August',
-                        'September', 'October', 'November', 'December'
-                    ],
+                    labels: {!! json_encode($month) !!},
                     datasets: [{
-                        label: 'My First Dataset',
-                        data: [65, 59, 80, 81, 56, 55, 40, 30, 40, 60, 80, 40],
+                        label: 'Monthly Orders',
+                        data: {!! json_encode($monthlyOrders) !!},
                         fill: false,
                         borderColor: 'rgb(255, 157, 102)',
                         tension: 0.1
