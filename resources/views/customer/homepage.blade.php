@@ -206,7 +206,7 @@
                                     <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
                                     {{-- Buy product button --}}
                                     <a href="#" class="ml-auto"><button
-                                            class="bg-orange-400 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                            class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
@@ -257,7 +257,7 @@
                                     <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
                                     {{-- Buy product button --}}
                                     <a href="#" class="ml-auto"><button
-                                            class="bg-orange-400 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                            class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
