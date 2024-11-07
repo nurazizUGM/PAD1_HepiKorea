@@ -114,7 +114,7 @@
         {{-- start of category,recent,best seller container --}}
         <div class="w-full h-full flex flex-col py-10 px-12">
             {{-- category text --}}
-            <div class="w-1/5 bg-white rounded-xl text-center py-2 shadow-md">
+            <div class="w-1/5 bg-white rounded-xl text-center py-2">
                 <h1 class="text-orange-400 text-lg font-semibold">Category</h1>
             </div>
             {{-- end of category text --}}
@@ -167,18 +167,18 @@
 
             {{--  --}}
 
-            {{-- Recenltly update text --}}
-            <div class="w-1/5 bg-white rounded-xl text-center py-2 shadow-md mt-14">
-                <h1 class="text-orange-400 text-lg font-semibold">Category</h1>
+            {{-- New arrival text --}}
+            <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
+                <h1 class="text-orange-400 text-lg font-semibold">New Arrival</h1>
             </div>
-            {{-- end of Recenltly update text --}}
+            {{-- end of New arrival text --}}
 
             {{-- gray line --}}
             {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
 
-            {{-- recently update container --}}
+            {{-- new arrival container --}}
             <div class="relative mt-10">
-                <div class="overflow-x-auto no-scrollbar" id="recently-update-container">
+                <div class="overflow-x-auto no-scrollbar" id="new-arrival-container">
                     <!-- Scroll Right Button -->
                     <button onclick="scrollRight()"
                         class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-orange-400 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full p-2 shadow-lg">
@@ -214,20 +214,20 @@
                     </div>
                 </div>
             </div>
-            {{-- end of recently update container --}}
+            {{-- end of new arrival container --}}
 
             {{--  --}}
 
-            {{-- Recenltly update text --}}
-            <div class="w-1/5 bg-white rounded-xl text-center py-2 shadow-md mt-14">
+            {{-- best seller text --}}
+            <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
                 <h1 class="text-[#B7B7B7] text-lg font-semibold">Best Seller</h1>
             </div>
-            {{-- end of Recenltly update text --}}
+            {{-- end of best seller text --}}
 
             {{-- gray line --}}
             {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
 
-            {{-- recently update container --}}
+            {{-- best seller container --}}
             <div class="relative mt-10">
                 <div class="overflow-x-auto no-scrollbar" id="best-seller-container">
                     <!-- Scroll Right Button -->
@@ -265,7 +265,7 @@
                     </div>
                 </div>
             </div>
-            {{-- end of recently update container --}}
+            {{-- end of best seller container --}}
         </div>
         {{-- end of category,recent,best seller container --}}
     </div>
@@ -274,7 +274,7 @@
     
 
     <script>
-        const recentUpdateContainer = document.getElementById('recently-update-container');
+        const newArrivalContainer = document.getElementById('new-arrival-container');
         const bestSellerContainer = document.getElementById('best-seller-container');
 
         // Drag to scroll
@@ -282,10 +282,10 @@
         let startX;
         let scrollLeft;
 
-        recentUpdateContainer.addEventListener('mousedown', (e) => {
+        newArrivalContainer.addEventListener('mousedown', (e) => {
             isDown = true;
-            startX = e.pageX - recentUpdateContainer.offsetLeft;
-            scrollLeft = recentUpdateContainer.scrollLeft;
+            startX = e.pageX - newArrivalContainer.offsetLeft;
+            scrollLeft = newArrivalContainer.scrollLeft;
         });
 
         bestSellerContainer.addEventListener('mousedown', (e) => {
@@ -294,18 +294,18 @@
             scrollLeft = bestSellerContainer.scrollLeft;
         });
 
-        recentUpdateContainer.addEventListener('mouseleave', () => isDown = false);
-        recentUpdateContainer.addEventListener('mouseup', () => isDown = false);
+        newArrivalContainer.addEventListener('mouseleave', () => isDown = false);
+        newArrivalContainer.addEventListener('mouseup', () => isDown = false);
 
         bestSellerContainer.addEventListener('mouseleave', () => isDown = false);
         bestSellerContainer.addEventListener('mouseup', () => isDown = false);
 
-        recentUpdateContainer.addEventListener('mousemove', (e) => {
+        newArrivalContainer.addEventListener('mousemove', (e) => {
             if (!isDown) return;
             e.preventDefault();
-            const x = e.pageX - recentUpdateContainer.offsetLeft;
+            const x = e.pageX - newArrivalContainer.offsetLeft;
             const walk = (x - startX) * 3; // scroll-fast
-            recentUpdateContainer.scrollLeft = scrollLeft - walk;
+            newArrivalContainer.scrollLeft = scrollLeft - walk;
         });
 
         bestSellerContainer.addEventListener('mousemove', (e) => {
@@ -318,7 +318,7 @@
 
         // Button to scroll right
         function scrollRight() {
-            recentUpdateContainer.scrollBy({
+            newArrivalContainer.scrollBy({
                 top: 0,
                 left: 200, // Adjust as needed
                 behavior: 'smooth'
