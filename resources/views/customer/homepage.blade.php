@@ -1,59 +1,337 @@
 @extends('layout.customer')
 @section('title', 'home')
 
+<a href=""
+    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-orange-400 bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
+    <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-10 h-10 mr-1">
+    <p>Chat</p>
+</a>
+
 @section('content')
     {{-- homapege content container --}}
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg text-[#EFEFEF]">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus esse et modi debitis corrupti repudiandae cum, itaque eveniet molestiae impedit quidem officia quibusdam officiis? Minus fugit dicta deserunt dolor laboriosam?
-        Libero minima accusantium asperiores ad ratione tenetur natus mollitia voluptatum, non vero dignissimos labore consectetur quisquam autem sequi perspiciatis amet, explicabo, quos distinctio quo sed dolores. Ad nobis debitis sunt!
-        Est, dolorem voluptatibus! A vitae blanditiis iste, beatae mollitia architecto dolorem quae facere quaerat debitis explicabo sapiente nisi nemo dolore quia eligendi esse illum facilis! Aperiam laudantium quidem itaque iure?
-        Fuga quae saepe ad repellat explicabo recusandae adipisci quam consequatur nesciunt! Minima, voluptates fugit accusantium unde incidunt deserunt aperiam facere ullam assumenda minus, atque facilis fugiat dignissimos officia cumque vero!
-        Aspernatur saepe libero nostrum magnam temporibus asperiores odit nesciunt iste dolor vero atque neque, quaerat id molestias, blanditiis dicta alias hic quibusdam quos veritatis itaque impedit voluptate rerum in. Veniam.
-        Cum, praesentium recusandae nisi rerum sequi, dignissimos odit ullam nulla, nam minima cupiditate autem in aliquam unde pariatur dolorum expedita distinctio vel error a ea velit beatae. Minima, veritatis quae.
-        Similique voluptatem dolorem aliquid, corrupti recusandae consequatur, dicta et nihil est ipsam distinctio natus debitis perspiciatis non. Distinctio beatae fugit dolor ipsa commodi explicabo, eius enim perferendis tempore totam quas.
-        Cum voluptates et magnam necessitatibus excepturi veniam a voluptas corporis veritatis consectetur in fuga maiores, alias tempora ad nisi deleniti exercitationem molestiae? Amet inventore architecto delectus explicabo quis, a doloremque.
-        Omnis distinctio, esse nihil vero est ipsam fugit laborum quisquam aliquid quidem corporis et? Ullam dolore labore temporibus fugit explicabo error porro quos, officia tempore sequi nihil, magni quaerat itaque.
-        Ex culpa fugiat suscipit, exercitationem quia neque sit! Deserunt fugit mollitia eum minima doloribus magni hic alias rem ad tempore porro illo nostrum aspernatur recusandae reprehenderit corporis laudantium, vel pariatur.
-        Laboriosam debitis minus similique? Nobis qui ab repudiandae vero perspiciatis atque enim tenetur, magnam itaque rem voluptate facilis aliquam dolorum. Voluptate in earum perferendis dolor est eaque! Sunt, aperiam laudantium?
-        Reiciendis rem repellendus tempora ea corporis in debitis asperiores, quis consequatur numquam, sequi aut suscipit quae nesciunt? Tenetur illo sed asperiores. Porro totam nam debitis dolor doloribus, est libero sequi.
-        Cupiditate nulla, cumque, fugiat consectetur quis, fugit doloribus quod odio earum quos nostrum aut sint. Eligendi, sint perspiciatis, esse, placeat architecto blanditiis dignissimos voluptatem vitae qui distinctio at pariatur ut.
-        Ab ea eveniet voluptatum minus quibusdam eum, ex saepe? Distinctio nam, temporibus id commodi consectetur quia corrupti mollitia, exercitationem recusandae eveniet hic molestiae sed quos sapiente nesciunt, delectus consequatur natus!
-        Eaque officiis illum nostrum quia pariatur expedita sapiente. Sint mollitia itaque illo hic quis voluptatum, sapiente sed, optio aperiam inventore consequuntur consectetur repellat nisi? Aut repellendus omnis suscipit et autem?
-        Quaerat magni quidem autem saepe dolores iure doloremque repudiandae omnis deserunt tempora illum, quos voluptates aperiam nobis praesentium perferendis ad molestiae harum cum. Earum, est repellendus hic perferendis nihil nesciunt?
-        Quod provident in quia officia aperiam reprehenderit iusto doloribus fuga sapiente iste ab consequatur magni labore facilis atque, repellat cumque accusantium vel totam harum natus sunt voluptatem neque dignissimos. Ea?
-        Unde aspernatur laborum voluptates sed ad, officia totam soluta deleniti, eos accusantium inventore libero magnam et perferendis necessitatibus reprehenderit. Non ratione dolorem perspiciatis corrupti odit pariatur voluptas, explicabo nobis asperiores.
-        Dolor ullam recusandae totam libero neque doloribus natus ipsa saepe ab sit. Aspernatur deleniti beatae optio ex vitae debitis saepe rerum ducimus labore, aliquam animi dolorem similique? Temporibus, incidunt repellat!
-        Aspernatur asperiores fugiat sint nostrum quidem temporibus voluptatem corrupti, eveniet laborum suscipit minus dolorum tenetur quisquam sequi, fuga a excepturi eligendi ipsum facere commodi pariatur consequatur. Consequatur soluta odio nam.
-        Vel quia eaque deserunt, harum illo autem dolor magni ipsum perspiciatis blanditiis eveniet impedit aut nostrum animi omnis, voluptate maiores itaque! Quod, illum officia inventore ullam iusto voluptatum totam voluptas.
-        Sunt assumenda labore, saepe omnis in dolorum sapiente cum quis veritatis perspiciatis tenetur, impedit, magnam harum porro nesciunt quod. Minima corporis voluptate ex cupiditate quod? Alias, quis aspernatur? Modi, a!
-        Esse eveniet facilis eligendi porro accusamus quibusdam, quasi laboriosam deleniti dolor! Exercitationem nostrum ullam sint accusantium ad quam, quisquam officia, velit amet rem quis quod ut deleniti soluta debitis? Alias.
-        Recusandae amet ducimus eligendi quaerat quod neque repellendus incidunt laborum aliquid, praesentium eveniet necessitatibus nulla iure officia mollitia ab temporibus at soluta velit reprehenderit doloribus, alias aperiam iste! Iste, obcaecati?
-        Facilis blanditiis inventore commodi, dolorum error consequuntur aliquid voluptatibus. Quis iusto voluptatem eligendi voluptas aut sit debitis, quia vitae facere, placeat eos recusandae, fuga ipsa modi ducimus. Architecto, atque sit?
-        Deleniti facilis distinctio libero at, repellat facere quo deserunt officiis odio saepe voluptas? Reiciendis deleniti repudiandae, facere odio ab incidunt laboriosam dolorem fuga, totam nesciunt eaque eligendi nemo quibusdam ipsa.
-        Corrupti harum in voluptates minus earum, distinctio aliquam molestias soluta sunt alias mollitia libero magnam aperiam dolores velit ipsa voluptatem eum voluptatum perferendis sequi? Voluptatem expedita harum eveniet a voluptatibus!
-        Illum libero fugit laboriosam accusantium error totam natus! Nostrum, molestias libero tempora tenetur consectetur vel velit earum! Recusandae, molestias doloribus voluptatibus animi fugiat vitae! Accusantium quidem minima veritatis nesciunt odio.
-        Dolore quo eaque dolor adipisci cumque, nihil recusandae iste, tempora id amet facere deserunt itaque eveniet quam! Quas quae fuga commodi ipsam aliquid aut delectus aliquam culpa incidunt, impedit in?
-        Voluptate ea similique repudiandae maiores voluptates officia nesciunt nam quos accusamus iure! Possimus tempore nulla delectus, vitae quod dolores aspernatur ratione minus fugit explicabo ullam suscipit, praesentium a dolore labore!
-        Excepturi ad natus illo ex facilis eius molestiae ea similique autem, nihil veritatis accusamus voluptate quod eaque placeat amet eligendi iure dolorem! Optio assumenda aut laudantium, voluptatum ullam eum earum!
-        In accusantium nihil rerum sequi repudiandae, fuga doloremque quis sunt? Distinctio eius quam nostrum nemo iste excepturi sapiente voluptates nihil, dolorem possimus quaerat ut placeat asperiores minima accusantium vitae doloribus.
-        Saepe repellat incidunt totam autem. Nulla eum, odit nisi sequi numquam accusamus delectus dolor obcaecati, debitis incidunt rerum vel necessitatibus! Exercitationem debitis quam reiciendis? Laudantium explicabo aliquid nulla inventore quam.
-        Nemo itaque labore dolores, veritatis nulla recusandae architecto obcaecati saepe odio. Dolor natus veniam sapiente numquam voluptates deleniti, cupiditate id ipsum molestias neque blanditiis obcaecati praesentium quidem dignissimos autem vero.
-        Ipsum totam aliquid vitae, earum corrupti vel porro facilis recusandae odit nobis eligendi sit id iure doloribus commodi modi itaque illo quis accusamus suscipit, aperiam magni cum quia? Error, repellendus.
-        Ut aperiam est rem quo quis pariatur dicta accusantium dolor molestias officia obcaecati ad atque similique voluptatem, quae hic voluptas dolore adipisci enim odio voluptatum. Nulla sequi dolorum fugit rem!
-        Voluptates tempore nisi itaque enim tenetur et aliquam aspernatur. Iste expedita ipsum consequatur beatae placeat vel temporibus porro, sit consectetur amet hic esse repellat adipisci officiis odio quos saepe quidem.
-        Consequatur, consequuntur ratione. Sunt sint veritatis ullam maxime obcaecati aliquam quo nihil explicabo nam quaerat facilis, asperiores ex beatae, similique quas ea nemo adipisci perferendis culpa cum. Nisi, placeat laboriosam.
-        Pariatur, laborum velit repellendus quas facere libero dolor nostrum quibusdam repellat ad nobis aliquam odit cum illum eligendi quam nam fugit quasi dolorem? Facilis beatae possimus odio excepturi nemo velit!
-        Repellendus ipsa quia ipsum? Quidem beatae quae nam, itaque ab, nisi ut temporibus excepturi iusto libero fugiat sint porro illum dicta quo sed esse officiis qui laborum, molestias tempora? Magni.
-        Dolore delectus maiores esse ea porro molestiae quod officiis in cum modi incidunt eius nostrum aut veniam mollitia quae, nisi minus, illum sunt veritatis repellendus? Doloremque commodi dolores voluptatibus asperiores.
-        Perspiciatis asperiores iure impedit sapiente, necessitatibus iusto nulla tempore maxime sed quos quia provident aut et dolorum quo distinctio voluptatem fugiat unde, nisi natus doloremque animi repellat. Rerum, iste ut.
-        Est reiciendis saepe eligendi odio cumque illo esse tenetur corporis tempora mollitia et, culpa dicta tempore eum fuga. Ipsum ut veritatis ducimus dolorem, ex natus architecto earum perferendis dignissimos dicta?
-        Nobis cupiditate voluptatum facilis maiores minima aut qui pariatur dolores ad illo vel voluptatem, odit officiis ab at velit numquam ea asperiores vitae error! Earum aspernatur exercitationem dolor harum doloribus!
-        Possimus sit id ullam eligendi a voluptas. Exercitationem aliquid numquam quisquam, vel, sunt corporis nihil quia fugiat consequatur laboriosam illo tempora earum ipsa sed quidem, eveniet iure aliquam modi quaerat!
-        Veniam eos praesentium ipsum obcaecati quae eius sunt vitae adipisci a distinctio provident soluta repellendus amet saepe, nemo dolores. Tempore voluptatem nam esse vero amet repellendus libero illum cupiditate rerum?
-        Ut rerum rem, ducimus corporis eveniet ratione itaque illum aperiam distinctio quaerat modi doloremque quasi recusandae quod facilis excepturi nihil labore magni asperiores perspiciatis totam nostrum. Soluta voluptate fugiat cumque?
-        Cumque quos error ex quasi quia, animi eius placeat itaque, architecto suscipit sint laborum ipsam soluta modi doloremque officiis ad voluptates natus deserunt velit. Provident dicta aliquid placeat repellendus sint.
-        Dolores, illum dignissimos. Ipsum, magnam sunt quo eum iste, labore magni excepturi unde tempore minima voluptates ducimus laudantium qui vero quidem delectus illum minus laborum dolorem quaerat odio perspiciatis possimus.
-        Molestiae ea excepturi magnam deserunt consequatur, ipsam voluptatem eveniet voluptas perspiciatis inventore ipsa earum doloremque est expedita, ex, minima modi nulla quo error quod eum voluptate ab? Porro, illo maxime?
+    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
+
+        {{-- start of carousel --}}
+        <div id="default-carousel" class="relative w-full rounded-t-3xl" data-carousel="slide">
+            <!-- Carousel wrapper -->
+            <div class="relative h-[500px] overflow-hidden rounded-lg">
+                <!-- Item 1 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    {{-- <img src="{{ asset('img/assets/bg/background_auth.svg') }}"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <div class="w-1/2 h-full bg-red-200">ini apalah</div>
+                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
+                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                    </div>
+                </div>
+                <!-- Item 2 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    {{-- <img src="/docs/images/carousel/carousel-2.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <div class="w-1/2 h-full bg-blue-200">ini apalah</div>
+                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
+                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                    </div>
+                </div>
+                <!-- Item 3 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    {{-- <img src="/docs/images/carousel/carousel-3.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <div class="w-1/2 h-full bg-green-200">ini apalah</div>
+                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
+                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                    </div>
+                </div>
+                <!-- Item 4 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    {{-- <img src="/docs/images/carousel/carousel-4.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <div class="w-1/2 h-full bg-orange-200">ini apalah</div>
+                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
+                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                    </div>
+                </div>
+                <!-- Item 5 -->
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    {{-- <img src="/docs/images/carousel/carousel-5.svg"
+                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                        <div class="w-1/2 h-full bg-purple-200">ini apalah</div>
+                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
+                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Slider indicators -->
+            <div class="absolute z-30 flex -translate-x-1/2 bottom-4 left-1/2 space-x-3 rtl:space-x-reverse">
+                <button type="button" class="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1"
+                    data-carousel-slide-to="0"></button>
+                <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2"
+                    data-carousel-slide-to="1"></button>
+                <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3"
+                    data-carousel-slide-to="2"></button>
+                <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4"
+                    data-carousel-slide-to="3"></button>
+                <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5"
+                    data-carousel-slide-to="4"></button>
+            </div>
+            <!-- Slider controls -->
+            <button type="button"
+                class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-prev>
+                <span
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 1 1 5l4 4" />
+                    </svg>
+                    <span class="sr-only">Previous</span>
+                </span>
+            </button>
+            <button type="button"
+                class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                data-carousel-next>
+                <span
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                    <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 9 4-4-4-4" />
+                    </svg>
+                    <span class="sr-only">Next</span>
+                </span>
+            </button>
+        </div>
+        {{-- end of carousel --}}
+
+        {{--  --}}
+
+        {{-- start of category,recent,best seller container --}}
+        <div class="w-full h-full flex flex-col py-10 px-12">
+            {{-- category text --}}
+            <div class="w-1/5 bg-white rounded-xl text-center py-2">
+                <h1 class="text-orange-400 text-lg font-semibold">Category</h1>
+            </div>
+            {{-- end of category text --}}
+
+            {{-- category container --}}
+            <div class="grid grid-cols-4 grid-rows-2 gap-x-32 gap-y-20 mt-14">
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                        class="w-40 h-40 mx-auto">
+                    <h2 class="text-black font-semibold">Fashion</h2>
+                </div>
+            </div>
+            {{-- end of category container --}}
+
+            {{--  --}}
+
+            {{-- New arrival text --}}
+            <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
+                <h1 class="text-orange-400 text-lg font-semibold">New Arrival</h1>
+            </div>
+            {{-- end of New arrival text --}}
+
+            {{-- gray line --}}
+            {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
+
+            {{-- new arrival container --}}
+            <div class="relative mt-10">
+                <div class="overflow-x-auto no-scrollbar" id="new-arrival-container">
+                    <!-- Scroll Right Button -->
+                    <button onclick="scrollRight()"
+                        class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-orange-400 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full p-2 shadow-lg">
+                        <!-- Icon (optional) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
+                        @for ($i = 0; $i < 12; $i++)
+                            {{-- card product --}}
+                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
+                                {{-- image product --}}
+                                <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                    style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
+                                {{-- text product --}}
+                                <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
+                                    {{-- product title --}}
+                                    <h1 class="text-sm font-semibold">Korean Fashion Set</h1>
+                                    {{-- product type --}}
+                                    <h2 class="text-xs font-semibold text-black text-opacity-50">Blouse</h2>
+                                    {{-- product price --}}
+                                    <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
+                                    {{-- Buy product button --}}
+                                    <a href="#" class="ml-auto"><button
+                                            class="bg-orange-400 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                </div>
+                            </div>
+                            {{-- end of card product --}}
+                        @endfor
+                    </div>
+                </div>
+            </div>
+            {{-- end of new arrival container --}}
+
+            {{--  --}}
+
+            {{-- best seller text --}}
+            <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
+                <h1 class="text-[#B7B7B7] text-lg font-semibold">Best Seller</h1>
+            </div>
+            {{-- end of best seller text --}}
+
+            {{-- gray line --}}
+            {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
+
+            {{-- best seller container --}}
+            <div class="relative mt-10">
+                <div class="overflow-x-auto no-scrollbar" id="best-seller-container">
+                    <!-- Scroll Right Button -->
+                    <button onclick="scrollRight2()"
+                        class="absolute top-1/2 right-0 transform -translate-y-1/2 z-10 bg-orange-400 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full p-2 shadow-lg">
+                        <!-- Icon (optional) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                    <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
+                        @for ($i = 0; $i < 12; $i++)
+                            {{-- card product --}}
+                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
+                                {{-- image product --}}
+                                <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                    style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
+                                {{-- text product --}}
+                                <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
+                                    {{-- product title --}}
+                                    <h1 class="text-sm font-semibold">Korean Fashion Set</h1>
+                                    {{-- product type --}}
+                                    <h2 class="text-xs font-semibold text-black text-opacity-50">Blouse</h2>
+                                    {{-- product price --}}
+                                    <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
+                                    {{-- Buy product button --}}
+                                    <a href="#" class="ml-auto"><button
+                                            class="bg-orange-400 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                </div>
+                            </div>
+                            {{-- end of card product --}}
+                        @endfor
+                    </div>
+                </div>
+            </div>
+            {{-- end of best seller container --}}
+        </div>
+        {{-- end of category,recent,best seller container --}}
     </div>
     {{-- end of homapege content container --}}
+
+    
+
+    <script>
+        const newArrivalContainer = document.getElementById('new-arrival-container');
+        const bestSellerContainer = document.getElementById('best-seller-container');
+
+        // Drag to scroll
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+
+        newArrivalContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - newArrivalContainer.offsetLeft;
+            scrollLeft = newArrivalContainer.scrollLeft;
+        });
+
+        bestSellerContainer.addEventListener('mousedown', (e) => {
+            isDown = true;
+            startX = e.pageX - bestSellerContainer.offsetLeft;
+            scrollLeft = bestSellerContainer.scrollLeft;
+        });
+
+        newArrivalContainer.addEventListener('mouseleave', () => isDown = false);
+        newArrivalContainer.addEventListener('mouseup', () => isDown = false);
+
+        bestSellerContainer.addEventListener('mouseleave', () => isDown = false);
+        bestSellerContainer.addEventListener('mouseup', () => isDown = false);
+
+        newArrivalContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - newArrivalContainer.offsetLeft;
+            const walk = (x - startX) * 3; // scroll-fast
+            newArrivalContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        bestSellerContainer.addEventListener('mousemove', (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            const x = e.pageX - bestSellerContainer.offsetLeft;
+            const walk = (x - startX) * 3; // scroll-fast
+            bestSellerContainer.scrollLeft = scrollLeft - walk;
+        });
+
+        // Button to scroll right
+        function scrollRight() {
+            newArrivalContainer.scrollBy({
+                top: 0,
+                left: 200, // Adjust as needed
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollRight2() {
+            bestSellerContainer.scrollBy({
+                top: 0,
+                left: 200, // Adjust as needed
+                behavior: 'smooth'
+            });
+        }
+    </script>
+
 @endsection
