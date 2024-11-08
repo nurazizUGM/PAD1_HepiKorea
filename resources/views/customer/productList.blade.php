@@ -90,10 +90,10 @@
         {{-- end of sorting and filter container --}}
 
         {{-- products card container --}}
-        <div class="w-full h-full grid grid-cols-[repeat(auto-fit,_minmax(150px,_1fr))] gap-x-6 gap-y-12">
+        <div class="w-full h-full grid grid-cols-7 gap-x-6 gap-y-12">
             @for ($i = 0; $i < 30; $i++)
                 {{-- card product --}}
-                <div class="bg-white h-[235px] flex flex-col rounded-xl overflow-hidden">
+                <div class="bg-white w-[155px] h-[235px] flex flex-col rounded-xl overflow-hidden">
                     {{-- image product --}}
                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
                         style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
