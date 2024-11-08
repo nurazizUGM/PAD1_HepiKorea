@@ -1,5 +1,5 @@
 @extends('layout.customer')
-@section('title', 'home')
+@section('title', 'Products')
 
 <a href=""
     class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-orange-400 bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
