@@ -17,11 +17,11 @@ class OrderController extends Controller
         $orders = new Order();
         if ($tab == 'order') {
             $orders = $orders->where('type', 'order');
-        } elseif ($tab == 'custom') {
+        } else {
             $orders = $orders->where('type', 'custom');
         }
 
-        $firstOrder = $orders->orderBy('created_at', 'asc')->first();
+        $firstOrder = $orders->clone()->orderBy('created_at', 'asc')->first();
 
         $year = Carbon::now()->format('Y');
         $years = [$year];
