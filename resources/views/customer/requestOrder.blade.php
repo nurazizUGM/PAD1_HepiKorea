@@ -156,6 +156,7 @@
         <div class="w-full h-full bg-white flex-col rounded-xl mt-6 py-6 px-8">
             <form action="" class="w-full h-fit flex flex-col text-orange-400 font-semibold text-xl">
                 <label for="">Product Name</label>
+                {{-- input product name --}}
                 <input type="text" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Product Photo</label>
                 <!-- input file image -->
@@ -172,12 +173,16 @@
                     </label>
                 </div>
                 <label for="">Product Link</label>
+                {{-- input product link --}}
                 <input type="text" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Price</label>
+                {{-- input price --}}
                 <input type="number" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Quantity</label>
+                {{-- input quantity --}}
                 <input type="number" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Note</label>
+                {{-- input note --}}
                 <textarea name="" id="" cols="30" rows="10" class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
                 <button type="submit" class="text-white bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
             </form>
