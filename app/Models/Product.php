@@ -26,4 +26,9 @@ class Product extends Model
     {
         return $this->hasMany(ProductImage::class)->orderBy('created_at', 'asc');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'order_items');
+    }
 }

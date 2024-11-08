@@ -19,7 +19,7 @@
     {{-- start of navbar --}}
     <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-lg">
         <div class="px-5 py-3 lg:px-5 lg:pl-3">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between align-middle">
                 {{--  --}}
                 <div class="flex items-center justify-start rtl:justify-end">
                     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
@@ -41,7 +41,7 @@
                     </a>
                 </div>
                 {{-- search bar --}}
-                <div class="mr-auto">
+                <div class="mr-auto my-auto">
                     <!-- Search input -->
                     <form id="form-filter" action="{{ route('admin.product.index') }}" method="get"
                         class="flex items-center">
@@ -149,7 +149,7 @@
 
     {{-- footer --}}
     <div
-        class="w-[92%] w-max[92%] h-fit mx-auto mt-14 mb-14 rounded-3xl overflow-hidden bg-black text-white pt-10 pb-14 px-12 flex flex-row">
+        class="w-[92%] w-max[92%] h-fit mx-auto mt-14 mb-14 rounded-3xl overflow-hidden bg-orange-500 text-white pt-10 pb-14 px-12 flex flex-row">
         <div class="w-[25%] h-full flex flex-col">
             {{-- HepiKorea title --}}
             <h1 class="text-4xl font-bold">HepiKorea</h1>
