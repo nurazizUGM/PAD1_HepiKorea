@@ -129,7 +129,7 @@
                 </li>
                 <!-- Order -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.order.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'order') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="product Icon"
                             class="h-7 w-7 @if ($route != 'order') grayscale @endif group-hover:grayscale-0">

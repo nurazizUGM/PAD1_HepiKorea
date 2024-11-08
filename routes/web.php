@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\CarouselController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
@@ -94,6 +95,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::prefix('analytic')->name('analytic.')->controller(AnalyticController::class)->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('export', 'export')->name('export');
+    });
+
+    Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
+        Route::get('/', 'index')->name('index');
     });
 });
 

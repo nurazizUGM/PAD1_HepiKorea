@@ -1,284 +1,122 @@
 <!-- order Content -->
-<div class="hidden px-5 rounded-lg h-[80vh] mt-3  overflow-y-scroll no-scrollbar" id="order" role="tabpanel"
-    aria-labelledby="order-tab">
-    <div class="flex flex-row">
-        {{-- year and month section (filter) --}}
-        <div class="w-[20%] h-[78vh] bg-white rounded-lg overflow-y-scroll no-scrollbar">
-            <div id="accordion-collapse-order" data-accordion="collapse-order">
+<div class="flex flex-row">
+    {{-- year and month section (filter) --}}
+    <div class="w-[20%] h-[78vh] bg-white rounded-lg overflow-y-scroll no-scrollbar">
+        <div id="accordion-collapse-order" data-accordion="collapse-order">
+            <button type="button" onclick="window.location.href='{{ route('admin.order.index', ['tab' => 'order']) }}'"
+                class="flex items-center w-full px-5 pt-5 font-medium rtl:text-right text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white"
+                aria-expanded="false">
+                <svg xmlns="http://www.w3.org/2000/svg" data-accordion-icon class="w-4 h-4 rotate-180 shrink-0"
+                    aria-hidden="true" viewBox="0 0 16 16">
+                    <path fill="#000" fill-rule="evenodd"
+                        d="M2.5 5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5m3.25-2a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5zm0 8.5a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5zM5 8a.75.75 0 0 1 .75-.75h8.5a.75.75 0 0 1 0 1.5h-8.5A.75.75 0 0 1 5 8M3.75 8a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0M2.5 13.5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5"
+                        clip-rule="evenodd" />
+                </svg>
+                <span class="text-orange-400 text-lg inline-block ml-3">All</span>
+            </button>
+            @foreach ($years as $y)
                 <h2 id="accordion-collapse-heading-1-order">
                     <button type="button"
                         class="flex items-center w-full px-5 pt-5 font-medium rtl:text-right text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white"
-                        data-accordion-target="#accordion-collapse-body-1-order" aria-expanded="true"
-                        aria-controls="accordion-collapse-body-1-order">
+                        data-accordion-target="#accordion-year-{{ $y }}"
+                        aria-expanded="{{ $y == $year ? 'true' : 'false' }}"
+                        aria-controls="accordion-year-{{ $y }}">
                         <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5 5 1 1 5" />
                         </svg>
-                        <span class="text-orange-400 text-lg inline-block ml-3">2024</span>
+                        <span class="text-orange-400 text-lg inline-block ml-3">{{ $y }}</span>
                     </button>
                 </h2>
-                <div id="accordion-collapse-body-1-order" class="hidden"
+                <div id="accordion-year-{{ $y }}" class="hidden"
                     aria-labelledby="accordion-collapse-heading-1-order">
                     <div class="px-5">
                         <ul class="ml-5 text-lg">
-                            <li class="my-3 text-md">January</li>
-                            <li class="my-3 text-md">February</li>
-                            <li class="my-3 text-md">March</li>
-                            <li class="my-3 text-md">April</li>
-                            <li class="my-3 text-md">May</li>
-                            <li class="my-3 text-md">June</li>
+                            @foreach ($months[$y] as $month)
+                                <li class="my-3 text-md cursor-pointer"
+                                    onclick="window.location.href='{{ route('admin.order.index', ['tab' => 'order', 'year' => $y, 'month' => $month]) }}'">
+                                    {{ $month }}</li>
+                            @endforeach
                         </ul>
                     </div>
                 </div>
-                <h2 id="accordion-collapse-heading-2-order">
-                    <button type="button"
-                        class="flex items-center w-full px-5 pt-5 font-medium rtl:text-right text-gray-500 rounded-xl focus:ring-0 focus:bg-white"
-                        data-accordion-target="#accordion-collapse-body-2-order" aria-expanded="false"
-                        aria-controls="accordion-collapse-body-2-order">
-                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5 5 1 1 5" />
-                        </svg>
-                        <span class="text-orange-400 text-lg inline-block ml-3">2023</span>
-                    </button>
-                </h2>
-                <div id="accordion-collapse-body-2-order" class="hidden"
-                    aria-labelledby="accordion-collapse-heading-2-order">
-                    <div class="px-5">
-                        <ul class="ml-5 text-lg">
-                            <li class="my-3 text-md">January</li>
-                            <li class="my-3 text-md">February</li>
-                            <li class="my-3 text-md">March</li>
-                            <li class="my-3 text-md">April</li>
-                            <li class="my-3 text-md">May</li>
-                            <li class="my-3 text-md">June</li>
-                            <li class="my-3 text-md">July</li>
-                            <li class="my-3 text-md">August</li>
-                            <li class="my-3 text-md">September</li>
-                            <li class="my-3 text-md">October</li>
-                            <li class="my-3 text-md">November</li>
-                            <li class="my-3 text-md">December</li>
-                        </ul>
-                    </div>
-                </div>
-                <h2 id="accordion-collapse-heading-3-order">
-                    <button type="button"
-                        class="flex items-center w-full px-5 pt-5 font-medium rtl:text-right text-gray-500 rounded-xl focus:ring-0 focus:bg-white"
-                        data-accordion-target="#accordion-collapse-body-3-order" aria-expanded="false"
-                        aria-controls="accordion-collapse-body-3-order">
-                        <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 5 5 1 1 5" />
-                        </svg>
-                        <span class="text-orange-400 text-lg inline-block ml-3">2022</span>
-                    </button>
-                </h2>
-                <div id="accordion-collapse-body-3-order" class="hidden"
-                    aria-labelledby="accordion-collapse-heading-3-order">
-                    <div class="px-5">
-                        <ul class="ml-5 text-lg">
-                            <li class="my-3 text-md">January</li>
-                            <li class="my-3 text-md">February</li>
-                            <li class="my-3 text-md">March</li>
-                            <li class="my-3 text-md">April</li>
-                            <li class="my-3 text-md">May</li>
-                            <li class="my-3 text-md">June</li>
-                            <li class="my-3 text-md">July</li>
-                            <li class="my-3 text-md">August</li>
-                            <li class="my-3 text-md">September</li>
-                            <li class="my-3 text-md">October</li>
-                            <li class="my-3 text-md">November</li>
-                            <li class="my-3 text-md">December</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
-        {{-- end of year and month selection (filter) --}}
-
-
-
-        {{-- container of card order --}}
-        <div class="w-[80%] h-fit ml-6 flex flex-wrap flex-row gap-4 justify-start items-start align-content-start">
-            {{-- for loop hanya untuk coba --}}
-            @for ($a = 0; $a < 1; $a++)
-                {{-- card order --}}
-                <div class="bg-white w-[26rem] h-52 rounded-xl p-2 flex flex-row">
-                    {{-- image order container --}}
-                    <div class="w-5/12 h-full bg-cover bg-center bg-no-repeat rounded-xl"
-                        style="background-image: url('{{ asset('img/example/admin_order_img_user.png') }}')">
-                    </div>
-                    {{-- detail order container --}}
-                    <div class="w-7/12 h-full flex flex-col px-4 pt-1">
-                        {{-- Nama Customer --}}
-                        <div class="flex flex-row">
-                            {{-- icon customer --}}
-                            <img src="{{ asset('img/assets/icon/icon_admin_order_customer.svg') }}" alt="user icon"
-                                class="h-6 w-6 fill-black">
-                            {{-- Customer --}}
-                            <p class="text-black ml-3 font-bold text-md">Aisyah</p>
-                        </div>
-                        {{-- Tanggal Order --}}
-                        <div class="flex flex-row mt-2 align-bottom">
-                            <img src="{{ asset('img/assets/icon/icon_admin_order_date.svg') }}" alt="user icon"
-                                class="h-6 w-6">
-                            <p class="text-orange-400 ml-3 font-bold text-md">13-09-2024</p>
-                        </div>
-                        {{-- Price Order --}}
-                        <div class="flex flex-row mt-2 -ml-0.5 align-bottom">
-                            <img src="{{ asset('img/assets/icon/icon_admin_order_coins.svg') }}" alt="user icon"
-                                class="h-7 w-7">
-                            {{-- text price --}}
-                            <p class="text-orange-400 ml-2.5 font-bold text-md">Rp 300.000,-</p>
-                        </div>
-                        {{-- status --}}
-                        <div class="flex flex-row mt-5 -ml-1.5">
-                            <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Status :</p>
-                            <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Unpaid</p>
-                        </div>
-                        {{-- two button container --}}
-                        <div class="flex flex-row mt-auto">
-                            <button class="w-1/3 h-9 border border-orange-400 rounded-md flex "
-                                data-modal-target="check-order-detail-modal"
-                                data-modal-toggle="check-order-detail-modal">
-                                <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
-                                    alt="see_detail_icon" class="m-auto border-orange-400">
-                                {{-- icon_admin_order_see_detail.svg --}}
-                            </button>
-                            <button
-                                class="w-2/3 h-9 bg-orange-400 text-white font-semibold rounded-md ml-1">Unpaid</button>
-                        </div>
-                    </div>
-                    {{-- end of detail order container --}}
-                </div>
-            @endfor
-            {{-- end of card order --}}
-
-            {{--  --}}
-
-            {{-- card order (PROCESS) --}}
-            <div class="bg-white w-[26rem] h-52 rounded-xl p-2 flex flex-row">
-                {{-- image order container --}}
-                <div class="w-5/12 h-full bg-cover bg-center bg-no-repeat rounded-xl"
-                    style="background-image: url('{{ asset('img/example/admin_order_img_user.png') }}')">
-                </div>
-                {{-- detail order container --}}
-                <div class="w-7/12 h-full flex flex-col px-4 pt-1">
-                    {{-- Nama Customer --}}
-                    <div class="flex flex-row">
-                        {{-- icon customer --}}
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_customer.svg') }}" alt="user icon"
-                            class="h-6 w-6 fill-black">
-                        {{-- Customer --}}
-                        <p class="text-black ml-3 font-bold text-md">Aisyah</p>
-                    </div>
-                    {{-- Tanggal Order --}}
-                    <div class="flex flex-row mt-2 align-bottom">
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_date.svg') }}" alt="user icon"
-                            class="h-6 w-6">
-                        <p class="text-orange-400 ml-3 font-bold text-md">13-09-2024</p>
-                    </div>
-                    {{-- Price Order --}}
-                    <div class="flex flex-row mt-2 -ml-0.5 align-bottom">
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_coins.svg') }}" alt="user icon"
-                            class="h-7 w-7">
-                        {{-- text price --}}
-                        <p class="text-orange-400 ml-2.5 font-bold text-md">Rp 300.000,-</p>
-                    </div>
-                    {{-- status --}}
-                    <div class="flex flex-row mt-5 -ml-1.5">
-                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Status :</p>
-                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Process</p>
-                    </div>
-                    {{-- two button container --}}
-                    <div class="flex flex-row mt-auto">
-                        <button class="w-1/3 h-9 border border-orange-400 rounded-md flex">
-                            <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
-                                alt="see_detail_icon" class="m-auto" data-modal-target="check-order-detail-modal"
-                                data-modal-toggle="check-order-detail-modal">
-                            {{-- icon_admin_order_see_detail.svg --}}
-                        </button>
-                        <button
-                            class="w-2/3 h-9 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md ml-1"
-                            data-modal-target="process-order-detail-modal"
-                            data-modal-toggle="process-order-detail-modal">Process</button>
-                    </div>
-                </div>
-                {{-- end of detail order container --}}
-            </div>
-            {{-- end of card order (PROCESS) --}}
-
-            {{-- card order (SENT) --}}
-            <div class="bg-white w-[26rem] h-52 rounded-xl p-2 flex flex-row">
-                {{-- image order container --}}
-                <div class="w-5/12 h-full bg-cover bg-center bg-no-repeat rounded-xl"
-                    style="background-image: url('{{ asset('img/example/admin_order_img_user.png') }}')">
-                </div>
-                {{-- detail order container --}}
-                <div class="w-7/12 h-full flex flex-col px-4 pt-1">
-                    {{-- Nama Customer --}}
-                    <div class="flex flex-row">
-                        {{-- icon customer --}}
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_customer.svg') }}" alt="user icon"
-                            class="h-6 w-6 fill-black">
-                        {{-- Customer --}}
-                        <p class="text-black ml-3 font-bold text-md">Aisyah</p>
-                    </div>
-                    {{-- Tanggal Order --}}
-                    <div class="flex flex-row mt-2 align-bottom">
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_date.svg') }}" alt="user icon"
-                            class="h-6 w-6">
-                        <p class="text-orange-400 ml-3 font-bold text-md">13-09-2024</p>
-                    </div>
-                    {{-- Price Order --}}
-                    <div class="flex flex-row mt-2 -ml-0.5 align-bottom">
-                        <img src="{{ asset('img/assets/icon/icon_admin_order_coins.svg') }}" alt="user icon"
-                            class="h-7 w-7">
-                        {{-- text price --}}
-                        <p class="text-orange-400 ml-2.5 font-bold text-md">Rp 300.000,-</p>
-                    </div>
-                    {{-- status --}}
-                    <div class="flex flex-row mt-5 -ml-1.5">
-                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Status :</p>
-                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Sent</p>
-                    </div>
-                    {{-- two button container --}}
-                    <div class="flex flex-row mt-auto">
-                        <button class="w-1/3 h-9 border border-orange-400 rounded-md flex">
-                            <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
-                                alt="see_detail_icon" class="m-auto" data-modal-target="check-order-detail-modal"
-                                data-modal-toggle="check-order-detail-modal">
-                            {{-- icon_admin_order_see_detail.svg --}}
-                        </button>
-                        <button
-                            class="w-2/3 h-9 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md ml-1"
-                            data-modal-target="sent-order-detail-modal"
-                            data-modal-toggle="sent-order-detail-modal">Sent</button>
-                    </div>
-                </div>
-                {{-- end of detail order container --}}
-            </div>
-            {{-- end of card order (SENT) --}}
-
-
-        </div>
-        {{-- end of continer card order --}}
     </div>
+    {{-- end of year and month selection (filter) --}}
 
+
+
+    {{-- container of card order --}}
+    <div class="w-[80%] h-fit ml-6 flex flex-wrap flex-row gap-4 justify-start items-start align-content-start">
+        {{-- for loop hanya untuk coba --}}
+        @foreach ($orders as $order)
+            {{-- card order --}}
+            <div class="bg-white w-[26rem] h-52 rounded-xl p-2 flex flex-row">
+                {{-- image order container --}}
+                <div class="w-5/12 h-full bg-cover bg-center bg-no-repeat rounded-xl"
+                    style="background-image: url('{{ asset('img/example/admin_order_img_user.png') }}')">
+                </div>
+                {{-- detail order container --}}
+                <div class="w-7/12 h-full flex flex-col px-4 pt-1">
+                    {{-- Nama Customer --}}
+                    <div class="flex flex-row">
+                        {{-- icon customer --}}
+                        <img src="{{ asset('img/assets/icon/icon_admin_order_customer.svg') }}" alt="user icon"
+                            class="h-6 w-6 fill-black">
+                        {{-- Customer --}}
+                        <p class="text-black ml-3 font-bold text-md">{{ $order->user->fullname }}</p>
+                    </div>
+                    {{-- Tanggal Order --}}
+                    <div class="flex flex-row mt-2 align-bottom">
+                        <img src="{{ asset('img/assets/icon/icon_admin_order_date.svg') }}" alt="user icon"
+                            class="h-6 w-6">
+                        <p class="text-orange-400 ml-3 font-bold text-md">{{ $order->created_at->format('d/m/Y') }}</p>
+                    </div>
+                    {{-- Price Order --}}
+                    <div class="flex flex-row mt-2 -ml-0.5 align-bottom">
+                        <img src="{{ asset('img/assets/icon/icon_admin_order_coins.svg') }}" alt="user icon"
+                            class="h-7 w-7">
+                        {{-- text price --}}
+                        <p class="text-orange-400 ml-2.5 font-bold text-md">Rp
+                            {{ number_format($order->total_items_price, 0, ',', '.') }}</p>
+                    </div>
+                    {{-- status --}}
+                    <div class="flex flex-row mt-5 -ml-1.5">
+                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">Status :</p>
+                        <p class="text-black text-opacity-50 ml-2.5 font-bold text-md">{{ ucfirst($order->status) }}
+                        </p>
+                    </div>
+                    {{-- two button container --}}
+                    <div class="flex flex-row mt-auto">
+                        <button class="w-1/3 h-9 border border-orange-400 rounded-md flex "
+                            data-modal-target="check-order-detail-modal" data-modal-toggle="check-order-detail-modal">
+                            <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
+                                alt="see_detail_icon" class="m-auto border-orange-400">
+                            {{-- icon_admin_order_see_detail.svg --}}
+                        </button>
+                        @if ($order->status == 'paid')
+                            <button
+                                class="w-2/3 h-9 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md ml-1"
+                                data-modal-target="process-order-detail-modal"
+                                data-modal-toggle="process-order-detail-modal">Process</button>
+                        @elseif($order->status == 'processing')
+                            <button
+                                class="w-2/3 h-9 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md ml-1"
+                                data-modal-target="sent-order-detail-modal"
+                                data-modal-toggle="sent-order-detail-modal">Sent</button>
+                        @endif
+                    </div>
+                </div>
+                {{-- end of detail order container --}}
+            </div>
+        @endforeach
+        {{-- end of card order --}}
+    </div>
+    {{-- end of continer card order --}}
 </div>
-<!-- end of order Content -->
 
-
-
-
-
-{{--  --}}
-
-{{-- MODALS FOR SECTION ORDER --}}
-{{--  --}}
 
 <!-- check order detail modal -->
 <div id="check-order-detail-modal" tabindex="-1" aria-hidden="true"
@@ -379,7 +217,6 @@
 {{--  --}}
 
 {{-- process-order-detail-modal --}}
-<!-- process order detail modal -->
 <div id="process-order-detail-modal" tabindex="-1" aria-hidden="true"
     class="hidden overflow-y-hidden overflow-x-hidden fixed inset-0 top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
     <div class="relative p-2 w-full max-w-md max-h-full">
@@ -440,9 +277,6 @@
     <!-- end of  content -->
 </div>
 </div>
-<!-- end of process order detail -->
-
-{{--  --}}
 
 {{-- sent order detail --}}
 <!-- sent order detail modal -->
