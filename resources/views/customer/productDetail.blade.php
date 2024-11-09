@@ -85,8 +85,12 @@
 
                 {{-- two button --}}
                 <div class="w-full h-fit flex flex-row mt-24">
-                    <button class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy now</button>
-                    <button class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add to Cart</button>
+                    <button
+                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
+                        now</button>
+                    <button
+                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
+                        to Cart</button>
                 </div>
                 {{-- end of two button --}}
             </div>
@@ -179,7 +183,8 @@
                         <div class="w-[30%] w-max-[30%] flex flex-wrap gap-x-2 gap-y-1 h-fit my-auto">
                             @for ($i = 0; $i < 3; $i++)
                                 <img src="{{ asset('img/example/example_phone.png') }}" alt=""
-                                    class="w-24 h-24 rounded-lg object-contain border border-black bg-white">
+                                    class="w-24 h-24 rounded-lg object-contain border border-black bg-white cursor-pointer"
+                                    data-modal-target="image-review-view-modal" data-modal-toggle="image-review-view-modal">
                             @endfor
                         </div>
                     </div>
@@ -190,4 +195,36 @@
         </div>
         {{-- end of product rating container --}}
     </div>
+
+
+
+    {{-- modal image review when clicked --}}
+    <!-- image-review-view-modal -->
+    <div id="image-review-view-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-fit max-w-2xl max-h-full mt-20">
+            <!-- Modal content -->
+            <div class="bg-white w-[30vw] h-auto rounded-lg shadow">
+                <div class="relative w-full h-full flex flex-row">
+                    <!-- x button (exit modal) -->
+                    <button type="button"
+                        class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
+                        data-modal-hide="image-review-view-modal">
+                        <p class="m-auto text-white text-sm">X</p>
+                    </button>
+                    {{-- modal content --}}
+                    <div class="w-full h-full flex flex-col p-5">
+                        {{-- image review --}}
+                        <img id="mainImage" src="{{ asset('img/example/example_phone.png') }}"
+                            class="w-full h-full object-contain" alt="Main Image">
+                    </div>
+                    {{-- end of modal content --}}
+                </div>
+            </div>
+            <!-- end of modal content -->
+        </div>
+    </div>
+    <!-- end of Carousel-edit-modal -->
+    <!-- end of catefory-edit-modal -->
+    {{-- end of modal image review when clicked --}}
 @endsection
