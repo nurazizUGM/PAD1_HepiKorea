@@ -41,10 +41,10 @@
                     </a>
                 </div>
                 {{-- search bar --}}
-                <div class="mr-auto my-auto">
+                <div class="mr-auto">
                     <!-- Search input -->
                     <form id="form-filter" action="{{ route('admin.product.index') }}" method="get"
-                        class="flex items-center">
+                        class="flex items-center my-auto">
                         <input type="hidden" name="category" value="{{ request()->query('category') }}">
                         <div class="relative flex items-center w-full">
                             <img src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="search icon"
