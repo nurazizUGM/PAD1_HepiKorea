@@ -73,7 +73,7 @@
                     {{-- total price --}}
                     <h1 class="text-orange-400 font-semibold text-2xl ml-16 my-auto">Rp 225.000,-</h1>
                 </div>
-                <button class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] text-white text-2xl font-semibold rounded-2xl py-2 px-10 ml-auto">Checkout</button>
+                <button class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-10 ml-auto">Checkout</button>
             </div>
             {{-- end of checkout container --}}
         </div>
