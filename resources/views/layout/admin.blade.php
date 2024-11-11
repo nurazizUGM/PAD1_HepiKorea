@@ -12,8 +12,8 @@
         $route = 'product';
     } elseif (request()->routeIs('admin.order.*')) {
         $route = 'order';
-    } elseif (request()->routeIs('admin.analytics.*')) {
-        $route = 'analytics';
+    } elseif (request()->routeIs('admin.analytic.*')) {
+        $route = 'analytic';
     } elseif (request()->routeIs('admin.customer.*') || request()->routeIs('admin.review.*')) {
         $route = 'customer';
     } elseif (request()->routeIs('admin.faq.*')) {
@@ -129,7 +129,7 @@
                 </li>
                 <!-- Order -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.order.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'order') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="product Icon"
                             class="h-7 w-7 @if ($route != 'order') grayscale @endif group-hover:grayscale-0">
@@ -139,7 +139,7 @@
                 </li>
                 <!-- Analytic -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.analytic.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'analytic') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_analytic.svg') }}" alt="product Icon"
                             class="h-7 w-7 @if ($route != 'analytic') grayscale @endif group-hover:grayscale-0">
@@ -159,7 +159,7 @@
                 </li>
                 <!-- FAQ -->
                 <li>
-                    <a href="#"
+                    <a href="{{ route('admin.faq.index') }}"
                         class="flex items-center p-2 rounded-lg dark:text-white @if ($route == 'faq') bg-gray-100 @endif hover:bg-gray-100 dark:hover:bg-gray-700 group">
                         <img src="{{ asset('img/assets/icon/icon_dashboard_faq.svg') }}" alt="product Icon"
                             class="h-7 w-7 scale-90 @if ($route != 'faq') grayscale @endif group-hover:grayscale-0">
@@ -185,32 +185,66 @@
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full">
+    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full relative">
         @yield('content')
+
+        @if (config()->get('app.env') == 'local')
+            @if ($errors->any())
+                @foreach ($errors->all() as $error)
+                    <div id="alert-2"
+                        class="absolute top-8 right-8 z-[51] flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                        role="alert">
+                        <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" viewBox="0 0 20 20">
+                            <path
+                                d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                        </svg>
+                        <span class="sr-only">Info</span>
+                        <div class="ms-3 text-sm font-medium">
+                            {{ $error }}
+                        </div>
+                        <button type="button"
+                            class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                            data-dismiss-target="#alert-2" aria-label="Close">
+                            <span class="sr-only">Close</span>
+                            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 14 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                            </svg>
+                        </button>
+                    </div>
+                @endforeach
+            @endif
+            @if ($message = Session::get('message') ?? Session::get('success'))
+                <div id="alert-1"
+                    class="absolute top-8 right-8 z-[51] flex items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                    role="alert">
+                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div class="ms-3 text-sm font-medium">
+                        {{ $message }}
+                    </div>
+                    <button type="button"
+                        class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-1" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                    </button>
+                </div>
+            @endif
+        @endif
     </div>
 
     @yield('script')
-    @if (config()->get('app.env') == 'local')
-        <script>
-            @if ($errors->any())
-                $(document).ready(function() {
-                    @foreach ($errors->all() as $error)
-                        alert('{{ $error }}');
-                    @endforeach
-                });
-            @endif
-            @if ($message = Session::get('message'))
-                $(document).ready(function() {
-                    alert('{{ $message }}');
-                });
-            @endif
-            @if ($message = Session::get('success'))
-                $(document).ready(function() {
-                    alert('{{ $message }}');
-                });
-            @endif
-        </script>
-    @endif
 </body>
 
 </html>

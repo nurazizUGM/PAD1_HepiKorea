@@ -5,7 +5,7 @@
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-6 px-6">
         {{-- image and product detail container --}}
         <div class="w-full h-full bg-[#FFFCFC] rounded-2xl flex flex-row">
-            <div class="w-[28%] h-full">
+            <div class="w-[35%] h-full">
                 <div class="flex flex-col space-y-4">
                     <div class="w-full h-96 mr-auto bg-white p-3 rounded-xl">
                         {{-- main image --}}
@@ -25,9 +25,9 @@
                 </div>
             </div>
             {{-- this div for extra space --}}
-            <div class="w-[2%] h-full text-transparent">.</div>
+            <div class="w-[5%] h-full text-transparent">.</div>
             {{-- product detail texts container --}}
-            <div class="w-[70%] h-full flex-col px-8 py-4 rounded-2xl">
+            <div class="w-[60%] h-full flex-col px-8 py-4 rounded-2xl">
                 {{-- rating container --}}
                 <div class="w-full flex flex-row">
                     {{-- star and number --}}
@@ -43,13 +43,13 @@
                 {{-- end of rating container --}}
 
                 {{-- product title --}}
-                <h1 class="text-black text-opacity-50 font-bold text-lg text-left mt-4">Samsung S24 Ultra</h1>
+                <h1 class="text-black text-opacity-50 font-bold text-3xl text-left mt-8">Samsung S24 Ultra</h1>
 
                 {{-- product Price --}}
-                <h1 class="text-orange-400 font-bold text-4xl text-left mt-1">Rp8.000.000 - Rp 9.000.000</h1>
+                <h1 class="text-orange-400 font-bold text-4xl text-left mt-4">Rp8.000.000 - Rp 9.000.000</h1>
 
                 {{-- idk bagian yang kurang --}}
-                <div class="w-full">
+                <div class="w-full mt-10">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero itaque rerum unde velit nostrum
                     debitis, at architecto est autem quia deserunt alias laudantium quas sed ad quis vitae magni saepe.
                     Nostrum, cum eius minus doloremque quibusdam consequuntur saepe voluptate beatae fugit obcaecati
@@ -68,8 +68,8 @@
                 {{--  --}}
 
                 {{-- quantity --}}
-                <div class="w-full h-fit flex flex-row mt-6">
-                    <div class="w-[30%] h-full">
+                <div class="w-full h-fit flex flex-row mt-8">
+                    <div class="w-[30%] h-full text-xl">
                         Qty
                     </div>
                     <div class="w-[70%] h-full flex flex-row">
@@ -101,7 +101,7 @@
         <div class="w-[100%] h-full flex-col px-8 py-8 bg-[#FFFCFC] rounded-2xl mt-6">
             <h1 class="text-black font-bold text-2xl">Product Description</h1>
             {{-- product description container --}}
-            <p class="text-[#898383] font-semibold text-lg mt-6">
+            <p class="text-[#898383] font-semibold text-lg mt-8">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Provident blanditiis consectetur corrupti. Alias
                 totam voluptates corrupti ullam. Repudiandae ipsum deleniti dolores suscipit repellat nihil quae illo,
                 perspiciatis reiciendis ipsam. Voluptates.
