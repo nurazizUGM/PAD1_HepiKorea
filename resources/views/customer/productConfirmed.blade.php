@@ -31,7 +31,7 @@
                         <div class="w-full h-[45%] flex">
                             <div class="w-fit h-fit flex flex-row align-middle my-auto ml-7">
                                 <input type="checkbox" name="" id=""
-                                    class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                                    class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
                                 <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
                             </div>
                         </div>
@@ -69,7 +69,7 @@
                     <div class="w-full h-[45%] flex">
                         <div class="w-fit h-fit flex flex-row align-middle my-auto ml-7">
                             <input type="checkbox" name="" id=""
-                                class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                                class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
                             <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
                         </div>
                     </div>
@@ -90,7 +90,7 @@
 
                         {{-- checkbox fot select all --}}
                         <input type="checkbox"
-                            class="w-6 h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+                            class="w-6 h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
 
                         {{-- select All text --}}
                         <p class="text-black text-opacity-50 font-semibold text-base ml-6 my-auto">Select All (6)</p>
