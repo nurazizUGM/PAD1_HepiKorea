@@ -45,7 +45,7 @@
 
 
             {{-- checkout container --}}
-            <div class="fixed w-[156vh] h-[25vh] bg-white rounded-2xl bottom-10 left-28 z-10 flex flex-col py-5 px-10">
+            <div class="fixed w-[156vh] h-[25vh] bg-white rounded-2xl bottom-11 left-28 z-10 flex flex-col py-5 px-10">
                 <h1 class="text-black font-semibold text-2xl">Checkout</h1>
                 <div class="w-full h-fit flex flex-row my-auto">
                     {{-- select all and checkbox container --}}

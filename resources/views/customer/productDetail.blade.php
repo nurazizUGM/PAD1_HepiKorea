@@ -224,7 +224,6 @@
             <!-- end of modal content -->
         </div>
     </div>
-    <!-- end of Carousel-edit-modal -->
-    <!-- end of catefory-edit-modal -->
+
     {{-- end of modal image review when clicked --}}
 @endsection
