@@ -312,7 +312,7 @@
                             </div>
 
 
-                            <button type="submit"
+                            <button
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10"
                                 data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay</button>
                         </form>
@@ -344,7 +344,7 @@
 
                     {{-- modal content --}}
                     <div class="w-full h-full flex flex-col px-10 py-10">
-
+                        aaa
                     </div>
                     {{-- end of modal content --}}
                 </div>
