@@ -110,8 +110,8 @@ class AuthController extends Controller
                 $ext = explode('/', $headers['Content-Type'])[1];
 
                 try {
-                    $photo =  Uuid::uuid4() . '.' . $ext;
-                    Storage::put('public/profile/' . $photo, file_get_contents($googleUser['picture']));
+                    $photo =  'profile/' . Uuid::uuid4() . '.' . $ext;
+                    Storage::disk('public')->put($photo, file_get_contents($googleUser['picture']));
                 } catch (\Throwable $th) {
                     error_log("[Exception] " . $th->getMessage() .
                         " in " . $th->getFile() .

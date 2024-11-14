@@ -6,9 +6,12 @@
         <div class="grid grid-cols-[1fr_5fr] rounded-lg gap-4 bg-white">
             <div class="bg-white h-auto rounded-xl p-4 mt-4">
                 <div class="rounded-xl bg-slate-300">
+                    @php
+                        $photo = auth()->user()->photo;
+                        $photo = $photo ? asset('storage/' . $photo) : null;
+                    @endphp
                     <img class="w-full min-h-[10rem] m-0 p-2 object-contain object-center" id="profile_picture"
-                        src="@if (!empty($user->photo)) {{ asset('/storage/profile/' . $user->photo) }} @endif"
-                        alt="Profile Picture">
+                        src="{{ $photo }}" alt="Profile Picture">
                 </div>
                 <button class="w-full h-14 mt-4 rounded-xl bg-orange-400 p-2" onclick="$('input[name=photo]').click()">
                     <h1 class="text-xl text-white font-semibold">Choose Photo</h1>

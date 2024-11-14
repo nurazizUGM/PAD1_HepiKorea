@@ -144,8 +144,13 @@
                                     class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                     aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                     <span class="sr-only">Open user menu</span>
-                                    <img class="w-8 h-8 rounded-full"
-                                        src="{{ asset('img/example/admin_order_img_user.png') }}" alt="user photo">
+                                    @php
+                                        $photo = auth()->user()->photo;
+                                        $photo = $photo
+                                            ? asset('storage/' . $photo)
+                                            : 'img/example/admin_order_img_user.png';
+                                    @endphp
+                                    <img class="w-8 h-8 rounded-full" src="{{ asset($photo) }}" alt="user photo">
                                 </button>
                             </div>
                             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"

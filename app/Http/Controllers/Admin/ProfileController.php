@@ -59,14 +59,12 @@ class ProfileController extends Controller
         }
 
         if ($request->hasFile('photo')) {
-            $photo = $request->file('photo');
-            $filename = Uuid::uuid4() . '.' . $photo->getClientOriginalExtension();
-            $photo->storeAs('public/profile', $filename);
-
-            if ($user->photo && Storage::exists('public/profile/' . $user->photo)) {
-                Storage::delete('public/profile/' . $user->photo);
+            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+                Storage::disk('public')->delete($user->photo);
             }
-            $data['photo'] = $filename;
+            $photo = $request->file('photo');
+            $filename = $photo->hashName();
+            $data['photo'] = $photo->storeAs('profile', $filename, 'public');
         }
 
         $user->update($data);
