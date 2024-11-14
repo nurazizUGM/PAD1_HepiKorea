@@ -118,23 +118,36 @@
                             </div>
                             <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
                                 id="dropdown-user">
-                                <div class="px-4 py-3" role="none">
-                                    <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                        namenamename
-                                    </p>
-                                    <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                                        role="none">
-                                        emailemail@gmail.com
-                                    </p>
-                                </div>
                                 <ul class="py-1" role="none">
                                     <li>
                                         <a href="{{ route('admin.profile.user') }}"
-                                            class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Profile</a>
+                                            class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
+                                            role="menuitem">
+                                            <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}"
+                                                alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
+                                            <p class="ml-2 group-hover:text-orange-400">Profile</p>
+                                        </a>
                                         <a href="{{ route('admin.profile.setting') }}"
-                                            class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                            role="menuitem">Business Preference</a>
+                                            class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
+                                            role="menuitem">
+                                            <img src="{{ asset('img/assets/icon/icon_address.svg') }}" alt=""
+                                                class="w-5 h-5 grayscale group-hover:grayscale-0">
+                                            <p class="ml-2 group-hover:text-orange-400">Address</p>
+                                        </a>
+                                        <a href="{{ route('admin.profile.setting') }}"
+                                            class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
+                                            role="menuitem">
+                                            <img src="{{ asset('img/assets/icon/icon_history.svg') }}" alt=""
+                                                class="w-6 h-6 grayscale group-hover:grayscale-0">
+                                            <p class="ml-2 group-hover:text-orange-400">History</p>
+                                        </a>
+                                        <a href="{{ route('admin.profile.setting') }}"
+                                            class="flex flex-row items-center px-5 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
+                                            role="menuitem">
+                                            <img src="{{ asset('img/assets/icon/icon_dashboard_logout.svg') }}"
+                                                alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
+                                            <p class="ml-2 group-hover:text-[#FF0000]">Logout</p>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
