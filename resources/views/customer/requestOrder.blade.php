@@ -131,10 +131,11 @@
                             <h1 class="text-xl font-medium text-[#B7B7B7] mr-auto">3x</h1>
                             {{-- product price total --}}
                             <h1 class="text-xl font-semibold text-orange-400 mx-auto">Rp 72.000.000,-</h1>
-                            <a href=""
+                            <button href=""
                                 class="bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 p-1 rounded-md"><img
                                     src="{{ asset('img/assets/icon/icon_requestOrder_trashcan.svg') }}" alt=""
-                                    class="w-6 h-6"></a>
+                                    class="w-6 h-6" data-modal-target="confirmation-delete-modal"
+                                    data-modal-toggle="confirmation-delete-modal"></button>
                         </div>
                         <div class="w-full h-full flex flex-col mt-auto">
                             {{-- text Note --}}
@@ -157,7 +158,8 @@
             <form action="" class="w-full h-fit flex flex-col text-orange-400 font-semibold text-xl">
                 <label for="">Product Name</label>
                 {{-- input product name --}}
-                <input type="text" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
+                <input type="text" name="" id=""
+                    class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Product Photo</label>
                 <!-- input file image -->
                 <div class="relative w-full my-2" onclick="$(this).find('input[type=file]').click()">
@@ -174,22 +176,84 @@
                 </div>
                 <label for="">Product Link</label>
                 {{-- input product link --}}
-                <input type="text" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
+                <input type="text" name="" id=""
+                    class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Price</label>
                 {{-- input price --}}
-                <input type="number" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
+                <input type="number" name="" id=""
+                    class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Quantity</label>
                 {{-- input quantity --}}
-                <input type="number" name="" id="" class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
+                <input type="number" name="" id=""
+                    class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Note</label>
                 {{-- input note --}}
-                <textarea name="" id="" cols="30" rows="10" class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
-                <button type="submit" class="text-white bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
+                <textarea name="" id="" cols="30" rows="10"
+                    class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
+                <button type="submit"
+                    class="text-white bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
             </form>
         </div>
         {{-- end of request order form --}}
     </div>
 
     {{-- end of step pemesanan & form customer details --}}
+
+
+    {{-- MODALS FOR REQUEST ORDER --}}
+
+    {{-- delete confirmation modal --}}
+    <div id="confirmation-delete-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-fit md:inset-0 max-h-full">
+        <div class="relative p-4 w-fit max-w-5xl max-h-full my-56">
+            <!-- Modal content -->
+            <div class="bg-white w-[33vw] h-auto rounded-[30px] shadow">
+                <div class="relative w-full h-full flex flex-row">
+                    <div class="w-full h-full flex flex-col px-10 py-10">
+                        <img src="{{ asset('img/assets/icon/icon_warning.svg') }}" alt="icon_warning"
+                            class="w-16 h-16 mx-auto">
+                        <p class="text-[#376F7E] font-medium text-xl mx-auto mt-2">Are you sure?</p>
+                        <p class="text-[#B7B7B7] font-medium text-xs mx-auto mt-6">You won’t be able to revert
+                            this!</p>
+                        <div class="w-full h-full mt-6 flex flex-row justify-center">
+                            <button
+                                class="w-44 h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-lg font-semibold"
+                                data-modal-hide="confirmation-delete-modal" data-modal-target="success-delete-modal"
+                                data-modal-toggle="success-delete-modal">Yes, Delete it!</button>
+                            {{-- success-delete-modal --}}
+                            <button
+                                class="w-44 h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-lg font-semibold ml-2"
+                                data-modal-hide="confirmation-delete-modal">Cancel</button>
+                        </div>
+                    </div>
+                    {{-- end of modal content --}}
+                </div>
+            </div>
+            <!-- end of modal content -->
+        </div>
+    </div>
+    {{-- end of delete confirmation modal --}}
+
+    {{-- success delete modal --}}
+    <div id="success-delete-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-fit max-h-full">
+        <div class="relative p-4 w-fit max-w-5xl max-h-full mt-56">
+            <!-- Modal content -->
+            <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+                <div class="relative w-full h-full flex flex-row">
+                    <div class="w-full h-full flex flex-col p-14">
+                        <h1 class="text-black text-xl font-medium mx-auto">Successfully Deleted!</h1>
+                        <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                            class="w-24 h-24 mx-auto mt-6">
+                    </div>
+                    {{-- end of modal content --}}
+                </div>
+            </div>
+            <!-- end of modal content -->
+        </div>
+    </div>
+    {{-- end of success delete modal --}}
+
+    {{-- end of MODALS FOR REQUEST ORDER --}}
 
 @endsection

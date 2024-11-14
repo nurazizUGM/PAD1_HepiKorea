@@ -84,10 +84,12 @@
                                     {{-- two button container --}}
                                     <div class="w-1/2 flex flex-row justify-center items-center">
                                         <button
-                                            class="w-5/12 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3">Pay
+                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                            data-modal-target="payment-modal"
+                                            data-modal-toggle="payment-modal">Pay
                                             Product</button>
                                         <button
-                                            class="w-5/12 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
+                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
                                     </div>
                                 </div>
                             </div>
@@ -618,7 +620,7 @@
             </div>
         </div>
         {{-- end of payment modal --}}
-        
+
         {{-- QR payment modal --}}
         <div id="qr-payment-modal" tabindex="-1" aria-hidden="true"
             class="hidden overflow-y-auto no-scrollbar overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -657,8 +659,9 @@
                                         14 September 2024 00:00</p>
                                 </div>
                             </div>
-                            
-                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt="" class="mx-auto w-52 object-contain">
+
+                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt=""
+                                class="mx-auto w-52 object-contain">
 
                             {{-- title instructions --}}
                             <h2 class="text-black font-bold text-base mt-6">mBanking Transfer Instructions</h2>
@@ -681,7 +684,7 @@
                             </p>
                             <button
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
-                                data-modal-hide="payment-modal" data-modal-target="choose-payment-modal"
+                                data-modal-hide="qr-payment-modal" data-modal-target="choose-payment-modal"
                                 data-modal-toggle="choose-payment-modal">Change</button>
                         </div>
                         {{-- end of modal content --}}
