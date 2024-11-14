@@ -27,7 +27,7 @@
             {{-- this div for extra space --}}
             <div class="w-[5%] h-full text-transparent">.</div>
             {{-- product detail texts container --}}
-            <div class="w-[60%] h-full flex-col px-8 py-4 rounded-2xl">
+            <div class="w-[60%] h-full flex-col px-8 pt-4 pb-8 rounded-2xl">
                 {{-- rating container --}}
                 <div class="w-full flex flex-row">
                     {{-- star and number --}}
@@ -48,31 +48,41 @@
                 {{-- product Price --}}
                 <h1 class="text-orange-400 font-bold text-4xl text-left mt-4">Rp8.000.000 - Rp 9.000.000</h1>
 
-                {{-- idk bagian yang kurang --}}
-                <div class="w-full mt-10">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Libero itaque rerum unde velit nostrum
-                    debitis, at architecto est autem quia deserunt alias laudantium quas sed ad quis vitae magni saepe.
-                    Nostrum, cum eius minus doloremque quibusdam consequuntur saepe voluptate beatae fugit obcaecati
-                    similique exercitationem nobis sint fuga repellat inventore dolores placeat tempore pariatur! Minus esse
-                    nesciunt sunt excepturi nam veniam?
-                    Dolore architecto tempore cupiditate sit nulla facere ratione nisi sapiente iste, rem autem mollitia,
-                    recusandae ea nemo repudiandae dolorem voluptatum et. Eligendi quo debitis repellendus, nesciunt ex
-                    culpa exercitationem velit!
-                    Eligendi maiores omnis harum quis blanditiis enim distinctio eaque ipsam quidem dicta recusandae
-                    voluptates ipsa iusto, dolorum ullam id quo iste nihil mollitia repudiandae error fugiat natus tenetur!
-                    Itaque, porro.
-                    Ea consectetur, neque totam, eligendi rerum molestias architecto ducimus magnam alias explicabo rem
-                    natus repellendus consequatur minima repellat et, nesciunt quidem ex libero? Quam temporibus voluptatum
-                    dicta dolores harum obcaecati!
+                {{-- icons and text of HepiKorea Values --}}
+                <div class="w-full mt-12 flex flex-col gap-y-8">
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_plane.svg')}}" class="w-6 h-6" alt="">
+                        <p class="text-black font-normal ml-2">Ships Straight</p>
+                    </div>
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_box.svg')}}" class="w-6 h-6" alt="">
+                        <p class="text-black font-normal ml-2">Ships straight from Korea to your address</p>
+                    </div>
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_fasttruck.svg')}}" class="w-6 h-6" alt="">
+                        <p class="text-black font-normal ml-2">Quick Delivery</p>
+                    </div>
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_fasttime.svg')}}" class="w-6 h-6 my-auto" alt="">
+                        <p class="text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days <br> post-shipment</p>
+                    </div>
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_heart.svg')}}" class="w-6 h-6" alt="">
+                        <p class="text-black font-normal ml-2">100% Authentic</p>
+                    </div>
+                    <div class="flex flex-row">
+                        <img src="{{asset('img/assets/icon/icon_shield.svg')}}" class="w-6 h-6" alt="">
+                        <p class="text-black font-normal ml-2">Reliable payment methods</p>
+                    </div>
                 </div>
                 {{--  --}}
 
                 {{-- quantity --}}
-                <div class="w-full h-fit flex flex-row mt-8">
-                    <div class="w-[30%] h-full text-xl">
+                <div class="w-full h-fit flex flex-row mt-10 mx-auto">
+                    <div class="w-[10%] h-full text-xl">
                         Qty
                     </div>
-                    <div class="w-[70%] h-full flex flex-row">
+                    <div class="w-[90%] h-full flex flex-row">
                         <div
                             class="border border-black rounded-full py-1 px-3.5 text-2xl cursor-pointer hover:bg-slate-100">
                             -</div>
@@ -84,7 +94,7 @@
                 {{-- end of quantity --}}
 
                 {{-- two button --}}
-                <div class="w-full h-fit flex flex-row mt-24">
+                <div class="w-full h-fit flex flex-row mt-10">
                     <button
                         class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
                         now</button>
@@ -183,7 +193,7 @@
                         <div class="w-[30%] w-max-[30%] flex flex-wrap gap-x-2 gap-y-1 h-fit my-auto">
                             @for ($i = 0; $i < 3; $i++)
                                 <img src="{{ asset('img/example/example_phone.png') }}" alt=""
-                                    class="w-24 h-24 rounded-lg object-contain border border-black bg-white cursor-pointer"
+                                    class="w-24 h-24 rounded-lg object-contain border-2 border-black bg-white cursor-pointer"
                                     data-modal-target="image-review-view-modal" data-modal-toggle="image-review-view-modal">
                             @endfor
                         </div>
