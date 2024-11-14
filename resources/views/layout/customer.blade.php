@@ -34,7 +34,7 @@
                         </svg>
                     </button>
                     <!-- title navbar -->
-                    <a href="#" class="flex ms-6 md:me-24">
+                    <a href="{{ route('home') }}" class="flex ms-6 md:me-24">
                         <span
                             class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"><span
                                 class="text-orange-400">Hepi</span>Korea</span>
@@ -90,49 +90,101 @@
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt=""
                             class="w-5 h-5">
                     </a>
-                    <a href="" class="relative">
-                        {{-- notification icon --}}
-                        <img src="{{ asset('img/assets/icon/icon_customer_notification.svg') }}" alt=""
-                            class="w-4 h-5">
-                        {{-- notification dot --}}
-                        <div class="absolute bg-[#FF2E00] text-transparent rounded-full w-1.5 h-1.5 top-0 right-0">.</div>
-                    </a>
+                    @if (auth()->check())
+                        @php
+                            $notifications = auth()->user()->notifications->where('is_read', false);
+                        @endphp
+                        <a href="#" class="relative" aria-expanded="false"
+                            data-dropdown-toggle="dropdown-notification">
+                            {{-- notification icon --}}
+                            <img src="{{ asset('img/assets/icon/icon_customer_notification.svg') }}" alt=""
+                                class="w-4 h-5">
+
+                            {{-- notification dot --}}
+                            @if ($notifications->count() > 0)
+                                <span
+                                    class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{ $notifications->count() }}</span>
+                                {{-- <div class="absolute bg-[#FF2E00] text-transparent rounded-full w-1.5 h-1.5 top-0 right-0">.
+                                        </div> --}}
+                            @endif
+                        </a>
+                        @if ($notifications->count() > 0)
+                            <div class="w-[30rem] z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
+                                id="dropdown-notification">
+                                <div class="px-4 py-3" role="none">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white" role="none">
+                                        Notifications
+                                    </p>
+                                </div>
+                                <ul class="py-1" role="none">
+                                    <li>
+                                        @foreach ($notifications as $notification)
+                                            <a href=""
+                                                class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">{{ $notification->title }}</a>
+                                        @endforeach
+                                    @else
+                                        <a href=""
+                                            class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem"> - </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @endif
+                    @endif
                 </div>
                 {{-- end of cart and notification container --}}
 
                 {{--  --}}
                 <div class="flex items-center">
                     <div class="flex items-center ms-3">
-                        <div>
-                            <button type="button"
-                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
-                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
-                                <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full"
-                                    src="{{ asset('img/example/admin_order_img_user.png') }}" alt="user photo">
-                            </button>
-                        </div>
-                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
-                            id="dropdown-user">
-                            <div class="px-4 py-3" role="none">
-                                <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    namenamename
-                                </p>
-                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    emailemail@gmail.com
-                                </p>
+                        @if (auth()->check())
+                            <div>
+                                <button type="button"
+                                    class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                    aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img class="w-8 h-8 rounded-full"
+                                        src="{{ asset('img/example/admin_order_img_user.png') }}" alt="user photo">
+                                </button>
                             </div>
-                            <ul class="py-1" role="none">
-                                <li>
-                                    <a href="{{ route('admin.profile.user') }}"
-                                        class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Profile</a>
-                                    <a href="{{ route('admin.profile.setting') }}"
-                                        class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                        role="menuitem">Business Preference</a>
-                                </li>
-                            </ul>
-                        </div>
+                            <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
+                                id="dropdown-user">
+                                <div class="px-4 py-3" role="none">
+                                    <p class="text-sm font-medium text-gray-900 dark:text-white" role="none">
+                                        {{ auth()->user()->fullname }}
+                                    </p>
+                                    <p class="text-sm text-gray-900 truncate dark:text-gray-300" role="none">
+                                        {{ auth()->user()->email }}
+                                    </p>
+                                </div>
+                                <ul class="py-1" role="none">
+                                    <li>
+                                        @if (auth()->user()->role == \App\Enums\Role::ADMIN)
+                                            <a href="{{ route('admin.dashboard') }}"
+                                                class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Dashboard</a>
+                                            <a href="{{ route('admin.profile.user') }}"
+                                                class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Profile</a>
+                                            <a href="{{ route('admin.profile.setting') }}"
+                                                class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Business Preference</a>
+                                        @else
+                                            <a href="{{ route('auth.profile') }}"
+                                                class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">Profile</a>
+                                        @endif
+                                        <a href="{{ route('auth.logout') }}"
+                                            class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">Logout</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        @else
+                            <a type="button" href="{{ route('auth.login') }}"
+                                class="cursor-pointer text-white bg-orange-400 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 dark:bg-orange-400 dark:hover:bg-orange-400 dark:focus:ring-orange-800">Login</a>
+                        @endif
                     </div>
                 </div>
                 {{--  --}}
@@ -170,7 +222,8 @@
             <h1 class="text-lg font-medium mb-4">ABOUT</h1>
             <p class="text-justify font-medium text-base">Lorem ipsum dolor sit, amet consectetur adipisicing elit.
                 Facilis, necessitatibus nisi. Possimus incidunt aut
-                suscipit saepe accusantium, voluptas aperiam distinctio ratione nisi deleniti quis, dolorem, necessitatibus
+                suscipit saepe accusantium, voluptas aperiam distinctio ratione nisi deleniti quis, dolorem,
+                necessitatibus
                 officiis. Totam, obcaecati praesentium.</p>
         </div>
         <div class="w-[25%] w-max-[25%] h-full flex flex-col flex-wrap pl-8">
@@ -184,6 +237,61 @@
 
     <p class="text-center">&copy; 2024 HepiKorea. All rights reserved</p>
 
+    @if (config()->get('app.env') == 'local')
+        @if ($errors->any())
+            @foreach ($errors->all() as $error)
+                <div id="alert-2"
+                    class="absolute top-8 right-8 z-[51] flex items-center p-4 mb-4 text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"
+                    role="alert">
+                    <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                        fill="currentColor" viewBox="0 0 20 20">
+                        <path
+                            d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                    </svg>
+                    <span class="sr-only">Info</span>
+                    <div class="ms-3 text-sm font-medium">
+                        {{ $error }}
+                    </div>
+                    <button type="button"
+                        class="ms-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+                        data-dismiss-target="#alert-2" aria-label="Close">
+                        <span class="sr-only">Close</span>
+                        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                    </button>
+                </div>
+            @endforeach
+        @endif
+        @if ($message = Session::get('message') ?? Session::get('success'))
+            <div id="alert-1"
+                class="absolute top-8 right-8 z-[51] flex items-center p-4 mb-4 text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400"
+                role="alert">
+                <svg class="flex-shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                    fill="currentColor" viewBox="0 0 20 20">
+                    <path
+                        d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div class="ms-3 text-sm font-medium">
+                    {{ $message }}
+                </div>
+                <button type="button"
+                    class="ms-auto -mx-1.5 -my-1.5 bg-blue-50 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex items-center justify-center h-8 w-8 dark:bg-gray-800 dark:text-blue-400 dark:hover:bg-gray-700"
+                    data-dismiss-target="#alert-1" aria-label="Close">
+                    <span class="sr-only">Close</span>
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                </button>
+            </div>
+        @endif
+    @endif
+    @yield('script')
 </body>
 
 </html>
