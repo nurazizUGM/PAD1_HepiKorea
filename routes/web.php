@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\FaqController;
 use Illuminate\Support\Facades\Route;
 
@@ -23,9 +24,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'auth'], function () {
     Route::middleware('guest')->group(function () {
@@ -49,7 +48,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::controller(ProfileController::class)->group(function () {
         Route::get('profile', 'index')->name('profile.user');
         Route::patch('profile', 'updateProfile')->name('profile.user');
@@ -101,14 +100,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('/', 'index')->name('index');
     });
 });
-
-Route::get('/admin', function () {
-    return 'ok';
-})->middleware('admin');
-
-Route::get('/user', function () {
-    return 'ok';
-})->middleware('auth');
 
 Route::get('/view/{view}', function ($view) {
     return view($view);

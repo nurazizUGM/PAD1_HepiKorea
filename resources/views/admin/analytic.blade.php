@@ -93,7 +93,8 @@
         <!-- end of chart Content -->
 
         <!-- Table Content -->
-        <div class="hidden px-5 pt-2 rounded-lg h-[80vh]" id="table" role="tabpanel" aria-labelledby="table-tab">
+        <div class="hidden px-5 pt-2 rounded-lg h-[85vh] flex flex-col" id="table" role="tabpanel"
+            aria-labelledby="table-tab">
             <div class="flex justify-between items-center mb-2">
                 <h1 class="text-black font-semibold text-xl ml-1">Orders</h1>
                 <div class="flex">
@@ -117,17 +118,9 @@
                             Search
                         </button>
                     </form>
-                    <button onclick="window.location.href='{{ route('admin.analytic.export') }}'"
-                        class="font-semibold text-white bg-orange-400 hover:bg-orange-500 px-4 py-2 ml-2 rounded-full inline-flex align-middle">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 mr-1" width="1.13em" height="1em"
-                            viewBox="0 0 576 512">
-                            <path fill="currentColor"
-                                d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v128H216c-13.3 0-24 10.7-24 24s10.7 24 24 24h168v112c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm384 272v-48h110.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39zm0-208H256V0z" />
-                        </svg>
-                        Export</button>
                 </div>
             </div>
-            <div class="w-full h-[98%] rounded-xl bg-white px-3 py-3 overflow-y-scroll no-scrollbar">
+            <div class="w-full h-auto mb-3 rounded-xl bg-white overflow-y-scroll no-scrollbar">
                 {{-- start of table --}}
                 <table class="w-full rtl:text-right rounded-xl overflow-hidden">
                     {{-- table head --}}
@@ -201,6 +194,15 @@
                 </table>
                 {{-- end of table --}}
             </div>
+
+            <button onclick="window.location.href='{{ route('admin.analytic.export') }}'"
+                class="font-semibold text-white bg-orange-400 hover:bg-orange-500 px-4 py-2 ml-2 rounded-full inline-flex align-middle fixed bottom-8 right-10">
+                <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 mr-1" width="1.13em" height="1em"
+                    viewBox="0 0 576 512">
+                    <path fill="currentColor"
+                        d="M0 64C0 28.7 28.7 0 64 0h160v128c0 17.7 14.3 32 32 32h128v128H216c-13.3 0-24 10.7-24 24s10.7 24 24 24h168v112c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zm384 272v-48h110.1l-39-39c-9.4-9.4-9.4-24.6 0-33.9s24.6-9.4 33.9 0l80 80c9.4 9.4 9.4 24.6 0 33.9l-80 80c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l39-39zm0-208H256V0z" />
+                </svg>
+                Export</button>
         </div>
         {{-- end of table content --}}
     </div>

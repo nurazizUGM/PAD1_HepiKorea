@@ -63,7 +63,7 @@ class OrderController extends Controller
             $orders = $orders->whereMonth('created_at', $m);
         }
 
-        $orders = $orders->with(['user'])->orderBy('created_at', 'desc')->get();
+        $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])->orderBy('created_at', 'desc')->get();
 
         return view('admin.order.index', compact('tab', 'years', 'year', 'months', 'orders'));
     }

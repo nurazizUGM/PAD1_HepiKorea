@@ -10,7 +10,6 @@
 @section('content')
     {{-- homapege content container --}}
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
-
         {{-- start of carousel --}}
         <div id="default-carousel" class="relative w-full rounded-t-3xl" data-carousel="slide">
             <!-- Carousel wrapper -->
@@ -120,48 +119,14 @@
             {{-- end of category text --}}
 
             {{-- category container --}}
-            <div class="grid grid-cols-4 grid-rows-2 gap-x-32 gap-y-20 mt-14">
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
-                <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
-                    <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                        class="w-40 h-40 mx-auto">
-                    <h2 class="text-black font-semibold">Fashion</h2>
-                </div>
+            <div class="grid grid-cols-4 gap-x-32 gap-y-20 mt-14">
+                @foreach ($categories as $category)
+                    <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                            class="w-40 h-40 mx-auto">
+                        <h2 class="text-black font-semibold text-ellipsis overflow-hidden">{{ $category->name }}</h2>
+                    </div>
+                @endforeach
             </div>
             {{-- end of category container --}}
 
@@ -190,7 +155,7 @@
                     </button>
 
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
-                        @for ($i = 0; $i < 12; $i++)
+                        @foreach ($newProducts as $product)
                             {{-- card product --}}
                             <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
                                 {{-- image product --}}
@@ -199,18 +164,25 @@
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
-                                    <h1 class="text-sm font-semibold">Korean Fashion Set</h1>
+                                    <h1 class="text-sm font-semibold text-nowrap text-ellipsis overflow-hidden">
+                                        {{ $product->name }}
+                                    </h1>
                                     {{-- product type --}}
-                                    <h2 class="text-xs font-semibold text-black text-opacity-50">Blouse</h2>
+                                    <h2
+                                        class="text-xs font-semibold text-black text-opacity-50 text-ellipsis overflow-hidden">
+                                        {{ $product->category }}
+                                    </h2>
                                     {{-- product price --}}
-                                    <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
+                                    <h3
+                                        class="text-xs ml-auto text-orange-400 font-semibold text-ellipsis overflow-hidden">
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
                                     {{-- Buy product button --}}
                                     <a href="#" class="ml-auto"><button
                                             class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -241,7 +213,7 @@
                     </button>
 
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
-                        @for ($i = 0; $i < 12; $i++)
+                        @foreach ($popularProducts as $product)
                             {{-- card product --}}
                             <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
                                 {{-- image product --}}
@@ -250,18 +222,24 @@
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
-                                    <h1 class="text-sm font-semibold">Korean Fashion Set</h1>
+                                    <h1 class="text-sm font-semibold text-ellipsis overflow-hidden">{{ $product->name }}
+                                    </h1>
                                     {{-- product type --}}
-                                    <h2 class="text-xs font-semibold text-black text-opacity-50">Blouse</h2>
+                                    <h2
+                                        class="text-xs font-semibold text-black text-opacity-50 text-ellipsis overflow-hidden">
+                                        {{ $product->category }}
+                                    </h2>
                                     {{-- product price --}}
-                                    <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp 300.000,-</h3>
+                                    <h3
+                                        class="text-xs ml-auto text-orange-400 font-semibold text-ellipsis overflow-hidden">
+                                        Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
                                     {{-- Buy product button --}}
                                     <a href="#" class="ml-auto"><button
                                             class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
-                        @endfor
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -271,7 +249,7 @@
     </div>
     {{-- end of homapege content container --}}
 
-    
+
 
     <script>
         const newArrivalContainer = document.getElementById('new-arrival-container');
