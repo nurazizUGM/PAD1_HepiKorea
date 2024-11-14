@@ -93,6 +93,8 @@
                     @if (auth()->check())
                         @php
                             $notifications = auth()->user()->notifications->where('is_read', false);
+                            $notificationCount = $notifications->count();
+                            $notifications = $notifications->sortByDesc('created_at')->take(5);
                         @endphp
                         <a href="#" class="relative" aria-expanded="false"
                             data-dropdown-toggle="dropdown-notification">
@@ -101,15 +103,15 @@
                                 class="w-4 h-5">
 
                             {{-- notification dot --}}
-                            @if ($notifications->count() > 0)
+                            @if ($notificationCount > 0)
                                 <span
-                                    class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{ $notifications->count() }}</span>
+                                    class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{ $notificationCount }}</span>
                                 {{-- <div class="absolute bg-[#FF2E00] text-transparent rounded-full w-1.5 h-1.5 top-0 right-0">.
                                         </div> --}}
                             @endif
                         </a>
-                        @if ($notifications->count() > 0)
-                            <div class="w-[30rem] z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
+                        @if ($notificationCount > 0)
+                            <div class="w-[30rem] z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl px-3"
                                 id="dropdown-notification">
                                 <div class="px-4 py-3" role="none">
                                     <p class="text-sm font-medium text-gray-900 dark:text-white" role="none">
@@ -123,6 +125,11 @@
                                                 class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                                 role="menuitem">{{ $notification->title }}</a>
                                         @endforeach
+                                        @if ($notificationCount > 5)
+                                            <a href="#"
+                                                class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                                role="menuitem">View all</a>
+                                        @endif
                                     </li>
                                 </ul>
                             </div>
