@@ -68,12 +68,12 @@
 
             <!-- Pop Up Add Address-->
             <div id="address-add-modal" tabindex="-1" aria-hidden="true"
-                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-[999999] justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
                 <div class="relative p-[0.1rem] w-fit max-w-4xl max-h-full">
                     <!-- Modal content -->
                     <div class="bg-white w-[55vw] rounded-lg shadow overflow-y-auto px-10 py-5">
                         <div class="w-full h-full flex flex-col">
-                            <h1 class="text-black font-bold text-2xl p-5 pb-2">New Address</h1>
+                            <h1 class="text-black font-bold text-2xl p-5 pb-2 ml-6">New Address</h1>
                             <button type="button"
                                 class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
                                 data-modal-hide="address-add-modal">
@@ -163,7 +163,7 @@
                     <!-- Modal content -->
                     <div class="bg-white w-[55vw] rounded-lg shadow overflow-y-auto px-10 py-5">
                         <div class="w-full h-full flex flex-col">
-                            <h1 class="text-black font-bold text-2xl p-5 pb-2">Edit Address</h1>
+                            <h1 class="text-black font-bold text-2xl p-5 pb-2 ml-6">Edit Address</h1>
                             <button type="button"
                                 class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-6"
                                 data-modal-hide="address-edit-modal">

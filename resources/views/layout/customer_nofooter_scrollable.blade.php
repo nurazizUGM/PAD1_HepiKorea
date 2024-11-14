@@ -18,7 +18,7 @@
 <body class="font-poppins w-screen h-screen overflow-x-hidden ">
     <div class="w-full h-full overflow-y-scroll no-scrollbar">
         {{-- start of navbar --}}
-        <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 shadow-lg">
+        <nav class="fixed top-0 z-40 w-full bg-white border-b border-gray-200 shadow-lg">
             <div class="px-5 py-3 lg:px-5 lg:pl-3">
                 <div class="flex items-center justify-between align-middle">
                     {{--  --}}
