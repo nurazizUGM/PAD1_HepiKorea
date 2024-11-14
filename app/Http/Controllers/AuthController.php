@@ -64,11 +64,14 @@ class AuthController extends Controller
     public function logout()
     {
         Auth::logout();
-        return redirect()->intended();
+        Session::invalidate();
+        return redirect()->route('home');
     }
     public function google()
     {
-        return Socialite::driver('google')->with([
+        /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
+        $driver = Socialite::driver('google');
+        return $driver->with([
             'redirect_uri' => route('auth.callback'),
         ])->redirect();
     }
