@@ -46,7 +46,7 @@
                 <h1 class="text-black text-opacity-50 font-bold text-3xl text-left mt-8">Samsung S24 Ultra</h1>
 
                 {{-- product Price --}}
-                <h1 class="text-orange-400 font-bold text-4xl text-left mt-4">Rp8.000.000 - Rp 9.000.000</h1>
+                <h1 class="text-[#3E6E7A] font-bold text-3xl text-left mt-6">Rp 21.000.000 - Rp 24.000.000</h1>
 
                 {{-- icons and text of HepiKorea Values --}}
                 <div class="w-full mt-12 flex flex-col gap-y-8">
