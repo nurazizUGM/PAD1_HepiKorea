@@ -216,6 +216,10 @@
                     @endfor
                     <button data-modal-target="payment-modal" data-modal-toggle="payment-modal">test
                         payment</button>
+                    <button data-modal-target="qr-payment-modal" data-modal-toggle="qr-payment-modal">test qr
+                        payment</button>
+                    <button data-modal-target="payment-success-modal" data-modal-toggle="payment-success-modal">test
+                        payment success</button>
                 </div>
             </div>
             {{-- end of SENT CONTENT --}}
@@ -524,7 +528,7 @@
                         <!-- x button (exit modal) -->
                         <button type="button"
                             class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
-                            data-modal-hide="change-address-modal">
+                            data-modal-hide="payment-modal">
                             <p class="m-auto text-white text-base">X</p>
                         </button>
 
@@ -614,7 +618,100 @@
             </div>
         </div>
         {{-- end of payment modal --}}
+        
+        {{-- QR payment modal --}}
+        <div id="qr-payment-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto no-scrollbar overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-fit max-w-6xl max-h-full mt-20">
+                <!-- Modal content -->
+                <div class="bg-white w-[50vw] h-auto rounded-[30px] shadow">
+                    <div class="relative w-full h-full flex flex-row">
+                        <!-- x button (exit modal) -->
+                        <button type="button"
+                            class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
+                            data-modal-hide="qr-payment-modal">
+                            <p class="m-auto text-white text-base">X</p>
+                        </button>
 
+                        {{-- modal content --}}
+                        <div class="w-full h-full flex flex-col px-14 pt-10 pb-2">
+                            <h1 class="text-black font-bold text-2xl">Payment</h1>
+                            <div class="w-full h-fit flex flex-row mt-3">
+                                <div class="w-[70%]">
+                                    <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Total Payment</p>
+                                </div>
+                                <div class="w-[30%]">
+                                    {{-- total payment price --}}
+                                    <p class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 25.800.000,-</p>
+                                </div>
+                            </div>
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <div class="w-[70%]">
+                                    <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Pay In</p>
+                                </div>
+                                {{-- pay in (time duration to pay) --}}
+                                <div class="w-[30%] h-fit flex flex-col">
+                                    <p class="text-[#3E6E7A] text-sm font-bold">24 Hours</p>
+                                    {{-- pay time deadline --}}
+                                    <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>
+                                        14 September 2024 00:00</p>
+                                </div>
+                            </div>
+                            
+                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt="" class="mx-auto w-52 object-contain">
+
+                            {{-- title instructions --}}
+                            <h2 class="text-black font-bold text-base mt-6">mBanking Transfer Instructions</h2>
+                            {{-- instructions --}}
+                            <p class="text-[#898383] font-bold text-sm mt-6">
+                                1. Masuk ke menu Mobile Banking BRI. Kemudian, pilih Pembayaran > BRIVA. <br>
+                                2. Masukkan Nomor BRIVA 128 081215559315. <br>
+                                3. Masukkan PIN Anda kemudian pilih Send. Apabila pesan konfirmasi untuk <br>
+                                4. transaksi menggunakan SMS muncul, pilih OK. Status transaksi akan <br>
+                                5. dikirimkan melalui SMS dan dapat digunakan sebagai bukti pembayaran.
+                            </p>
+
+                            {{-- title atm instructions --}}
+                            <h2 class="text-black font-bold text-base mt-4">ATM Transfer Instructions</h2>
+                            <p class="text-[#898383] font-bold text-sm mt-6">
+                                1. Pilih Transaksi Lain > Pembayaran > Lainnya > BRIVA. <br>
+                                2. Masukkan Nomor BRIVA 128 081215559315 kemudian pilih Benar. <br>
+                                3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
+                                4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
+                            </p>
+                            <button
+                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
+                                data-modal-hide="payment-modal" data-modal-target="choose-payment-modal"
+                                data-modal-toggle="choose-payment-modal">Change</button>
+                        </div>
+                        {{-- end of modal content --}}
+                    </div>
+                </div>
+                <!-- end of modal content -->
+            </div>
+        </div>
+        {{-- end of QR payment modal --}}
+
+
+        {{-- success review modal --}}
+        <div id="payment-success-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+                <!-- Modal content -->
+                <div class="bg-white w-[28vw] h-auto rounded-[30px] shadow">
+                    <div class="relative w-full h-full flex flex-row">
+                        <div class="w-full h-full flex flex-col p-14">
+                            <h1 class="text-black text-xl font-bold mx-auto">Payment Successful!</h1>
+                            <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                                class="w-24 h-24 mx-auto mt-6">
+                        </div>
+                        {{-- end of modal content --}}
+                    </div>
+                </div>
+                <!-- end of modal content -->
+            </div>
+        </div>
+        {{-- end of success review modal --}}
 
         {{-- end of MODALS FOR TRANSACTION HISTORY --}}
 
