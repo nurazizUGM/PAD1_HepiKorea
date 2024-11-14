@@ -323,7 +323,7 @@
                     <!-- end of modal content -->
                 </div>
             </div>
-            {{-- end of success delete modal --}}
+            {{-- end of success added modal --}}
             
             
             {{-- success edited modal --}}
@@ -344,7 +344,7 @@
                     <!-- end of modal content -->
                 </div>
             </div>
-            {{-- end of success delete modal --}}
+            {{-- end of success edited modal --}}
 
             {{-- end of MODALS FOR ADDRESS --}}
         </div>
