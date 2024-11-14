@@ -129,7 +129,7 @@
                                             <tr class="bg-white dark:bg-gray-800">
                                                 <td class="px-6 py-3"> <!-- Change here to span two columns -->
                                                     <textarea name="address" id="address" cols="20" rows="8"
-                                                        class="rounded-2xl w-full bg-white hover:bg-slate-50 border border-[#3E6E7A] pl-5 pr-4 cursor-pointer placeholder:text-orange-400 focus:border focus:border-[#3E6E7A] focus:outline-none focus:ring-0"
+                                                        class="text-orange-400 rounded-2xl w-full bg-white hover:bg-slate-50 border border-[#3E6E7A] pl-5 pr-4 cursor-pointer placeholder:text-orange-400 focus:border focus:border-[#3E6E7A] focus:outline-none focus:ring-0"
                                                         placeholder="Your Address" required></textarea>
                                                 </td>
                                             </tr>
@@ -219,7 +219,7 @@
                                             <tr class="bg-white dark:bg-gray-800">
                                                 <td class="px-6 py-3"> <!-- Change here to span two columns -->
                                                     <textarea name="address" id="address" cols="20" rows="8"
-                                                        class="rounded-2xl w-full bg-white hover:bg-slate-50 border border-[#3E6E7A] pl-5 pr-4 cursor-pointer placeholder:text-orange-400 focus:border focus:border-[#3E6E7A] focus:outline-none focus:ring-0"
+                                                        class="text-orange-400 rounded-2xl w-full bg-white hover:bg-slate-50 border border-[#3E6E7A] pl-5 pr-4 cursor-pointer placeholder:text-orange-400 focus:border focus:border-[#3E6E7A] focus:outline-none focus:ring-0"
                                                         placeholder="Your Address" required></textarea>
                                                 </td>
                                             </tr>
