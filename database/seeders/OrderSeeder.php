@@ -14,28 +14,27 @@ class OrderSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::transaction(function () {
+        DB::beginTransaction();
+        $orders = \Database\Factories\OrderFactory::new()->count(10)->create([
+            'type' => 'order',
+        ]);
 
-            foreach (\App\Models\User::where('role', Role::USER)->get() as $user) {
-                $user->orders()->saveMany(\Database\Factories\OrderFactory::new()->count(fake()->numberBetween(0, 2))->make([
-                    'user_id' => $user->id,
-                ]));
-            }
+        $customOrders = \Database\Factories\OrderFactory::new()->count(1)->create([
+            'type' => 'custom',
+        ]);
 
 
-            foreach (\App\Models\Order::all() as $order) {
-                if ($order->type === 'order') {
-                    $order->orderItems()->saveMany(\Database\Factories\OrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
-                        'order_id' => $order->id,
-                        'product_id' => \App\Models\Product::inRandomOrder()->first()->id,
-                    ]));
-                } else {
-                    $order->customOrderItems()->saveMany(\Database\Factories\CustomOrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
-                        'order_id' => $order->id,
-                    ]));
-                }
-            }
-            DB::commit();
-        });
+        foreach ($orders as $order) {
+            $order->orderItems()->saveMany(\Database\Factories\OrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
+                'order_id' => $order->id,
+                'product_id' => \App\Models\Product::inRandomOrder()->first()->id,
+            ]));
+        }
+        foreach ($customOrders as $customOrder) {
+            $customOrder->customOrderItems()->saveMany(\Database\Factories\CustomOrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
+                'order_id' => $order->id,
+            ]));
+        }
+        DB::commit();
     }
 }

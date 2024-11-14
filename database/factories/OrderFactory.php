@@ -19,8 +19,8 @@ class OrderFactory extends Factory
         return [
             'total_items_price' => $this->faker->randomNumber(7),
             'service_price' => $this->faker->randomNumber(7),
-            'status' => $this->faker->randomElement(\App\Models\Order::$status),
-            'type' => $this->faker->randomElement(['order', 'custom']),
+            'status' => $this->faker->randomElement(['unpaid', 'paid', 'processing', 'shipment_paid', 'sending', 'cancelled']),
+            'user_id' => $this->faker->randomElement(\App\Models\User::where('role', \App\Enums\Role::USER)->pluck('id')->toArray()),
         ];
     }
 }
