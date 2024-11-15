@@ -14,9 +14,9 @@
                     <p class="text-6xl font-bold">{{ $products }}</p>
                     <!-- product icon -->
                     <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
-                        class="h-12 w-12 grayscale">
+                        class="h-12 w-12">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
+                <div class="bg-[#376F7E] w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
                     Products
                 </div>
             </div>
@@ -27,9 +27,9 @@
                     <p class="text-6xl font-bold">{{ $orders }}</p>
                     <!-- Order icon -->
                     <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="Order Icon"
-                        class="h-12 w-12 grayscale">
+                        class="h-12 w-12">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
+                <div class="bg-[#376F7E] w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
                     Order
                 </div>
             </div>
@@ -40,9 +40,9 @@
                     <p class="text-6xl font-bold">{{ $customers }}</p>
                     <!-- Customer icon -->
                     <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}" alt="Customer Icon"
-                        class="h-12 w-12 grayscale">
+                        class="h-12 w-12">
                 </div>
-                <div class="bg-orange-400 w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
+                <div class="bg-[#376F7E] w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
                     Customer
                 </div>
             </div>
@@ -95,7 +95,7 @@
                         data: [45, 55],
                         backgroundColor: [
                             'rgb(217, 217, 217)',
-                            'rgb(255, 157, 102)'
+                            'rgb(55, 111, 126)'
                         ],
                         hoverOffset: 4
                     }]
@@ -131,13 +131,13 @@
                         label: 'percent',
                         data: [5, 5, 10, 10, 40, 10, 20],
                         backgroundColor: [
-                            'rgb(252, 132, 132)',
                             'rgb(246, 223, 170)',
-                            'rgb(256, 256, 256)',
-                            'rgb(217, 217, 217)',
-                            'rgb(255, 157, 102)',
-                            'rgb(248, 191, 45)',
-                            'rgb(255, 240, 107)',
+                            'rgb(255, 255, 255)',
+                            'rgb(49, 89, 100)',
+                            'rgb(55, 111, 126)',
+                            'rgb(61, 122, 138)',
+                            'rgb(69, 143, 162)',
+                            'rgb(79, 162, 184)',
                         ],
                         hoverOffset: 4
                     }]
