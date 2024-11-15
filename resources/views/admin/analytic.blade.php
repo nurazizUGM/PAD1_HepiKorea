@@ -59,11 +59,11 @@
                         <h1 class="text-center my-auto text-5xl font-semibold text-black text-opacity-50">550</h1>
                         <div class="flex flex-row">
                             <div class="flex flex-col mr-auto text-center">
-                                <p class="text-orange-400 text-md font-semibold">By User</p>
+                                <p class="text-[#376F7E] text-md font-semibold">By User</p>
                                 <p class="text-3xl font-semibold text-black text-opacity-50">320</p>
                             </div>
                             <div class="flex flex-col ml-auto text-center">
-                                <p class="text-orange-400 text-md font-semibold">By Guest</p>
+                                <p class="text-[#376F7E] text-md font-semibold">By Guest</p>
                                 <p class="text-3xl font-semibold text-black text-opacity-50">230</p>
                             </div>
                         </div>
@@ -111,7 +111,7 @@
 
                         <!-- Filter button -->
                         <button type="submit"
-                            class="inline-flex items-center pl-4 pr-6 py-2 font-semibold text-white bg-orange-400 hover:bg-orange-500 rounded-full -ml-20 z-10">
+                            class="inline-flex items-center pl-4 pr-6 py-2 font-semibold text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-full -ml-20 z-10">
                             <img class="w-4 h-4 mr-2"
                                 style="filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(107%) contrast(101%);"
                                 src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="">
@@ -124,7 +124,7 @@
                 {{-- start of table --}}
                 <table class="w-full rtl:text-right rounded-xl overflow-hidden">
                     {{-- table head --}}
-                    <thead class="bg-orange-400 rounded-lg text-white font-extralight">
+                    <thead class="bg-[#3E6E7A] rounded-lg text-white font-extralight">
                         <tr>
                             <th class="px-6 py-3 border-white border">No</th>
                             <th class="px-6 py-3 border-white border">Date</th>
@@ -196,7 +196,7 @@
             </div>
 
             <button onclick="window.location.href='{{ route('admin.analytic.export') }}'"
-                class="font-semibold text-white bg-orange-400 hover:bg-orange-500 px-4 py-2 ml-2 rounded-full inline-flex align-middle fixed bottom-8 right-10">
+                class="font-semibold text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] px-4 py-2 ml-2 rounded-full inline-flex align-middle fixed bottom-8 right-10">
                 <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 mr-1" width="1.13em" height="1em"
                     viewBox="0 0 576 512">
                     <path fill="currentColor"
@@ -206,6 +206,32 @@
         </div>
         {{-- end of table content --}}
     </div>
+
+
+    {{-- MODALS FOR ANALYTIC --}}
+
+    {{-- success export modal --}}
+    <div id="success-export-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+            <!-- Modal content -->
+            <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+                <div class="relative w-full h-full flex flex-row">
+                    <div class="w-full h-full flex flex-col p-14">
+                        <h1 class="text-black text-xl font-medium mx-auto">Your File Has Been Exported</h1>
+                        <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                            class="w-24 h-24 mx-auto mt-6">
+                    </div>
+                    {{-- end of modal content --}}
+                </div>
+            </div>
+            <!-- end of modal content -->
+        </div>
+    </div>
+    {{-- end of success export modal --}}
+
+    {{-- END OF MODALS FOR ANALYTIC --}}
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -223,7 +249,7 @@
                         data: [{{ $totalOrder - $completedOrder }}, {{ $completedOrder }}],
                         backgroundColor: [
                             'rgb(217, 217, 217)',
-                            'rgb(255, 157, 102)'
+                            'rgb(55, 111, 126)'
                         ],
                         hoverOffset: 4
                     }]
@@ -252,13 +278,13 @@
                         label: 'Orders:',
                         data: {!! $categories->pluck('total_order')->toJson() !!},
                         backgroundColor: [
-                            'rgb(255, 243, 131)',
-                            'rgb(255, 208, 87)',
-                            'rgb(248, 224, 45)',
-                            'rgb(249, 180, 2)',
-                            'rgb(253, 91, 0)',
-                            'rgb(249, 119, 45)',
-                            'rgb(252, 140, 35)',
+                            'rgb(246, 223, 170)',
+                            'rgb(255, 255, 255)',
+                            'rgb(49, 89, 100)',
+                            'rgb(55, 111, 126)',
+                            'rgb(61, 122, 138)',
+                            'rgb(69, 143, 162)',
+                            'rgb(79, 162, 184)',
                         ],
                         hoverOffset: 4
                     }]
@@ -297,7 +323,7 @@
                         label: 'Monthly Orders',
                         data: {!! json_encode($monthlyOrders) !!},
                         fill: false,
-                        borderColor: 'rgb(255, 157, 102)',
+                        borderColor: 'rgb(55, 111, 126)',
                         tension: 0.1
                     }]
                 },
