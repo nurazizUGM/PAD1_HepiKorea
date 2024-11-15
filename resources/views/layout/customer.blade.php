@@ -68,7 +68,7 @@
                 {{-- navigation link content --}}
                 <div class="flex items-center gap-x-14 justify-around mx-auto">
                     {{-- product nav link --}}
-                    <a href=""><span
+                    <a href="{{ route('product.index') }}"><span
                             class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Product</span></a>
                     {{-- request order nav link --}}
                     <a href=""><span class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Request

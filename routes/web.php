@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CustomerProductController;
 use App\Http\Controllers\CustomerProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FaqController;
@@ -26,6 +27,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::prefix('product')->name('product.')->controller(CustomerProductController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::get('show/{product}', 'show')->name('show');
+    Route::get('category/{category}', 'category')->name('category');
+});
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware('guest')->group(function () {
