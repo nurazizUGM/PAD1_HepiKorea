@@ -159,21 +159,21 @@
                                 id="dropdown-user">
                                 <ul class="py-1" role="none">
                                     <li>
-                                        <a href="{{ route('admin.profile.user') }}"
+                                        <a href="{{ route('auth.profile') }}"
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                             role="menuitem">
                                             <img src="{{ asset('img/assets/icon/icon_dashboard_customer.svg') }}"
                                                 alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
                                             <p class="ml-2 group-hover:text-orange-400">Profile</p>
                                         </a>
-                                        <a href="{{ route('admin.profile.setting') }}"
+                                        <a href="#"
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                             role="menuitem">
                                             <img src="{{ asset('img/assets/icon/icon_address.svg') }}" alt=""
                                                 class="w-5 h-5 grayscale group-hover:grayscale-0">
                                             <p class="ml-2 group-hover:text-orange-400">Address</p>
                                         </a>
-                                        <a href="{{ route('admin.profile.setting') }}"
+                                        <a href="#"
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                             role="menuitem">
                                             <img src="{{ asset('img/assets/icon/icon_history.svg') }}" alt=""
@@ -192,6 +192,9 @@
                             </div>
                         </div>
                     </div>
+                @else
+                    <a type="button" href="{{ route('auth.login') }}"
+                        class="cursor-pointer text-white bg-orange-400 hover:bg-orange-500 focus:outline-none focus:ring-4 focus:ring-orange-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 dark:bg-orange-400 dark:hover:bg-orange-400 dark:focus:ring-orange-800">Login</a>
                 @endif
             </div>
         </div>
