@@ -1,12 +1,13 @@
 <div class="w-full flex items-center">
+    <!-- text Add Carousel -->
+    <h2 class="text-black text-md ml-3 font-semibold">Add Carousel</h2>
+
     <!-- plus button -->
     <a href="#" class="ml-5" data-modal-target="carousel-add-modal" data-modal-toggle="carousel-add-modal">
         <img src="{{ asset('img/assets/icon/icon_admin_product_plus.svg') }}" alt="plus icon"
-            class="w-10 h-10 fill-orange-400">
+            class="w-10 h-10 fill-orange-400 ml-6">
     </a>
 
-    <!-- text Add Carousel -->
-    <h2 class="text-black text-md ml-3 font-semibold">Add Carousel</h2>
 </div>
 
 <!-- start of Carousel card container -->
@@ -41,7 +42,7 @@
                 <!-- edit icon -->
                 <a href="#" class="mr-auto" data-modal-target="carousel-edit-modal"
                     data-modal-toggle="carousel-edit-modal">
-                    <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
+                    <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}" alt=""
                         class="w-7 h-7">
                 </a>
                 <!-- delete icon -->
@@ -49,7 +50,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" href="#" class="ml-auto">
-                        <img src="{{ asset('img/assets/icon/icon_admin_product_trash.svg') }}" alt=""
+                        <img src="{{ asset('img/assets/icon/icon_admin_category_trash.svg') }}" alt=""
                             class="w-7 h-7">
                     </button>
                 </form>
@@ -73,7 +74,7 @@
                     </button>
                     <div class="w-full h-full flex flex-col">
                         <!-- start of form -->
-                        <form action="" method="" class="flex flex-col h-full text-center py-5 px-5">
+                        <form action="" method="" class="flex flex-col h-full text-center py-10 px-5">
                             <!-- input file -->
                             <div class="relative w-full h-64 bg-gray-200 rounded-2xl">
                                 <!-- Hidden file input -->
@@ -85,8 +86,8 @@
                                 <!-- Upload icon in the bottom-right corner -->
                                 <label for="file-upload"
                                     class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
-                                    <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
-                                        alt="Upload Icon" class="h-6 w-6">
+                                    <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}"
+                                        alt="Upload Icon" class="h-6 w-6 grayscale">
                                 </label>
                             </div>
                             <!-- end of input file -->
@@ -98,7 +99,7 @@
                                 class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
                             <!-- Button "add" -->
                             <button type="submit" data-modal-hide="carousel-edit-modal"
-                                class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mt-auto mx-auto inline-block w-1/2 h-14 rounded-3xl">Save</button>
+                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">Save</button>
                         </form>
                         <!-- end of form -->
                     </div>
@@ -125,7 +126,7 @@
                     <div class="w-full h-full flex flex-col">
                         <!-- start of form -->
                         <form action="{{ route('admin.carousel.store') }}" method="POST" enctype="multipart/form-data"
-                            id="add-carousel-form" class="flex flex-col h-full text-center py-4 px-5">
+                            id="add-carousel-form" class="flex flex-col h-full text-center py-8 px-5">
                             @csrf
                             <!-- input file image with a larger area -->
                             <div class="relative w-full h-56 bg-gray-200 rounded-2xl" id="add-carousel-upload">
@@ -165,7 +166,7 @@
                                 class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
                             <!-- Button "add" -->
                             <button type="submit"
-                                class="bg-orange-400 hover:bg-orange-500 text-white font-semibold mt-5 mx-auto inline-block w-1/2 h-14 rounded-3xl">Add</button>
+                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-5 mx-auto inline-block w-full h-8 rounded-3xl">Add</button>
                         </form>
                         <!-- end of form -->
                     </div>
