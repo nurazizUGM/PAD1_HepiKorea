@@ -21,17 +21,16 @@ class HomeController extends Controller
                 'price' => $product->price
             ];
         });
-        $popularProducts = Product::with(['orders', 'category'])->get()->sortBy(function ($product) {
-            return $product->orders?->count() ?? 0;
-        })->reverse()->take(10)->map(function ($product) {
-            return (object)[
-                'id' => $product->id,
-                'name' => $product->name,
-                'category' => $product->category->name,
-                'price' => $product->price,
-                'total_orders' => $product->orders?->count() ?? 0
-            ];
-        });
+        $popularProducts = Product::with(['orders', 'category'])
+            ->withCount('orders')->orderBy('orders_count', 'desc')->limit(10)->get()->map(function ($product) {
+                return (object)[
+                    'id' => $product->id,
+                    'name' => $product->name,
+                    'category' => $product->category->name,
+                    'price' => $product->price,
+                    'total_orders' => $product->orders_count
+                ];
+            });
 
         return view('customer.home', compact('categories', 'newProducts', 'popularProducts'));
     }
