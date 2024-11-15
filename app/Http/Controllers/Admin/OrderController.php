@@ -67,4 +67,10 @@ class OrderController extends Controller
 
         return view('admin.order.index', compact('tab', 'years', 'year', 'months', 'orders'));
     }
+
+    public function showConfirmation(string $orderId)
+    {
+        $order = Order::with(['user', 'customOrderItems'])->findOrFail($orderId);
+        return view('admin.order.confirmation-detail', compact('order'));
+    }
 }

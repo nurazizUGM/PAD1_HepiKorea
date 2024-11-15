@@ -63,7 +63,7 @@
                     {{-- product price --}}
                     <p class="text-orange-400 font-semibold text-md mt-3">Rp
                         {{ number_format($order->total_items_price, 0, ',', '.') }}</p>
-                    <button
+                    <button onclick="window.location.href='{{ route('admin.order.confirmation.show', $order->id) }}'"
                         class="w-24 h-10 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md mt-auto ml-auto inline">Check</button>
                 </div>
                 {{-- end of detail confirmation container --}}

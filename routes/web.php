@@ -110,6 +110,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
     Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
         Route::get('/', 'index')->name('index');
+        Route::get('confirmation/{id}', 'showConfirmation')->name('confirmation.show');
     });
 });
 
