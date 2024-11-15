@@ -160,6 +160,15 @@
                                 id="dropdown-user">
                                 <ul class="py-1" role="none">
                                     <li>
+                                        @if (auth()->user()->role == \App\Enums\Role::ADMIN)
+                                            <a href="{{ route('admin.dashboard') }}"
+                                                class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
+                                                role="menuitem">
+                                                <img src="{{ asset('img/assets/icon/icon_dashboard_admin.svg') }}"
+                                                    alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
+                                                <p class="ml-2 group-hover:text-orange-400">Admin Dashboard</p>
+                                            </a>
+                                        @endif
                                         <a href="{{ route('auth.profile') }}"
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                             role="menuitem">
