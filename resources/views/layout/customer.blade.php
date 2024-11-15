@@ -43,9 +43,10 @@
                 {{-- search bar --}}
                 <div class="mr-auto">
                     <!-- Search input -->
-                    <form id="form-filter" action="{{ route('admin.product.index') }}" method="get"
+                    <form id="form-filter" action="{{ route('product.index') }}" method="get"
                         class="flex items-center my-auto">
                         <input type="hidden" name="category" value="{{ request()->query('category') }}">
+                        <input type="hidden" name="sort_by" value="{{ request()->query('sort_by') }}">
                         <div class="relative flex items-center w-full">
                             <img src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="search icon"
                                 class="absolute left-3 w-5 h-5 text-gray-500">
