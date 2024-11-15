@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Customer\CustomerProfileController;
 use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\FaqController;
 use Illuminate\Support\Facades\Route;
@@ -26,25 +27,30 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::group(['prefix' => 'auth'], function () {
+Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware('guest')->group(function () {
-        Route::view('login', 'auth.login')->name('auth.login');
-        Route::post('login', [AuthController::class, 'authenticate'])->name('auth.login');
-        Route::view('register', 'auth.register')->name('auth.registerView');
-        Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+        Route::view('login', 'auth.login')->name('login');
+        Route::post('login', [AuthController::class, 'authenticate'])->name('login');
+        Route::view('register', 'auth.register')->name('registerView');
+        Route::post('register', [AuthController::class, 'register'])->name('register');
     });
 
-    Route::get('/', [AuthController::class, 'index'])->name('auth.index');
-    Route::get('logout', [AuthController::class, 'logout'])->name('auth.logout');
-    Route::get('google', [AuthController::class, 'google'])->name('auth.google');
-    Route::get('callback', [AuthController::class, 'callback'])->name('auth.callback');
-    Route::get('verify', [AuthController::class, 'verify'])->name('auth.verify');
-    Route::post('verify', [AuthController::class, 'verifyCode'])->name('auth.verify_code');
+    Route::get('/', [AuthController::class, 'index'])->name('index');
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('google', [AuthController::class, 'google'])->name('google');
+    Route::get('callback', [AuthController::class, 'callback'])->name('callback');
+    Route::get('verify', [AuthController::class, 'verify'])->name('verify');
+    Route::post('verify', [AuthController::class, 'verifyCode'])->name('verify_code');
 
-    Route::view('forgot_password', 'auth.forgot_password')->name('auth.forgot_password');
-    Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('auth.forgot_password');
-    Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('auth.reset_password');
-    Route::post('reset_password', [AuthController::class, 'setPassword'])->name('auth.set_password');
+    Route::view('forgot_password', 'auth.forgot_password')->name('forgot_password');
+    Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
+    Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('reset_password');
+    Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('profile', [CustomerProfileController::class, 'index'])->name('profile');
+        Route::patch('profile', [CustomerProfileController::class, 'update'])->name('profile');
+    });
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {

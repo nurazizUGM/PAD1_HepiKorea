@@ -43,4 +43,19 @@ class User extends Model implements Authenticatable
     {
         return $this->hasMany(Address::class);
     }
+
+    public function isAdmin()
+    {
+        return $this->role == Role::ADMIN;
+    }
+
+    public function isCustomer()
+    {
+        return $this->role == Role::USER;
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class);
+    }
 }

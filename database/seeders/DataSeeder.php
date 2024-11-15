@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Database\Factories\CategoryFactory;
+use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -25,9 +26,8 @@ class DataSeeder extends Seeder
         ]]);
 
         $this->call(ProductSeeder::class);
-
-        \Database\Factories\UserFactory::new()->count(2)->create();
-
+        UserFactory::new()->count(3)->create();
         $this->call(OrderSeeder::class);
+        $this->call(NotificationSeeder::class);
     }
 }
