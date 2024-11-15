@@ -126,11 +126,9 @@
                                                 class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                                 role="menuitem">{{ $notification->title }}</a>
                                         @endforeach
-                                        @if ($notificationCount > 5)
-                                            <a href="#"
-                                                class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                                                role="menuitem">View all</a>
-                                        @endif
+                                        <a href="{{ route('auth.notification') }}"
+                                            class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                            role="menuitem">View all</a>
                                     </li>
                                 </ul>
                             </div>

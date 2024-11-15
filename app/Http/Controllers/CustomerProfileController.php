@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -49,5 +50,11 @@ class CustomerProfileController extends Controller
 
         $user->update($data);
         return redirect()->back()->with('success', 'Profile updated successfully');
+    }
+
+    public function notification()
+    {
+        $notifications = Notification::where('user_id', Auth::id())->orderBy('is_read', 'asc')->orderBy('created_at', 'desc')->get();
+        return view('customer.notification', compact('notifications'));
     }
 }
