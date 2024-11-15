@@ -59,7 +59,7 @@
 
                 <!-- Filter button -->
                 <button type="submit"
-                    class="inline-flex items-center px-4 py-2 font-semibold text-white bg-orange-400 hover:bg-orange-500 rounded-full -ml-20 z-10">
+                    class="inline-flex items-center px-4 py-2 font-semibold text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-full -ml-20 z-10">
                     <img class="w-4 h-4 mr-2"
                         style="filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(107%) contrast(101%);"
                         src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="">
