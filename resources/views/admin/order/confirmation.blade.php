@@ -12,7 +12,7 @@
                         d="M2.5 5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5m3.25-2a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5zm0 8.5a.75.75 0 0 0 0 1.5h8.5a.75.75 0 0 0 0-1.5zM5 8a.75.75 0 0 1 .75-.75h8.5a.75.75 0 0 1 0 1.5h-8.5A.75.75 0 0 1 5 8M3.75 8a1.25 1.25 0 1 1-2.5 0a1.25 1.25 0 0 1 2.5 0M2.5 13.5a1.25 1.25 0 1 0 0-2.5a1.25 1.25 0 0 0 0 2.5"
                         clip-rule="evenodd" />
                 </svg>
-                <span class="text-orange-400 text-lg inline-block ml-3">All</span>
+                <span class="text-[#376F7E] font-semibold text-xl inline-block ml-3">All</span>
             </button>
             @foreach ($years as $y)
                 <h2 id="accordion-collapse-heading-1-order">
@@ -26,7 +26,7 @@
                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M9 5 5 1 1 5" />
                         </svg>
-                        <span class="text-orange-400 text-lg inline-block ml-3">{{ $y }}</span>
+                        <span class="text-[#376F7E] font-semibold text-xl inline-block ml-3">{{ $y }}</span>
                     </button>
                 </h2>
                 <div id="accordion-year-{{ $y }}" class="hidden"
@@ -34,7 +34,7 @@
                     <div class="px-5">
                         <ul class="ml-5 text-lg">
                             @foreach ($months[$y] as $month)
-                                <li class="my-3 text-md cursor-pointer"
+                                <li class="my-3 text-base text-black text-opacity-50 font-semibold cursor-pointer"
                                     onclick="window.location.href='{{ route('admin.order.index', ['tab' => 'confirmation', 'year' => $y, 'month' => $month]) }}'">
                                     {{ $month }}</li>
                             @endforeach
@@ -61,10 +61,10 @@
                     {{-- product name --}}
                     <h3 class="text-black font-bold text-md">{{ $order->customOrderItems->first()->name }}</h3>
                     {{-- product price --}}
-                    <p class="text-orange-400 font-semibold text-md mt-3">Rp
+                    <p class="text-[#376F7E] font-semibold text-lg mt-3">Rp
                         {{ number_format($order->total_items_price, 0, ',', '.') }}</p>
                     <button onclick="window.location.href='{{ route('admin.order.confirmation.show', $order->id) }}'"
-                        class="w-24 h-10 bg-orange-400 hover:bg-orange-500 text-white font-semibold rounded-md mt-auto ml-auto inline">Check</button>
+                        class="w-28 h-8 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold rounded-md mt-auto ml-auto inline">Check</button>
                 </div>
                 {{-- end of detail confirmation container --}}
             </div>

@@ -32,7 +32,7 @@
                         </div>
                         <!-- header & detail customer card -->
                         <div class="p-2 h-1/6">
-                            <p class="text-sm font-bold truncate">{{ $customer->fullname }}</p>
+                            <p class="text-[#376F7E] text-sm font-bold truncate">{{ $customer->fullname }}</p>
                         </div>
                         <!-- edit & delete customer card -->
                         <div class="flex mx-3 mb-2 h-1/6">

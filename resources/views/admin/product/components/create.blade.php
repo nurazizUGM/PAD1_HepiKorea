@@ -35,84 +35,93 @@
         <div id="default-tab-content">
             <!-- Product Content -->
             <div class="hidden px-10 pt-2 rounded-lg h-[80vh]" id="product" role="tabpanel" aria-labelledby="product-tab">
-                <h1 class="text-black font-semibold text-xl mb-2">Add Product</h1>
                 <div class="w-full h-full flex flex-row">
                     <!-- Kolom 2/5 (image)-->
-                    <div class="w-3/12 h-[90%]">
+                    <div class="w-3/12 h-[97%]">
                         <div class="w-full h-full">
-                            <div class="flex flex-col space-y-4">
-                                <div class="w-full h-[20rem] mr-auto bg-white rounded-lg p-3">
+                            <div class="h-full flex flex-col space-y-4">
+                                <div class="w-full h-[20rem] mr-auto bg-white rounded-2xl p-3">
                                     <img id="mainImage" class="hidden w-full h-full object-contain rounded-lg"
                                         alt="Main Image">
                                 </div>
                                 <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-image-preview"> </div>
                                 <div class="mt-52">
                                     <button id="btn-add-image"
-                                        class="w-3/5 flex items-center justify-center bg-orange-400 h-10 rounded-xl mb-5 text-lg font-bold text-white mt-5S mx-auto">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
+                                        class="w-[99%] flex items-center justify-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-10 rounded-2xl mb-5 text-lg font-bold text-white mt-5S mx-auto">
+                                        <img src="{{ asset('img/assets/icon/icon_admin_product_upload.svg') }}"
                                             alt="Upload Icon" class="h-6 w-6 mr-3">
-                                        Add Image
+                                        Upload Photo
                                     </button>
                                 </div>
+                                <div class="flex-grow"></div>
+                                <!-- Button Cancel -->
+                                <button type="button" onclick="window.location.href='{{ route('admin.product.index') }}'"
+                                    class="flex flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold justify-center items-center w-2/5 h-10 rounded-2xl mb-6 mr-auto">
+                                    <img src="{{ asset('img/assets/icon/icon_arrow_back.svg') }}" alt=""
+                                        class="w-10 h-8">
+                                    <p class="my-auto">Back</p>
+                                </button>
+                                <div class="w-full h-[18px] text-transparent">.</div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Kolom 3/5 (form create product) -->
-                    <div class="w-9/12 h-[90%]">
-                        <div class="w-full h-full bg-[#FFFCFC] rounded-lg ml-5 p-5">
+                    <div class="w-9/12 h-[95%] pl-[115px] pr-10 justify-end">
+                        <div class="w-full h-full bg-[#FFFCFC] rounded-2xl ml-5 p-5">
                             <!-- header create product -->
-                            <h1 class="text-lg font-semibold">Create Product</h1>
+                            <h1 class="text-2xl font-semibold">Add Product</h1>
                             <!-- start of form -->
-                            <form action="{{ route('admin.product.store') }}" class="w-full mt-3" method="POST"
-                                enctype="multipart/form-data" id="form-create-product" enctype="multipart/form-data">
+                            <form action="{{ route('admin.product.store') }}" class="w-full h-full flex flex-col mt-8 pb-12"
+                                method="POST" enctype="multipart/form-data" id="form-create-product"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <!-- Nama Produk -->
-                                <div class="flex items-center mb-10">
+                                <div class="flex items-center mb-7">
                                     <!-- Label -->
-                                    <div class="w-3/12">
-                                        <label for="nama-produk" class="text-black font-semibold">Nama Produk</label>
+                                    <div class="w-4/12">
+                                        <label for="nama-produk" class="text-[#898383] text-lg font-normal">Product Name</label>
                                     </div>
                                     <!-- Input Field -->
-                                    <div class="w-8/12">
-                                        <input type="text" id="nama-produk" name="name"
-                                            class="w-full h-10 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
+                                    <div class="w-7/12">
+                                        <input type="text" id="nama-produk" name="name" placeholder="Write the product name"
+                                            class="w-full h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- Icon -->
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}"
+                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
                                             alt="edit icon" class="w-6 h-6">
                                     </div>
                                 </div>
 
                                 <!-- Harga Produk -->
-                                <div class="flex items-center mb-10">
+                                <div class="flex items-center mb-7">
                                     <!-- label -->
-                                    <div class="w-3/12">
-                                        <label for="harga-produk" class="text-black font-semibold">Harga Produk</label>
+                                    <div class="w-4/12">
+                                        <label for="harga-produk" class="text-[#898383] text-lg font-normal">Price</label>
                                     </div>
                                     <!-- input field -->
-                                    <div class="w-8/12">
+                                    <div class="w-7/12">
                                         <input type="number" id="harga-produk" name="price"
-                                            class="w-full h-10 rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0">
+                                            class="w-full h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- icon -->
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}"
+                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
                                             alt="edit icon" class="w-6 h-6">
                                     </div>
                                 </div>
 
                                 <!-- Category -->
-                                <div class="flex items-center mb-10">
+                                <div class="flex items-center mb-7">
                                     <!-- label -->
-                                    <div class="w-3/12">
-                                        <label for="category" class="text-black font-semibold">Category</label>
+                                    <div class="w-4/12">
+                                        <label for="category" class="text-[#898383] text-lg font-normal">Product Category</label>
                                     </div>
                                     <!-- input filed -->
-                                    <div class="w-8/12">
+                                    <div class="w-7/12">
                                         <select id="dropdown_add_category" name="category"
-                                            class="w-full h-10 rounded-lg px-4 text-xs border-black focus:border-black focus:outline-none focus:ring-0">
+                                            class="w-full h-12 rounded-lg px-4 text-xs border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
                                             @foreach (\App\Models\Category::all() as $category)
                                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
                                             @endforeach
@@ -120,37 +129,34 @@
                                         </select>
                                     </div>
                                     <!-- icon (kosong) -->
-                                    <div class="w-1/12">
-                                        <!-- Kosong untuk category -->
+                                    <div class="w-1/12 flex justify-end">
+                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
+                                            alt="edit icon" class="w-6 h-6">
                                     </div>
                                 </div>
 
                                 <!-- Product Description -->
                                 <div class="flex items-center">
-                                    <div class="w-3/12 mb-auto">
-                                        <label for="product-description" class="text-black font-semibold">Product
+                                    <div class="w-4/12 my-auto">
+                                        <label for="product-description" class="text-[#898383] text-lg font-normal">Product
                                             Description</label>
                                     </div>
-                                    <div class="w-8/12">
-                                        <textarea id="product-description" rows="5" name="description" form="form-create-product"
-                                            class="w-full rounded-lg px-4 border-black focus:border-black focus:outline-none focus:ring-0 text-md"></textarea>
+                                    <div class="w-7/12">
+                                        <textarea id="product-description" rows="5" name="description" form="form-create-product" placeholder="Product Description"
+                                            class="w-full rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 text-md resize-none"></textarea>
                                     </div>
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}"
+                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
                                             alt="edit icon" class="w-6 h-6">
                                     </div>
                                 </div>
 
-                                <div class="flex mt-4 w-full">
-                                    <!-- Button Cancel -->
-                                    <button type="button"
-                                        onclick="window.location.href='{{ route('admin.product.index') }}'"
-                                        class="bg-red-400 hover:bg-red-500 text-white font-semibold w-1/3 h-10 rounded-lg ml-auto mr-2">
-                                        Cancel
-                                    </button>
+                                {{-- <div class="flex-grow"></div> --}}
+
+                                <div class="flex w-full mt-auto">
                                     <!-- Button Save -->
                                     <button type="submit"
-                                        class="bg-orange-400 hover:bg-orange-500 text-white font-semibold w-1/3 h-10 rounded-lg mr-16">
+                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16">
                                         Save
                                     </button>
                                 </div>
