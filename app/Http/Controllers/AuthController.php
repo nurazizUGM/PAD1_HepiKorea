@@ -58,7 +58,7 @@ class AuthController extends Controller
         Auth::login($user);
         Session::regenerate();
 
-        return redirect()->route('auth.index');
+        return redirect()->intended();
     }
 
     public function logout()
@@ -182,7 +182,7 @@ class AuthController extends Controller
 
         if (!$user) {
             Session::forget('userId');
-            return redirect()->to('/')->withErrors([
+            return redirect()->route('auth.login')->withErrors([
                 'Invalid credentials.',
             ]);
         }
@@ -246,7 +246,7 @@ class AuthController extends Controller
                 'The provided OTP is invalid.',
             ]);
         } else if ($otp->expired_at < now()) {
-            return back()->withErrors([
+            return redirect()->route('auth.verify', ['resend' => true])->withErrors([
                 'The provided OTP is expired.',
             ]);
         }
@@ -262,7 +262,7 @@ class AuthController extends Controller
             'is_verified' => true
         ]);
 
-        return redirect()->route('auth.index');
+        return redirect()->route('home');
     }
 
     public function resetPassword()
