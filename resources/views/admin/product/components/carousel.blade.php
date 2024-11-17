@@ -11,7 +11,7 @@
 </div>
 
 <!-- start of Carousel card container -->
-<div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-12">
+<div class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
     <!-- card Carousel -->
     <!-- ini for loop hanya untuk coba -->
     @foreach ($carousels as $carousel)

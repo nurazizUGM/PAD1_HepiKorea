@@ -72,7 +72,7 @@
 
     </div>
     <!-- start of product card container -->
-    <div class="container w-full h-full mt-5 mb-8 overflow-y-auto flex flex-row flex-wrap gap-8">
+    <div class="w-full h-full mt-5 mb-8 overflow-y-auto flex flex-row flex-wrap gap-8 justify-start items-start content-start">
         <!-- card product -->
         @foreach ($products as $product)
             <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
