@@ -59,126 +59,225 @@
     @endforeach
     <!-- end of for looping -->
 
-    <!-- Carousel-edit-modal -->
-    <div id="carousel-edit-modal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-fit max-w-2xl max-h-full">
-            <!-- Modal content -->
-            <div class="bg-white w-[30vw] h-[75vh] rounded-lg shadow">
-                <div class="relative w-full h-full flex flex-row">
-                    <!-- x button (exit modal) -->
-                    <button type="button"
-                        class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                        data-modal-hide="carousel-edit-modal">
-                        <p class="m-auto text-white text-sm">X</p>
-                    </button>
-                    <div class="w-full h-full flex flex-col">
-                        <!-- start of form -->
-                        <form action="" method="" class="flex flex-col h-full text-center py-10 px-5">
-                            <!-- input file -->
-                            <div class="relative w-full h-64 bg-gray-200 rounded-2xl">
-                                <!-- Hidden file input -->
-                                <input id="file-upload" type="file" class="hidden">
-                                <label for="file-upload"
-                                    class="absolute inset-0 flex justify-center items-center cursor-pointer">
-                                    <div class="text-gray-500">Upload Image</div>
-                                </label>
-                                <!-- Upload icon in the bottom-right corner -->
-                                <label for="file-upload"
-                                    class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
-                                    <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}"
-                                        alt="Upload Icon" class="h-6 w-6 grayscale">
-                                </label>
-                            </div>
-                            <!-- end of input file -->
-                            <!-- Input name -->
-                            <input type="text" placeholder="Name" name="" id=""
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
-                            <!-- input Info -->
-                            <textarea placeholder="Add info" name="" id="edit-info-carousel" rows="3"
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
-                            <!-- Button "add" -->
-                            <button type="submit" data-modal-hide="carousel-edit-modal"
-                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">Save</button>
-                        </form>
-                        <!-- end of form -->
-                    </div>
-                </div>
-            </div>
-            <!-- end of modal content -->
-        </div>
-    </div>
-    <!-- end of Carousel-edit-modal -->
-
-    <!-- Carousel-add-modal -->
-    <div id="carousel-add-modal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-fit max-w-2xl max-h-full mt-20">
-            <!-- Modal content -->
-            <div class="bg-white w-[30vw] h-auto rounded-lg shadow">
-                <div class="relative w-full h-full flex flex-row">
-                    <!-- x button (exit modal) -->
-                    <button type="button"
-                        class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                        data-modal-hide="carousel-add-modal">
-                        <p class="m-auto text-white text-sm">X</p>
-                    </button>
-                    <div class="w-full h-full flex flex-col">
-                        <!-- start of form -->
-                        <form action="{{ route('admin.carousel.store') }}" method="POST" enctype="multipart/form-data"
-                            id="add-carousel-form" class="flex flex-col h-full text-center py-8 px-5">
-                            @csrf
-                            <!-- input file image with a larger area -->
-                            <div class="relative w-full h-56 bg-gray-200 rounded-2xl" id="add-carousel-upload">
-                                <!-- Hidden file input -->
-                                <input id="add-carousel-media" name="media" type="file" accept="image/*"
-                                    class="hidden">
-                                <!-- Label that acts as the clickable area -->
-                                <label for="add-carousel-media"
-                                    class="absolute inset-0 flex justify-center items-center cursor-pointer">
-                                    <div class="text-gray-500">Upload file</div>
-                                </label>
-                                <!-- Upload icon in the bottom-right corner -->
-                                <label for="add-carousel-media"
-                                    class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
-                                    <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
-                                        alt="Upload Icon" class="h-6 w-6">
-                                </label>
-                            </div>
-                            <!-- end of input file image -->
-                            <!-- Input name -->
-                            <input type="text" placeholder="Title" name="title" id="add-carousel-title"
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
-                            {{-- dropdown pilih video/image --}}
-                            <select id="add-carousel-type" name="media_type"
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
-                                <option value="image">Type: Image</option>
-                                <option value="video">Type: Video</option>
-                                <option value="youtube">Type: Youtube</option>
-                            </select>
-                            {{-- input link video --}}
-                            <input type="text" placeholder="Link Youtube" name="youtube_url"
-                                id="add-carousel-youtube"
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0 hidden">
-                            <!-- input Info -->
-                            <textarea placeholder="Add description" name="description" id="edit-info-carousel" rows="3"
-                                form="add-carousel-form"
-                                class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
-                            <!-- Button "add" -->
-                            <button type="submit"
-                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-5 mx-auto inline-block w-full h-8 rounded-3xl">Add</button>
-                        </form>
-                        <!-- end of form -->
-                    </div>
-                </div>
-            </div>
-            <!-- end of modal content -->
-        </div>
-    </div>
-    <!-- end of Carousel-edit-modal -->
-    <!-- end of catefory-edit-modal -->
 </div>
 <!-- end of product card container -->
+
+{{-- MODALS FOR CAROUSEL --}}
+
+<!-- Carousel-edit-modal -->
+<div id="carousel-edit-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="bg-white w-[30vw] h-[75vh] rounded-lg shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <!-- x button (exit modal) -->
+                <button type="button"
+                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
+                    data-modal-hide="carousel-edit-modal">
+                    <p class="m-auto text-white text-sm">X</p>
+                </button>
+                <div class="w-full h-full flex flex-col">
+                    <!-- start of form -->
+                    <form action="" method="" class="flex flex-col h-full text-center py-10 px-5">
+                        <!-- input file -->
+                        <div class="relative w-full h-64 bg-gray-200 rounded-2xl">
+                            <!-- Hidden file input -->
+                            <input id="file-upload" type="file" class="hidden">
+                            <label for="file-upload"
+                                class="absolute inset-0 flex justify-center items-center cursor-pointer">
+                                <div class="text-gray-500">Upload Image</div>
+                            </label>
+                            <!-- Upload icon in the bottom-right corner -->
+                            <label for="file-upload"
+                                class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
+                                <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}" alt="Upload Icon"
+                                    class="h-6 w-6 grayscale">
+                            </label>
+                        </div>
+                        <!-- end of input file -->
+                        <!-- Input name -->
+                        <input type="text" placeholder="Name" name="" id=""
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
+                        <!-- input Info -->
+                        <textarea placeholder="Add info" name="" id="edit-info-carousel" rows="3"
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
+                        <!-- Button "add" -->
+                        <button type="submit" data-modal-hide="carousel-edit-modal"
+                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">Save</button>
+                    </form>
+                    <!-- end of form -->
+                </div>
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+<!-- end of Carousel-edit-modal -->
+
+<!-- Carousel-add-modal -->
+<div id="carousel-add-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-2xl max-h-full mt-20">
+        <!-- Modal content -->
+        <div class="bg-white w-[30vw] h-auto rounded-lg shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <!-- x button (exit modal) -->
+                <button type="button"
+                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
+                    data-modal-hide="carousel-add-modal">
+                    <p class="m-auto text-white text-sm">X</p>
+                </button>
+                <div class="w-full h-full flex flex-col">
+                    <!-- start of form -->
+                    <form action="{{ route('admin.carousel.store') }}" method="POST" enctype="multipart/form-data"
+                        id="add-carousel-form" class="flex flex-col h-full text-center py-8 px-5">
+                        @csrf
+                        <!-- input file image with a larger area -->
+                        <div class="relative w-full h-56 bg-gray-200 rounded-2xl" id="add-carousel-upload">
+                            <!-- Hidden file input -->
+                            <input id="add-carousel-media" name="media" type="file" accept="image/*"
+                                class="hidden">
+                            <!-- Label that acts as the clickable area -->
+                            <label for="add-carousel-media"
+                                class="absolute inset-0 flex justify-center items-center cursor-pointer">
+                                <div class="text-gray-500">Upload file</div>
+                            </label>
+                            <!-- Upload icon in the bottom-right corner -->
+                            <label for="add-carousel-media"
+                                class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
+                                <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}"
+                                    alt="Upload Icon" class="h-6 w-6">
+                            </label>
+                        </div>
+                        <!-- end of input file image -->
+                        <!-- Input name -->
+                        <input type="text" placeholder="Title" name="title" id="add-carousel-title"
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
+                        {{-- dropdown pilih video/image --}}
+                        <select id="add-carousel-type" name="media_type"
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
+                            <option value="image">Type: Image</option>
+                            <option value="video">Type: Video</option>
+                            <option value="youtube">Type: Youtube</option>
+                        </select>
+                        {{-- input link video --}}
+                        <input type="text" placeholder="Link Youtube" name="youtube_url"
+                            id="add-carousel-youtube"
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0 hidden">
+                        <!-- input Info -->
+                        <textarea placeholder="Add description" name="description" id="edit-info-carousel" rows="3"
+                            form="add-carousel-form"
+                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
+                        <!-- Button "add" -->
+                        <button type="submit"
+                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-5 mx-auto inline-block w-full h-8 rounded-3xl">Add</button>
+                    </form>
+                    <!-- end of form -->
+                </div>
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+<!-- end of Carousel-edit-modal -->
+
+{{-- delete confirmation modal --}}
+<div id="confirmation-delete-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+        <!-- Modal content -->
+        <div class="bg-white w-[33vw] h-auto rounded-[30px] shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <div class="w-full h-full flex flex-col px-10 py-10">
+                    <img src="{{ asset('img/assets/icon/icon_warning.svg') }}" alt="icon_warning"
+                        class="w-16 h-16 mx-auto">
+                    <p class="text-[#376F7E] font-medium text-xl mx-auto mt-2">Are you sure?</p>
+                    <p class="text-[#B7B7B7] font-medium text-xs mx-auto mt-6">You won’t be able to revert
+                        this!</p>
+                    <div class="w-full h-full mt-6 flex flex-row justify-center">
+                        <button
+                            class="w-44 h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-lg font-semibold"
+                            data-modal-hide="confirmation-delete-modal" data-modal-target="success-delete-modal"
+                            data-modal-toggle="success-delete-modal">Yes, Delete it!</button>
+                        {{-- success-delete-modal --}}
+                        <button
+                            class="w-44 h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-lg font-semibold ml-2"
+                            data-modal-hide="confirmation-delete-modal">Cancel</button>
+                    </div>
+                </div>
+                {{-- end of modal content --}}
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+{{-- end of delete confirmation modal --}}
+
+
+{{-- success delete modal --}}
+<div id="success-delete-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+        <!-- Modal content -->
+        <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <div class="w-full h-full flex flex-col p-14">
+                    <h1 class="text-black text-xl font-medium mx-auto">Successfully Deleted!</h1>
+                    <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                        class="w-24 h-24 mx-auto mt-6">
+                </div>
+                {{-- end of modal content --}}
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+{{-- end of success delete modal --}}
+
+
+{{-- success added modal --}}
+<div id="success-added-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+        <!-- Modal content -->
+        <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <div class="w-full h-full flex flex-col p-14">
+                    <h1 class="text-black text-xl font-medium mx-auto">Successfully Added!</h1>
+                    <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                        class="w-24 h-24 mx-auto mt-6">
+                </div>
+                {{-- end of modal content --}}
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+{{-- end of success added modal --}}
+
+
+{{-- success edited modal --}}
+<div id="success-updated-modal" tabindex="-1" aria-hidden="true"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+        <!-- Modal content -->
+        <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+            <div class="relative w-full h-full flex flex-row">
+                <div class="w-full h-full flex flex-col p-14">
+                    <h1 class="text-black text-xl font-medium mx-auto">Successfully Updated!</h1>
+                    <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                        class="w-24 h-24 mx-auto mt-6">
+                </div>
+                {{-- end of modal content --}}
+            </div>
+        </div>
+        <!-- end of modal content -->
+    </div>
+</div>
+{{-- end of success edited modal --}}
+
+{{-- end of MODALS FOR CAROUSEL --}}
 
 
 <script>
