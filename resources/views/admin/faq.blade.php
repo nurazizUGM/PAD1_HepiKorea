@@ -2,8 +2,8 @@
 @section('title', 'test faq')
 
 @section('content')
-    <div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-xl w-full max-w-[99%]">
-        <div class="bg-white rounded-xl w-full max-w-full h-full px-4">
+    <div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-xl w-full max-w-[99%] h-full">
+        <div class="bg-white rounded-xl w-full max-w-full h-full px-4 overflow-hidden">
 
             <div class="flex rounded-lg items-center w-full mb-2 mx-6 mt-8">
                 {{-- Text FAQ --}}
@@ -16,12 +16,12 @@
                 </button>
             </div>
 
-            <div class="h-auto w-full max-w-[100%] overflow-y-auto max-h-[580px]">
+            <div class="h-auto w-full max-w-[100%] overflow-y-auto max-h-[99%]">
                 @foreach ($faqs as $faq)
-                    <div class="flex flex-col bg-gray-50 h-auto rounded-xl p-4 mb-5 ">
+                    <div class="flex flex-col bg-slate-100 h-auto rounded-xl shadow-md p-4 mb-5 ">
                         <div class="flex items-center justify-between mb-4">
                             {{-- Title FAQ --}}
-                            <h2 class="text-black font-bold text-lg">
+                            <h2 class="text-black font-bold text-2xl">
                                 {{ $faq->question }}
                             </h2>
                             {{-- Button Edit FAQ --}}
