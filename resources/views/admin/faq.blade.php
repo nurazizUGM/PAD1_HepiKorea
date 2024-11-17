@@ -2,8 +2,8 @@
 @section('title', 'test faq')
 
 @section('content')
-    <div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-xl dark:border-gray-700 w-full max-w-[83%]">
-        <div class="bg-white rounded-xl w-full h-full px-4">
+    <div class="flex flex-col flex-wrap p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-xl w-full max-w-[99%]">
+        <div class="bg-white rounded-xl w-full max-w-full h-full px-4">
 
             <div class="flex rounded-lg items-center w-full mb-2 mx-6 mt-8">
                 {{-- Text FAQ --}}
@@ -28,7 +28,7 @@
                             <div class="w-fit h-fit flex flex-row">
                                 <button data-modal-target="faq-edit-modal" data-modal-toggle="faq-edit-modal"
                                     onclick="editFaq({{ $faq->id }}, '{{ $faq->question }}', '{{ $faq->answer }}')"
-                                    class="flex items-center justify-center w-auto h-auto p-2 rounded-lg bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:ring-0 focus:outline-none text-xl mr-4 px-5 py-2.5 text-center text-white"
+                                    class="flex items-center justify-center w-auto h-auto p-2 rounded-2xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:ring-0 focus:outline-none text-xl mr-4 px-5 py-2.5 text-center text-white"
                                     type="button">
                                     Edit
                                     <img src="{{ asset('img/assets/icon/icon_faq_edit.svg') }}" alt="Edit Icon"
@@ -36,7 +36,7 @@
                                 </button>
                                 <button data-modal-target="confirmation-delete-modal"
                                     data-modal-toggle="confirmation-delete-modal" {{-- onclick="editFaq({{ $faq->id }}, '{{ $faq->question }}', '{{ $faq->answer }}')" --}}
-                                    class="flex items-center justify-center w-auto h-auto p-2 rounded-lg bg-orange-400 hover:bg-orange-500 active:bg-orange-600 focus:ring-0 focus:outline-none text-xl mr-4 px-5 py-2.5 text-center text-white"
+                                    class="flex items-center justify-center w-auto h-auto p-2 rounded-2xl bg-orange-400 hover:bg-orange-500 active:bg-orange-600 focus:ring-0 focus:outline-none text-xl mr-4 px-5 py-2.5 text-center text-white"
                                     type="button">
                                     Delete
                                     <img src="{{ asset('img/assets/icon/icon_admin_faq_trash.svg') }}" alt="Edit Icon"
