@@ -80,11 +80,13 @@
                                 <div class="flex items-center mb-7">
                                     <!-- Label -->
                                     <div class="w-4/12">
-                                        <label for="nama-produk" class="text-[#898383] text-lg font-normal">Product Name</label>
+                                        <label for="nama-produk" class="text-[#898383] text-lg font-normal">Product
+                                            Name</label>
                                     </div>
                                     <!-- Input Field -->
                                     <div class="w-7/12">
-                                        <input type="text" id="nama-produk" name="name" placeholder="Write the product name"
+                                        <input type="text" id="nama-produk" name="name"
+                                            placeholder="Write the product name"
                                             class="w-full h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
                                     </div>
                                     <!-- Icon -->
@@ -116,7 +118,8 @@
                                 <div class="flex items-center mb-7">
                                     <!-- label -->
                                     <div class="w-4/12">
-                                        <label for="category" class="text-[#898383] text-lg font-normal">Product Category</label>
+                                        <label for="category" class="text-[#898383] text-lg font-normal">Product
+                                            Category</label>
                                     </div>
                                     <!-- input filed -->
                                     <div class="w-7/12">
@@ -138,11 +141,13 @@
                                 <!-- Product Description -->
                                 <div class="flex items-center">
                                     <div class="w-4/12 my-auto">
-                                        <label for="product-description" class="text-[#898383] text-lg font-normal">Product
+                                        <label for="product-description"
+                                            class="text-[#898383] text-lg font-normal">Product
                                             Description</label>
                                     </div>
                                     <div class="w-7/12">
-                                        <textarea id="product-description" rows="5" name="description" form="form-create-product" placeholder="Product Description"
+                                        <textarea id="product-description" rows="5" name="description" form="form-create-product"
+                                            placeholder="Product Description"
                                             class="w-full rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 text-md resize-none"></textarea>
                                     </div>
                                     <div class="w-1/12 flex justify-end">
@@ -156,7 +161,9 @@
                                 <div class="flex w-full mt-auto">
                                     <!-- Button Save -->
                                     <button type="submit"
-                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16">
+                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16"
+                                        data-modal-target="success-added-modal" data-modal-toggle="success-added-modal">
+                                        {{-- data modal target and modal toggle added --}}
                                         Save
                                     </button>
                                 </div>
@@ -170,6 +177,31 @@
             <!-- end of product Content -->
         </div>
         <!-- end of tab content -->
+
+
+        {{-- TAB FOR CREATE MODALS --}}
+        {{-- success added modal --}}
+        <div id="success-added-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+                <!-- Modal content -->
+                <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+                    <div class="relative w-full h-full flex flex-row">
+                        <div class="w-full h-full flex flex-col p-14">
+                            <h1 class="text-black text-xl font-medium mx-auto">Successfully Added!</h1>
+                            <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                                class="w-24 h-24 mx-auto mt-6">
+                        </div>
+                        {{-- end of modal content --}}
+                    </div>
+                </div>
+                <!-- end of modal content -->
+            </div>
+        </div>
+        {{-- end of success added modal --}}
+
+        
+        {{-- end of TAB FOR CREATE MODALS --}}
     </div>
 
     <script>

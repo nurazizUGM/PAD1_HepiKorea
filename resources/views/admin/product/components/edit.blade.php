@@ -179,7 +179,9 @@
                                 <div class="flex w-full mt-auto">
                                     <!-- Button Save -->
                                     <button type="submit"
-                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16">
+                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16"
+                                        data-modal-target="success-updated-modal"
+                                        data-modal-toggle="success-updated-modal">
                                         Save
                                     </button>
                                 </div>
@@ -194,6 +196,28 @@
         </div>
         <!-- end of tab content -->
     </div>
+
+    {{-- MODALS FOR EDIT PRODUCT --}}
+    {{-- success edited modal --}}
+    <div id="success-updated-modal" tabindex="-1" aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+            <!-- Modal content -->
+            <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+                <div class="relative w-full h-full flex flex-row">
+                    <div class="w-full h-full flex flex-col p-14">
+                        <h1 class="text-black text-xl font-medium mx-auto">Successfully Updated!</h1>
+                        <img src="{{ asset('img/assets/icon/icon_green_check.svg') }}" alt="green_check"
+                            class="w-24 h-24 mx-auto mt-6">
+                    </div>
+                    {{-- end of modal content --}}
+                </div>
+            </div>
+            <!-- end of modal content -->
+        </div>
+    </div>
+    {{-- end of success edited modal --}}
+    {{-- end of MODALS FOR EDIT PRODUCT --}}
 
 @endsection
 
