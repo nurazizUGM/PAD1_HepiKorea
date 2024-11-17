@@ -20,7 +20,7 @@
                 <!-- end of search bar -->
             </div>
             <!-- start of customer card container -->
-            <div class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar">
+            <div class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar justify-start items-start content-start">
                 <!-- card customer -->
                 @foreach ($customers as $customer)
                     <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col"

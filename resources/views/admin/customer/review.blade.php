@@ -18,7 +18,7 @@
             <!-- end of search bar -->
         </div>
         <!-- start of Review card container -->
-        <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8">
+        <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8 justify-start items-start content-start">
             <!-- card Review -->
             <!-- ini for loop hanya untuk coba -->
             @foreach ($reviews as $review)
