@@ -1,5 +1,5 @@
 @extends('layout.customer')
-@section('title', 'Products')
+@section('title', '- Products')
 
 @php
     $lineId = \App\Models\Setting::where('key', 'line')->first()->value;

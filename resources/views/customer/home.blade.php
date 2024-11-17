@@ -1,6 +1,4 @@
 @extends('layout.customer')
-@section('title', 'home')
-
 @php
     $lineId = \App\Models\Setting::where('key', 'line')->first()->value;
 @endphp
@@ -314,5 +312,4 @@
             });
         }
     </script>
-
 @endsection
