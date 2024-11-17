@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Role;
+use App\Jobs\MailJob;
 use App\Mail\Verification;
 use App\Models\Otp;
 use App\Models\User;
@@ -10,7 +11,6 @@ use Google\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
@@ -173,7 +173,7 @@ class AuthController extends Controller
         return redirect()->route('auth.verify');
     }
 
-    public function verify()
+    public function verify(Request $request)
     {
         $user = Auth::user();
         if (Session::has('userId')) {
@@ -196,15 +196,27 @@ class AuthController extends Controller
                 'code' => $otp_code,
                 'expired_at' => now()->addMinutes(5)
             ]);
-            Mail::to($user->email)->send(new Verification($otp_code));
+            MailJob::dispatch($user->email, new Verification($otp->code));
+        } else if ($request->has('resend')) {
+            $otp->update([
+                'expired_at' => now()->addMinutes(5)
+            ]);
+            MailJob::dispatch($user->email, new Verification($otp->code));
         }
 
         if (env('APP_DEBUG') == true) {
             dump($otp->code);
         }
+
+        $timeout = $otp->expired_at->getTimestamp() - now()->getTimestamp();
+        if ($timeout > 120) {
+            // subtract timeout by 2 minutes
+            $timeout -= 120;
+        }
+
         return view('auth.otp', [
             'email' => $user->email,
-            'timeout' => $otp->expired_at->getTimestamp() - now()->getTimestamp(),
+            'timeout' => $timeout,
         ]);
     }
     public function verifyCode(Request $request)

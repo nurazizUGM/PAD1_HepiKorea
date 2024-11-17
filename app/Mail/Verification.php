@@ -29,7 +29,7 @@ class Verification extends Mailable
     {
         return new Envelope(
             subject: 'Email Verification',
-            from: new Address(config()->get('mail.from.address'), config()->get('mail.from.name')),
+            from: config()->get('mail.from.address'),
         );
     }
 
