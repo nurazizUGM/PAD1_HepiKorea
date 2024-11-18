@@ -174,7 +174,7 @@
                                                     alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
                                                 <p class="ml-2 group-hover:text-orange-400">Profile</p>
                                             </a>
-                                            <a href="#"
+                                            <a href="{{ route('auth.address') }}"
                                                 class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                                 role="menuitem">
                                                 <img src="{{ asset('img/assets/icon/icon_address.svg') }}"
@@ -211,7 +211,7 @@
     {{-- end of navbar --}}
 
     {{-- container --}}
-    <div class="w-[92%] w-max[92%] h-fit mx-auto mt-32 mb-20 overflow-hidden">
+    <div class="w-[92%] w-max[92%] h-fit mx-auto mt-32 mb-20 overflow-hidden no-scrollbar">
         @yield('content')
     </div>
     {{-- end of container --}}

@@ -1,13 +1,12 @@
-@extends('layout.customer_nofooter_scrollable')
-
+@extends('layout.customer')
 @section('title', 'address')
 
+{{-- disable footer --}}
+@section('footer', '')
+
 @section('content')
-
     <div class="flex flex-col flex-wrap p-6 border-2 bg-[#EFEFEF] border-gray-200 rounded-3xl w-full mh-fit">
-
         <div class="w-full h-full min-h-[640px] flex flex-col p-8 bg-white rounded-3xl">
-
             <div class="flex flex-row items-center w-full mb-4">
                 {{-- Text Address --}}
                 <h1 class="text-[#3E6E7A] font-semibold text-2xl  w-fit mr-6">Customer Address</h1>
@@ -237,7 +236,8 @@
                                     </table>
                                     <button type="submit" data-modal-hide="address-edit-modal"
                                         class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-base font-semibold mx-auto mt-3 mb-3 inline-block w-1/4 h-10 rounded-xl"
-                                        data-modal-target="success-updated-modal" data-modal-toggle="success-updated-modal">
+                                        data-modal-target="success-updated-modal"
+                                        data-modal-toggle="success-updated-modal">
                                         Save
                                     </button>
                                 </form>
@@ -324,8 +324,8 @@
                 </div>
             </div>
             {{-- end of success added modal --}}
-            
-            
+
+
             {{-- success edited modal --}}
             <div id="success-updated-modal" tabindex="-1" aria-hidden="true"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">

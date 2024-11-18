@@ -59,6 +59,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
         Route::get('profile', [CustomerProfileController::class, 'index'])->name('profile');
         Route::patch('profile', [CustomerProfileController::class, 'update'])->name('profile');
         Route::get('notification', [CustomerProfileController::class, 'notification'])->name('notification');
+        Route::get('address', [CustomerProfileController::class, 'address'])->name('address');
     });
 });
 

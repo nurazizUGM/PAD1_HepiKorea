@@ -1,5 +1,8 @@
-@extends('layout.customer_nofooter_scrollable')
+@extends('layout.customer')
 @section('title', 'Checkout')
+
+{{-- remove footer --}}
+@section('footer', '')
 
 @section('content')
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] py-8 px-10">
@@ -24,9 +27,9 @@
                 </div>
                 <div class="w-1/6 h-full flex mb-auto">
                     {{-- change address button --}}
-                    <a href="" class="my-auto ml-auto cursor-pointer"><img src="{{ asset('img/assets/icon/icon_checkout_arrow_down.svg') }}" alt=""
-                        class="w-6 h-6 rotate-[270deg]"
-                        id="toggle-dropdown-address"></a>
+                    <a href="{{ route('auth.address') }}" class="my-auto ml-auto cursor-pointer"><img
+                            src="{{ asset('img/assets/icon/icon_checkout_arrow_down.svg') }}" alt=""
+                            class="w-6 h-6 rotate-[270deg]" id="toggle-dropdown-address"></a>
                 </div>
             </div>
         </div>

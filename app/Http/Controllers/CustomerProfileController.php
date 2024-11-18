@@ -57,4 +57,10 @@ class CustomerProfileController extends Controller
         $notifications = Notification::where('user_id', Auth::id())->orderBy('is_read', 'asc')->orderBy('created_at', 'desc')->get();
         return view('customer.notification', compact('notifications'));
     }
+
+    public function address()
+    {
+        $user = User::find(Auth::id())->with('addresses')->first();
+        return view('customer.user.address', compact('user'));
+    }
 }
