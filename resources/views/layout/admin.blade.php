@@ -56,7 +56,7 @@
                         </svg>
                     </button>
                     <!-- title navbar -->
-                    <a href="#" class="flex ms-6 md:me-24">
+                    <a href="{{ route('home') }}" class="flex ms-6 md:me-24">
                         <span
                             class="self-center text-[#376F7E] text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"><span
                                 class="text-orange-400">Hepi</span>Korea</span>

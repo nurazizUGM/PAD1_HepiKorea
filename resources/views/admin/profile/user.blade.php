@@ -20,7 +20,7 @@
             </div>
             <div class="items-start justify-start bg-white h-auto rounded-xl p-4">
                 <div class="relative overflow-x-auto w-full">
-                    <form id="profile_form" action="{{ route('admin.profile.user') }}" method="post"
+                    <form id="profile-form" action="{{ route('admin.profile.user') }}" method="post"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PATCH')
@@ -37,31 +37,6 @@
                                         <input type="text" id="fullname" name="fullname" value="{{ $user->fullname }}"
                                             class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                             placeholder="Your Name" required />
-                                    </td>
-                                    <td class="">
-                                        <button id="btn-edit"
-                                            class="flex items-center justify-center w-auto h-auto rounded-lg bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-orange-300 text-xl mr-1 px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 text-white"
-                                            type="button">
-                                            Edit
-                                            <img src="{{ asset('img/assets/icon/icon_faq_edit.svg') }}" alt="Edit Icon"
-                                                class="h-6 w-6 ml-2">
-                                        </button>
-                                        <button id="btn-save"
-                                            class="flex items-center justify-center w-auto h-auto rounded-lg bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-orange-300 text-xl mr-1 px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 text-white hidden"
-                                            type="submit">
-                                            Save
-                                            <img src="{{ asset('img/assets/icon/icon_faq_edit.svg') }}" alt="Edit Icon"
-                                                class="h-6 w-6 ml-2">
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button id="btn-cancel" onclick="window.location.reload()"
-                                            class="flex items-center justify-center w-auto h-auto rounded-lg bg-orange-400 hover:bg-orange-500 focus:ring-4 focus:outline-none focus:ring-orange-300 text-xl mr-1 px-5 py-2.5 text-center dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-800 text-white hidden"
-                                            type="button">
-                                            Cancel
-                                            <img src="{{ asset('img/assets/icon/icon_faq_edit.svg') }}" alt="Edit Icon"
-                                                class="h-6 w-6 ml-2">
-                                        </button>
                                     </td>
                                 </tr>
                                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -96,10 +71,8 @@
                                     <td class="px-6 py-4 flex" colspan="2">
                                         <div class="flex items-center mr-5">
                                             <input id="genderMale" type="radio" name="gender" value="male"
-                                                form=""
                                                 class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-500 dark:focus:bg-orange-500 dark:bg-gray-700 dark:border-gray-600 "
-                                                style="color:#FF9D66" @if ($user->gender == 'male') checked @endif
-                                                disabled>
+                                                style="color:#FF9D66" @checked($user->gender == 'male')>
                                             <label for="genderMale"
                                                 class="block ms-2  text-base font-medium text-gray-900 dark:text-gray-300">
                                                 Laki-Laki
@@ -108,15 +81,13 @@
                                         <div class="flex items-center">
                                             <input id="genderFemale" type="radio" name="gender" value="female"
                                                 class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-orange-400 dark:focus:ring-orange-500 dark:focus:bg-orange-500 dark:bg-gray-700 dark:border-gray-600 "
-                                                style="color:#FF9D66" @if ($user->gender == 'female') checked @endif
-                                                disabled>
+                                                style="color:#FF9D66" @checked($user->gender == 'female')>
                                             <label for="genderFemale"
                                                 class="block ms-2 text-base font-medium text-gray-900 dark:text-gray-300">
                                                 Perempuan
                                             </label>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4" colspan="2"></td>
                                 </tr>
 
                                 <tr class="border-b bg-white dark:bg-gray-800">
@@ -186,7 +157,7 @@
                                             Number</label>
                                     </th>
                                     <td class="px-6 py-4">
-                                        <input type="text" id="phone" name="phone"
+                                        <input type="text" id="phone" name="phone" value="{{ $user->phone }}"
                                             class="h-14 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
                                             placeholder="Your Phone Number" />
                                     </td>
@@ -230,6 +201,14 @@
                                             placeholder="Your Address">{{ $address->address ?? '' }}</textarea>
                                     </td>
                                 </tr>
+                                <tr class="bg-white dark:bg-gray-800">
+                                    <th scope="row"></th>
+                                    <td class="px-6 py-4"> <!-- Change here to span two columns -->
+                                        <button type="submit"
+                                            class="w-full h-14 rounded-xl bg-orange-400 p-2 text-white font-semibold">Save
+                                            Changes</button>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </form>
@@ -241,23 +220,6 @@
 
 @section('script')
     <script>
-        function edit() {
-            $('#btn-edit').addClass('hidden');
-            $('#btn-save').removeClass('hidden');
-            $('#btn-cancel').removeClass('hidden');
-            $('input[id!=email]').removeAttr('disabled');
-            $('textarea').removeAttr('disabled');
-        }
-
-        $('#btn-edit').click(edit);
-        $(document).ready(function() {
-            $('#btn-edit').removeClass('hidden');
-            $('#btn-save').addClass('hidden');
-            $('#btn-cancel').addClass('hidden');
-            $('input').attr('disabled', true);
-            $('textarea').attr('disabled', true);
-        })
-
         $('#new_password').on('input', function() {
             if ($('#new_password').val() != '') {
                 $('#old_password').attr('required', 'required');

@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Uuid;
 
 class ProfileController extends Controller
 {
@@ -55,6 +54,7 @@ class ProfileController extends Controller
                 'city' => $data['city'],
                 'province' => $data['province'],
                 'postal_code' => $data['postal_code'],
+                'name' => $data['fullname']
             ]);
         }
 
