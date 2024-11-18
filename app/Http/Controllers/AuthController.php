@@ -31,9 +31,13 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('email', $body['email'])->first();
-        if (!$user || !$user->password || !Hash::check($body['password'], $user->password)) {
+        if (!$user) {
             return back()->withErrors([
-                'message' => 'Your Account is not registered yet.',
+                'message' => 'Email is not registered.',
+            ])->withInput();
+        } else if (!$user->password || !Hash::check($body['password'], $user->password)) {
+            return back()->withErrors([
+                'message' => 'Invalid password.',
             ])->withInput();
         }
 
@@ -41,7 +45,7 @@ class AuthController extends Controller
         Session::regenerate();
 
         if ($user->role == Role::ADMIN) {
-            return redirect()->route('admin.dashboard');
+            return redirect()->intended('/admin');
         }
         return redirect()->intended();
     }
