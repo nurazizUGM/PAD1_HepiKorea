@@ -1,5 +1,5 @@
 @extends('layout.customer')
-@section('title', 'Product Detail - *name product')
+@section('title', 'Product Detail')
 
 @section('content')
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-6 px-6">
@@ -51,27 +51,28 @@
                 {{-- icons and text of HepiKorea Values --}}
                 <div class="w-full mt-12 flex flex-col gap-y-8">
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_plane.svg')}}" class="w-6 h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_plane.svg') }}" class="w-6 h-6" alt="">
                         <p class="text-black font-normal ml-2">Ships Straight</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_box.svg')}}" class="w-6 h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_box.svg') }}" class="w-6 h-6" alt="">
                         <p class="text-black font-normal ml-2">Ships straight from Korea to your address</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_fasttruck.svg')}}" class="w-6 h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_fasttruck.svg') }}" class="w-6 h-6" alt="">
                         <p class="text-black font-normal ml-2">Quick Delivery</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_fasttime.svg')}}" class="w-6 h-6 my-auto" alt="">
-                        <p class="text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days <br> post-shipment</p>
+                        <img src="{{ asset('img/assets/icon/icon_fasttime.svg') }}" class="w-6 h-6 my-auto" alt="">
+                        <p class="text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days <br> post-shipment
+                        </p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_heart.svg')}}" class="w-6 h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_heart.svg') }}" class="w-6 h-6" alt="">
                         <p class="text-black font-normal ml-2">100% Authentic</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{asset('img/assets/icon/icon_shield.svg')}}" class="w-6 h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_shield.svg') }}" class="w-6 h-6" alt="">
                         <p class="text-black font-normal ml-2">Reliable payment methods</p>
                     </div>
                 </div>
@@ -83,11 +84,12 @@
                         Qty
                     </div>
                     <div class="w-[90%] h-full flex flex-row">
-                        <div
+                        <div onclick="reduceQuantity()"
                             class="border border-black rounded-full py-1 px-3.5 text-2xl cursor-pointer hover:bg-slate-100">
                             -</div>
-                        <p class="my-auto text-2xl mx-6">1</p>
-                        <div class="border border-black rounded-full py-1 px-3 text-2xl cursor-pointer hover:bg-slate-100">+
+                        <p class="my-auto text-2xl mx-6" id="product-quantity-view">1</p>
+                        <div onclick="addQuantity()"
+                            class="border border-black rounded-full py-1 px-3 text-2xl cursor-pointer hover:bg-slate-100">+
                         </div>
                     </div>
                 </div>
@@ -95,9 +97,14 @@
 
                 {{-- two button --}}
                 <div class="w-full h-fit flex flex-row mt-10">
-                    <button
-                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
-                        now</button>
+                    <form action="{{ route('checkout') }}" method="post">
+                        @csrf
+                        <input type="hidden" name="products[].id" id="product-id" value="{{ $product->id }}">
+                        <input type="hidden" name="quantity[]" id="product-quantity" value="1">
+                        <button type="submit"
+                            class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
+                            now</button>
+                    </form>
                     <button
                         class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
                         to Cart</button>
@@ -194,7 +201,8 @@
                             @for ($i = 0; $i < 3; $i++)
                                 <img src="{{ asset('img/example/example_phone.png') }}" alt=""
                                     class="w-24 h-24 rounded-lg object-contain border-2 border-black bg-white cursor-pointer"
-                                    data-modal-target="image-review-view-modal" data-modal-toggle="image-review-view-modal">
+                                    data-modal-target="image-review-view-modal"
+                                    data-modal-toggle="image-review-view-modal">
                             @endfor
                         </div>
                     </div>
@@ -237,3 +245,23 @@
 
     {{-- end of modal image review when clicked --}}
 @endsection
+
+@push('script')
+    <script>
+        function addQuantity() {
+            let quantity = parseInt($('#product-quantity').val());
+            quantity++;
+            $('#product-quantity').val(quantity);
+            $('#product-quantity-view').text(quantity);
+        }
+
+        function reduceQuantity() {
+            let quantity = parseInt($('#product-quantity').val());
+            if (quantity > 1) {
+                quantity--;
+                $('#product-quantity').val(quantity);
+                $('#product-quantity-view').text(quantity);
+            }
+        }
+    </script>
+@endpush

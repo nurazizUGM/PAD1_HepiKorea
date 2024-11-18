@@ -38,4 +38,10 @@ class CustomerProductController extends Controller
 
         return view('customer.product.index', compact('products'));
     }
+
+    public function show(string $id)
+    {
+        $product = Product::with(['category', 'images', 'reviews'])->findOrFail($id);
+        return view('customer.product.show', compact('product'));
+    }
 }

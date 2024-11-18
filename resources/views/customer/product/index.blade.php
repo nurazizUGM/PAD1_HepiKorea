@@ -117,7 +117,8 @@
         <div class="w-full h-full grid grid-cols-7 gap-x-6 gap-y-12">
             @foreach ($products as $product)
                 {{-- card product --}}
-                <div class="bg-white w-[155px] h-[235px] flex flex-col rounded-xl overflow-hidden">
+                <div class="bg-white w-[155px] h-[235px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                    onclick="window.location.href = '{{ route('product.show', $product->id) }}'">
                     {{-- image product --}}
                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
                         style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
