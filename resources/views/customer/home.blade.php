@@ -122,7 +122,8 @@
             {{-- category container --}}
             <div class="grid grid-cols-4 gap-x-32 gap-y-20 mt-14">
                 @foreach ($categories as $category)
-                    <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl">
+                    <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl cursor-pointer"
+                        onclick="window.location.href='{{ route('product.index', ['category' => $category->id]) }}'">
                         <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
                             class="w-40 h-40 mx-auto">
                         <h2 class="text-black font-semibold text-ellipsis overflow-hidden">{{ $category->name }}</h2>
@@ -158,7 +159,8 @@
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
                         @foreach ($newProducts as $product)
                             {{-- card product --}}
-                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
+                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                                onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
                                 <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
                                     style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
@@ -193,7 +195,7 @@
 
             {{-- best seller text --}}
             <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
-                <h1 class="text-[#B7B7B7] text-lg font-semibold">Best Seller</h1>
+                <h1 class="text-orange-400 text-lg font-semibold">Best Seller</h1>
             </div>
             {{-- end of best seller text --}}
 
@@ -216,7 +218,8 @@
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
                         @foreach ($popularProducts as $product)
                             {{-- card product --}}
-                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden">
+                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                                onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
                                 <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
                                     style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
