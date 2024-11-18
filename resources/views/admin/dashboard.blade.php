@@ -8,33 +8,34 @@
         <h1 class="text-black font-bold text-xl mb-2 -mt-2">Dashboard</h1>
         <div class="grid grid-cols-3 gap-8 mb-4">
             <!-- product -->
-            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl">
+            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl cursor-pointer"
+                onclick="window.location.href='{{ route('admin.product.index') }}'">
                 <div class="mb-auto flex w-full px-4 py-3 justify-between overflow-hidden">
                     <!-- product count -->
                     <p class="text-6xl font-bold">{{ $products }}</p>
                     <!-- product icon -->
-                    <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon"
-                        class="h-12 w-12">
+                    <img src="{{ asset('img/assets/icon/icon_dashboard_product.svg') }}" alt="product Icon" class="h-12 w-12">
                 </div>
                 <div class="bg-[#376F7E] w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
                     Products
                 </div>
             </div>
             <!-- Order -->
-            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl">
+            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl cursor-pointer"
+                onclick="window.location.href='{{ route('admin.order.index') }}'">
                 <div class="mb-auto flex w-full px-4 py-3 justify-between overflow-hidden">
                     <!-- Order count -->
                     <p class="text-6xl font-bold">{{ $orders }}</p>
                     <!-- Order icon -->
-                    <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="Order Icon"
-                        class="h-12 w-12">
+                    <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="Order Icon" class="h-12 w-12">
                 </div>
                 <div class="bg-[#376F7E] w-full mt-auto text-center text-white font-semibold text-lg py-2 rounded-b-xl">
                     Order
                 </div>
             </div>
             <!-- customer -->
-            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl">
+            <div class="flex flex-col h-48 bg-gray-50 dark:bg-gray-800 rounded-xl cursor-pointer"
+                onclick="window.location.href='{{ route('admin.customer.index') }}'">
                 <div class="mb-auto flex w-full px-4 py-3 justify-between overflow-hidden">
                     <!-- Customer count -->
                     <p class="text-6xl font-bold">{{ $customers }}</p>
@@ -48,7 +49,8 @@
             </div>
         </div>
         <!-- product ordered n most ordered -->
-        <div class="grid grid-cols-2 gap-4 mt-2">
+        <div class="grid grid-cols-2 gap-4 mt-2 cursor-pointer"
+            onclick="window.location.href = '{{ route('admin.order.index') }}'">
             {{--  Product Ordered --}}
             <div class="flex flex-col items-center justify-center bg-gray-50 h-[51vh] dark:bg-gray-800 rounded-xl">
                 <div class="w-full h-[15%] text-center mb-auto pt-3">
@@ -66,7 +68,8 @@
                 </div>
             </div>
             {{-- Most Ordered --}}
-            <div class="flex flex-col items-center justify-center bg-gray-50 h-[51vh] dark:bg-gray-800 rounded-xl">
+            <div class="flex flex-col items-center justify-center bg-gray-50 h-[51vh] dark:bg-gray-800 rounded-xl cursor-pointer"
+                onclick="window.location.href = '{{ route('admin.category.index') }}'">
                 <div class="w-full h-[15%] text-center mb-auto pt-3">
                     <h1 class="text-black font-bold text-2xl">
                         Most Ordered
