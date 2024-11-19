@@ -7,7 +7,7 @@ use App\Models\Category;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
-class AnalyticController extends Controller
+class AdminAnalyticController extends Controller
 {
     public function index(Request $request)
     {

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Carousel;
 use Illuminate\Http\Request;
 
-class CarouselController extends Controller
+class AdminCarouselController extends Controller
 {
     /**
      * Display a listing of the resource.

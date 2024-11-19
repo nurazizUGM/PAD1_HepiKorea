@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class CustomerOrderController extends Controller
+class OrderController extends Controller
 {
     public function checkout(Request $request)
     {

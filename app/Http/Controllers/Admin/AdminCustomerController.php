@@ -8,7 +8,7 @@ use App\Models\Review;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class CustomerController extends Controller
+class AdminCustomerController extends Controller
 {
     public function index()
     {
