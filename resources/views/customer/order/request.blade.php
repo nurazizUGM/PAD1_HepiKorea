@@ -2,7 +2,7 @@
 @section('title', 'Request Order')
 
 <a href=""
-    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-orange-400 bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
+    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
     <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-10 h-10 mr-1">
     <p>Chat</p>
 </a>
@@ -11,12 +11,12 @@
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-6 px-6">
         {{-- start of welcome container --}}
         <div class="bg-white w-full h-full flex flex-col rounded-xl pt-4 pb-8 px-8">
-            <h1 class="text-xl font-bold">Welcome !</h1>
+            <h1 class="text-2xl font-bold">Welcome !</h1>
             <p class="font-semibold text-lg">
                 Once you've selected your items from your preferred Korean store, complete this form to place your custom
                 order and <br> let us handle the rest.
             </p>
-            <p class="font-semibold text-lg">
+            <p class="font-semibold text-lg mt-8">
                 Not sure where to look beyond HepiKorea? Feel free to use our search engine to explore other Korean stores.
                 Say <br> goodbye to hopping between websites!
             </p>
@@ -34,7 +34,7 @@
                         {{-- step number 1 --}}
                         <div
                             class="w-fit h-fit bg-white rounded-xl mr-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-16">
-                            <div class="text-orange-400 text-lg font-semibold m-auto flex flex-row">
+                            <div class="text-[#3E6E7A] text-lg font-semibold m-auto flex flex-row">
                                 <h1 class="text-[96px] font-bold">1</h1>
                                 <h1 class="ml-2">Complete Customer Detail</h1>
                             </div>
@@ -44,7 +44,7 @@
                     <div class="w-1/2 h-full flex p-2">
                         {{-- step number 2 --}}
                         <div
-                            class="w-fit h-fit bg-orange-400 rounded-xl mr-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-20">
+                            class="w-fit h-fit bg-[#3E6E7A] rounded-xl mr-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-20">
                             <div class="text-white text-lg font-semibold m-auto flex flex-row">
                                 <h1 class="text-[96px] font-bold">3</h1>
                                 <h1 class="ml-2">Confirm the product</h1>
@@ -57,7 +57,7 @@
                     <div class="w-1/2 h-full flex p-2">
                         {{-- step number 3 --}}
                         <div
-                            class="w-fit h-fit bg-orange-400 rounded-xl ml-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-10">
+                            class="w-fit h-fit bg-[#3E6E7A] rounded-xl ml-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-10">
                             <div class="text-white text-lg font-semibold m-auto flex flex-row">
                                 <h1 class="text-[96px] font-bold">2</h1>
                                 <h1 class="ml-2">Write the detail of product request</h1>
@@ -69,7 +69,7 @@
                         {{-- step number 4 --}}
                         <div
                             class="w-fit h-fit bg-white rounded-xl ml-auto shadow-lg hover:shadow-xl my-auto flex py-10 pl-5 pr-6">
-                            <div class="text-orange-400 text-lg font-semibold m-auto flex flex-row">
+                            <div class="text-[#3E6E7A] text-lg font-semibold m-auto flex flex-row">
                                 <h1 class="text-[96px] font-bold">4</h1>
                                 <h1 class="ml-2">Wait the product confirmed</h1>
                             </div>
@@ -105,7 +105,7 @@
                 {{-- end of request order product card --}}
             @endfor
             <a href="" class="ml-auto w-1/12"><button
-                    class="bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 rounded-lg text-white text-lg py-2 px-5 ">Confirm</button></a>
+                    class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-lg text-white text-lg py-2 px-5 ">Confirm</button></a>
         </div>
         {{-- end container list request order --}}
 
@@ -151,7 +151,7 @@
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
 
                 <button type="button" onclick="addOrderItem()"
-                    class="text-white bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
+                    class="text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
             </form>
         </div>
         {{-- end of request order form --}}

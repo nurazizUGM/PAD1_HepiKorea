@@ -37,8 +37,8 @@
                         <!-- title navbar -->
                         <a href="#" class="flex ms-6 md:me-24">
                             <span
-                                class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white"><span
-                                    class="text-orange-400">Hepi</span>Korea</span>
+                                class="self-center text-xl text-orange-400 font-semibold sm:text-2xl whitespace-nowrap"><span
+                                    class="text-[#3E6E7A]">Hepi</span>Korea</span>
                         </a>
                     </div>
                     {{-- search bar --}}
@@ -71,17 +71,17 @@
                     <div class="flex items-center gap-x-14 justify-around mx-auto">
                         {{-- product nav link --}}
                         <a href=""><span
-                                class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Product</span></a>
+                                class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Product</span></a>
                         {{-- request order nav link --}}
                         <a href=""><span
-                                class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Request
+                                class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Request
                                 Order</span></a>
                         {{-- confirmed nav link --}}
                         <a href=""><span
-                                class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Confirmed</span></a>
+                                class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                         {{-- FAQ nav link --}}
                         <a href=""><span
-                                class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">FAQ</span></a>
+                                class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">FAQ</span></a>
                     </div>
                     {{-- end of navigation link content --}}
                     {{--  --}}
@@ -95,8 +95,8 @@
                         </a>
                         <a href="" class="relative">
                             {{-- notification icon --}}
-                            <img src="{{ asset('img/assets/icon/icon_customer_notification.svg') }}" alt=""
-                                class="w-4 h-5">
+                            <img src="{{ asset('img/assets/icon/icon_customer_notification_green.svg') }}"
+                                alt="" class="w-4 h-5">
                             {{-- notification dot --}}
                             <div class="absolute bg-[#FF2E00] text-transparent rounded-full w-1.5 h-1.5 top-0 right-0">.
                             </div>
