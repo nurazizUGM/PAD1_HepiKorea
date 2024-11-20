@@ -102,11 +102,11 @@
                         <input type="hidden" name="products[].id" id="product-id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity[]" id="product-quantity" value="1">
                         <button type="submit"
-                            class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
+                            class="w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
                             now</button>
                     </form>
                     <button
-                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-orange-400 text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
+                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
                         to Cart</button>
                 </div>
                 {{-- end of two button --}}
