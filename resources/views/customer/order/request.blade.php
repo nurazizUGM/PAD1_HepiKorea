@@ -82,6 +82,7 @@
             {{-- form Customer details --}}
             <form id="form-request" action="{{ route('request-order') }}" class="w-full h-full flex flex-col mt-10"
                 method="POST" enctype="multipart/form-data">
+                @csrf
                 <label for="name" class="text-xl text-black font-medium my-2">Name</label>
                 <input type="text" name="fullname"
                     class="w-[55%] h-12 pl-5 bg-white outline outline-1 border-black rounded-xl my-2 border-0 focus:border-1 focus:border-black focus:ring-black"
@@ -104,7 +105,7 @@
 
                 {{-- end of request order product card --}}
             @endfor
-            <a href="" class="ml-auto w-1/12"><button
+            <a href="#" class="ml-auto w-1/12"><button type="submit" form="form-request"
                     class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-lg text-white text-lg py-2 px-5 ">Confirm</button></a>
         </div>
         {{-- end container list request order --}}
@@ -221,12 +222,18 @@
 @push('script')
     <script>
         function addOrderItem() {
-            const productCount = $('#request-items').find('div').length;
+            let productImagePreview = "{{ asset('img/assets/icon/icon_admin_order_product.svg') }}";
+            const productCount = $('#request-items').find('.request-order-items').length;
 
             const productName = $('#product-name').val();
-            const productImage = $('#product-image')?.get(0)?.cloneNode();
-            const productImagePreview = productImage.files[0] ? URL.createObjectURL(productImage.files[0]) :
-                '{{ asset('') }}';
+            const productImage = $('#product-image').clone(true)[0];
+            if (productImage.files.length > 0) {
+                productImagePreview = URL.createObjectURL(productImage.files[0]);
+                $(productImage)
+                    .removeAttr('id')
+                    .attr('name', `items[${productCount}][image]`)
+                    .attr('form', 'form-request');
+            }
             const productLink = $('#product-link').val();
             const productPrice = $('#product-price').val();
             const productQuantity = $('#product-quantity').val();
@@ -240,24 +247,26 @@
                 productDescription
             });
 
-            const component = `
-            <div class="w-full h-fit bg-white rounded-xl flex flex-row px-4 py-4 mb-4">
+            const component = $(`
+            <div class="w-full h-fit bg-white rounded-xl flex flex-row px-4 py-4 mb-4 request-order-items">
                 <div class="w-[15%] h-[10rem] bg-contain bg-no-repeat bg-center"
-                    style="background-image: url('${URL.createObjectURL(productImage.files[0])}')"></div>
+                    style="background-image: url('${productImagePreview}')"></div>
                 <div class="w-[42%] pl-5 flex flex-col">
                     <div class="flex flex-row mb-auto align-middle">
                         <h1 class="text-xl font-medium text-black mr-auto">${productName}</h1>
+                        <input type="hidden" form="form-request" name="items[${productCount}][name]" value="${productName}">
                         <h1 class="text-xl font-semibold text-[#B7B7B7] mx-auto">Rp ${productPrice}</h1>
-                        <input type="hidden" name="product[${productName}][price]" value="${productPrice}">
+                        <input type="hidden" form="form-request" name="items[${productCount}][price]" value="${productPrice}">
                     </div>
                     <div class="w-full h-full flex flex-col mt-auto">
                         <p class="font-medium text-lg text-black mt-auto">Link:</p>
-                        <textarea name="" id="" cols="" rows="2" disabled
+                        <textarea form="form-request" name="items[${productCount}][url]" cols="" rows="2" readonly
                             class="rounded-2xl resize-none">${productLink}</textarea>
                     </div>
                 </div>
                 <div class="w-[43%] pl-5 flex flex-col">
                     <div class="flex flex-row mb-auto align-middle">
+                        <input type="hidden" form="form-request" name="items[${productCount}][quantity]" value="${productQuantity}">
                         <h1 class="text-xl font-medium text-[#B7B7B7] mr-auto">${productQuantity}x</h1>
                         <h1 class="text-xl font-semibold text-orange-400 mx-auto">Rp ${productPrice*productQuantity}</h1>
                         <button href=""
@@ -268,14 +277,16 @@
                     </div>
                     <div class="w-full h-full flex flex-col mt-auto">
                         <p class="font-medium text-lg text-black mt-auto">Note:</p>
-                        <textarea name="" id="" cols="" rows="2" placeholder="" disabled
+                        <textarea form="form-request" name="items[${productCount}][description]" cols="" rows="2" placeholder="" only
                             class="rounded-2xl resize-none text-[#898383]">${productDescription}</textarea>
                     </div>
                 </div>
             </div>
-            `
+            `)
 
-            $(component).append($(productImage.cloneNode(true)).attr('form', 'form-request'));
+            if (productImage.files.length > 0) {
+                component.append(productImage);
+            }
             $('#request-items').prepend(component);
         }
     </script>

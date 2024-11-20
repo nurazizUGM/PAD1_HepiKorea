@@ -3,7 +3,12 @@
 
 @section('content')
     <div class="bg-white w-1/2 max-w-lg p-10 m-auto shadow-lg rounded-2xl">
-        <h1 class="text-black text-xl font-bold mb-5">Masuk Ke <span class="text-orange-400">Hepi</span>Korea</h1>
+        <h1 class="text-black text-xl font-bold mb-5">Masuk Ke
+            <span class="text-3xl cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='{{ route('home') }}'">
+                <span class="text-orange-400">Hepi</span>
+                Korea
+            </span>
+        </h1>
         <!-- start of form -->
         @error('message')
             <div id="alert-1" class="flex p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400"

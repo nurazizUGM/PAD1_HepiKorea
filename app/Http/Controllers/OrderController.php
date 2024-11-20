@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
@@ -40,6 +44,7 @@ class OrderController extends Controller
 
     public function requestOrder(Request $request)
     {
+        DB::beginTransaction();
         $data = $request->validate([
             'fullname' => 'required|string',
             'email' => 'required|email',
@@ -52,15 +57,56 @@ class OrderController extends Controller
             'items.*.image' => 'required|image'
         ]);
 
-        dd($data);
+        if (Auth::check()) {
+            $user = User::find(Auth::id());
+        } else {
+            $user = User::create([
+                'fullname' => $data['fullname'],
+                'email' => $data['email'],
+                'role' => Role::GUEST
+            ]);
+            Auth::login($user);
+        };
 
-        $order = Order::create([
-            'total' => $data['total'],
-            'status' => 'pending',
+        $order = $user->orders()->create([
+            'type' => 'custom',
+            'status' => 'unconfirmed',
+            'total_items_price' => 0,
         ]);
 
-        $order->products()->attach($data['products'], ['quantity' => $data['quantity']]);
+        foreach ($data['items'] as $item) {
+            if ($item['image']) {
+                $item['image'] = $item['image']->store('orders');
+            }
 
-        return redirect()->route('order.show', $order);
+            $order->customOrderItems()->create([
+                'name' => $item['name'],
+                'quantity' => $item['quantity'],
+                'estimated_price' => $item['price'],
+                'total_price' => $item['price'] * $item['quantity'],
+                'url' => $item['url'],
+                'description' => $item['description'],
+                'image' => $item['image'],
+            ]);
+
+            $order->total_items_price += $item['price'] * $item['quantity'];
+        }
+
+        $order->save();
+
+        DB::commit();
+        return redirect()->route('order.index', $order);
+    }
+
+    public function show(string $id)
+    {
+        $order = Order::findOrFail($id);
+        if ($order->type == 'request') {
+            $order->load('customOrderItems');
+        } else {
+            $order->load(['orderItems', 'orderItems.product', 'orderItems.product.images']);
+        }
+
+        return view('customer.order.show', compact('order'));
     }
 }
