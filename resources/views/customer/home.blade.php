@@ -3,7 +3,7 @@
     $lineId = \App\Models\Setting::where('key', 'line')->first()->value;
 @endphp
 <a href="https://line.me/ti/p/~{{ $lineId }}" target="_blank"
-    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-orange-400 bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
+    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
     <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-10 h-10 mr-1">
     <p>Chat</p>
 </a>
@@ -14,15 +14,19 @@
         {{-- start of carousel --}}
         <div id="default-carousel" class="relative w-full rounded-t-3xl" data-carousel="slide">
             <!-- Carousel wrapper -->
-            <div class="relative h-[500px] overflow-hidden rounded-lg">
+            <div class="relative h-[500px] overflow-hidden rounded-t-lg">
                 <!-- Item 1 -->
                 <div class="hidden duration-700 ease-in-out" data-carousel-item>
                     {{-- <img src="{{ asset('img/assets/bg/background_auth.svg') }}"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                     <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full bg-red-200">ini apalah</div>
-                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
-                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-20 text-white">
+                            <h1 class="text-5xl font-semibold">Are you ready to lead the way</h1>
+                            <h2 class="text-2xl font-medium mt-8">Luxury meets ultimate sitting comfort</h2>
+                        </div>
+                        <div class="w-1/2 h-full bg-white">
+                            <img src="img/example/example_phone.png" alt="" class="w-full h-full object-contain">
+                        </div>
                     </div>
                 </div>
                 <!-- Item 2 -->
@@ -30,9 +34,13 @@
                     {{-- <img src="/docs/images/carousel/carousel-2.svg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                     <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full bg-blue-200">ini apalah</div>
-                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
-                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-20 text-white">
+                            <h1 class="text-5xl font-semibold">Are you ready to lead the way</h1>
+                            <h2 class="text-2xl font-medium mt-8">Luxury meets ultimate sitting comfort</h2>
+                        </div>
+                        <div class="w-1/2 h-full bg-white">
+                            <img src="img/assets/bg/background_auth.svg" alt="" class="w-full h-full object-contain">
+                        </div>
                     </div>
                 </div>
                 <!-- Item 3 -->
@@ -40,9 +48,13 @@
                     {{-- <img src="/docs/images/carousel/carousel-3.svg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                     <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full bg-green-200">ini apalah</div>
-                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
-                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-20 text-white">
+                            <h1 class="text-5xl font-semibold">Are you ready to lead the way</h1>
+                            <h2 class="text-2xl font-medium mt-8">Luxury meets ultimate sitting comfort</h2>
+                        </div>
+                        <div class="w-1/2 h-full flex bg-white">
+                            <img src="img/example/carousel_test.png" alt="" class="w-full h-full object-contain">
+                        </div>
                     </div>
                 </div>
                 <!-- Item 4 -->
@@ -50,9 +62,13 @@
                     {{-- <img src="/docs/images/carousel/carousel-4.svg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                     <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full bg-orange-200">ini apalah</div>
-                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
-                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-20 text-white">
+                            <h1 class="text-5xl font-semibold">Are you ready to lead the way</h1>
+                            <h2 class="text-2xl font-medium mt-8">Luxury meets ultimate sitting comfort</h2>
+                        </div>
+                        <div class="w-1/2 h-full flex bg-white">
+                            <img src="img/example/logo_hepikorea.jpg" alt="" class="w-full h-full object-contain">
+                        </div>
                     </div>
                 </div>
                 <!-- Item 5 -->
@@ -60,9 +76,13 @@
                     {{-- <img src="/docs/images/carousel/carousel-5.svg"
                         class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
                     <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full bg-purple-200">ini apalah</div>
-                        <div class="w-1/2 h-full bg-cover bg-no-repeat bg-center"
-                            style="background-image: url('{{ asset('img/assets/bg/background_auth.svg') }}')"></div>
+                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-20 text-white">
+                            <h1 class="text-5xl font-semibold">Are you ready to lead the way</h1>
+                            <h2 class="text-2xl font-medium mt-8">Luxury meets ultimate sitting comfort</h2>
+                        </div>
+                        <div class="w-1/2 h-full flex bg-white">
+                            <img src="img/example/logo_hepikorea_transparent.png" alt="" class="w-full h-full object-contain">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -115,7 +135,7 @@
         <div class="w-full h-full flex flex-col py-10 px-12">
             {{-- category text --}}
             <div class="w-1/5 bg-white rounded-xl text-center py-2">
-                <h1 class="text-orange-400 text-lg font-semibold">Category</h1>
+                <h1 class="text-[#3E6E7A] text-lg font-semibold">Category</h1>
             </div>
             {{-- end of category text --}}
 
@@ -124,8 +144,8 @@
                 @foreach ($categories as $category)
                     <div class="bg-[#FFFCFC] h-52 flex flex-col text-center align-middle justify-center rounded-xl cursor-pointer"
                         onclick="window.location.href='{{ route('product.index', ['category' => $category->id]) }}'">
-                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                            class="w-40 h-40 mx-auto">
+                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}"
+                            alt="fashion_Category" class="w-40 h-40 mx-auto">
                         <h2 class="text-black font-semibold text-ellipsis overflow-hidden">{{ $category->name }}</h2>
                     </div>
                 @endforeach
@@ -136,7 +156,7 @@
 
             {{-- New arrival text --}}
             <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
-                <h1 class="text-orange-400 text-lg font-semibold">New Arrival</h1>
+                <h1 class="text-[#3E6E7A] text-lg font-semibold">New Arrival</h1>
             </div>
             {{-- end of New arrival text --}}
 
@@ -159,7 +179,7 @@
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
                         @foreach ($newProducts as $product)
                             {{-- card product --}}
-                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                            <div class="bg-white h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
                                 onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
                                 <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
@@ -167,7 +187,8 @@
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
-                                    <h1 class="text-sm font-semibold text-nowrap text-ellipsis overflow-hidden">
+                                    <h1
+                                        class="text-sm text-[#3E6E7A] font-semibold text-nowrap text-ellipsis truncate overflow-hidden">
                                         {{ $product->name }}
                                     </h1>
                                     {{-- product type --}}
@@ -180,8 +201,8 @@
                                         class="text-xs ml-auto text-orange-400 font-semibold text-ellipsis overflow-hidden">
                                         Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
                                     {{-- Buy product button --}}
-                                    <a href="#" class="ml-auto"><button
-                                            class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                    <a href="#" class="ml-auto my-auto"><button
+                                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
@@ -195,7 +216,7 @@
 
             {{-- best seller text --}}
             <div class="w-1/5 bg-white rounded-xl text-center py-2 mt-14">
-                <h1 class="text-orange-400 text-lg font-semibold">Best Seller</h1>
+                <h1 class="text-[#3E6E7A] text-lg font-semibold">Best Seller</h1>
             </div>
             {{-- end of best seller text --}}
 
@@ -218,7 +239,7 @@
                     <div class="grid grid-flow-col auto-cols-[175px] gap-x-14">
                         @foreach ($popularProducts as $product)
                             {{-- card product --}}
-                            <div class="bg-white h-[240px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                            <div class="bg-white h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
                                 onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
                                 <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
@@ -226,7 +247,8 @@
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
-                                    <h1 class="text-sm font-semibold text-ellipsis overflow-hidden">{{ $product->name }}
+                                    <h1 class="text-sm text-[#3E6E7A] font-semibold text-ellipsis truncate overflow-hidden">
+                                        {{ $product->name }}
                                     </h1>
                                     {{-- product type --}}
                                     <h2
@@ -238,8 +260,8 @@
                                         class="text-xs ml-auto text-orange-400 font-semibold text-ellipsis overflow-hidden">
                                         Rp {{ number_format($product->price, 0, ',', '.') }}</h3>
                                     {{-- Buy product button --}}
-                                    <a href="#" class="ml-auto"><button
-                                            class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                                    <a href="#" class="ml-auto my-auto"><button
+                                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                                 </div>
                             </div>
                             {{-- end of card product --}}
