@@ -80,20 +80,17 @@
             </div>
 
             {{-- form Customer details --}}
-            <form action="" class="w-full h-full flex flex-col mt-10">
+            <form id="form-request" action="{{ route('request-order') }}" class="w-full h-full flex flex-col mt-10"
+                method="POST" enctype="multipart/form-data">
                 <label for="name" class="text-xl text-black font-medium my-2">Name</label>
-                <input type="text"
+                <input type="text" name="fullname"
                     class="w-[55%] h-12 pl-5 bg-white outline outline-1 border-black rounded-xl my-2 border-0 focus:border-1 focus:border-black focus:ring-black"
                     placeholder="Enter your name">
                 <label for="email" class="text-xl text-black font-medium my-2">Email</label>
                 <div class="my-2 flex flex-row">
-                    <input type="email"
+                    <input type="email" name="email"
                         class="w-[55%] h-12 pl-5 bg-white outline outline-1 border-black rounded-xl py-2 border-0 focus:border-1 focus:border-black focus:ring-black"
-                        placeholder="user@gmail.com">
-                    <button type="submit"
-                        class="inline-flex h-10 bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 px-8 rounded-lg ml-10 my-auto">
-                        <p class="m-auto text-white text-sm font-normal">Save</p>
-                    </button>
+                        placeholder="Email address">
                 </div>
             </form>
             {{-- end of customer detail --}}
@@ -101,51 +98,10 @@
         {{-- end of container card step pemesanan --}}
 
         {{-- container list request order --}}
-        <div class="w-full h-fit pt-6 flex flex-col">
+        <div class="w-full h-fit pt-6 flex flex-col" id="request-items">
             @for ($i = 0; $i < 2; $i++)
                 {{-- request order product card --}}
-                <div class="w-full h-fit bg-white rounded-xl flex flex-row px-4 py-4 mb-4">
-                    {{-- image product --}}
-                    {{-- admin_order_img_phone.png --}}
-                    <div class="w-[15%] h-[10rem] bg-contain bg-no-repeat bg-center"
-                        style="background-image: url('{{ asset('img/example/admin_order_img_phone.png') }}')"></div>
-                    {{-- <img src="{{ asset('img/example/test_blouse.png') }}" alt="" class="w-fit h-fit"> --}}
-                    <div class="w-[42%] pl-5 flex flex-col">
-                        <div class="flex flex-row mb-auto align-middle">
-                            {{-- product name --}}
-                            <h1 class="text-xl font-medium text-black mr-auto">Samsung Ultra 24</h1>
-                            {{-- product price --}}
-                            <h1 class="text-xl font-semibold text-[#B7B7B7] mx-auto">Rp 24.000.000</h1>
-                        </div>
-                        <div class="w-full h-full flex flex-col mt-auto">
-                            {{-- text link --}}
-                            <p class="font-medium text-lg text-black mt-auto">Link:</p>
-                            {{-- http link container --}}
-                            <textarea name="" id="" cols="" rows="2" placeholder="https:://" disabled
-                                class="rounded-2xl resize-none"></textarea>
-                        </div>
-                    </div>
-                    <div class="w-[43%] pl-5 flex flex-col">
-                        <div class="flex flex-row mb-auto align-middle">
-                            {{-- product quantity --}}
-                            <h1 class="text-xl font-medium text-[#B7B7B7] mr-auto">3x</h1>
-                            {{-- product price total --}}
-                            <h1 class="text-xl font-semibold text-orange-400 mx-auto">Rp 72.000.000,-</h1>
-                            <button href=""
-                                class="bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 p-1 rounded-md"><img
-                                    src="{{ asset('img/assets/icon/icon_requestOrder_trashcan.svg') }}" alt=""
-                                    class="w-6 h-6" data-modal-target="confirmation-delete-modal"
-                                    data-modal-toggle="confirmation-delete-modal"></button>
-                        </div>
-                        <div class="w-full h-full flex flex-col mt-auto">
-                            {{-- text Note --}}
-                            <p class="font-medium text-lg text-black mt-auto">Note:</p>
-                            {{-- Note container --}}
-                            <textarea name="" id="" cols="" rows="2" placeholder="" disabled
-                                class="rounded-2xl resize-none text-[#898383]">Bungkus dengan rapi dan lapisi dengan kardus yang tebal</textarea>
-                        </div>
-                    </div>
-                </div>
+
                 {{-- end of request order product card --}}
             @endfor
             <a href="" class="ml-auto w-1/12"><button
@@ -158,39 +114,43 @@
             <form action="" class="w-full h-fit flex flex-col text-orange-400 font-semibold text-xl">
                 <label for="">Product Name</label>
                 {{-- input product name --}}
-                <input type="text" name="" id=""
+                <input type="text" id="product-name" name="product-name"
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Product Photo</label>
                 <!-- input file image -->
                 <div class="relative w-full my-2" onclick="$(this).find('input[type=file]').click()">
                     <!-- Hidden file input -->
-                    <input id="add-category-icon" name="icon" type="file" class="hidden"
-                        onchange="updatePreview(this, $('#add-category-image'))">
+                    <input id="product-image" name="icon" type="file" class="hidden">
                     <!-- Custom file input label -->
-                    <label for="add-category-icon"
+                    <label for="product-image"
                         class="flex items-center justify-between w-full rounded-xl bg-white border border-black  h-10 pl-6 pr-4 cursor-pointer">
                         <span class="text-[#898383] font-normal">Upload your photo</span>
                         <img src="{{ asset('img/assets/icon/icon_admin_category_upload.svg') }}" alt="Upload Icon"
                             class="h-8 w-8">
                     </label>
                 </div>
-                <label for="">Product Link</label>
+
                 {{-- input product link --}}
-                <input type="text" name="" id=""
+                <label for="product-link">Product Link</label>
+                <input type="text" id="product-link" name="product-link"
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
-                <label for="">Price</label>
+
                 {{-- input price --}}
-                <input type="number" name="" id=""
+                <label for="product-price">Price</label>
+                <input type="number" id="product-price"
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
-                <label for="">Quantity</label>
+
                 {{-- input quantity --}}
-                <input type="number" name="" id=""
+                <label for="product-quantity">Quantity</label>
+                <input type="number" id="product-quantity"
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
-                <label for="">Note</label>
+
                 {{-- input note --}}
-                <textarea name="" id="" cols="30" rows="10"
+                <label for="product-note">Note</label>
+                <textarea id="product-description" cols="30" rows="10"
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
-                <button type="submit"
+
+                <button type="button" onclick="addOrderItem()"
                     class="text-white bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 w-1/12 py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
             </form>
         </div>
@@ -257,3 +217,66 @@
     {{-- end of MODALS FOR REQUEST ORDER --}}
 
 @endsection
+
+@push('script')
+    <script>
+        function addOrderItem() {
+            const productCount = $('#request-items').find('div').length;
+
+            const productName = $('#product-name').val();
+            const productImage = $('#product-image')?.get(0)?.cloneNode();
+            const productImagePreview = productImage.files[0] ? URL.createObjectURL(productImage.files[0]) :
+                '{{ asset('') }}';
+            const productLink = $('#product-link').val();
+            const productPrice = $('#product-price').val();
+            const productQuantity = $('#product-quantity').val();
+            const productDescription = $('#product-description').val();
+            console.log({
+                productName,
+                productImage,
+                productLink,
+                productPrice,
+                productQuantity,
+                productDescription
+            });
+
+            const component = `
+            <div class="w-full h-fit bg-white rounded-xl flex flex-row px-4 py-4 mb-4">
+                <div class="w-[15%] h-[10rem] bg-contain bg-no-repeat bg-center"
+                    style="background-image: url('${URL.createObjectURL(productImage.files[0])}')"></div>
+                <div class="w-[42%] pl-5 flex flex-col">
+                    <div class="flex flex-row mb-auto align-middle">
+                        <h1 class="text-xl font-medium text-black mr-auto">${productName}</h1>
+                        <h1 class="text-xl font-semibold text-[#B7B7B7] mx-auto">Rp ${productPrice}</h1>
+                        <input type="hidden" name="product[${productName}][price]" value="${productPrice}">
+                    </div>
+                    <div class="w-full h-full flex flex-col mt-auto">
+                        <p class="font-medium text-lg text-black mt-auto">Link:</p>
+                        <textarea name="" id="" cols="" rows="2" disabled
+                            class="rounded-2xl resize-none">${productLink}</textarea>
+                    </div>
+                </div>
+                <div class="w-[43%] pl-5 flex flex-col">
+                    <div class="flex flex-row mb-auto align-middle">
+                        <h1 class="text-xl font-medium text-[#B7B7B7] mr-auto">${productQuantity}x</h1>
+                        <h1 class="text-xl font-semibold text-orange-400 mx-auto">Rp ${productPrice*productQuantity}</h1>
+                        <button href=""
+                            class="bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 p-1 rounded-md"><img
+                                src="{{ asset('img/assets/icon/icon_requestOrder_trashcan.svg') }}" alt=""
+                                class="w-6 h-6" data-modal-target="confirmation-delete-modal"
+                                data-modal-toggle="confirmation-delete-modal"></button>
+                    </div>
+                    <div class="w-full h-full flex flex-col mt-auto">
+                        <p class="font-medium text-lg text-black mt-auto">Note:</p>
+                        <textarea name="" id="" cols="" rows="2" placeholder="" disabled
+                            class="rounded-2xl resize-none text-[#898383]">${productDescription}</textarea>
+                    </div>
+                </div>
+            </div>
+            `
+
+            $(component).append($(productImage.cloneNode(true)).attr('form', 'form-request'));
+            $('#request-items').prepend(component);
+        }
+    </script>
+@endpush

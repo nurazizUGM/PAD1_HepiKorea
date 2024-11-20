@@ -72,7 +72,8 @@
                     <a href="{{ route('product.index') }}"><span
                             class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Product</span></a>
                     {{-- request order nav link --}}
-                    <a href=""><span class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Request
+                    <a href="{{ route('request-order') }}"><span
+                            class="font-semibold text-[#B7B7B7] hover:text-orange-400 text-lg">Request
                             Order</span></a>
                     {{-- confirmed nav link --}}
                     <a href=""><span

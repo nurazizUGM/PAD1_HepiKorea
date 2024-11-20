@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -35,5 +36,31 @@ class OrderController extends Controller
             'total' => $total,
             'items' => $items,
         ];
+    }
+
+    public function requestOrder(Request $request)
+    {
+        $data = $request->validate([
+            'fullname' => 'required|string',
+            'email' => 'required|email',
+            'items' => 'required|array',
+            'items.*.name' => 'required|string',
+            'items.*.quantity' => 'required|integer|min:1',
+            'items.*.price' => 'required|numeric|min:0',
+            'items.*.url' => 'required|url',
+            'items.*.description' => 'required|string',
+            'items.*.image' => 'required|image'
+        ]);
+
+        dd($data);
+
+        $order = Order::create([
+            'total' => $data['total'],
+            'status' => 'pending',
+        ]);
+
+        $order->products()->attach($data['products'], ['quantity' => $data['quantity']]);
+
+        return redirect()->route('order.show', $order);
     }
 }

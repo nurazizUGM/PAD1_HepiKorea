@@ -34,6 +34,8 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
 });
 
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::view('request-order', 'customer.order.request')->name('request-order');
+Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware('guest')->group(function () {
