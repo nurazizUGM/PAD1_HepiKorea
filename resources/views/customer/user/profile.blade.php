@@ -15,7 +15,9 @@
                         <img class="w-full min-h-[10rem] m-0 p-2 object-contain object-center" id="profile_picture"
                             src="{{ $photo }}" alt="Profile Picture">
                     </div>
-                    <button class="w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2" onclick="$('input[name=photo]').click()">
+                    <button
+                        class="w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
+                        onclick="$('input[name=photo]').click()">
                         <h1 class="text-lg text-white font-semibold">Choose Photo</h1>
                     </button>
                 </div>
@@ -29,8 +31,7 @@
                             <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <tbody>
                                     <tr class="bg-white border-b ">
-                                        <th scope="row"
-                                            class="py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="fullname"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Name</label>
                                         </th>
@@ -67,8 +68,7 @@
                                         </td> --}}
                                     </tr>
                                     <tr class="bg-white border-b ">
-                                        <th scope="row"
-                                            class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="date_of_birth"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Date
                                                 of
@@ -93,16 +93,15 @@
                                     </tr>
 
                                     <tr class="bg-white border-b ">
-                                        <th scope="row"
-                                            class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="gender"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Gender</label>
                                         </th>
                                         <td class=" py-4 flex" colspan="2">
                                             <div class="flex items-center mr-5">
                                                 <input id="genderMale" type="radio" name="gender" value="male"
-                                                    class="w-4 h-4 border-[#376F7E] focus:ring-0  "
-                                                    style="color:#FF9D66" disabled @checked((old('gender') ?? $user->gender) == 'male')>
+                                                    class="w-4 h-4 border-[#376F7E] focus:ring-0  " style="color:#FF9D66"
+                                                    disabled @checked((old('gender') ?? $user->gender) == 'male')>
                                                 <label for="genderMale"
                                                     class="block ms-2  text-base font-medium text-[#898383] dark:text-gray-300">
                                                     Male
@@ -110,8 +109,8 @@
                                             </div>
                                             <div class="flex items-center">
                                                 <input id="genderFemale" type="radio" name="gender" value="female"
-                                                    class="w-4 h-4 border-[#376F7E] focus:ring-0  "
-                                                    style="color:#FF9D66" disabled @checked((old('gender') ?? $user->gender) == 'female')>
+                                                    class="w-4 h-4 border-[#376F7E] focus:ring-0  " style="color:#FF9D66"
+                                                    disabled @checked((old('gender') ?? $user->gender) == 'female')>
                                                 <label for="genderFemale"
                                                     class="block ms-2 text-base font-medium text-[#898383] dark:text-gray-300">
                                                     Female
@@ -122,8 +121,7 @@
                                     </tr>
 
                                     <tr class="border-b bg-white dark:bg-gray-800">
-                                        <th scope="row"
-                                            class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="email"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Email</label>
                                         </th>
@@ -135,8 +133,7 @@
                                     </tr>
 
                                     <tr class="bg-white dark:bg-gray-800">
-                                        <th scope="row"
-                                            class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="old_password"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Password</label>
                                         </th>
@@ -184,8 +181,7 @@
                                     </tr>
 
                                     <tr class="border-b bg-white dark:bg-gray-800">
-                                        <th scope="row"
-                                            class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
+                                        <th scope="row" class=" py-4 font-medium text-[#898383] whitespace-nowrap ">
                                             <label for="phone"
                                                 class="flex items-center mb-2 text-lg font-medium text-[#898383] ">Phone
                                                 Number</label>
@@ -197,6 +193,51 @@
                                                 placeholder="Your Phone Number" />
                                         </td>
                                     </tr>
+
+                                    {{-- Nambah address utama --}}
+                                    {{-- address --}}
+                                    <tr class="bg-white">
+                                        <th scope="row"
+                                            class="px-6 py-4 font-medium text-[#898383] whitespace-nowrap dark:text-white">
+                                            <label for="address"
+                                                class="flex items-center mb-2 text-lg font-medium text-[#898383] dark:text-white">Address</label>
+                                        </th>
+                                        <td class="py-4"> <!-- Change here to span two columns -->
+                                            <div class="flex"> <!-- Flex container to arrange textareas side by side -->
+                                                <input type="text" id="province" name="province"
+                                                    value="{{ $address->province ?? '' }}"
+                                                    class="w-full h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block mr-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
+                                                    placeholder="Your Province" />
+                                                <input type="text" id="city" name="city"
+                                                    value="{{ $address->city ?? '' }}"
+                                                    class="w-full h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
+                                                    placeholder="Your City" />
+                                            </div>
+                                        </td>
+                                    </tr>
+
+                                    {{-- Postal Code --}}
+                                    <tr class="bg-white">
+                                        <th scope="row"></th>
+                                        <td class="py-4"> <!-- Change here to span two columns -->
+                                            <input type="text" id="postal_code" name="postal_code"
+                                                value="{{ $address->postal_code ?? '' }}"
+                                                class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
+                                                placeholder="Your Postal Code" />
+                                        </td>
+                                    </tr>
+
+                                    {{-- address --}}
+                                    <tr class="bg-white">
+                                        <th scope="row"></th>
+                                        <td class="py-4"> <!-- Change here to span two columns -->
+                                            <textarea name="address" id="address" cols="5" rows="5"
+                                                class="h-24 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
+                                                placeholder="Your Address">{{ $address->address ?? '' }}</textarea>
+                                        </td>
+                                    </tr>
+                                    {{-- Nambah address utama --}}
+
                                 </tbody>
                             </table>
                         </form>
