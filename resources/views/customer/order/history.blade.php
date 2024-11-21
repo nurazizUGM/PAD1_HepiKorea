@@ -1,6 +1,6 @@
-@extends('layout.customer_nofooter_scrollable')
-
+@extends('layout.customer')
 @section('title', 'Transaction History')
+@section('footer', '')
 
 @section('content')
     <div class="w-full w-max[100%] h-fit min-h-[650px] rounded-3xl bg-[#EFEFEF] pb-8 pt-2 px-10">
@@ -85,8 +85,7 @@
                                     <div class="w-1/2 flex flex-row justify-center items-center">
                                         <button
                                             class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="payment-modal"
-                                            data-modal-toggle="payment-modal">Pay
+                                            data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay
                                             Product</button>
                                         <button
                                             class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>

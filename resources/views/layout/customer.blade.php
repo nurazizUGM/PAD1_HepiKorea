@@ -79,7 +79,7 @@
                     <a href=""><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                     {{-- FAQ nav link --}}
-                    <a href=""><span
+                    <a href="{{ route('faq') }}"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">FAQ</span></a>
                 </div>
                 {{-- end of navigation link content --}}
@@ -182,7 +182,7 @@
                                                     alt="" class="w-5 h-5 grayscale group-hover:grayscale-0">
                                                 <p class="ml-2 group-hover:text-orange-400">Address</p>
                                             </a>
-                                            <a href="#"
+                                            <a href="{{ route('order.history') }}"
                                                 class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group"
                                                 role="menuitem">
                                                 <img src="{{ asset('img/assets/icon/icon_history.svg') }}"

@@ -41,7 +41,10 @@ Route::post('request-order', [OrderController::class, 'requestOrder'])->name('re
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('show/{id}', 'show')->name('show');
+    Route::get('history', 'history')->name('history');
 });
+
+Route::get('faq', [FaqController::class, 'faq'])->name('faq');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {

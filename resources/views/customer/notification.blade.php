@@ -9,28 +9,27 @@
             {{-- list of notification container --}}
             <div class="w-full h-full flex flex-col gap-y-4 mt-4">
 
-                @for ($i = 0; $i < 10; $i++)
+                @foreach ($notifications as $notification)
                     {{-- Notification --}}
-                    <div class="w-full h-fit bg-white rounded-2xl shadow-lg p-4">
+                    <div class="w-full h-fit bg-white rounded-2xl shadow-lg p-4 cursor-pointer"
+                        @if ($notification->action_url) onclick="window.location.href='{{ $notification->action_url }}'" @endif>
                         {{-- notification date --}}
-                        <p class="text-[#B7B7B7] font-semibold text-sm">27-Sep-2024</p>
-                        <div class="w-ful h-full flex flex-row mt-3">
-                            {{-- image product --}}
+                        <p class="text-[#B7B7B7] font-semibold text-sm cursor-text">
+                            {{ $notification->created_at->format('d-M-Y H:i') }}
+                        </p>
+                        <div class="w-ful h-full flex flex-row mt-3 cursor-auto">
                             <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt="img_product"
                                 class="h-20 object-contain">
                             <div class="flex flex-col ml-10">
-                                {{-- product name --}}
-                                <h1 class="text-[#3E6E7A] text-base font-semibold">Samsung Ultra S24</h1>
-                                {{-- product variant --}}
-                                <p class="text-[#C4C4C4] text-xs font-semibold mt-1">Black</p>
+                                <h1 class="text-[#3E6E7A] text-xl font-semibold">{{ $notification->title }}</h1>
+                                <p class="text-[#3E6E7A] my-auto ml-auto">
+                                    {{ $notification->message }}
+                                </p>
                             </div>
-                            {{-- Status of product --}}
-                            <h1 class="text-[#3E6E7A] text-xl font-semibold my-auto ml-auto">Your product has been
-                                confirmed!</h1>
                         </div>
                     </div>
                     {{-- end of Notification --}}
-                @endfor
+                @endforeach
 
             </div>
             {{-- end of list of notification container --}}
