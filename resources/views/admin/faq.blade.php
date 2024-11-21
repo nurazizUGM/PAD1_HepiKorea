@@ -52,6 +52,9 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="w-full h-36">
+                    {{--  --}}
+                </div>
             </div>
             {{-- FAQ --}}
 
@@ -59,11 +62,11 @@
             <!-- Pop Up Add FAQ -->
             <div id="faq-add-modal" tabindex="-1"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-[0.1rem] w-fit max-w-2xl max-h-full">
+                <div class="relative p-[0.1rem] w-fit max-w-6xl max-h-full">
                     <!-- Modal content -->
-                    <div class="bg-white w-[40vw] rounded-lg shadow overflow-y-auto max-w-full">
+                    <div class="bg-white w-[80vw] rounded-lg shadow overflow-y-auto max-w-full">
                         <div class="w-full h-full flex flex-col">
-                            <h1 class="text-black font-bold text-2xl p-5 pb-2">Add FAQ</h1>
+                            <h1 class="text-black font-bold text-5xl p-5 pb-2">Add FAQ</h1>
                             <button type="button"
                                 class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
                                 data-modal-hide="faq-add-modal">
@@ -73,23 +76,23 @@
                                 <form action="{{ route('admin.faq.store') }}" method="POST"
                                     class="flex flex-col h-full text-center py-2 px-5">
                                     @csrf
-                                    <input type="text" placeholder="FAQ" name="new_question" id="add-faq-name"
+                                    <input type="text" placeholder="FAQ Title" name="new_question" id="add-faq-name"
                                         value="{{ old('new_question') }}"
-                                        class="rounded-2xl w-full bg-gray-200 h-14 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                        class="rounded-2xl w-full bg-white shadow-md h-14 pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 border-0 focus:outline-none focus:ring-0">
                                     @error('new_question')
                                         <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}
                                         </p>
                                     @enderror
 
-                                    <textarea placeholder="FAQ answer ..." name="new_answer" id="add-faq-answer" rows="12"
-                                        class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('new_answer') }}</textarea>
+                                    <textarea placeholder="FAQ Content" name="new_answer" id="add-faq-answer"
+                                        class="rounded-2xl w-full h-96 bg-white shadow-md pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('new_answer') }}</textarea>
                                     @error('new_answer')
                                         <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}
                                         </p>
                                     @enderror
 
                                     <button type="submit"
-                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mx-auto mt-5 mb-3 inline-block w-1/2 h-14 rounded-3xl">Save</button>
+                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold ml-auto mt-5 mb-3 inline-block w-1/6 h-14 rounded-3xl">Save</button>
                                 </form>
                             </div>
                         </div>
@@ -102,11 +105,11 @@
             <!-- Pop Up Edit FAQ -->
             <div id="faq-edit-modal" tabindex="-1"
                 class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-                <div class="relative p-[0.1rem] w-fit max-w-2xl max-h-full">
+                <div class="relative p-[0.1rem] w-fit max-w-6xl max-h-full">
                     <!-- Modal content -->
-                    <div class="bg-white w-[40vw] rounded-lg shadow overflow-y-auto max-w-full">
+                    <div class="bg-white w-[80vw] rounded-lg shadow overflow-y-auto max-w-full">
                         <div class="w-full h-full flex flex-col">
-                            <h1 class="text-black font-bold text-2xl p-5 pb-2">Edit FAQ</h1>
+                            <h1 class="text-black font-bold text-5xl p-5 pb-2">Edit FAQ</h1>
                             <button type="button"
                                 class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
                                 data-modal-hide="faq-edit-modal">
@@ -117,23 +120,23 @@
                                     id="edit-faq-form">
                                     @csrf
                                     @method('patch')
-                                    <input type="text" placeholder="FAQ" name="question" id="edit-question"
+                                    <input type="text" placeholder="FAQ Title" name="question" id="edit-question"
                                         value="{{ old('question') }}"
-                                        class="rounded-2xl w-full bg-gray-200 h-14 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0">
+                                        class="rounded-2xl w-full bg-white shadow-md h-14 pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 border-0 focus:outline-none focus:ring-0">
                                     @error('question')
                                         <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}
                                         </p>
                                     @enderror
 
-                                    <textarea placeholder="FAQ answer..." name="answer" id="edit-answer" rows="12"
-                                        class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ old('answer') }}</textarea>
+                                    <textarea placeholder="FAQ Content" name="answer" id="edit-answer"
+                                        class="rounded-2xl w-full h-96 bg-white shadow-md pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 placeholder:font-semi border-0 focus:outline-none focus:ring-0 resize-none">{{ old('answer') }}</textarea>
                                     @error('answer')
                                         <p class="mt-1 text-sm text-start text-red-600 dark:text-red-500">{{ $message }}
                                         </p>
                                     @enderror
 
                                     <button type="submit"
-                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mx-auto mt-5 mb-3 inline-block w-1/2 h-14 rounded-3xl">Save</button>
+                                        class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold ml-auto mt-5 mb-3 inline-block w-1/6 h-14 rounded-3xl">Save</button>
                                 </form>
                             </div>
                         </div>
