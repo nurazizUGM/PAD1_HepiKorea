@@ -109,4 +109,10 @@ class OrderController extends Controller
 
         return view('customer.order.show', compact('order'));
     }
+
+    public function history()
+    {
+        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        return view('customer.order.history', compact('orders'));
+    }
 }
