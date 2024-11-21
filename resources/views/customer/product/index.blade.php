@@ -11,9 +11,9 @@
 </a>
 
 @section('content')
-    <div class="w-full w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-1 md:px-14">
+    <div class="w-full md:w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-1 md:px-14">
         {{-- sorting and filter container --}}
-        <div class="w-full flex flex-col md:flex-row mb-5">
+        <div class="w-auto md:w-full gap-x-1 md:gap-x-0 flex flex-row mb-5 mx-auto md:mx-0">
             @php
                 $category = request()->category;
                 if ($category) {
@@ -22,10 +22,10 @@
             @endphp
             {{-- dropdown category --}}
             <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base px-10 py-2.5 text-center font-semibold items-center mx-auto md:mx-0 md:my-auto"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base md:px-10 md:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-24 md:w-auto h-8 md:h-auto"
                 type="button">
                 <span class="text-left">{{ $category ? $category->name : 'Category' }}</span>
-                <svg class="w-2.5 h-2.5 ml-10 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                <svg class="w-2.5 h-2.5 md:ml-10 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m1 1 4 4 4-4" />
@@ -34,7 +34,7 @@
 
             <!-- Dropdown menu -->
             <div id="dropdownCategory"
-                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-24 md:w-44">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCategoryButton">
                     <li data-category="">
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">All</a>
@@ -49,15 +49,15 @@
             {{-- end of dropdown category --}}
 
             {{-- min and max price filter container --}}
-            <form action="" class="flex flex-col md:flex-row md:ml-10 w-fit h-full mt-4 md:my-auto mx-auto md:mx-0 gap-y-4 md:gap-6 ">
+            <form action="" class="flex flex-row ml-0 md:ml-10 w-fit h-full md:my-auto md:mx-0 gap-y-4 md:gap-6">
                 {{-- Minimum price filter --}}
                 <input type="number" placeholder="Minimum price" name="min_price" form="form-filter"
                     value="{{ request()->min_price }}"
-                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    class="rounded-2xl bg-gray-300 border-none placeholder:text-[9px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
                 {{-- end of Minimum price filter --}}
                 <input type="number" placeholder="Maximum Price" name="max_price" form="form-filter"
                     value="{{ request()->max_price }}"
-                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
+                    class="rounded-2xl bg-gray-300 border-none placeholder:text-[9px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
             </form>
             {{-- end of min and max price filter container --}}
 
@@ -80,10 +80,10 @@
             @endphp
             {{-- sort by dropdown --}}
             <button id="dropdownSortByButton" data-dropdown-toggle="dropdownSortBy"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base pr-6 px-10 py-2.5 text-center font-semibold items-center mx-auto md:mx-0 md:my-auto md:ml-auto"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base md:pr-6 px-2 md:px-10 md:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-24 md:w-auto h-8 md:h-auto"
                 type="button">
                 <span class="text-left">{{ $sortBy }}</span>
-                <svg class="w-2.5 h-2.5 ml-14 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                <svg class="w-2.5 h-2.5 md:ml-14 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                     fill="none" viewBox="0 0 10 6">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="m1 1 4 4 4-4" />
