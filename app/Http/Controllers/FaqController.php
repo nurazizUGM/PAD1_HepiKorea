@@ -43,4 +43,10 @@ class FaqController extends Controller
         Faq::where('id', $id)->delete();
         return redirect()->back()->with('success', 'Faq deleted successfully');
     }
+
+    public function faq()
+    {
+        $faqs = Faq::all();
+        return view('customer.faq', compact('faqs'));
+    }
 }

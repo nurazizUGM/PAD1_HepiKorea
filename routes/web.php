@@ -43,6 +43,8 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::get('show/{id}', 'show')->name('show');
 });
 
+Route::get('faq', [FaqController::class, 'faq'])->name('faq');
+
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {
         Route::view('login', 'auth.login')->name('login');

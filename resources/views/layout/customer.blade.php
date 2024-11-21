@@ -79,7 +79,7 @@
                     <a href=""><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                     {{-- FAQ nav link --}}
-                    <a href=""><span
+                    <a href="{{ route('faq') }}"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">FAQ</span></a>
                 </div>
                 {{-- end of navigation link content --}}
