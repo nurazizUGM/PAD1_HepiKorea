@@ -11,9 +11,9 @@
 </a>
 
 @section('content')
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-14">
+    <div class="w-full w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-1 md:px-14">
         {{-- sorting and filter container --}}
-        <div class="w-full flex flex-row mb-5">
+        <div class="w-full flex flex-col md:flex-row mb-5">
             @php
                 $category = request()->category;
                 if ($category) {
@@ -22,7 +22,7 @@
             @endphp
             {{-- dropdown category --}}
             <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base px-6 py-2.5 text-center font-semibold items-center"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base px-10 py-2.5 text-center font-semibold items-center mx-auto md:mx-0 md:my-auto"
                 type="button">
                 <span class="text-left">{{ $category ? $category->name : 'Category' }}</span>
                 <svg class="w-2.5 h-2.5 ml-10 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -49,15 +49,15 @@
             {{-- end of dropdown category --}}
 
             {{-- min and max price filter container --}}
-            <form action="" class="flex flex-row ml-10 w-fit h-full my-auto gap-6">
+            <form action="" class="flex flex-col md:flex-row md:ml-10 w-fit h-full mt-4 md:my-auto mx-auto md:mx-0 gap-y-4 md:gap-6 ">
                 {{-- Minimum price filter --}}
                 <input type="number" placeholder="Minimum price" name="min_price" form="form-filter"
                     value="{{ request()->min_price }}"
-                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0">
+                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
                 {{-- end of Minimum price filter --}}
                 <input type="number" placeholder="Maximum Price" name="max_price" form="form-filter"
                     value="{{ request()->max_price }}"
-                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0">
+                    class="rounded-2xl bg-gray-300 border-none focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none">
             </form>
             {{-- end of min and max price filter container --}}
 
@@ -80,7 +80,7 @@
             @endphp
             {{-- sort by dropdown --}}
             <button id="dropdownSortByButton" data-dropdown-toggle="dropdownSortBy"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base pr-6 px-10 py-2.5 text-center font-semibold items-center ml-auto"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-base pr-6 px-10 py-2.5 text-center font-semibold items-center mx-auto md:mx-0 md:my-auto md:ml-auto"
                 type="button">
                 <span class="text-left">{{ $sortBy }}</span>
                 <svg class="w-2.5 h-2.5 ml-14 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sort By</a>
                     </li>
                     <li data-sort="lowest_price">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Higghest Price</a>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Highest Price</a>
                     </li>
                     <li data-sort="highest_price">
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Lowest Price</a>
@@ -114,10 +114,10 @@
         {{-- end of sorting and filter container --}}
 
         {{-- products card container --}}
-        <div class="w-full h-full grid grid-cols-7 gap-x-6 gap-y-12">
+        <div class="w-full h-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-1 md:gap-x-6 gap-y-0.5 md:gap-y-12 mx-auto md:mx-0">
             @foreach ($products as $product)
                 {{-- card product --}}
-                <div class="bg-white w-[155px] h-[235px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                <div class="bg-white scale-95 md:scale-100 w-[155px] h-[245px] flex flex-col rounded-xl overflow-hidden items-center cursor-pointer mx-auto md:mx-0"
                     onclick="window.location.href = '{{ route('product.show', $product->id) }}'">
                     {{-- image product --}}
                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
@@ -125,7 +125,8 @@
                     {{-- text product --}}
                     <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                         {{-- product title --}}
-                        <h1 class="text-sm font-semibold text-nowrap text-ellipsis overflow-hidden">{{ $product->name }}
+                        <h1 class="text-[#3E6E7A] text-sm font-semibold text-nowrap text-ellipsis overflow-hidden">
+                            {{ $product->name }}
                         </h1>
                         {{-- product type --}}
                         <h2 class="text-xs font-semibold text-black text-opacity-50">{{ $product->category->name }}</h2>
@@ -133,14 +134,33 @@
                         <h3 class="text-xs ml-auto text-orange-400 font-semibold">Rp
                             {{ number_format($product->price, 0, ',', '.') }}</h3>
                         {{-- Buy product button --}}
-                        <a href="#" class="ml-auto"><button
-                                class="bg-orange-400 hover:bg-orange-500 active:bg-orange-600 rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
+                        <a href="#" class="ml-auto my-auto"><button
+                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-4 py-0.5 text-xs">Buy</button></a>
                     </div>
                 </div>
                 {{-- end of card product --}}
             @endforeach
+
         </div>
         {{-- end of products card container --}}
+
+        {{-- pagination --}}
+        <div class="w-1/6 h-fit flex flex-row mx-auto mt-12 rounded-2xl overflow-hidden bg-[#3E6E7A] text-white text-center">
+            {{-- Arrow left --}}
+            <div class="w-1/6 flex hover:bg-[#37626d] active:bg-[#325862] pl-2">
+                <img src="{{ asset('img/assets/icon/icon_arrow_back.svg') }}" alt="" class="my-auto mr-auto">
+            </div>
+            <div class="w-1/6 hover:bg-[#37626d] active:bg-[#325862]">1</div>
+            <div class="w-1/6 hover:bg-[#37626d] active:bg-[#325862]">2</div>
+            <div class="w-1/6 hover:bg-[#37626d] active:bg-[#325862]">3</div>
+            <div class="w-1/6 hover:bg-[#37626d] active:bg-[#325862]">...</div>
+            {{-- arrow right --}}
+            <div class="w-1/6 flex hover:bg-[#37626d] active:bg-[#325862] pr-2">
+                <img src="{{ asset('img/assets/icon/icon_arrow_back.svg') }}" alt=""
+                    class="rotate-180 ml-auto my-auto">
+            </div>
+        </div>
+        {{-- end of pagination --}}
     </div>
 @endsection
 @section('script')
