@@ -69,7 +69,7 @@
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Request
                             Order</span></a>
                     {{-- confirmed nav link --}}
-                    <a href=""><span
+                    <a href="{{ route('order.history', ['tab' => 'confirmation']) }}"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                     {{-- FAQ nav link --}}
                     <a href="{{ route('faq') }}"><span
@@ -81,7 +81,7 @@
                 {{-- cart and notification container --}}
                 <div class="hidden flex md:flex gap-x-5 items-center justify justify-around mx-auto md:ml-auto md:mr-5 align-middle"
                     id="notif-cart-container">
-                    <a href="">
+                    <a href="{{ route('cart') }}">
                         {{-- cart icon --}}
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt=""
                             class="w-5 h-5">
@@ -198,7 +198,8 @@
                     </div>
                 @else
                     <a type="button" href="{{ route('auth.login') }}"
-                        class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2" id="login-container">Login</a>
+                        class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
+                        id="login-container">Login</a>
                 @endif
             </div>
         </div>
@@ -279,7 +280,7 @@
         const notifCart = document.getElementById('notif-cart-container');
         const userProfile = document.getElementById("user-profile-container");
         const login = document.getElementById("login-container");
-        
+
 
         burger.addEventListener('click', () => {
             navlinkContainer.classList.toggle('hidden')
@@ -287,13 +288,13 @@
 
             searchBar.classList.toggle('hidden')
             searchBar.classList.toggle('flex')
-            
+
             notifCart.classList.toggle('hidden')
             // notifCart.classList.toggle('flex')
-            
+
             userProfile.classList.toggle('hidden')
             userProfile.classList.toggle('flex')
-            
+
             login.classList.toggle('hidden')
             login.classList.toggle('block')
         })

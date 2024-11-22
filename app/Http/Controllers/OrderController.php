@@ -95,7 +95,7 @@ class OrderController extends Controller
         $order->save();
 
         DB::commit();
-        return redirect()->route('order.index', $order);
+        return redirect()->route('order.show', $order);
     }
 
     public function show(string $id)

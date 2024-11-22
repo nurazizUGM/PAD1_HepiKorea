@@ -2,12 +2,13 @@
 @section('title', 'Cart')
 
 @section('content')
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] py-2 px-14">
+    <div class="w-full w-max[100%] h-[80vh] rounded-3xl bg-[#EFEFEF] py-2 px-14 flex flex-col">
         <h1 class="text-black font-semibold text-2xl text-left">Cart</h1>
 
-        <div class="overflow-y-scroll no-scrollbar h-[50vh] mt-2 mb-52">
+        <div class="my-2 flex flex-col">
             {{-- product card container --}}
-            <div class="relative w-full h-fit grid grid-cols-3 gap-x-5 gap-y-5 mt-2 mb-12">
+            <div
+                class="relative w-full h-[40%] grid grid-cols-3 gap-x-auto gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
                 @for ($i = 0; $i < 7; $i++)
                     {{-- product card --}}
                     <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5">
@@ -39,13 +40,12 @@
                     </div>
                     {{-- end of product card --}}
                 @endfor
-
             </div>
             {{-- end of product card container --}}
 
 
             {{-- checkout container --}}
-            <div class="fixed w-[156vh] h-[25vh] bg-white rounded-2xl bottom-11 left-28 z-10 flex flex-col py-5 px-10">
+            <div class="mx-0 h-[20%] bg-white rounded-2xl flex flex-col py-5 px-10">
                 <h1 class="text-black font-semibold text-2xl">Checkout</h1>
                 <div class="w-full h-fit flex flex-row my-auto">
                     {{-- select all and checkbox container --}}

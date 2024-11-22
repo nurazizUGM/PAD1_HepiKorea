@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\AdminOrderController;
 use App\Http\Controllers\Admin\AdminProductController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
@@ -34,6 +35,7 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
     Route::get('/{product}', 'show')->name('show');
 });
 
+Route::get('cart', [CartController::class, 'index'])->name('cart');
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::view('request-order', 'customer.order.request')->name('request-order');
 Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');

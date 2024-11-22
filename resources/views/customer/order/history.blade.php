@@ -2,6 +2,12 @@
 @section('title', 'Transaction History')
 @section('footer', '')
 
+@php
+    if (!isset($tab)) {
+        $tab = request()->query('tab', 'unpaid');
+    }
+@endphp
+
 @section('content')
     <div class="w-full w-max[100%] h-fit min-h-[650px] rounded-3xl bg-[#EFEFEF] pb-8 pt-2 px-10">
 
@@ -10,34 +16,98 @@
                 data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-black border-orange-400"
                 data-tabs-inactive-classes="text-black border-none" role="tablist">
                 <li class="mx-auto" role="presentation">
+                    <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="confirmation-tab"
+                        data-tabs-target="#confirmation-content" type="button" role="tab" aria-controls="confirmation"
+                        aria-selected="{{ $tab == 'confirmation' ? 'true' : 'false' }}">Confirmation</button>
+                </li>
+                <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="unpaid-tab"
                         data-tabs-target="#unpaid-content" type="button" role="tab" aria-controls="unpaid"
-                        aria-selected="false">Unpaid</button>
+                        aria-selected="{{ $tab == 'unpaid' ? 'true' : 'false' }}">Unpaid</button>
                 </li>
                 <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="processed-tab"
                         data-tabs-target="#processed-content" type="button" role="tab" aria-controls="processed"
-                        aria-selected="false">Processed</button>
+                        aria-selected="{{ $tab == 'processed' ? 'true' : 'false' }}">Processed</button>
                 </li>
                 <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="sent-tab"
                         data-tabs-target="#sent-content" type="button" role="tab" aria-controls="sent"
-                        aria-selected="false">Sent</button>
+                        aria-selected="{{ $tab == 'sent' ? 'true' : 'false' }}">Sent</button>
                 </li>
                 <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="finish-tab"
                         data-tabs-target="#finish-content" type="button" role="tab" aria-controls="finish"
-                        aria-selected="false">Finish</button>
+                        aria-selected="{{ $tab == 'finished' ? 'true' : 'false' }}">Finish</button>
                 </li>
             </ul>
         </div>
 
-        {{--  --}}
-        {{--  --}}
-        {{--  --}}
-
         {{-- TAB CONTENT --}}
         <div id="default-styled-tab-content">
+            {{-- CONFIRMATION CONTENT --}}
+            <div class="hidden p-4 rounded-lg" id="confirmation-content" role="tabpanel" aria-labelledby="confirmation-tab">
+                {{-- list of unpaid order container --}}
+                <div class="w-full h-full flex flex-col gap-y-6">
+
+                    @for ($i = 0; $i < 1; $i++)
+                        {{-- unpaid product --}}
+                        <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
+                            <div class="w-[20%]">
+                                {{-- unpaid product image --}}
+                                <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
+                                    class="h-48 object-contain mx-auto">
+                            </div>
+                            <div class="w-[80%] flex flex-col">
+                                <div class="w-full h-1/2 flex flex-row">
+                                    <div class="w-[33%] h-full flex flex-col">
+                                        {{-- unpaid product name --}}
+                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        {{-- unpaid product variant --}}
+                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                    </div>
+                                    <div class="w-[21%] h-full">
+                                        {{-- unpaid product weight --}}
+                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
+                                    </div>
+                                    <div class="w-[20%] h-full">
+                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
+                                    </div>
+                                    <div class="w-[22%] h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    </div>
+                                </div>
+                                <div class="w-full h-1/2 flex flex-row">
+                                    <div class="w-1/2">
+                                        <div
+                                            class="w-full h-full bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md p-4">
+                                            {{-- text payment reminder --}}
+                                            <p>
+                                                Bayar dalam (Expired Time) dengan Bank
+                                                Republik Indonesia (BSI)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    {{-- two button container --}}
+                                    <div class="w-1/2 flex flex-row justify-center items-center">
+                                        <button
+                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                            data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay
+                                            Product</button>
+                                        <button
+                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- end of unpaid product --}}
+                    @endfor
+
+                </div>
+                {{-- list of unpaid order container --}}
+            </div>
+            {{-- end of CONFIRMATION CONTENT --}}
+
             {{-- UNPAID CONTENT --}}
             <div class="hidden p-4 rounded-lg" id="unpaid-content" role="tabpanel" aria-labelledby="unpaid-tab">
                 {{-- list of unpaid order container --}}
