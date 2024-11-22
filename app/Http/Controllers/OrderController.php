@@ -101,13 +101,13 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::findOrFail($id);
-        if ($order->type == 'request') {
+        if ($order->type == 'custom') {
             $order->load('customOrderItems');
+            return view('customer.order.custom', compact('order'));
         } else {
             $order->load(['orderItems', 'orderItems.product', 'orderItems.product.images']);
+            return view('customer.order.show', compact('order'));
         }
-
-        return view('customer.order.show', compact('order'));
     }
 
     public function history()
