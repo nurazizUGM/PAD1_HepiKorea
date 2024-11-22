@@ -95,7 +95,7 @@ class OrderController extends Controller
         $order->save();
 
         DB::commit();
-        return redirect()->route('order.show', $order);
+        return redirect()->route('order.history', ['tab' => 'confirmation']);
     }
 
     public function show(string $id)
