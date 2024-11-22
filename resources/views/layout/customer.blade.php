@@ -17,12 +17,12 @@
 
 <body class="font-poppins w-screen h-screen overflow-y-auto overflow-x-hidden no-scrollbar">
     {{-- start of navbar --}}
-    <nav class="fixed top-0 z-40 w-full bg-white border-b border-gray-200 shadow-lg">
+    <nav class="fixed top-0 z-40 w-full h-fit bg-white border-b border-gray-200 shadow-lg">
         <div class="px-5 py-3 lg:px-5 lg:pl-3">
-            <div class="flex items-center justify-between align-middle">
+            <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
                 {{--  --}}
                 <div class="flex items-center justify-start rtl:justify-end">
-                    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar"
+                    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" id="burger"
                         aria-controls="default-sidebar" type="button"
                         class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                         <span class="sr-only">Open sidebar</span>
@@ -41,7 +41,7 @@
                     </a>
                 </div>
                 {{-- search bar --}}
-                <div class="mr-auto">
+                <div class="mx-auto md:mr-auto hidden md:flex" id="searchbar-container">
                     <!-- Search input -->
                     <form id="form-filter" action="{{ route('product.index') }}" method="get"
                         class="flex items-center my-auto">
@@ -51,23 +51,16 @@
                             <img src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="search icon"
                                 class="absolute left-3 w-5 h-5 text-gray-500">
                             <input type="text" id="search" name="search" value="{{ request()->query('search') }}"
-                                class="block w-[30vw] pl-10 py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383]"
+                                class="block w-[60vw] md:w-[30vw] pl-10 py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383]"
                                 placeholder="Search...">
                         </div>
 
-                        <!-- Filter button -->
-                        {{-- <button type="submit"
-                            class="inline-flex items-center px-4 py-2 font-semibold text-white bg-orange-400 hover:bg-orange-500 rounded-full -ml-20 z-10">
-                            <img class="w-4 h-4 mr-2"
-                                style="filter: brightness(0) saturate(100%) invert(100%) sepia(100%) saturate(1%) hue-rotate(266deg) brightness(107%) contrast(101%);"
-                                src="{{ asset('img/assets/icon/icon_admin_search_searchbar.svg') }}" alt="">
-                            Search
-                        </button> --}}
                     </form>
                 </div>
                 {{-- end of search bar --}}
                 {{-- navigation link content --}}
-                <div class="flex items-center gap-x-14 justify-around mx-auto">
+                <div class="hidden md:flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 gap-x-14 justify-around mx-auto"
+                    id="navlink-container">
                     {{-- product nav link --}}
                     <a href="{{ route('product.index') }}"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Product</span></a>
@@ -86,7 +79,8 @@
                 {{--  --}}
 
                 {{-- cart and notification container --}}
-                <div class="flex gap-x-5 items-center justify justify-around ml-auto mr-5 align-middle">
+                <div class="hidden flex md:flex gap-x-5 items-center justify justify-around mx-auto md:ml-auto md:mr-5 align-middle"
+                    id="notif-cart-container">
                     <a href="">
                         {{-- cart icon --}}
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt=""
@@ -139,7 +133,7 @@
                 {{-- end of cart and notification container --}}
 
                 @if (auth()->check() && auth()->user()->role != \App\Enums\Role::GUEST)
-                    <div class="flex items-center">
+                    <div class="hidden md:flex items-center" id="user-profile-container">
                         <div class="flex items-center ms-3">
                             <div>
                                 @php
@@ -204,7 +198,7 @@
                     </div>
                 @else
                     <a type="button" href="{{ route('auth.login') }}"
-                        class="cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2">Login</a>
+                        class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2" id="login-container">Login</a>
                 @endif
             </div>
         </div>
@@ -277,6 +271,33 @@
     @endif
     @yield('script')
     @stack('script')
+    <script>
+        // NAVBAR hide and show when in small screen
+        const burger = document.getElementById('burger');
+        const navlinkContainer = document.getElementById('navlink-container');
+        const searchBar = document.getElementById('searchbar-container');
+        const notifCart = document.getElementById('notif-cart-container');
+        const userProfile = document.getElementById("user-profile-container");
+        const login = document.getElementById("login-container");
+        
+
+        burger.addEventListener('click', () => {
+            navlinkContainer.classList.toggle('hidden')
+            navlinkContainer.classList.toggle('flex')
+
+            searchBar.classList.toggle('hidden')
+            searchBar.classList.toggle('flex')
+            
+            notifCart.classList.toggle('hidden')
+            // notifCart.classList.toggle('flex')
+            
+            userProfile.classList.toggle('hidden')
+            userProfile.classList.toggle('flex')
+            
+            login.classList.toggle('hidden')
+            login.classList.toggle('block')
+        })
+    </script>
 </body>
 
 </html>

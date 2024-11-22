@@ -22,7 +22,7 @@
             @endphp
             {{-- dropdown category --}}
             <button id="dropdownCategoryButton" data-dropdown-toggle="dropdownCategory"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base md:px-10 md:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-24 md:w-auto h-8 md:h-auto"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 md:px-10 md:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-24 md:w-auto h-8 md:h-auto"
                 type="button">
                 <span class="text-left">{{ $category ? $category->name : 'Category' }}</span>
                 <svg class="w-2.5 h-2.5 md:ml-10 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -49,15 +49,15 @@
             {{-- end of dropdown category --}}
 
             {{-- min and max price filter container --}}
-            <form action="" class="flex flex-row ml-0 md:ml-10 w-fit h-full md:my-auto md:mx-0 gap-y-4 md:gap-6">
+            <form action="" class="flex flex-row ml-0 md:ml-10 w-fit h-full md:my-auto md:mx-0 gap-x-1 md:gap-6">
                 {{-- Minimum price filter --}}
                 <input type="number" placeholder="Minimum price" name="min_price" form="form-filter"
                     value="{{ request()->min_price }}"
-                    class="rounded-2xl bg-gray-300 border-none placeholder:text-[9px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
+                    class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[6px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
                 {{-- end of Minimum price filter --}}
                 <input type="number" placeholder="Maximum Price" name="max_price" form="form-filter"
                     value="{{ request()->max_price }}"
-                    class="rounded-2xl bg-gray-300 border-none placeholder:text-[9px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
+                    class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[6px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-20 md:w-auto h-8 md:h-auto">
             </form>
             {{-- end of min and max price filter container --}}
 
@@ -80,7 +80,7 @@
             @endphp
             {{-- sort by dropdown --}}
             <button id="dropdownSortByButton" data-dropdown-toggle="dropdownSortBy"
-                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base md:pr-6 px-2 md:px-10 md:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-24 md:w-auto h-8 md:h-auto"
+                class="text-orange-400 bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base md:pr-6 px-2 md:px-10 md:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-16 md:w-auto h-8 md:h-auto"
                 type="button">
                 <span class="text-left">{{ $sortBy }}</span>
                 <svg class="w-2.5 h-2.5 md:ml-14 text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
