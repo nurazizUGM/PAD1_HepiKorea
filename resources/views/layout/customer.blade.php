@@ -21,10 +21,17 @@
         <div class="px-5 py-3 lg:px-5 lg:pl-3">
             <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
                 {{--  --}}
-                <div class="flex items-center justify-start rtl:justify-end">
+                <div class="w-full md:w-fit flex justify-between rtl:justify-end">
+                    <!-- title navbar -->
+                    <a href="{{ route('home') }}" class="flex ms-6 md:me-24">
+                        <span
+                            class="self-center text-xl text-orange-400 font-semibold sm:text-2xl whitespace-nowrap"><span
+                                class="text-[#3E6E7A]">Hepi</span>Korea</span>
+                    </a>
+                    {{-- burger toggle navbar (mobile) --}}
                     <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" id="burger"
                         aria-controls="default-sidebar" type="button"
-                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 ">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
                             xmlns="http://www.w3.org/2000/svg">
@@ -33,12 +40,6 @@
                             </path>
                         </svg>
                     </button>
-                    <!-- title navbar -->
-                    <a href="{{ route('home') }}" class="flex ms-6 md:me-24">
-                        <span
-                            class="self-center text-xl text-orange-400 font-semibold sm:text-2xl whitespace-nowrap"><span
-                                class="text-[#3E6E7A]">Hepi</span>Korea</span>
-                    </a>
                 </div>
                 {{-- search bar --}}
                 <div class="mx-auto md:mr-auto hidden md:flex" id="searchbar-container">
@@ -198,7 +199,7 @@
                     </div>
                 @else
                     <a type="button" href="{{ route('auth.login') }}"
-                        class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
+                        class="hidden flex md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
                         id="login-container">Login</a>
                 @endif
             </div>
@@ -207,7 +208,7 @@
     {{-- end of navbar --}}
 
     {{-- container --}}
-    <div class="w-[92%] w-max[92%] h-fit mx-auto mt-32 mb-20 overflow-hidden no-scrollbar">
+    <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-32 mb-20 overflow-hidden no-scrollbar">
         @yield('content')
     </div>
     {{-- end of container --}}
@@ -296,7 +297,7 @@
             userProfile.classList.toggle('flex')
 
             login.classList.toggle('hidden')
-            login.classList.toggle('block')
+            login.classList.toggle('flex')
         })
     </script>
 </body>
