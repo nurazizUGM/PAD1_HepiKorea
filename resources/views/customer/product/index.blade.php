@@ -5,8 +5,8 @@
     $lineId = \App\Models\Setting::where('key', 'line')->first()->value;
 @endphp
 <a href="https://line.me/ti/p/~{{ $lineId }}" target="_blank"
-    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-2xl font-bold text-orange-400 bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
-    <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-10 h-10 mr-1">
+    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-base md:text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
+    <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-5 h-5 md:w-10 md:h-10 mr-1">
     <p>Chat</p>
 </a>
 
@@ -34,7 +34,7 @@
 
             <!-- Dropdown menu -->
             <div id="dropdownCategory"
-                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-24 md:w-44">
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-28 md:w-44">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCategoryButton">
                     <li data-category="">
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">All</a>
@@ -92,7 +92,7 @@
 
             <!-- Dropdown menu -->
             <div id="dropdownSortBy"
-                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-28 md:w-44 dark:bg-gray-700">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownSortByButton">
                     <li data-sort="">
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">Sort By</a>
@@ -145,7 +145,7 @@
         {{-- end of products card container --}}
 
         {{-- pagination --}}
-        <div class="w-1/6 h-fit flex flex-row mx-auto mt-12 rounded-2xl overflow-hidden bg-[#3E6E7A] text-white text-center">
+        <div class="w-1/2 md:w-1/6 h-fit flex flex-row mx-auto mt-12 rounded-2xl overflow-hidden bg-[#3E6E7A] text-white text-center">
             {{-- Arrow left --}}
             <div class="w-1/6 flex hover:bg-[#37626d] active:bg-[#325862] pl-2">
                 <img src="{{ asset('img/assets/icon/icon_arrow_back.svg') }}" alt="" class="my-auto mr-auto">
