@@ -12,7 +12,7 @@
     {{-- homapege content container --}}
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
         {{-- start of carousel --}}
-        <div id="default-carousel" class="relative w-full rounded-t-3xl" data-carousel="slide">
+        <div id="default-carousel" class="relative w-full rounded-t-2xl md:rounded-t-3xl" data-carousel="slide">
             <!-- Carousel wrapper -->
             <div class="relative h-[150px] md:h-[500px] overflow-hidden rounded-t-lg">
                 <!-- Item 1 -->
@@ -154,7 +154,7 @@
                         onclick="window.location.href='{{ route('product.index', ['category' => $category->id]) }}'">
                         <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}"
                             alt="fashion_Category" class="w-12 h-12 md:w-40 md:h-40 mx-auto">
-                        <h2 class="text-black text-xs md:text-lg font-semibold text-ellipsis overflow-hidden">
+                        <h2 class="text-black text-[10px] md:text-lg font-semibold text-ellipsis overflow-hidden">
                             {{ $category->name }}</h2>
                     </div>
                 @endforeach
@@ -173,7 +173,7 @@
             {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
 
             {{-- new arrival container --}}
-            <div class="relative mt-10">
+            <div class="relative mt-5 md:mt-10">
                 <div class="overflow-x-auto no-scrollbar" id="new-arrival-container">
                     <!-- Scroll Right Button -->
                     <button onclick="scrollRight()"
@@ -242,7 +242,7 @@
             {{-- <hr class="border-b border-black border-opacity-50 mt-5"> --}}
 
             {{-- best seller container --}}
-            <div class="relative mt-10">
+            <div class="relative mt-5 md:mt-10">
                 <div class="overflow-x-auto no-scrollbar " id="best-seller-container">
                     <!-- Scroll Right Button -->
                     <button onclick="scrollRight2()"
