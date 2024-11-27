@@ -35,7 +35,13 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
     Route::get('/{product}', 'show')->name('show');
 });
 
-Route::get('cart', [CartController::class, 'index'])->name('cart');
+Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+    Route::get('/', 'index')->name('index');
+    Route::post('add', 'add')->name('add');
+    Route::delete('delete', 'destroy')->name('delete');
+    Route::post('update', 'update')->name('update');
+});
+
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
 Route::view('request-order', 'customer.order.request')->name('request-order');
 Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');

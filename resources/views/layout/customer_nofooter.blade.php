@@ -82,7 +82,7 @@
                 {{-- cart and notification container --}}
                 <div class="hidden flex md:flex gap-x-5 items-center justify justify-around mx-auto md:ml-auto md:mr-5 align-middle"
                     id="notif-cart-container">
-                    <a href="{{ route('cart') }}">
+                    <a href="{{ route('cart.index') }}">
                         {{-- cart icon --}}
                         <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt=""
                             class="w-5 h-5">

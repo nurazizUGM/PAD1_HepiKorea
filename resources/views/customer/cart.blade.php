@@ -1,85 +1,99 @@
-@extends('layout.customer_nofooter')
+@extends('layout.customer')
 @section('title', 'Cart')
 
 @section('content')
-    <div class="w-full w-max[100%] h-[80vh] rounded-3xl bg-[#EFEFEF] py-2 px-14 flex flex-col">
+    <div class="w-full w-max[100%] h-[80vh] rounded-3xl bg-[#EFEFEF] pt-6 pb-8 px-10 flex flex-col">
         <h1 class="text-black font-semibold text-2xl text-left">Cart</h1>
 
-        <div class="my-2 flex flex-col">
-            {{-- product card container --}}
-            <div
-                class="relative w-full h-[40%] grid grid-cols-3 gap-x-auto gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
-                @for ($i = 0; $i < 7; $i++)
-                    {{-- product card --}}
-                    <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5">
-                        {{-- photo, name, price of product --}}
-                        <div class="w-full h-[65%] flex flex-row">
-                            {{-- image container --}}
-                            <div class="w-[35%] h-full">
+        {{-- product card container --}}
+        <div class="relative w-full h-full grid grid-cols-3 gap-x-auto gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
+            @foreach ($carts as $cart)
+                {{-- product card --}}
+                <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5">
+                    {{-- photo, name, price of product --}}
+                    <div class="w-full h-[65%] flex flex-row">
+                        {{-- image container --}}
+                        <div class="w-[35%] h-full">
+                            @if (strpos($cart->product->image, 'http') === 0)
+                                <img src="{{ $cart->product->image }}" alt="" class="w-full h-full bg-contain">
+                            @elseif (Storage::disk('public')->exists('products/' . $cart->product->image))
+                                <img src="{{ asset('storage/products/' . $cart->product->image) }}" alt=""
+                                    class="w-full h-full bg-contain">
+                            @else
                                 <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt=""
                                     class="w-full h-full bg-contain">
-                            </div>
-                            {{-- name,variant,price --}}
-                            <div class="w-[65%] h-full flex flex-col pl-5">
-                                <h1 class="text-[#3E6E7A] font-semibold text-base">Samsung S24 Ultra</h1>
-                                <h2 class="text-black text-opacity-50 font-semibold text-xs mt-1">Black</h2>
-                                <h2 class="text-orange-400 font-semibold text-xl mt-auto">Rp 24.000.000,-</h2>
-                            </div>
+                            @endif
                         </div>
-                        {{-- end of photo, name, price of product --}}
+                        {{-- name,variant,price --}}
+                        <div class="w-[65%] h-full flex flex-col pl-5">
+                            <h1 class="text-[#3E6E7A] font-semibold text-base">{{ $cart->product->name }}</h1>
+                            <h2 class="text-orange-400 font-semibold text-xl mt-auto">Rp
+                                {{ number_format($cart->product->price, 0, ',', '.') }}</h2>
 
-                        {{-- checkbox --}}
-                        <div class="w-full h-[45%] flex">
-                            <div class="w-fit h-fit flex flex-row align-middle my-auto ml-7">
-                                <input type="checkbox" name="" id=""
-                                    class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
-                                <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
-                            </div>
+                            <input type="hidden" form="form-checkout" name="quantity[]" value="{{ $cart->quantity }}">
+                            <h3 class="text-gray-600 font-semibold text-lg">x{{ $cart->quantity }}</h3>
                         </div>
-                        {{-- checkbox --}}
                     </div>
-                    {{-- end of product card --}}
-                @endfor
-            </div>
-            {{-- end of product card container --}}
+                    {{-- end of photo, name, price of product --}}
 
-
-            {{-- checkout container --}}
-            <div class="mx-0 h-[20%] bg-white rounded-2xl flex flex-col py-5 px-10">
-                <h1 class="text-black font-semibold text-2xl">Checkout</h1>
-                <div class="w-full h-fit flex flex-row my-auto">
-                    {{-- select all and checkbox container --}}
-                    <div class="w-fit h-full flex flex-row">
-
-                        {{-- checkbox fot select all --}}
-                        <input type="checkbox"
-                            class="w-6 h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
-
-                        {{-- select All text --}}
-                        <p class="text-black text-opacity-50 font-semibold text-base ml-6 my-auto">Select All (6)</p>
-
-                        {{-- button delete --}}
-                        <button
-                            class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-10 py-2 px-12"
-                            data-modal-target="confirmation-delete-modal" data-modal-toggle="confirmation-delete-modal">
-                            <img src="{{ asset('img/assets/icon/icon_customer_trashcan.svg') }}" alt=""
-                                class="w-6 h-7 mr-2">
-                            <p class="text-[#3E6E7A] font-semibold text-xl">Delete</p>
-                        </button>
-                        {{-- end of button delete --}}
+                    {{-- checkbox --}}
+                    <div class="w-full h-[45%] flex">
+                        <div class="w-fit h-fit flex flex-row align-middle my-auto ml-7">
+                            <input type="checkbox" name="products[]" value="{{ $cart->product->id }}"
+                                data-product-price="{{ $cart->product->price }}"
+                                data-product-quantity="{{ $cart->quantity }}" form="form-checkout"
+                                class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                            <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
+                        </div>
                     </div>
-                    {{-- end of select all and checkbox container --}}
-
-                    {{-- text count total product --}}
-                    <p class="text-black text-opacity-50 font-semibold text-base ml-auto my-auto">Total (6) Product</p>
-                    {{-- total price --}}
-                    <h1 class="text-orange-400 font-semibold text-2xl ml-16 my-auto">Rp 225.000,-</h1>
+                    {{-- checkbox --}}
                 </div>
-                <button
-                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-10 ml-auto">Checkout</button>
-            </div>
-            {{-- end of checkout container --}}
+                {{-- end of product card --}}
+            @endforeach
         </div>
+        {{-- end of product card container --}}
+
+
+        {{-- checkout container --}}
+        <div class="mx-0 h-[16rem] bg-white rounded-2xl flex flex-col py-5 px-10">
+            <h1 class="text-black font-semibold text-2xl">Checkout</h1>
+            <div class="w-full h-fit flex flex-row my-auto">
+                {{-- select all and checkbox container --}}
+                <div class="w-fit h-full flex flex-row">
+
+                    {{-- checkbox fot select all --}}
+                    <input type="checkbox" onchange="checkAll(this)"
+                        class="w-6 h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+
+                    {{-- select All text --}}
+                    <p class="text-black text-opacity-50 font-semibold text-base ml-6 my-auto">Select All
+                        ({{ $carts->count() }})</p>
+
+                    {{-- button delete --}}
+                    <button
+                        class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-10 py-2 px-12"
+                        data-modal-target="confirmation-delete-modal" data-modal-toggle="confirmation-delete-modal">
+                        <img src="{{ asset('img/assets/icon/icon_customer_trashcan.svg') }}" alt=""
+                            class="w-6 h-7 mr-2">
+                        <p class="text-[#3E6E7A] font-semibold text-xl">Delete</p>
+                    </button>
+                    {{-- end of button delete --}}
+                </div>
+                {{-- end of select all and checkbox container --}}
+
+                {{-- text count total product --}}
+                <p class="text-black text-opacity-50 font-semibold text-base ml-auto my-auto" id="total-product">
+                    Total (0) Product</p>
+                {{-- total price --}}
+                <h1 class="text-orange-400 font-semibold text-2xl ml-16 my-auto" id="total-price">Rp 0,-</h1>
+            </div>
+            <form action="{{ route('checkout') }}" method="post" id="form-checkout" class="ml-auto">
+                @csrf
+                <button type="submit" onclick="$('input[name=products[]]')"
+                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-10">Checkout</button>
+            </form>
+        </div>
+        {{-- end of checkout container --}}
     </div>
 
 
@@ -139,3 +153,25 @@
     {{-- end of success delete modal --}}
     {{-- end of MODALS FOR CART --}}
 @endsection
+
+@push('script')
+    <script>
+        function checkAll(el) {
+            $('input[name="products[]"]').prop('checked', el.checked).change();
+        }
+
+        $(document).ready(function() {
+            $('input[name="products[]"]').change(function() {
+                let total = 0;
+                $('input[name="products[]"]:checked').each(function() {
+                    const price = parseInt($(this).data('product-price'))
+                    const quantity = parseInt($(this).data('product-quantity'))
+                    total += price * quantity;
+                });
+                $('#total-price').text('Rp ' + total.toLocaleString() + ',-');
+                $('#total-product').text('Total (' + $('input[name="products[]"]:checked').length +
+                    ') Product');
+            });
+        })
+    </script>
+@endpush
