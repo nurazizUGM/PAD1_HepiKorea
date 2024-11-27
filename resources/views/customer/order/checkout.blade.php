@@ -41,39 +41,52 @@
 
             <div class="w-full h-full flex flex-col gap-y-5">
 
-                @for ($i = 0; $i < 1; $i++)
+                @foreach ($items as $item)
+                    {{-- product container --}}
                     <div class="w-full h-full flex flex-col">
                         <div class="w-full h-fit flex flex-row">
                             <div class="w-[20%]">
                                 {{-- product image --}}
-                                <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt="img_product"
-                                    class="w-36 object-contain">
+                                @if (Storage::disk('public')->exists('products/' . $item->product->image))
+                                    <img src="{{ asset('storage/products/' . $item->product->image) }}" alt="img_product"
+                                        class="w-36 object-contain">
+                                @elseif(strpos($item->product->image, 'http') !== false)
+                                    <img src="{{ $item->product->image }}" alt="img_product" class="w-36 object-contain">
+                                @else
+                                    <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt="img_product"
+                                        class="w-36 object-contain">
+                                @endif
                             </div>
                             <div class="w-[20%] mt-2">
                                 {{-- product name --}}
-                                <p class="mb-auto text-[#3E6E7A] text-base font-semibold">Samsung Ultra 24</p>
+                                <p class="mb-auto text-[#3E6E7A] text-base font-semibold">{{ $item->product->name }}</p>
                             </div>
                             <div class="w-[20%] mt-2">
                                 {{-- product price --}}
-                                <p class="mb-auto text-[#898383] font-semibold text-xl">Rp 24.000.000,-</p>
+                                <p class="mb-auto text-[#898383] font-semibold text-xl">
+                                    Rp {{ number_format($item->product->price, 0, ',', '.') }},-
+                                </p>
                             </div>
                             <div class="w-[20%] flex flex-row">
                                 {{-- product quantity --}}
                                 <div class="w-full h-fit flex flex-row justify-center items-centers">
-                                    <div
+                                    <div onclick="reduceQty(this)"
                                         class="border border-black rounded-full py-1 px-3.5 text-2xl cursor-pointer hover:bg-slate-100">
                                         -
                                     </div>
                                     {{--  --}}
-                                    <p class="my-auto text-2xl mx-6">1</p>
-                                    <div
+                                    <p class="my-auto text-2xl mx-6">
+                                        {{ $item->quantity }}</p>
+                                    <div onclick="addQty(this)"
                                         class="border border-black rounded-full py-1 px-3 text-2xl cursor-pointer hover:bg-slate-100">
                                         +
                                     </div>
                                 </div>
                             </div>
                             <div class="w-[20%] flex justify-end mt-2">
-                                <p class="mb-auto text-orange-400 font-semibold text-xl">Rp 24.000.000,-</p>
+                                <p class="mb-auto text-orange-400 font-semibold text-xl">
+                                    Rp {{ number_format($item->total, 0, ',', '.') }},-
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-6">
@@ -85,8 +98,7 @@
                             </form>
                         </div>
                     </div>
-                @endfor
-
+                @endforeach
             </div>
         </div>
         {{-- list of product ordered container --}}
@@ -111,7 +123,9 @@
                 </div>
                 <div class="w-[20%] flex flex-col items-end">
                     {{-- total price --}}
-                    <h1 class="text-orange-400 font-semibold text-2xl">Rp 25.800.000,-</h1>
+                    <h1 class="text-orange-400 font-semibold text-2xl">
+                        Rp {{ number_format($total, 0, ',', '.') }},-
+                    </h1>
                     {{-- checkout button --}}
                     <button
                         class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-9 mt-2"
@@ -122,94 +136,7 @@
         {{-- end of checkout container --}}
     </div>
 
-    {{--  --}}
-    {{--  --}}
-    {{--  --}}
-
-    {{-- MODALS for checkout --}}
-
-    {{-- change address modal --}}
-    <div id="change-address-modal" tabindex="-1" aria-hidden="true"
-        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-        <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
-            <!-- Modal content -->
-            <div class="bg-white w-[55vw] h-auto rounded-[30px] shadow">
-                <div class="relative w-full h-full flex flex-row">
-                    <!-- x button (exit modal) -->
-                    {{-- <button type="button"
-                        class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                        data-modal-hide="change-address-modal">
-                        <p class="m-auto text-white text-sm">X</p>
-                    </button> --}}
-                    {{-- modal content --}}
-                    <div class="w-full h-full flex flex-col pl-20 pr-20 py-10">
-                        <h1 class="text-black font-bold text-2xl">Receiver Detail</h1>
-                        <form action="" class="w-full h-full flex flex-col gap-y-8 mt-6">
-                            {{-- Full name input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="text" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 "
-                                    placeholder="Full Name">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            {{-- Phone number input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="text" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 "
-                                    placeholder="Phone Number">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            {{-- Province input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="text" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 "
-                                    placeholder="Province">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            {{-- City input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="text" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 "
-                                    placeholder="City">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            {{-- Address input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="text" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 "
-                                    placeholder="Address">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            {{-- Postal Code input --}}
-                            <div class="w-full h-full flex flex-row">
-                                <input type="number" name="" id=""
-                                    class="w-full h-10 border-2 border-[#3E6E7A] text-orange-400 focus:border-2 focus:border-[#3E6E7A] focus:ring-0 rounded-lg placeholder:text-orange-400 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-                                    placeholder="Postal Code">
-                                <img src="{{ asset('img/assets/icon/icon_admin_product_edit.svg') }}" alt=""
-                                    class="w-5 h-5 my-auto ml-2">
-                            </div>
-                            <button type="submit"
-                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-7 mx-auto"
-                                data-modal-hide="change-address-modal">Save</button>
-                        </form>
-                    </div>
-                    {{-- end of modal content --}}
-                </div>
-            </div>
-            <!-- end of modal content -->
-        </div>
-    </div>
-    {{-- end of change address modal --}}
-
-    {{--  --}}
-
     {{-- choose payment modal --}}
-
     <div id="choose-payment-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
         <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
@@ -292,10 +219,7 @@
             <!-- end of modal content -->
         </div>
     </div>
-
     {{-- end of choose payment modal --}}
-
-    {{--  --}}
 
     {{-- payment modal --}}
     <div id="payment-modal" tabindex="-1" aria-hidden="true"
@@ -500,31 +424,45 @@
 
     {{-- end of MODALS for checkout --}}
 
-    <script>
-        document.getElementById("toggle-dropdown-address").addEventListener("click", function() {
-            const addresses = document.querySelectorAll("#hidden-address-list");
-            const toggle = document.querySelectorAll("#toggle-dropdown-address");
-            const container = document.querySelectorAll("#listAddressContainer");
+    @push('script')
+        <script>
+            function addQty(e) {
+                let qty = e.previousElementSibling;
+                qty.innerHTML = parseInt(qty.innerHTML) + 1;
+            }
 
-            setTimeout(() => {
-                container.forEach(clicks => {
-                    clicks.classList.toggle("max-h-44");
-                    clicks.classList.toggle("max-h-full");
+            function reduceQty(e) {
+                let qty = e.nextElementSibling;
+                if (parseInt(qty.innerHTML) > 1) {
+                    qty.innerHTML = parseInt(qty.innerHTML) - 1;
+                }
+            }
+
+            document.getElementById("toggle-dropdown-address").addEventListener("click", function() {
+                const addresses = document.querySelectorAll("#hidden-address-list");
+                const toggle = document.querySelectorAll("#toggle-dropdown-address");
+                const container = document.querySelectorAll("#listAddressContainer");
+
+                setTimeout(() => {
+                    container.forEach(clicks => {
+                        clicks.classList.toggle("max-h-44");
+                        clicks.classList.toggle("max-h-full");
+                    });
+                }, 50);
+
+
+                addresses.forEach(address => {
+                    address.classList.toggle("hidden");
                 });
-            }, 50);
 
 
-            addresses.forEach(address => {
-                address.classList.toggle("hidden");
+
+                toggle.forEach(clicks => {
+                    clicks.classList.toggle("rotate-180");
+                });
+
             });
-
-
-
-            toggle.forEach(clicks => {
-                clicks.classList.toggle("rotate-180");
-            });
-
-        });
-    </script>
+        </script>
+    @endpush
 
 @endsection

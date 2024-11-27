@@ -29,10 +29,13 @@ class OrderController extends Controller
         $total = 0;
         $items = [];
         for ($i = 0; $i < count($products); $i++) {
-            $total += $products[$i]->price * $data['quantity'][$i];
-            $items[] = [
+            $products[$i]->image = $products[$i]->images->first()->path;
+            $subTotal = $products[$i]->price * $data['quantity'][$i];
+            $total += $subTotal;
+            $items[] = (object)[
                 'product' => $products[$i],
                 'quantity' => $data['quantity'][$i],
+                'total' => $subTotal,
             ];
         }
 
