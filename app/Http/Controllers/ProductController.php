@@ -34,7 +34,7 @@ class ProductController extends Controller
             $products = $products->where('price', '<=', intval($maxPrice));
         }
 
-        $products = $products->with(['category', 'images'])->get();
+        $products = $products->with(['category', 'images', 'reviews'])->get();
 
         return view('customer.product.index', compact('products'));
     }

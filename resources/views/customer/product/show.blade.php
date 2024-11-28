@@ -49,28 +49,37 @@
             <div
                 class="w-full md:w-[60%] h-full flex-col px-4 md:px-8 pt-4 pb-8 rounded-2xl justify-center md:justify-center">
                 {{-- rating container --}}
-                <div class="w-full flex flex-row">
-                    {{-- star and number --}}
-                    <div class="flex flex-row">
-                        {{-- icon star --}}
-                        <img src="{{ asset('img/assets/icon/icon_review_star.svg') }}" alt=""
-                            class="h-6 w-6 md:h-12 md:w-12">
-                        {{-- number rating --}}
-                        <p class="my-auto ml-3 text-black font-bold">4.9</p>
+                @if ($product->reviews->count() > 0)
+                    @php
+                        $rating = $product->reviews->sum('rating') / $product->reviews->count();
+                        $rating = number_format($rating, 1);
+                    @endphp
+                    <div class="w-full flex flex-row">
+                        {{-- star and number --}}
+                        <div class="flex flex-row">
+                            {{-- icon star --}}
+                            <img src="{{ asset('img/assets/icon/icon_review_star.svg') }}" alt=""
+                                class="h-6 w-6 md:h-12 md:w-12">
+                            {{-- number rating --}}
+                            <p class="my-auto ml-3 text-black font-bold">{{ $rating }}</p>
+                        </div>
+                        {{-- rating count --}}
+                        <p class="text-black text-sm md:text-base font-normal mr-0 md:mr-auto ml-auto md:ml-40 my-auto">
+                            {{ $product->reviews->count() }} Rating
+                        </p>
                     </div>
-                    {{-- rating count --}}
-                    <p class="text-black text-sm md:text-base font-normal mr-0 md:mr-auto ml-auto md:ml-40 my-auto">105
-                        Rating</p>
-                </div>
+                @endif
                 {{-- end of rating container --}}
 
                 {{-- product title --}}
-                <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">Samsung S24
-                    Ultra</h1>
+                <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">
+                    {{ $product->name }}
+                </h1>
 
                 {{-- product Price --}}
-                <h1 class="text-[#3E6E7A] font-bold text-base md:text-3xl text-left mt-2 md:mt-6">Rp 21.000.000 - Rp
-                    24.000.000</h1>
+                <h1 class="text-[#3E6E7A] font-bold text-base md:text-3xl text-left mt-2 md:mt-6">
+                    Rp {{ number_format($product->price, 0, ',', '.') }}</h1>
+                </h1>
 
                 {{-- icons and text of HepiKorea Values --}}
                 <div class="w-full mt-6 md:mt-12 flex flex-col gap-y-4 md:gap-y-8">
@@ -80,7 +89,8 @@
                         <p class="text-xs md:text-base text-black font-normal ml-2">Ships Straight</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_box.svg') }}" class="w-3 h-3 md:w-6 md:h-6" alt="">
+                        <img src="{{ asset('img/assets/icon/icon_box.svg') }}" class="w-3 h-3 md:w-6 md:h-6"
+                            alt="">
                         <p class="text-xs md:text-base text-black font-normal ml-2">Ships straight from Korea to your
                             address</p>
                     </div>
@@ -282,7 +292,6 @@
         $(document).ready(function() {
             $('#product-images > div').click(function() {
                 let src = $(this).find('img').attr('src');
-                console.log(src);
                 $('#mainImage').attr('src', src);
             })
         })
