@@ -72,14 +72,21 @@
 
     </div>
     <!-- start of product card container -->
-    <div class="w-full h-full mt-5 mb-8 overflow-y-auto flex flex-row flex-wrap gap-8 justify-start items-start content-start">
+    <div
+        class="w-full h-full mt-5 mb-8 overflow-y-auto flex flex-row flex-wrap gap-8 justify-start items-start content-start">
         <!-- card product -->
         @foreach ($products as $product)
             <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
                 <!-- image product card -->
-                @if ($image = $product->images->first()?->path)
+                @php
+                    $image = $product->images->first();
+                @endphp
+                @if (Storage::exists('products/' . $image->path))
                     <div class="w-full h-2/3 bg-cover bg-top"
-                        style="background-image: url('{{ Storage::exists('public/products/' . $image) ? asset('storage/products/' . $image) : $image }}');">
+                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                    </div>
+                @elseif (filter_var($image->path, FILTER_VALIDATE_URL))
+                    <div class="w-full h-2/3 bg-cover bg-top" style="background-image: url('{{ $image->path }}');">
                     </div>
                 @else
                     <div class="w-full h-2/3 bg-cover bg-top"
