@@ -2,10 +2,10 @@
 @section('title', 'Product Detail')
 
 @section('content')
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-6 px-6">
+    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-2 md:py-6 px-2 md:px-6">
         {{-- image and product detail container --}}
-        <div class="w-full h-full bg-[#FFFCFC] rounded-2xl flex flex-row">
-            <div class="w-[35%] h-full">
+        <div class="w-full h-full bg-[#FFFCFC] rounded-2xl flex flex-col md:flex-row">
+            <div class="w-full md:w-[35%] h-full">
                 <div class="flex flex-col space-y-4">
                     <div class="w-full h-96 mr-auto bg-white p-3 rounded-xl">
                         {{-- main image --}}
@@ -25,65 +25,76 @@
                 </div>
             </div>
             {{-- this div for extra space --}}
-            <div class="w-[5%] h-full text-transparent">.</div>
+            <div class="hidden md:flex w-[5%] h-full text-transparent">.</div>
             {{-- product detail texts container --}}
-            <div class="w-[60%] h-full flex-col px-8 pt-4 pb-8 rounded-2xl">
+            <div
+                class="w-full md:w-[60%] h-full flex-col px-4 md:px-8 pt-4 pb-8 rounded-2xl justify-center md:justify-center">
                 {{-- rating container --}}
                 <div class="w-full flex flex-row">
                     {{-- star and number --}}
                     <div class="flex flex-row">
                         {{-- icon star --}}
-                        <img src="{{ asset('img/assets/icon/icon_review_star.svg') }}" alt="" class="h-12 w-12">
+                        <img src="{{ asset('img/assets/icon/icon_review_star.svg') }}" alt=""
+                            class="h-6 w-6 md:h-12 md:w-12">
                         {{-- number rating --}}
                         <p class="my-auto ml-3 text-black font-bold">4.9</p>
                     </div>
                     {{-- rating count --}}
-                    <p class="text-black font-normal mr-auto ml-40 my-auto">105 Rating</p>
+                    <p class="text-black text-sm md:text-base font-normal mr-0 md:mr-auto ml-auto md:ml-40 my-auto">105
+                        Rating</p>
                 </div>
                 {{-- end of rating container --}}
 
                 {{-- product title --}}
-                <h1 class="text-black text-opacity-50 font-bold text-3xl text-left mt-8">Samsung S24 Ultra</h1>
+                <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">Samsung S24 Ultra</h1>
 
                 {{-- product Price --}}
-                <h1 class="text-[#3E6E7A] font-bold text-3xl text-left mt-6">Rp 21.000.000 - Rp 24.000.000</h1>
+                <h1 class="text-[#3E6E7A] font-bold text-base md:text-3xl text-left mt-2 md:mt-6">Rp 21.000.000 - Rp
+                    24.000.000</h1>
 
                 {{-- icons and text of HepiKorea Values --}}
-                <div class="w-full mt-12 flex flex-col gap-y-8">
+                <div class="w-full mt-6 md:mt-12 flex flex-col gap-y-4 md:gap-y-8">
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_plane.svg') }}" class="w-6 h-6" alt="">
-                        <p class="text-black font-normal ml-2">Ships Straight</p>
+                        <img src="{{ asset('img/assets/icon/icon_plane.svg') }}" class="w-3 h-3 md:w-6 md:h-6"
+                            alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">Ships Straight</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_box.svg') }}" class="w-6 h-6" alt="">
-                        <p class="text-black font-normal ml-2">Ships straight from Korea to your address</p>
+                        <img src="{{ asset('img/assets/icon/icon_box.svg') }}" class="w-3 h-3 md:w-6 md:h-6" alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">Ships straight from Korea to your
+                            address</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_fasttruck.svg') }}" class="w-6 h-6" alt="">
-                        <p class="text-black font-normal ml-2">Quick Delivery</p>
+                        <img src="{{ asset('img/assets/icon/icon_fasttruck.svg') }}" class="w-3 h-3 md:w-6 md:h-6"
+                            alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">Quick Delivery</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_fasttime.svg') }}" class="w-6 h-6 my-auto" alt="">
-                        <p class="text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days <br> post-shipment
+                        <img src="{{ asset('img/assets/icon/icon_fasttime.svg') }}" class="w-3 h-3 md:w-6 md:h-6 my-auto"
+                            alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">Expedited Shipping—delivered in 4-10
+                            days <br> post-shipment
                         </p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_heart.svg') }}" class="w-6 h-6" alt="">
-                        <p class="text-black font-normal ml-2">100% Authentic</p>
+                        <img src="{{ asset('img/assets/icon/icon_heart.svg') }}" class="w-3 h-3 md:w-6 md:h-6"
+                            alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">100% Authentic</p>
                     </div>
                     <div class="flex flex-row">
-                        <img src="{{ asset('img/assets/icon/icon_shield.svg') }}" class="w-6 h-6" alt="">
-                        <p class="text-black font-normal ml-2">Reliable payment methods</p>
+                        <img src="{{ asset('img/assets/icon/icon_shield.svg') }}" class="w-3 h-3 md:w-6 md:h-6"
+                            alt="">
+                        <p class="text-xs md:text-base text-black font-normal ml-2">Reliable payment methods</p>
                     </div>
                 </div>
                 {{--  --}}
 
                 {{-- quantity --}}
                 <div class="w-full h-fit flex flex-row mt-10 mx-auto">
-                    <div class="w-[10%] h-full text-xl">
+                    <div class="w-[40%] md:w-[10%] h-full text-xl">
                         Qty
                     </div>
-                    <div class="w-[90%] h-full flex flex-row">
+                    <div class="w-[60%] md:w-[90%] h-full flex flex-row">
                         <div onclick="reduceQuantity()"
                             class="border border-black rounded-full py-1 px-3.5 text-2xl cursor-pointer hover:bg-slate-100">
                             -</div>
@@ -96,17 +107,17 @@
                 {{-- end of quantity --}}
 
                 {{-- two button --}}
-                <div class="w-full h-fit flex flex-row mt-10">
+                <div class="w-full h-fit flex flex-row mt-10 mx-auto md:mx-0">
                     <form action="{{ route('checkout') }}" method="post">
                         @csrf
                         <input type="hidden" name="products[].id" id="product-id" value="{{ $product->id }}">
                         <input type="hidden" name="quantity[]" id="product-quantity" value="1">
                         <button type="submit"
-                            class="w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
+                            class="w-36 md:w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-lg md:text-2xl rounded-2xl py-2 hover:bg-slate-100 focus:bg-slate-200">Buy
                             now</button>
                     </form>
                     <button
-                        class="w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-2xl rounded-2xl  py-2 ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
+                        class="w-36 md:w-60 bg-[#FFFCFC] border border-orange-400 text-[#3E6E7A] text-lg md:text-2xl rounded-2xl py-2 ml-5 md:ml-20 hover:bg-slate-100 focus:bg-slate-200">Add
                         to Cart</button>
                 </div>
                 {{-- end of two button --}}

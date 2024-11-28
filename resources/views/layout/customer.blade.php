@@ -80,7 +80,7 @@
                 {{--  --}}
 
                 {{-- cart and notification container --}}
-                <div class="flex md:flex gap-x-5 items-center justify justify-around mx-auto md:ml-auto md:mr-5 align-middle"
+                <div class="hidden md:flex gap-x-5 items-center justify justify-around mx-auto md:ml-auto md:mr-5 align-middle"
                     id="notif-cart-container">
                     <a href="{{ route('cart.index') }}">
                         {{-- cart icon --}}
@@ -291,7 +291,7 @@
             searchBar.classList.toggle('flex')
 
             notifCart.classList.toggle('hidden')
-            // notifCart.classList.toggle('flex')
+            notifCart.classList.toggle('flex')
 
             userProfile.classList.toggle('hidden')
             userProfile.classList.toggle('flex')
