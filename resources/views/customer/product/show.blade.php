@@ -8,18 +8,37 @@
             <div class="w-full md:w-[35%] h-full">
                 <div class="flex flex-col space-y-4">
                     <div class="w-full h-96 mr-auto bg-white p-3 rounded-xl">
+                        @php
+                            $image = $product->images->first();
+                        @endphp
                         {{-- main image --}}
-                        <img id="mainImage" src="{{ asset('img/example/example_phone.png') }}"
-                            class="w-full h-full object-contain" alt="Main Image">
+                        @if (Storage::disk('public')->exists('products/' . $image->path))
+                            <img id="mainImage" src="{{ Storage::url('products/' . $image->path) }}"
+                                class="w-full h-full object-contain" alt="Main Image">
+                        @elseif (filter_var($image->path, FILTER_VALIDATE_URL))
+                            <img id="mainImage" src="{{ $image->path }}" class="w-full h-full object-contain"
+                                alt="Main Image">
+                        @else
+                            <img id="mainImage" src="{{ asset('img/example/example_phone.png') }}"
+                                class="w-full h-full object-contain" alt="Main Image">
+                        @endif
                     </div>
                     {{-- thumbnail image container --}}
                     <div class="flex space-x-4 mx-auto overflow-x-auto" id="product-images">
-                        @for ($i = 0; $i < 4; $i++)
+                        @foreach ($product->images as $image)
                             <div class="relative w-14 h-14">
-                                <img src="{{ asset('img/example/example_phone.png') }}"
-                                    class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
+                                @if (Storage::disk('public')->exists('products/' . $image->path))
+                                    <img src="{{ Storage::url('products/' . $image->path) }}"
+                                        class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
+                                @elseif (filter_var($image->path, FILTER_VALIDATE_URL))
+                                    <img src="{{ $image->path }}"
+                                        class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}"
+                                        class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
+                                @endif
                             </div>
-                        @endfor
+                        @endforeach
                     </div>
                     {{-- thumbnail image container --}}
                 </div>
@@ -46,7 +65,8 @@
                 {{-- end of rating container --}}
 
                 {{-- product title --}}
-                <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">Samsung S24 Ultra</h1>
+                <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">Samsung S24
+                    Ultra</h1>
 
                 {{-- product Price --}}
                 <h1 class="text-[#3E6E7A] font-bold text-base md:text-3xl text-left mt-2 md:mt-6">Rp 21.000.000 - Rp
@@ -244,7 +264,7 @@
                     {{-- modal content --}}
                     <div class="w-full h-full flex flex-col p-5">
                         {{-- image review --}}
-                        <img id="mainImage" src="{{ asset('img/example/example_phone.png') }}"
+                        <img id="reviewImage" src="{{ asset('img/example/example_phone.png') }}"
                             class="w-full h-full object-contain" alt="Main Image">
                     </div>
                     {{-- end of modal content --}}
@@ -259,6 +279,14 @@
 
 @push('script')
     <script>
+        $(document).ready(function() {
+            $('#product-images > div').click(function() {
+                let src = $(this).find('img').attr('src');
+                console.log(src);
+                $('#mainImage').attr('src', src);
+            })
+        })
+
         function addQuantity() {
             let quantity = parseInt($('#product-quantity').val());
             quantity++;
