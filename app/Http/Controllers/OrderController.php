@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
+    // checkout page
     public function checkout(Request $request)
     {
         $data = $request->validate([
@@ -23,6 +24,7 @@ class OrderController extends Controller
         return view('customer.order.checkout', $items);
     }
 
+    // calculate total price of the order
     public function calculateTotal($data)
     {
         $products = Product::findMany($data['products']);
@@ -45,6 +47,7 @@ class OrderController extends Controller
         ];
     }
 
+    // custom request order
     public function requestOrder(Request $request)
     {
         DB::beginTransaction();
@@ -63,6 +66,7 @@ class OrderController extends Controller
         if (Auth::check()) {
             $user = User::find(Auth::id());
         } else {
+            // create a guest user
             $user = User::create([
                 'fullname' => $data['fullname'],
                 'email' => $data['email'],
@@ -104,6 +108,8 @@ class OrderController extends Controller
     public function show(string $id)
     {
         $order = Order::findOrFail($id);
+
+        // render page depending on the order type
         if ($order->type == 'custom') {
             $order->load('customOrderItems');
             return view('customer.order.custom', compact('order'));
@@ -113,6 +119,7 @@ class OrderController extends Controller
         }
     }
 
+    // transaction history
     public function history()
     {
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();

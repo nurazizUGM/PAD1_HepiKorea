@@ -11,8 +11,10 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
+        // list of categories
         $categories = Category::all();
 
+        // 10 latest products
         $newProducts = Product::with('category')->orderBy('created_at', 'desc')->limit(10)->get()->map(function ($product) {
             return (object)[
                 'id' => $product->id,
@@ -21,6 +23,8 @@ class HomeController extends Controller
                 'price' => $product->price
             ];
         });
+
+        // 10 most ordered products
         $popularProducts = Product::with(['orders', 'category'])
             ->withCount('orders')->orderBy('orders_count', 'desc')->limit(10)->get()->map(function ($product) {
                 return (object)[

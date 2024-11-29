@@ -12,12 +12,14 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
+    // profile page
     public function  index()
     {
         $user = Auth::user();
         return view('customer.user.profile', compact('user'));
     }
 
+    // Update profile
     public function update(Request $request)
     {
         $user = User::find(Auth::id());
@@ -31,6 +33,7 @@ class ProfileController extends Controller
             'photo' => 'nullable|image',
         ]);
 
+        // Check if photo is uploaded
         if ($request->hasFile('photo')) {
             if ($user->photo && Storage::disk('public')->exists($user->photo)) {
                 Storage::disk('public')->delete($user->photo);
@@ -41,6 +44,7 @@ class ProfileController extends Controller
             $data['photo'] = $photo->storeAs('profile', $filename, 'public');
         }
 
+        // Check if password is updated
         if ($request->filled('password')) {
             if (!Hash::check($data['old_password'], $user->password)) {
                 return redirect()->back()->with('error', 'Old password is incorrect');
@@ -52,12 +56,14 @@ class ProfileController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully');
     }
 
+    // Notification page
     public function notification()
     {
         $notifications = Notification::where('user_id', Auth::id())->orderBy('is_read', 'asc')->orderBy('created_at', 'desc')->get();
         return view('customer.notification', compact('notifications'));
     }
 
+    // Address page
     public function address()
     {
         $user = User::find(Auth::id())->with('addresses')->first();
