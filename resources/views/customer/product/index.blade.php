@@ -11,7 +11,8 @@
 </a>
 
 @section('content')
-    <div class="w-full md:w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-1 md:px-14">
+    <div
+        class="w-full md:w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-10 px-1 md:px-14">
         {{-- sorting and filter container --}}
         <div class="w-auto md:w-full gap-x-1 md:gap-x-0 flex flex-row mb-5 mx-auto md:mx-0">
             @php
@@ -33,8 +34,7 @@
             </button>
 
             <!-- Dropdown menu -->
-            <div id="dropdownCategory"
-                class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-28 md:w-44">
+            <div id="dropdownCategory" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-28 md:w-44">
                 <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownCategoryButton">
                     <li data-category="">
                         <a href="#" class="block px-4 py-2 hover:bg-gray-100">All</a>
@@ -114,14 +114,23 @@
         {{-- end of sorting and filter container --}}
 
         {{-- products card container --}}
-        <div class="w-full h-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-1 md:gap-x-6 gap-y-0.5 md:gap-y-12 mx-auto md:mx-0">
+        <div
+            class="w-full h-full grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-1 md:gap-x-6 gap-y-0.5 md:gap-y-12 mx-auto md:mx-0">
             @foreach ($products as $product)
                 {{-- card product --}}
                 <div class="bg-white scale-95 md:scale-100 w-[155px] h-[245px] flex flex-col rounded-xl overflow-hidden items-center cursor-pointer mx-auto md:mx-0"
                     onclick="window.location.href = '{{ route('product.show', $product->id) }}'">
                     {{-- image product --}}
+                    @php
+                        $image = $product->images->first()->path;
+                        if (Storage::exists('products/' . $image)) {
+                            $image = asset('storage/products/' . $image);
+                        } elseif (!filter_var($image, FILTER_VALIDATE_URL)) {
+                            $image = asset('img/example/test_blouse.png');
+                        }
+                    @endphp
                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                        style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
+                        style="background-image: url('{{ $image }}')"></div>
                     {{-- text product --}}
                     <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                         {{-- product title --}}
@@ -145,7 +154,8 @@
         {{-- end of products card container --}}
 
         {{-- pagination --}}
-        <div class="w-1/2 md:w-1/6 h-fit flex flex-row mx-auto mt-12 rounded-2xl overflow-hidden bg-[#3E6E7A] text-white text-center">
+        <div
+            class="w-1/2 md:w-1/6 h-fit flex flex-row mx-auto mt-12 rounded-2xl overflow-hidden bg-[#3E6E7A] text-white text-center">
             {{-- Arrow left --}}
             <div class="w-1/6 flex hover:bg-[#37626d] active:bg-[#325862] pl-2">
                 <img src="{{ asset('img/assets/icon/icon_arrow_back.svg') }}" alt="" class="my-auto mr-auto">
