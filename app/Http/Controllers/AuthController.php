@@ -23,6 +23,8 @@ class AuthController extends Controller
         $users = User::all(['fullname', 'email', 'role']);
         return view('auth.index', compact('users'));
     }
+
+    // login authentication
     public function authenticate(Request $request)
     {
         $body = $request->validate([
@@ -50,6 +52,7 @@ class AuthController extends Controller
         return redirect()->intended();
     }
 
+    // register new user
     public function register(Request $request)
     {
         $body = $request->validate([
@@ -65,12 +68,15 @@ class AuthController extends Controller
         return redirect()->intended();
     }
 
+    // logout user
     public function logout()
     {
         Auth::logout();
         Session::invalidate();
         return redirect()->route('home');
     }
+
+    // redirect to google login
     public function google()
     {
         /** @var \Laravel\Socialite\Two\GoogleProvider $driver */
@@ -80,6 +86,7 @@ class AuthController extends Controller
         ])->redirect();
     }
 
+    // google login callback
     public function callback(Request $request)
     {
         try {
@@ -104,12 +111,16 @@ class AuthController extends Controller
                 $googleUser = $googleUser->user;
             }
 
-            $user = User::where('google_id', $accountId)->orWhere('email', $googleUser['email'])->first();
-            if (!$user) {
-                // if (empty($photo)) {
-                //     $photo = 'https://ui-avatars.com/api/?name=' . urlencode($googleUser['name']);
-                // }
+            // check if google account already registered
+            $user = User::where('google_id', $accountId)->first();
 
+            // check if email already registered
+            if (!$user) {
+                $user = User::where('email', $googleUser['email'])->first();
+            }
+
+            if (!$user) {
+                // create new user if not exist
                 $headers = get_headers($googleUser['picture'], 1);
                 $ext = explode('/', $headers['Content-Type'])[1];
 
@@ -131,22 +142,28 @@ class AuthController extends Controller
                     'is_verified' => true
                 ]);
             } else if (empty($user->google_id)) {
+                // update existing user with google account
                 $user->update([
                     'google_id' => $accountId,
                     'is_verified' => true
                 ]);
             } else if ($user->google_id != $accountId) {
+                // account already registered with different google account
                 return redirect()->route('auth.login')->withErrors([
                     'message' => 'Failed to login with Google',
                 ]);
             }
 
+            // authenticate user
             Auth::login($user);
             Session::regenerate();
 
+            // redirect to intended page if using gsi iframe
             if ($request->has('credential')) {
                 return redirect()->intended();
             }
+
+            // close popup window and refresh parent window
             return "<script>window.opener.location.reload();window.close();</script>";
         } catch (\Exception $e) {
             error_log("[Exception] " . $e->getMessage() .
@@ -159,6 +176,7 @@ class AuthController extends Controller
         }
     }
 
+    // forgot password
     public function forgotPassword(Request $request)
     {
         $body = $request->validate([
@@ -177,6 +195,7 @@ class AuthController extends Controller
         return redirect()->route('auth.verify');
     }
 
+    // verify email with OTP
     public function verify(Request $request)
     {
         $user = Auth::user();
@@ -191,8 +210,10 @@ class AuthController extends Controller
             ]);
         }
 
+        // check existing OTP
         $otp = Otp::where('user_id', $user->id)->first();
         if (!$otp || $otp->expired_at < now()) {
+            // generate new OTP if not exist or expired
             $otp_code = rand(100000, 999999);
             $otp = Otp::updateOrCreate([
                 'user_id' => $user->id
@@ -202,6 +223,7 @@ class AuthController extends Controller
             ]);
             MailJob::dispatch($user->email, new Verification($otp->code));
         } else if ($request->has('resend')) {
+            // resend OTP
             $otp->update([
                 'expired_at' => now()->addMinutes(5)
             ]);
@@ -223,6 +245,8 @@ class AuthController extends Controller
             'timeout' => $timeout,
         ]);
     }
+
+    // verify OTP code
     public function verifyCode(Request $request)
     {
         $body = $request->validate([
@@ -250,6 +274,7 @@ class AuthController extends Controller
                 'The provided OTP is invalid.',
             ]);
         } else if ($otp->expired_at < now()) {
+            // regenerate OTP if expired
             return redirect()->route('auth.verify', ['resend' => true])->withErrors([
                 'The provided OTP is expired.',
             ]);
@@ -269,6 +294,7 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
+    // set new password after OTP verification
     public function resetPassword()
     {
         if (!Session::has('userId')) {
@@ -284,6 +310,7 @@ class AuthController extends Controller
         return view('auth.reset_password');
     }
 
+    // update password after OTP verification
     public function setPassword(Request $request)
     {
 
