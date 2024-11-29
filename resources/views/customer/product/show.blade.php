@@ -162,10 +162,10 @@
         {{-- end of image and product detail container --}}
 
         {{-- start of product description --}}
-        <div class="w-[100%] h-full flex-col px-8 py-8 bg-[#FFFCFC] rounded-2xl mt-6">
-            <h1 class="text-black font-bold text-2xl">Product Description</h1>
+        <div class="w-[100%] max-w-[100%] h-full flex-col px-4 md:px-8 py-4 md:py-8 bg-[#FFFCFC] rounded-2xl mt-6">
+            <h1 class="text-black font-bold text-lg md:text-2xl">Product Description</h1>
             {{-- product description container --}}
-            <p class="text-[#898383] font-semibold text-lg mt-8">
+            <p class="text-[#898383] font-semibold text-sm md:text-lg mt-2 md:mt-8">
                 {{ $product->description }}
             </p>
         </div>

@@ -2,20 +2,20 @@
 @section('title', 'Cart')
 
 @section('content')
-    <div class="w-full w-max[100%] h-[80vh] rounded-3xl bg-[#EFEFEF] pt-6 pb-8 px-10 flex flex-col">
-        <h1 class="text-black font-semibold text-2xl text-left">Cart</h1>
+    <div class="w-full w-max[100%] h-[80vh] rounded-3xl bg-[#EFEFEF] pt-2 md:pt-6 pb-8 px-2 md:px-10 flex flex-col">
+        <h1 class="text-black font-semibold text-lg md:text-2xl text-left">Cart</h1>
 
         {{-- product card container --}}
-        <div class="relative w-full h-full grid grid-cols-3 gap-x-auto gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
+        <div class="relative w-full h-full grid grid-cols-2 md:grid-cols-3 gap-x-auto gap-y-2 md:gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
             @foreach ($carts as $cart)
                 {{-- product card --}}
-                <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5">
+                <div class="w-[180px] md:w-[420px] h-[130px] md:h-[279px] bg-white rounded-2xl flex flex-col p-2 md:p-5">
                     {{-- photo, name, price of product --}}
                     <div class="w-full h-[65%] flex flex-row">
                         {{-- image container --}}
-                        <div class="w-[35%] h-full">
+                        <div class="w-[40%] md:w-[35%] h-full">
                             @if (strpos($cart->product->image, 'http') === 0)
-                                <img src="{{ $cart->product->image }}" alt="" class="w-full h-full bg-contain">
+                                <img src="{{ $cart->product->image }}" alt="" class="w-full h-full object-contain">
                             @elseif (Storage::disk('public')->exists('products/' . $cart->product->image))
                                 <img src="{{ asset('storage/products/' . $cart->product->image) }}" alt=""
                                     class="w-full h-full bg-contain">
@@ -25,13 +25,13 @@
                             @endif
                         </div>
                         {{-- name,variant,price --}}
-                        <div class="w-[65%] h-full flex flex-col pl-5">
-                            <h1 class="text-[#3E6E7A] font-semibold text-base">{{ $cart->product->name }}</h1>
-                            <h2 class="text-orange-400 font-semibold text-xl mt-auto">Rp
+                        <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-2 md:pl-5">
+                            <h1 class="text-[#3E6E7A] font-semibold text-xs md:text-base truncate">{{ $cart->product->name }}</h1>
+                            <h2 class="text-orange-400 font-semibold text-[10px] md:text-xl mt-auto">Rp
                                 {{ number_format($cart->product->price, 0, ',', '.') }}</h2>
 
                             <input type="hidden" form="form-checkout" name="quantity[]" value="{{ $cart->quantity }}">
-                            <h3 class="text-gray-600 font-semibold text-lg">x{{ $cart->quantity }}</h3>
+                            <h3 class="text-gray-600 font-semibold text-[8px] md:text-lg">x{{ $cart->quantity }}</h3>
                         </div>
                     </div>
                     {{-- end of photo, name, price of product --}}
@@ -42,8 +42,8 @@
                             <input type="checkbox" name="products[]" value="{{ $cart->product->id }}"
                                 data-product-price="{{ $cart->product->price }}"
                                 data-product-quantity="{{ $cart->quantity }}" form="form-checkout"
-                                class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
-                            <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
+                                class="w-3 md:w-6 h-3 md:h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100  checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                            <p class="text-[#3E6E7A] text-xs md:text-base font-semibold ml-6">Add Product</p>
                         </div>
                     </div>
                     {{-- checkbox --}}
@@ -55,42 +55,42 @@
 
 
         {{-- checkout container --}}
-        <div class="mx-0 h-[16rem] bg-white rounded-2xl flex flex-col py-5 px-10">
-            <h1 class="text-black font-semibold text-2xl">Checkout</h1>
+        <div class="mx-0 h-[16rem] bg-white rounded-2xl flex flex-col py-2 md:py-5 px-4 md:px-10">
+            <h1 class="text-black font-semibold text-lg md:text-2xl">Checkout</h1>
             <div class="w-full h-fit flex flex-row my-auto">
                 {{-- select all and checkbox container --}}
                 <div class="w-fit h-full flex flex-row">
 
                     {{-- checkbox fot select all --}}
                     <input type="checkbox" onchange="checkAll(this)"
-                        class="w-6 h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+                        class="w-3 md:w-6 h-3 md:h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
 
                     {{-- select All text --}}
-                    <p class="text-black text-opacity-50 font-semibold text-base ml-6 my-auto">Select All
+                    <p class="text-black text-opacity-50 font-semibold text-[8px] md:text-base ml-3 md:ml-6 my-auto">Select All
                         ({{ $carts->count() }})</p>
 
                     {{-- button delete --}}
                     <button
-                        class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-10 py-2 px-12"
+                        class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-5 md:ml-10 py-1 md:py-2 px-4 md:px-12"
                         data-modal-target="confirmation-delete-modal" data-modal-toggle="confirmation-delete-modal">
                         <img src="{{ asset('img/assets/icon/icon_customer_trashcan.svg') }}" alt=""
-                            class="w-6 h-7 mr-2">
-                        <p class="text-[#3E6E7A] font-semibold text-xl">Delete</p>
+                            class="w-3 md:w-6 h-3.5 md:h-7 mr-1 md:mr-2 my-auto">
+                        <p class="text-[#3E6E7A] font-semibold text-sm md:text-xl">Delete</p>
                     </button>
                     {{-- end of button delete --}}
                 </div>
                 {{-- end of select all and checkbox container --}}
 
                 {{-- text count total product --}}
-                <p class="text-black text-opacity-50 font-semibold text-base ml-auto my-auto" id="total-product">
+                <p class="text-black text-opacity-50 font-semibold text-center md:text-end text-xs md:text-base mx-auto md:mr-0 md:ml-auto my-auto" id="total-product">
                     Total (0) Product</p>
                 {{-- total price --}}
-                <h1 class="text-orange-400 font-semibold text-2xl ml-16 my-auto" id="total-price">Rp 0,-</h1>
+                <h1 class="text-orange-400 font-semibold text-sm md:text-2xl ml-8 md:ml-16 my-auto" id="total-price">Rp 0,-</h1>
             </div>
             <form action="{{ route('checkout') }}" method="post" id="form-checkout" class="ml-auto">
                 @csrf
                 <button type="submit" onclick="$('input[name=products[]]')"
-                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-10">Checkout</button>
+                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg md:text-2xl font-semibold rounded-2xl py-1 md:py-2 px-5 md:px-10">Checkout</button>
             </form>
         </div>
         {{-- end of checkout container --}}
