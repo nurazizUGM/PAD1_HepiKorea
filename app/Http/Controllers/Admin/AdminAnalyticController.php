@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 class AdminAnalyticController extends Controller
 {
+    // Business analytic page
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'chart');
         $totalOrder = Order::count();
         $completedOrder = Order::where('status', 'finished')->count();
 
+        // Get total order for each category
         $categories = Category::with('products', 'products.orders')->get();
         foreach ($categories as $category) {
             $category['total_order'] = $category->products->sum(function ($product) {
@@ -22,6 +24,7 @@ class AdminAnalyticController extends Controller
             });
         }
 
+        // Get monthly order
         $month = [];
         $monthlyOrders = [];
         for ($i = 11; $i >= 0; $i--) {
@@ -29,6 +32,7 @@ class AdminAnalyticController extends Controller
             $monthlyOrders[] = Order::whereMonth('created_at', now()->subMonths($i)->month)->count();
         }
 
+        // Get all orders for table
         $orders = Order::with('orderItems', 'orderItems.product', 'customOrderItems', 'user');
         $search = $request->query('search');
         if ($search) {
@@ -45,6 +49,7 @@ class AdminAnalyticController extends Controller
         return view('admin.analytic', compact('totalOrder', 'completedOrder', 'categories', 'month', 'monthlyOrders', 'orders', 'tab'));
     }
 
+    // Export all orders to excel
     public function export(Request $request)
     {
         $orders = Order::with('orderItems', 'orderItems.product', 'customOrderItems', 'user')->get();

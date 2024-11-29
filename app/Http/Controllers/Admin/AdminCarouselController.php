@@ -41,6 +41,7 @@ class AdminCarouselController extends Controller
             'youtube_url' => 'required_if:media_type,youtube',
         ]);
 
+        // store carousel media
         if ($request->media_type == 'youtube') {
             $data['media'] = $request->youtube_url;
         } else if ($request->hasFile('media')) {

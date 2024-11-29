@@ -12,8 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AdminDashboardController extends Controller
 {
+    // admin dashboard page
     public function index()
     {
+        // get total products, orders and customers
         $products = Product::where('is_deleted', false)->count();
         $orders = Order::all()->count();
         $customers = User::where('role', Role::USER)->count();

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProductController extends Controller
 {
+    // product list
     public function index(Request $request)
     {
         $categories = Category::all();
@@ -28,6 +29,7 @@ class AdminProductController extends Controller
         return view('admin.product.index', compact('products', 'categories', 'category', 'tab'));
     }
 
+    // create product
     public function create()
     {
         $categories = Category::all();
@@ -35,6 +37,7 @@ class AdminProductController extends Controller
         return view('admin.product.index', compact('categories', 'tab'));
     }
 
+    // store product
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -48,6 +51,7 @@ class AdminProductController extends Controller
         $data['category_id'] = $data['category'];
         $product  = Product::create($data);
 
+        // store images
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->hashName();
@@ -61,6 +65,7 @@ class AdminProductController extends Controller
         return redirect()->route('admin.product.index')->with('success', 'Product created successfully');
     }
 
+    // edit product page
     public function edit(Request $request, string $product)
     {
         $product = Product::find($product);
@@ -72,6 +77,7 @@ class AdminProductController extends Controller
         return view('admin.product.index', compact('product', 'tab'));
     }
 
+    // update product
     public function update(Request $request, Product $product)
     {
         $data = $request->validate([
@@ -86,6 +92,7 @@ class AdminProductController extends Controller
         $data['category_id'] = $data['category'];
         $product->update($data);
 
+        // store images
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->hashName();
@@ -95,6 +102,8 @@ class AdminProductController extends Controller
                 ]);
             }
         }
+
+        // delete images
         if ($request->has('deleted_images')) {
             foreach ($request->input('deleted_images') as $image) {
                 $image = $product->images()->find($image);
@@ -107,10 +116,10 @@ class AdminProductController extends Controller
             }
         }
 
-
         return redirect()->route('admin.product.index')->with('success', 'Product updated successfully');
     }
 
+    // delete product
     public function destroy(string $product)
     {
         $product = Product::find($product);

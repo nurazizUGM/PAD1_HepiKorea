@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 
 class AdminProfileController extends Controller
 {
+    // admin profile page
     public function index()
     {
         $user = User::where('id', Auth::id())->with('addresses')->first();
@@ -20,6 +21,7 @@ class AdminProfileController extends Controller
         return view('admin.profile.user', compact('user', 'address'));
     }
 
+    // update admin profile
     public function updateProfile(Request $request)
     {
         $data = $request->validate([
@@ -37,6 +39,8 @@ class AdminProfileController extends Controller
         ]);
 
         $user = User::find(Auth::id());
+
+        // check if password changed
         if ($data['old_password'] && $data['new_password']) {
             if (!Hash::check($data['old_password'], $user->password)) {
                 return back()->withErrors(['old_password' => 'Old password is incorrect']);
@@ -45,6 +49,7 @@ class AdminProfileController extends Controller
         }
         unset($data['old_password'], $data['new_password']);
 
+        // check if address changed
         if ($data['address'] || $data['city'] || $data['province'] || $data['postal_code']) {
             $user->addresses()->updateOrCreate([
                 'user_id' => $user->id
@@ -58,6 +63,7 @@ class AdminProfileController extends Controller
             ]);
         }
 
+        // check if photo changed
         if ($request->hasFile('photo')) {
             if ($user->photo && Storage::disk('public')->exists($user->photo)) {
                 Storage::disk('public')->delete($user->photo);
@@ -71,6 +77,7 @@ class AdminProfileController extends Controller
         return back()->with('success', 'Profile updated successfully');
     }
 
+    // business setting page
     public function setting()
     {
         $settings = Setting::all();

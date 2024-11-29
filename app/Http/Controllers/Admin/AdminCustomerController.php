@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 class AdminCustomerController extends Controller
 {
+    // customer list
     public function index()
     {
         $customers = User::where('role', Role::USER);
@@ -21,6 +22,7 @@ class AdminCustomerController extends Controller
         return view('admin.customer.index', compact('customers', 'tab'));
     }
 
+    // customer detail
     public function show(string $id)
     {
         $customer = User::where('id', $id)->with('addresses')->first();
@@ -30,10 +32,12 @@ class AdminCustomerController extends Controller
         return view('admin.customer.index', compact('customer', 'address', 'tab'));
     }
 
+    // customer review
     public function review(Request $request)
     {
 
         if ($request->has('search')) {
+            // filter by content
             $reviews = Review::where('content', 'like', '%' . $request->search . '%');
         } else {
             $reviews = Review::query();

@@ -47,6 +47,7 @@ class AdminCategoryController extends Controller
             'icon' => 'nullable|file|image',
         ]);
 
+        // store category icon
         if ($request->hasFile('icon')) {
             if (Storage::exists('public/category/' . $category->icon)) {
                 Storage::delete('public/category/' . $category->icon);
