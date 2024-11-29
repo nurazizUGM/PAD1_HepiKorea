@@ -39,11 +39,11 @@
         <div class="w-full h-full rounded-3xl bg-white flex flex-col py-3 px-10 mt-6">
             <h1 class="text-black font-semibold text-2xl">Product Ordered</h1>
 
-            <div class="w-full h-full flex flex-col gap-y-5">
+            <div class="w-full h-full flex flex-col gap-y-5" id="order-items">
 
                 @foreach ($items as $item)
                     {{-- product container --}}
-                    <div class="w-full h-full flex flex-col">
+                    <div class="w-full h-full flex flex-col" data-product-id="{{ $item->product->id }}">
                         <div class="w-full h-fit flex flex-row">
                             <div class="w-[20%]">
                                 {{-- product image --}}
@@ -75,7 +75,7 @@
                                         -
                                     </div>
                                     {{--  --}}
-                                    <p class="my-auto text-2xl mx-6">
+                                    <p class="item-quantity my-auto text-2xl mx-6">
                                         {{ $item->quantity }}</p>
                                     <div onclick="addQty(this)"
                                         class="border border-black rounded-full py-1 px-3 text-2xl cursor-pointer hover:bg-slate-100">
@@ -129,7 +129,7 @@
                     {{-- checkout button --}}
                     <button
                         class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-9 mt-2"
-                        data-modal-target="choose-payment-modal" data-modal-toggle="choose-payment-modal">Checkout</button>
+                        onclick="choosePaymentModal.show()">Checkout</button>
                 </div>
             </div>
         </div>
@@ -152,7 +152,7 @@
 
                     {{-- modal content --}}
                     <div class="w-full h-full flex flex-col px-10 py-10">
-                        <form action="" class="w-full h-full flex flex-col">
+                        <form action="#" class="w-full h-full flex flex-col">
                             {{-- Bank --}}
                             <h1 class="text-[#898383] text-opacity-60 font-bold text-xl">Bank</h1>
                             {{-- Option Bank BRI --}}
@@ -160,7 +160,7 @@
                                 <img src="{{ asset('img/assets/icon/icon_checkout_bri.svg') }}" alt=""
                                     class="w-24 h-10 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-8">Bank BRI</label>
-                                <input type="radio" name="choose-payment" id="BRI"
+                                <input type="radio" name="payment-method" value="BRI"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
                             {{-- Option Bank BRI --}}
@@ -168,7 +168,7 @@
                                 <img src="{{ asset('img/assets/icon/logo_checkout_mandiri.png') }}" alt=""
                                     class="w-28 h-12 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-4">Mandiri</label>
-                                <input type="radio" name="choose-payment" id="Mandiri"
+                                <input type="radio" name="payment-method" value="Mandiri"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
                             {{-- Option Bank BRI --}}
@@ -176,7 +176,7 @@
                                 <img src="{{ asset('img/assets/icon/icon_checkout_bca.svg') }}" alt=""
                                     class="w-28 h-12 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-4">BCA</label>
-                                <input type="radio" name="choose-payment" id="BCA"
+                                <input type="radio" name="payment-method" value="BCA"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
 
@@ -184,33 +184,15 @@
                             <h1 class="text-[#898383] text-opacity-60 font-bold text-xl mt-6">E-wallet</h1>
                             {{-- Option Bank BRI --}}
                             <div class="w-full h-fit flex flex-row mt-2">
-                                <img src="{{ asset('img/assets/icon/icon_checkout_dana.svg') }}" alt=""
+                                <img src="{{ asset('img/assets/icon/icon_checkout_gopay.svg') }}" alt=""
                                     class="w-28 h-12 object-contain">
-                                <label for="BRI" class="my-auto text-black font-bold text-base ml-4">DANA</label>
-                                <input type="radio" name="choose-payment" id="DANA"
-                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                            </div>
-                            {{-- Option Bank BRI --}}
-                            <div class="w-full h-fit flex flex-row mt-4">
-                                <img src="{{ asset('img/assets/icon/icon_checkout_ovo.svg') }}" alt=""
-                                    class="w-28 h-12 object-contain">
-                                <label for="BRI" class="my-auto text-black font-bold text-base ml-4">OVO</label>
-                                <input type="radio" name="choose-payment" id="OVO"
-                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                            </div>
-                            {{-- Option Bank BRI --}}
-                            <div class="w-full h-fit flex flex-row mt-4">
-                                <img src="{{ asset('img/assets/icon/icon_checkout_gopay.png') }}" alt=""
-                                    class="w-28 h-12 object-contain">
-                                <label for="BRI" class="my-auto text-black font-bold text-base ml-4">Go Pay</label>
-                                <input type="radio" name="choose-payment" id="gopay"
+                                <label for="BRI" class="my-auto text-black font-bold text-base ml-4">QRIS</label>
+                                <input type="radio" name="payment-method" value="DANA"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
 
-
-                            <button
-                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10"
-                                data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay</button>
+                            <button onclick="order(event)"
+                                class="w-fit bg-[#4b6166] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10">Pay</button>
                         </form>
                     </div>
                     {{-- end of modal content --}}
@@ -346,7 +328,8 @@
                             </div>
                             <div class="w-[30%]">
                                 {{-- total payment price --}}
-                                <p class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 25.800.000,-</p>
+                                <p id="qr-payment-amount" class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 0,-
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
@@ -355,14 +338,15 @@
                             </div>
                             {{-- pay in (time duration to pay) --}}
                             <div class="w-[30%] h-fit flex flex-col">
-                                <p class="text-[#3E6E7A] text-sm font-bold">24 Hours</p>
+                                <p id="expiration-time-remaining" class="text-[#3E6E7A] text-sm font-bold">15 Minutes</p>
                                 {{-- pay time deadline --}}
                                 <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>
-                                    14 September 2024 00:00</p>
+                                    <span id="expiration-time">00:00</span>
+                                </p>
                             </div>
                         </div>
 
-                        <img src="{{ asset('img/example/example_qrscan.svg') }}" alt=""
+                        <img id="payment-qr" src="" alt="" loading="lazy"
                             class="mx-auto w-52 object-contain">
 
                         {{-- title instructions --}}
@@ -386,8 +370,7 @@
                         </p>
                         <button
                             class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
-                            data-modal-hide="qr-payment-modal" data-modal-target="choose-payment-modal"
-                            data-modal-toggle="choose-payment-modal">Change</button>
+                            onclick="qrPaymentModal.hide()">Change</button>
                     </div>
                     {{-- end of modal content --}}
                 </div>
@@ -426,6 +409,14 @@
 
     @push('script')
         <script>
+            let choosePaymentModal, qrPaymentModal, paymentSuccessModal;
+
+            $(document).ready(function() {
+                choosePaymentModal = new Modal(document.getElementById('choose-payment-modal'));
+                qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'));
+                paymentSuccessModal = new Modal(document.getElementById('payment-success-modal'));
+            });
+
             function addQty(e) {
                 let qty = e.previousElementSibling;
                 qty.innerHTML = parseInt(qty.innerHTML) + 1;
@@ -462,6 +453,83 @@
                 });
 
             });
+
+            function onPaymentSuccess(orderId) {
+                qrPaymentModal.hide();
+                paymentSuccessModal.show();
+                setTimeout(() => {
+                    window.location.href = "{{ route('order.show', ':id') }}".replace(':id', orderId);
+                }, 1000);
+            }
+
+            function checkPaymentStatus(paymentId) {
+                const interval = setInterval(() => {
+                    const url =
+                        `{{ route('order.payment-status') }}?paymentId=${paymentId}`;
+                    $.ajax({
+                        url: url,
+                        method: 'GET',
+                        success: function(response) {
+                            if (response.status == 'success' &&
+                                response.payment.status == 'success') {
+                                clearInterval(interval);
+                                onPaymentSuccess(response.payment.order_id);
+                            }
+                        }
+                    });
+                }, 5000);
+            }
+
+            function onOrderSuccess(payment) {
+                $('#payment-qr').attr('src', payment.payment_code);
+                const amount = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(payment.amount);
+                $('#qr-payment-amount').text(`${amount},-`);
+
+                const expirationTime = moment(payment.expired_at).format('DD MMMM YYYY HH:mm');
+                const diff = moment.duration(moment(payment.expired_at).diff(moment()));
+                const hoursRemaining = Math.floor(diff.asHours());
+                const minutesRemaining = Math.floor(diff.asMinutes()) - (hoursRemaining * 60);
+                const timeRemaining = `${hoursRemaining} Hours ${minutesRemaining} Minutes`;
+
+                $('#expiration-time').text(expirationTime);
+                $('#expiration-time-remaining').text(timeRemaining);
+
+                choosePaymentModal.hide();
+                qrPaymentModal.show();
+
+                checkPaymentStatus(payment.id);
+            }
+
+            function order(ev) {
+                ev.preventDefault();
+                const paymentMethod = $('input[name="payment-method"]:checked').val();
+                const items = $('#order-items').children().toArray().map(el => {
+                    return {
+                        productId: $(el).data('product-id'),
+                        quantity: $(el).find('.item-quantity').text().trim()
+                    }
+                });
+
+                $.ajax({
+                    url: "{{ route('order.store') }}",
+                    method: 'POST',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        paymentMethod,
+                        items
+                    },
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            onOrderSuccess(response.payment);
+                        }
+                    }
+                });
+            }
         </script>
     @endpush
 

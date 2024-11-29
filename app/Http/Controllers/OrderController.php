@@ -4,14 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Enums\Role;
 use App\Models\Order;
+use App\Models\OrderLog;
+use App\Models\OrderPayment;
 use App\Models\Product;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
+    private $paymentService;
+    public function __construct()
+    {
+        $this->paymentService = App::make('paymentService');
+    }
+
     // checkout page
     public function checkout(Request $request)
     {
@@ -20,24 +31,37 @@ class OrderController extends Controller
             'quantity' => 'required|array|min:1',
         ]);
 
-        $items = $this->calculateTotal($data);
-        return view('customer.order.checkout', $items);
+        $items = [];
+        for ($i = 0; $i < count($data['products']); $i++) {
+            $items[] = [
+                'productId' => $data['products'][$i],
+                'quantity' => $data['quantity'][$i],
+            ];
+        }
+
+        $order = $this->calculateTotal($items);
+        foreach ($order['items'] as $item) {
+            $item->product->load('images');
+            $item->product->image = $item->product->images->first();
+            if ($item->product->image) {
+                $item->product->image = $item->product->image->path;
+            }
+        }
+        return view('customer.order.checkout', $order);
     }
 
     // calculate total price of the order
     public function calculateTotal($data)
     {
-        $products = Product::findMany($data['products']);
         $total = 0;
         $items = [];
-        for ($i = 0; $i < count($products); $i++) {
-            $products[$i]->image = $products[$i]->images->first()->path;
-            $subTotal = $products[$i]->price * $data['quantity'][$i];
-            $total += $subTotal;
+        foreach ($data as $item) {
+            $product = Product::find($item['productId']);
+            $total += $product->price * $item['quantity'];
             $items[] = (object)[
-                'product' => $products[$i],
-                'quantity' => $data['quantity'][$i],
-                'total' => $subTotal,
+                'product' => $product,
+                'quantity' => $item['quantity'],
+                'total' => $product->price * $item['quantity'],
             ];
         }
 
@@ -124,5 +148,107 @@ class OrderController extends Controller
     {
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         return view('customer.order.history', compact('orders'));
+    }
+
+    // create order
+    public function store(Request $request)
+    {
+        $data = $request->validate([
+            'paymentMethod' => 'required|string',
+            'items' => 'required|array',
+            'items.*.productId' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+
+        $user = User::find(Auth::id());
+        DB::beginTransaction();
+
+        $total = $this->calculateTotal($data['items']);
+
+        $order = Order::create([
+            'user_id' => $user->id,
+            'type' => 'order',
+            'status' => 'unpaid',
+            'total_items_price' => $total['total'],
+        ]);
+
+        foreach ($data['items'] as $item) {
+            $product = Product::find($item['productId']);
+            $order->orderItems()->create([
+                'product_id' => $product->id,
+                'quantity' => $item['quantity'],
+                'price' => $product->price,
+            ]);
+        }
+
+        $orderPayment = new OrderPayment([
+            'order_id' => $order->id,
+            'payment_type' => 'items',
+            'status' => 'pending',
+            'amount' => $total['total'],
+        ]);
+
+
+        $res = $this->paymentService->post('/v2/charge', [
+            "payment_type" => "qris",
+            "transaction_details" => [
+                "gross_amount" => intval($total['total']),
+                "order_id" => "hk-" . Carbon::now()->timestamp,
+            ],
+            "custom_expiry" => [
+                "expiry_duration" => 24,
+                "unit" => "hour"
+            ],
+            'qris' => [
+                'acquirer' => 'airpay shopee',
+                // 'acquirer' => 'gopay',
+            ]
+        ]);
+
+
+        $orderPayment->payment_code = $res['actions'][0]['url'];
+        $orderPayment->expired_at = Carbon::parse($res['expiry_time']);
+        $orderPayment->transaction_id = $res['transaction_id'];
+        $orderPayment->save();
+
+        DB::commit();
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Order created successfully',
+            'payment' => $orderPayment,
+            'response' => $res,
+        ]);
+    }
+
+    // check payment status
+    public function checkPaymentStatus(Request $request)
+    {
+        $data = $request->validate([
+            'paymentId' => 'required|string|exists:order_payments,id',
+        ]);
+
+        $payment = OrderPayment::with('order')->find($data['paymentId']);
+
+        $res = $this->paymentService->get("/v2/{$payment->transaction_id}/status");
+        if ($res['transaction_status'] == 'settlement') {
+            $payment->status = 'success';
+            $payment->paid_at = Carbon::now();
+            $payment->save();
+
+            $payment->order->status = 'paid';
+            $payment->order->save();
+
+            OrderLog::create([
+                'order_id' => $payment->order->id,
+                'status' => 'paid',
+                'description' => 'Order has been paid',
+            ]);
+        }
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Payment status checked',
+            'payment' => $payment,
+        ]);
     }
 }

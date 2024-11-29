@@ -5,26 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderPayment extends Model
+class OrderLog extends Model
 {
     use HasFactory;
 
-    static $paymentType = ['items', 'shipment'];
-    static $status = ['pending', 'paid', 'failed'];
-
     protected $fillable = [
         'order_id',
-        'payment_type',
         'status',
-        'amount',
-        'payment_code',
-        'transaction_id',
-        'expired_at',
-        'paid_at',
+        'message',
     ];
 
     protected $casts = [
-        'paid_at' => 'datetime',
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
