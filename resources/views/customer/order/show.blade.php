@@ -1,5 +1,6 @@
-@extends('layout.customer_nofooter_scrollable')
+@extends('layout.customer')
 @section('title', 'Checkout')
+@section('footer', '')
 
 @section('content')
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] py-8 px-10">
