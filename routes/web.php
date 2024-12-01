@@ -51,6 +51,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::get('show/{id}', 'show')->name('show');
     Route::get('history', 'history')->name('history');
     Route::post('/', 'store')->name('store');
+    Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
     Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
     Route::get('cancel/{id}', 'cancel')->name('cancel');
 });

@@ -168,7 +168,7 @@ class OrderController extends Controller
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
         $unpaid = $orders->clone()->where('status', 'unpaid')->with('orderPayment')->get();
         $processed = $orders->clone()->whereIn('status', ['paid', 'processing'])->get();
-        $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sending', 'sent'])->get();
+        $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sending', 'sent'])->with('orderShipment')->get();
         $finished = $orders->clone()->where('status', 'finished')->get();
         $cancelled = $orders->clone()->where('status', 'cancelled')->get();
 
@@ -279,14 +279,23 @@ class OrderController extends Controller
             $payment->paid_at = Carbon::now();
             $payment->save();
 
-            $payment->order->status = 'paid';
-            $payment->order->save();
-
-            OrderLog::create([
-                'order_id' => $payment->order->id,
-                'status' => 'paid',
-                'description' => 'Order has been paid',
-            ]);
+            if ($payment->payment_type == 'shipment') {
+                $payment->order->status = 'shipment_paid';
+                $payment->order->save();
+                OrderLog::create([
+                    'order_id' => $payment->order->id,
+                    'status' => 'shipment_paid',
+                    'description' => 'Shipment has been paid',
+                ]);
+            } else {
+                $payment->order->status = 'paid';
+                $payment->order->save();
+                OrderLog::create([
+                    'order_id' => $payment->order->id,
+                    'status' => 'paid',
+                    'description' => 'Order has been paid',
+                ]);
+            }
         }
 
         return response()->json([
@@ -313,5 +322,74 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('order.history', ['tab' => 'cancelled'])->with('success', 'Order has been cancelled');
+    }
+
+    public function payShipment(Request $request)
+    {
+        $data = $request->validate([
+            'paymentMethod' => 'required|string',
+            'orderId' => 'required|exists:orders,id',
+        ]);
+
+        $order = Order::with(['orderShipment'])->findOrFail($data['orderId']);
+        if ($order->status != 'shipment_unpaid') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Order cannot be paid',
+            ]);
+        }
+
+        $orderPayment = new OrderPayment([
+            'order_id' => $order->id,
+            'payment_type' => 'shipment',
+            'status' => 'pending',
+            'amount' => $order->orderShipment->price,
+            'payment_method' => $data['paymentMethod'],
+        ]);
+
+        if ($data['paymentMethod'] == 'qris') {
+            $res = $this->paymentService->post('/v2/charge', [
+                "payment_type" => "qris",
+                "transaction_details" => [
+                    "gross_amount" => $order->orderShipment->price,
+                    "order_id" => "hk-" . Carbon::now()->timestamp,
+                ],
+                "custom_expiry" => [
+                    "expiry_duration" => 24,
+                    "unit" => "hour"
+                ],
+                'qris' => [
+                    'acquirer' => 'airpay shopee',
+                    // 'acquirer' => 'gopay',
+                ]
+            ]);
+            $orderPayment->payment_code = $res['actions'][0]['url'];
+        } else {
+            $res = $this->paymentService->post('/v2/charge', [
+                "payment_type" => "bank_transfer",
+                "transaction_details" => [
+                    "gross_amount" => $order->orderShipment->price,
+                    "order_id" => "hk-" . Carbon::now()->timestamp,
+                ],
+                "custom_expiry" => [
+                    "expiry_duration" => 24,
+                    "unit" => "hour"
+                ],
+                "bank_transfer" => [
+                    "bank" => $data['paymentMethod']
+                ]
+            ]);
+            $orderPayment->payment_code = $res['va_numbers'][0]['va_number'];
+        }
+
+        $orderPayment->expired_at = Carbon::parse($res['expiry_time']);
+        $orderPayment->transaction_id = $res['transaction_id'];
+        $orderPayment->save();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Shipment has been paid',
+            'payment' => $orderPayment,
+        ]);
     }
 }

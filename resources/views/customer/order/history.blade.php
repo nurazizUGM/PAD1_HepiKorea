@@ -281,7 +281,11 @@
                                                     {{ $arrivalTime->format('d M Y') }}
                                                     <br>
                                                 @endif
-                                                The order is on its way to Indonesia
+                                                @if ($order->status == 'processing')
+                                                    The order is on its way to Indonesia
+                                                @elseif($order->status == 'paid')
+                                                    The order is currently awaiting administrator confirmation
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
@@ -301,32 +305,55 @@
             <div class="hidden p-4 rounded-lg" id="sent-content" role="tabpanel" aria-labelledby="sent-tab">
                 {{-- list of sent order container --}}
                 <div class="w-full h-full flex flex-col gap-y-6">
+                    @foreach ($sent as $order)
+                        @php
+                            if ($order->type == 'custom') {
+                                $item = $order->customOrderItems->first();
+                                $productName = $item->name;
+                                $totalPrice = $order->total_items_price + $order->service_price;
+                                $image = $item->image;
+                                $count = $order->customOrderItems->count();
+                            } else {
+                                $item = $order->orderItems->first();
+                                $productName = $item->product->name;
+                                $totalPrice = $order->total_items_price;
+                                $image = 'products/' . $item->product->images->first()->path;
+                                $count = $order->orderItems->count();
+                            }
 
-                    @for ($i = 0; $i < 1; $i++)
+                            $totalPrice = number_format($totalPrice, 0, ',', '.');
+                            $shipmentPayment = $order->orderPayment
+                                ->where('payment_type', 'shipment')
+                                ->where('expired_at', '>', now());
+                        @endphp
                         {{-- sent product --}}
                         <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
                             <div class="w-[20%]">
                                 {{-- sent product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="sent_image_product"
-                                    class="h-48 object-contain mx-auto">
+                                @if ($image && Storage::exists($image))
+                                    <img src="{{ Storage::url($image) }}" alt="processed_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="processed_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @endif
                             </div>
                             <div class="w-[80%] flex flex-col">
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-[33%] h-full flex flex-col">
                                         {{-- sent product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        <h1 class="text-black font-semibold text-xl">{{ $productName }}</h1>
                                         {{-- sent product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                        @if ($count > 1)
+                                            <p class="text-black text-opacity-50 font-semibold text-xl">
+                                                and {{ $count - 1 }} other items
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- sent product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    <div class="w-[22%] ms-auto h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">
+                                            Rp {{ $totalPrice }},-
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="w-full h-1/2 flex flex-row">
@@ -335,31 +362,52 @@
                                             class="w-full h-full flex bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md py-4 px-6">
                                             {{-- text payment reminder --}}
                                             <p class="my-auto">
-                                                Estimated Arrival in Destination: 11 Sep - 20 Sep <br>
-                                                The order is on its way to Destination Address
+                                                @if ($order->status == 'shipment_unpaid')
+                                                    Waiting for payment of the shipment
+                                                @elseif($order->status == 'shipment_paid')
+                                                    Waiting for the shipment to be sent
+                                                @elseif ($order->status == 'sending')
+                                                    The order is on its way to Destination Address
+                                                @elseif ($order->status == 'sent')
+                                                    The order has been sent to Destination Address
+                                                @endif
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="w-[48%] flex flex-row justify-end items-center">
-                                        <button
-                                            class="w-1/2 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="detail-shipment-modal"
-                                            data-modal-toggle="detail-shipment-modal">
-                                            Pay Shipment
-                                        </button>
-                                    </div>
+                                    @if ($order->status == 'shipment_unpaid' && $shipmentPayment->count() == 0)
+                                        @php
+                                            $shipmentService = $order->orderShipment->shipment_service;
+                                            $shipmentPrice = $order->orderShipment->price;
+                                            $shipmentCode = $order->orderShipment->shipment_code;
+                                            $shipmentArrivalEstimation = $order->orderShipment->arrival_estimation;
+                                        @endphp
+                                        <div class="w-[48%] ms-auto flex flex-row justify-end items-center">
+                                            <button
+                                                class="w-1/2 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                                data-order-id="{{ $order->id }}"
+                                                data-shipment-service="{{ $shipmentService }}"
+                                                data-shipment-price="{{ $shipmentPrice }}"
+                                                data-shipment-arrival-estimation="{{ $shipmentArrivalEstimation }}"
+                                                onclick="shipmentDetail(this)">
+                                                Shipment Detail
+                                            </button>
+                                        </div>
+                                    @elseif($order->status == 'shipment_unpaid' && $shipmentPayment->count() > 0)
+                                        <div class="w-[48%] ms-auto flex flex-row justify-end items-center">
+                                            <button
+                                                class="w-1/2 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                                data-payment='@json($shipmentPayment->first())'
+                                                onclick="pay(event, $(this).data('payment'))">
+                                                Pay Shipment
+                                            </button>
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
                         </div>
                         {{-- end of sent product --}}
-                    @endfor
-                    <button data-modal-target="payment-modal" data-modal-toggle="payment-modal">test
-                        payment</button>
-                    <button data-modal-target="qr-payment-modal" data-modal-toggle="qr-payment-modal">test qr
-                        payment</button>
-                    <button data-modal-target="payment-success-modal" data-modal-toggle="payment-success-modal">test
-                        payment success</button>
+                    @endforeach
                 </div>
             </div>
             {{-- end of SENT CONTENT --}}
@@ -493,37 +541,27 @@
                         <div class="w-full h-full flex flex-col px-10 pt-10 pb-5">
                             <h1 class="text-black font-bold text-2xl">Detail Shipment</h1>
                             <div class="w-full h-full flex flex-col gap-y-6 mt-6">
-                                {{-- Product name --}}
-                                <div class="w-full h-fit flex flex-row">
-                                    <div class="w-[67%] text-sm text-[#898383] font-bold">Product Name</div>
-                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">samsung Ultra S24</div>
-                                </div>
                                 {{-- expedition name --}}
                                 <div class="w-full h-fit flex flex-row">
                                     <div class="w-[67%] text-sm text-[#898383] font-bold">Expedition Name</div>
-                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">Korean Expedition</div>
+                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold" id="shipment-service"></div>
                                 </div>
                                 {{-- total expedition payment --}}
                                 <div class="w-full h-fit flex flex-row">
                                     <div class="w-[67%] text-sm text-[#898383] font-bold">Total Expedition Payment</div>
-                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">Rp 80.000,-</div>
-                                </div>
-                                {{-- shipment code --}}
-                                <div class="w-full h-fit flex flex-row">
-                                    <div class="w-[67%] text-sm text-[#898383] font-bold">Shipment Code</div>
-                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">KAJSHDEF876</div>
+                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold" id="shipment-price">Rp 0,-</div>
                                 </div>
                                 {{-- estimated arrival time --}}
                                 <div class="w-full h-fit flex flex-row">
                                     <div class="w-[67%] text-sm text-[#898383] font-bold">Estimated Arrival Time</div>
-                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">11 - 20 September 2024</div>
+                                    <div class="w-[33%] text-sm text-[#3E6E7A] font-bold"
+                                        id="shipment-arrival-estimation"></div>
                                 </div>
                             </div>
                             {{-- Button Pay --}}
                             <button
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl py-2 px-16 ml-auto mt-6"
-                                data-modal-hide="detail-shipment-modal" data-modal-target="choose-payment-modal"
-                                data-modal-toggle="choose-payment-modal">Pay</button>
+                                onclick="payShipment(orderId)">Pay</button>
                         </div>
                         {{-- end of modal content --}}
                     </div>
@@ -628,77 +666,57 @@
                 <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
                     <div class="relative w-full h-full flex flex-row">
                         <!-- x button (exit modal) -->
-                        {{-- <button type="button"
-                        class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                        data-modal-hide="change-address-modal">
-                        <p class="m-auto text-white text-sm">X</p>
-                    </button> --}}
+                        <button type="button"
+                            class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
+                            onclick="choosePaymentModal.hide()">
+                            <p class="m-auto text-white text-sm">X</p>
+                        </button>
 
                         {{-- modal content --}}
                         <div class="w-full h-full flex flex-col px-10 py-10">
-                            <form action="" class="w-full h-full flex flex-col">
-                                {{-- Bank --}}
-                                <h1 class="text-[#898383] text-opacity-60 font-bold text-xl">Bank</h1>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-2">
-                                    <img src="{{ asset('img/assets/icon/icon_checkout_bri.svg') }}" alt=""
-                                        class="w-24 h-10 object-contain">
-                                    <label for="BRI" class="my-auto text-black font-bold text-base ml-8">Bank
-                                        BRI</label>
-                                    <input type="radio" name="choose-payment" id="BRI"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-4">
-                                    <img src="{{ asset('img/assets/icon/logo_checkout_mandiri.png') }}" alt=""
-                                        class="w-28 h-12 object-contain">
-                                    <label for="BRI"
-                                        class="my-auto text-black font-bold text-base ml-4">Mandiri</label>
-                                    <input type="radio" name="choose-payment" id="Mandiri"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-4">
-                                    <img src="{{ asset('img/assets/icon/icon_checkout_bca.svg') }}" alt=""
-                                        class="w-28 h-12 object-contain">
-                                    <label for="BRI" class="my-auto text-black font-bold text-base ml-4">BCA</label>
-                                    <input type="radio" name="choose-payment" id="BCA"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
+                            {{-- Bank --}}
+                            <h1 class="text-[#898383] text-opacity-60 font-bold text-xl">Bank</h1>
+                            {{-- Option Bank BRI --}}
+                            <div class="w-full h-fit flex flex-row mt-2">
+                                <img src="{{ asset('img/assets/icon/icon_checkout_bri.svg') }}" alt=""
+                                    class="w-24 h-10 object-contain">
+                                <label for="bri" class="my-auto text-black font-bold text-base ml-8">Bank
+                                    BRI</label>
+                                <input type="radio" name="choose-payment" id="bri" value="bri"
+                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            {{-- Option Bank BRI --}}
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <img src="{{ asset('img/assets/icon/logo_checkout_mandiri.png') }}" alt=""
+                                    class="w-28 h-12 object-contain">
+                                <label for="mandiri" class="my-auto text-black font-bold text-base ml-4">Mandiri</label>
+                                <input type="radio" name="choose-payment" id="mandiri" value="mandiri"
+                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            {{-- Option Bank BRI --}}
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <img src="{{ asset('img/assets/icon/icon_checkout_bca.svg') }}" alt=""
+                                    class="w-28 h-12 object-contain">
+                                <label for="bca" class="my-auto text-black font-bold text-base ml-4">BCA</label>
+                                <input type="radio" name="choose-payment" id="bca" value="bca"
+                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
 
-                                {{-- E-wallet --}}
-                                <h1 class="text-[#898383] text-opacity-60 font-bold text-xl mt-6">E-wallet</h1>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-2">
-                                    <img src="{{ asset('img/assets/icon/icon_checkout_dana.svg') }}" alt=""
-                                        class="w-28 h-12 object-contain">
-                                    <label for="BRI" class="my-auto text-black font-bold text-base ml-4">DANA</label>
-                                    <input type="radio" name="choose-payment" id="DANA"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-4">
-                                    <img src="{{ asset('img/assets/icon/icon_checkout_ovo.svg') }}" alt=""
-                                        class="w-28 h-12 object-contain">
-                                    <label for="BRI" class="my-auto text-black font-bold text-base ml-4">OVO</label>
-                                    <input type="radio" name="choose-payment" id="OVO"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
-                                {{-- Option Bank BRI --}}
-                                <div class="w-full h-fit flex flex-row mt-4">
-                                    <img src="{{ asset('img/assets/icon/icon_checkout_gopay.png') }}" alt=""
-                                        class="w-28 h-12 object-contain">
-                                    <label for="BRI" class="my-auto text-black font-bold text-base ml-4">Go
-                                        Pay</label>
-                                    <input type="radio" name="choose-payment" id="gopay"
-                                        class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                                </div>
+                            {{-- E-wallet --}}
+                            <h1 class="text-[#898383] text-opacity-60 font-bold text-xl mt-6">E-wallet</h1>
+                            {{-- Option Bank BRI --}}
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <img src="{{ asset('img/assets/icon/icon_checkout_gopay.png') }}" alt=""
+                                    class="w-28 h-12 object-contain">
+                                <label for="qris" class="my-auto text-black font-bold text-base ml-4">QRIS</label>
+                                <input type="radio" name="choose-payment" id="qris" value="qris"
+                                    class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
 
 
-                                <button
-                                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10"
-                                    data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay</button>
-                            </form>
+                            <button
+                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10"
+                                onclick="payShipment(orderId, true)">Pay</button>
                         </div>
                         {{-- end of modal content --}}
                     </div>
@@ -943,7 +961,8 @@
 
 @push('script')
     <script>
-        let qrPaymentModal, vaPaymentModal, paymentSuccessModal, checkPaymentInterval;
+        let choosePaymentModal, qrPaymentModal, vaPaymentModal, paymentSuccessModal, checkPaymentInterval,
+            orderId, shipmentDetailModal;
         const paymentModalOptions = {
             onHide: () => {
                 clearInterval(checkPaymentInterval);
@@ -953,6 +972,8 @@
             qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'), paymentModalOptions)
             vaPaymentModal = new Modal(document.getElementById('payment-modal'), paymentModalOptions)
             paymentSuccessModal = new Modal(document.getElementById('payment-success-modal'))
+            choosePaymentModal = new Modal(document.getElementById('choose-payment-modal'))
+            shipmentDetailModal = new Modal(document.getElementById('detail-shipment-modal'))
         })
 
         function onPaymentSuccess(orderId) {
@@ -995,9 +1016,8 @@
                 maximumFractionDigits: 0
             }).format(payment.amount);
 
-            ev.preventDefault()
+            ev?.preventDefault()
             if (payment.payment_method == 'qris') {
-                console.log(payment)
                 $('#payment-qr').attr('src', payment.payment_code);
                 $('#qr-payment-amount').text(`${amount},-`);
                 $('#expiration-time').text(expirationTime);
@@ -1012,6 +1032,43 @@
                 vaPaymentModal.show()
             }
             checkPaymentStatus(payment.id)
+        }
+
+        function payShipment(id, paymentSelected = false, payment = null) {
+            shipmentDetailModal.hide();
+            if (!paymentSelected) {
+                orderId = id;
+                return choosePaymentModal.show();
+            }
+            choosePaymentModal.hide();
+            $.ajax({
+                url: `{{ route('order.pay-shipment') }}`,
+                method: 'POST',
+                data: {
+                    orderId: orderId,
+                    paymentMethod: $('input[name="choose-payment"]:checked').val(),
+                    _token: "{{ csrf_token() }}",
+                },
+                success: function(response) {
+                    if (response.status == 'success') {
+                        pay(null, response.payment);
+                    }
+                }
+            });
+        }
+
+        function shipmentDetail(el) {
+            orderId = $(el).data('order-id');
+            $('#shipment-service').text($(el).data('shipment-service'));
+            $('#shipment-price').text(new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format($(el).data('shipment-price')));
+            const arrivalTime = moment($(el).data('shipment-arrival')).format('DD MMMM YYYY');
+            $('#shipment-arrival-estimation').text(arrivalTime);
+            shipmentDetailModal.show();
         }
     </script>
 @endpush

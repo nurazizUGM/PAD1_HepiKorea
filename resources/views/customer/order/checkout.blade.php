@@ -186,8 +186,8 @@
                             <div class="w-full h-fit flex flex-row mt-2">
                                 <img src="{{ asset('img/assets/icon/icon_checkout_gopay.svg') }}" alt=""
                                     class="w-28 h-12 object-contain">
-                                <label for="BRI" class="my-auto text-black font-bold text-base ml-4">QRIS</label>
-                                <input type="radio" name="payment-method" value="DANA"
+                                <label for="qris" class="my-auto text-black font-bold text-base ml-4">QRIS</label>
+                                <input type="radio" name="payment-method" value="qris" id="qris"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
 
