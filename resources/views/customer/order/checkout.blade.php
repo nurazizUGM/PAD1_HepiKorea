@@ -409,11 +409,15 @@
 
     @push('script')
         <script>
-            let choosePaymentModal, qrPaymentModal, paymentSuccessModal;
+            let choosePaymentModal, qrPaymentModal, paymentSuccessModal, orderId;
 
             $(document).ready(function() {
                 choosePaymentModal = new Modal(document.getElementById('choose-payment-modal'));
-                qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'));
+                qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'), {
+                    onHide: () => {
+                        window.location.href = `{{ route('order.show', ':id') }}`.replace(':id', orderId);
+                    }
+                });
                 paymentSuccessModal = new Modal(document.getElementById('payment-success-modal'));
             });
 
@@ -481,6 +485,7 @@
             }
 
             function onOrderSuccess(payment) {
+                orderId = payment.order_id;
                 $('#payment-qr').attr('src', payment.payment_code);
                 const amount = new Intl.NumberFormat('id-ID', {
                     style: 'currency',
