@@ -53,6 +53,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::post('/', 'store')->name('store');
     Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
     Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
+    Route::get('arrived/{id}', 'arrived')->name('arrived');
     Route::get('cancel/{id}', 'cancel')->name('cancel');
 });
 

@@ -168,7 +168,7 @@ class OrderController extends Controller
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
         $unpaid = $orders->clone()->where('status', 'unpaid')->with('orderPayment')->get();
         $processed = $orders->clone()->whereIn('status', ['paid', 'processing'])->get();
-        $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sending', 'sent'])->with('orderShipment')->get();
+        $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment')->get();
         $finished = $orders->clone()->where('status', 'finished')->get();
         $cancelled = $orders->clone()->where('status', 'cancelled')->get();
 
@@ -391,5 +391,28 @@ class OrderController extends Controller
             'message' => 'Shipment has been paid',
             'payment' => $orderPayment,
         ]);
+    }
+
+    public function arrived(string $id)
+    {
+
+        $order = Order::findOrFail($id);
+        if ($order->status != 'sent') {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Order cannot be marked as arrived',
+            ]);
+        }
+
+        $order->status = 'finished';
+        $order->save();
+
+        OrderLog::create([
+            'order_id' => $order->id,
+            'status' => 'finished',
+            'description' => 'Order has been marked as arrived',
+        ]);
+
+        return redirect()->route('order.show', $order->id)->with('success', 'Order has been marked as arrived');
     }
 }

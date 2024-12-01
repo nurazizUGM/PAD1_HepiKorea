@@ -9,7 +9,7 @@ class Order extends Model
 {
     use HasFactory;
 
-    public static $status = ['unconfirmed', 'confirmed', 'unpaid', 'paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sending', 'sent', 'finished', 'cancelled'];
+    public static $status = ['unconfirmed', 'confirmed', 'unpaid', 'paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sent', 'finished', 'cancelled'];
     public static $type = ['order', 'custom'];
 
     protected $fillable = [

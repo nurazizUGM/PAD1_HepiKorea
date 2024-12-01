@@ -366,10 +366,8 @@
                                                     Waiting for payment of the shipment
                                                 @elseif($order->status == 'shipment_paid')
                                                     Waiting for the shipment to be sent
-                                                @elseif ($order->status == 'sending')
-                                                    The order is on its way to Destination Address
                                                 @elseif ($order->status == 'sent')
-                                                    The order has been sent to Destination Address
+                                                    The order is on its way to Destination Address
                                                 @endif
                                             </p>
                                         </div>
@@ -401,10 +399,17 @@
                                                 Pay Shipment
                                             </button>
                                         </div>
+                                    @elseif ($order->status == 'sent')
+                                        <div class="w-[48%] ms-auto flex flex-row justify-end items-center">
+                                            <button
+                                                class="w-1/2 h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                                onclick="window.location.href='{{ route('order.arrived', $order->id) }}'">
+                                                Confirm Arrival
+                                            </button>
+                                        </div>
                                     @endif
                                 </div>
                             </div>
-
                         </div>
                         {{-- end of sent product --}}
                     @endforeach
@@ -419,33 +424,56 @@
                 {{-- list of finish order container --}}
                 <div class="w-full h-full flex flex-col gap-y-6">
 
-                    @for ($i = 0; $i < 2; $i++)
+                    @foreach ($finished as $order)
+                        @php
+                            if ($order->type == 'custom') {
+                                $item = $order->customOrderItems->first();
+                                $productName = $item->name;
+                                $totalPrice = $order->total_items_price + $order->service_price;
+                                $image = $item->image;
+                                $count = $order->customOrderItems->count();
+                            } else {
+                                $item = $order->orderItems->first();
+                                $productName = $item->product->name;
+                                $totalPrice = $order->total_items_price;
+                                $image = 'products/' . $item->product->images->first()->path;
+                                $count = $order->orderItems->count();
+                            }
+
+                            $totalPrice = number_format($totalPrice, 0, ',', '.');
+                        @endphp
                         {{-- finish product --}}
                         <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
                             <div class="w-[20%]">
                                 {{-- finish product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="finish_image_product"
-                                    class="h-48 object-contain mx-auto">
+                                @if ($image && Storage::exists($image))
+                                    <img src="{{ Storage::url($image) }}" alt="finish_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="finish_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @endif
                             </div>
                             <div class="w-[80%] flex flex-col">
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-[33%] h-full flex flex-col">
-                                        {{-- finish product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
-                                        {{-- finish product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                        {{-- sent product name --}}
+                                        <h1 class="text-black font-semibold text-xl">{{ $productName }}</h1>
+                                        {{-- sent product variant --}}
+                                        @if ($count > 1)
+                                            <p class="text-black text-opacity-50 font-semibold text-xl">
+                                                and {{ $count - 1 }} other items
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- finish product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    <div class="w-[22%] ms-auto h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">
+                                            Rp {{ $totalPrice }},-
+                                        </p>
                                     </div>
                                 </div>
+                                @if ($order->status == 'sent')
+                                @endif
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-full flex flex-row justify-end items-center">
                                         <button
@@ -459,7 +487,7 @@
 
                         </div>
                         {{-- end of finish product --}}
-                    @endfor
+                    @endforeach
 
                 </div>
             </div>
