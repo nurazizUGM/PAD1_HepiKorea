@@ -309,3 +309,16 @@
         }
     </style>
 @endsection
+
+@push('script')
+    <script>
+        let krwToIdr = 0;
+        $.ajax({
+            url: 'https://open.er-api.com/v6/latest/KRW',
+            type: 'GET',
+            success: function(result) {
+                krwToIdr = result.rates.IDR;
+            }
+        })
+    </script>
+@endpush
