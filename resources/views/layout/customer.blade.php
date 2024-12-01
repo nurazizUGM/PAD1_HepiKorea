@@ -29,8 +29,7 @@
                                 class="text-[#3E6E7A]">Hepi</span>Korea</span>
                     </a>
                     {{-- burger toggle navbar (mobile) --}}
-                    <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" id="burger"
-                        aria-controls="default-sidebar" type="button"
+                    <button id="burger" type="button"
                         class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 ">
                         <span class="sr-only">Open sidebar</span>
                         <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
