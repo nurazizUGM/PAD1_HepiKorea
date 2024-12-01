@@ -368,9 +368,9 @@
                             3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
                             4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
                         </p>
-                        <button
+                        {{-- <button
                             class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
-                            onclick="qrPaymentModal.hide()">Change</button>
+                            onclick="qrPaymentModal.hide()">Change</button> --}}
                     </div>
                     {{-- end of modal content --}}
                 </div>
