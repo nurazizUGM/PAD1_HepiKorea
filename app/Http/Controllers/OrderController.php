@@ -211,27 +211,46 @@ class OrderController extends Controller
             'payment_type' => 'items',
             'status' => 'pending',
             'amount' => $total['total'],
+            'payment_method' => $data['paymentMethod'],
         ]);
 
 
-        $res = $this->paymentService->post('/v2/charge', [
-            "payment_type" => "qris",
-            "transaction_details" => [
-                "gross_amount" => intval($total['total']),
-                "order_id" => "hk-" . Carbon::now()->timestamp,
-            ],
-            "custom_expiry" => [
-                "expiry_duration" => 24,
-                "unit" => "hour"
-            ],
-            'qris' => [
-                'acquirer' => 'airpay shopee',
-                // 'acquirer' => 'gopay',
-            ]
-        ]);
+        if ($data['paymentMethod'] == 'qris') {
+            $res = $this->paymentService->post('/v2/charge', [
+                "payment_type" => "qris",
+                "transaction_details" => [
+                    "gross_amount" => intval($total['total']),
+                    "order_id" => "hk-" . Carbon::now()->timestamp,
+                ],
+                "custom_expiry" => [
+                    "expiry_duration" => 24,
+                    "unit" => "hour"
+                ],
+                'qris' => [
+                    'acquirer' => 'airpay shopee',
+                    // 'acquirer' => 'gopay',
+                ]
+            ]);
+            $orderPayment->payment_code = $res['actions'][0]['url'];
+        } else {
+            $res = $this->paymentService->post('/v2/charge', [
+                "payment_type" => "bank_transfer",
+                "transaction_details" => [
+                    "gross_amount" => intval($total['total']),
+                    "order_id" => "hk-" . Carbon::now()->timestamp,
+                ],
+                "custom_expiry" => [
+                    "expiry_duration" => 24,
+                    "unit" => "hour"
+                ],
+                "bank_transfer" => [
+                    "bank" => $data['paymentMethod']
+                ]
+            ]);
+            $orderPayment->payment_code = $res['va_numbers'][0]['va_number'];
+        }
 
 
-        $orderPayment->payment_code = $res['actions'][0]['url'];
         $orderPayment->expired_at = Carbon::parse($res['expiry_time']);
         $orderPayment->transaction_id = $res['transaction_id'];
         $orderPayment->save();

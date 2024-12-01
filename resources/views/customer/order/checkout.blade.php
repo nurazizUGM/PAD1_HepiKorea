@@ -160,7 +160,7 @@
                                 <img src="{{ asset('img/assets/icon/icon_checkout_bri.svg') }}" alt=""
                                     class="w-24 h-10 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-8">Bank BRI</label>
-                                <input type="radio" name="payment-method" value="BRI"
+                                <input type="radio" name="payment-method" value="bri"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
                             {{-- Option Bank BRI --}}
@@ -168,7 +168,7 @@
                                 <img src="{{ asset('img/assets/icon/logo_checkout_mandiri.png') }}" alt=""
                                     class="w-28 h-12 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-4">Mandiri</label>
-                                <input type="radio" name="payment-method" value="Mandiri"
+                                <input type="radio" name="payment-method" value="mandiri" disabled
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
                             {{-- Option Bank BRI --}}
@@ -176,7 +176,7 @@
                                 <img src="{{ asset('img/assets/icon/icon_checkout_bca.svg') }}" alt=""
                                     class="w-28 h-12 object-contain">
                                 <label for="BRI" class="my-auto text-black font-bold text-base ml-4">BCA</label>
-                                <input type="radio" name="payment-method" value="BCA"
+                                <input type="radio" name="payment-method" value="bca"
                                     class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                             </div>
 
@@ -226,7 +226,9 @@
                             </div>
                             <div class="w-[30%]">
                                 {{-- total payment price --}}
-                                <p class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 25.800.000,-</p>
+                                <p class="text-[#3E6E7A] text-sm font-bold mr-auto" id="va-payment-amout">
+                                    Rp 0,-
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
@@ -235,10 +237,11 @@
                             </div>
                             {{-- pay in (time duration to pay) --}}
                             <div class="w-[30%] h-fit flex flex-col">
-                                <p class="text-[#3E6E7A] text-sm font-bold">24 Hours</p>
+                                <p class="text-[#3E6E7A] text-sm font-bold" id="va-expiration-time-remaining"></p>
                                 {{-- pay time deadline --}}
                                 <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>
-                                    14 September 2024 00:00</p>
+                                    <span id="va-payment-expiration">00:00</span>
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row">
@@ -249,16 +252,19 @@
                             </div>
                             {{-- no rekening and else container --}}
                             <div class="w-[90%] flex flex-col">
-                                <p class="text-[#898383] font-bold text-sm">Bank BRI</p>
-                                <p class="text-[#898383] font-bold text-sm mt-6">No. Rekening:</p>
+                                <p class="text-[#898383] font-bold text-sm" id="va-payment-method">Bank BRI</p>
+                                <p class="text-[#898383] font-bold text-sm mt-6">No. Virtual Account:</p>
                                 <div class="w-full h-fit flex flex-row items-center mt-1">
                                     <div class="w-[67%]">
                                         {{-- NO REKENING --}}
-                                        <h1 class="text-[#3E6E7A] font-bold text-2xl">128 0812 1555 9315</h1>
+                                        <h1 class="text-[#3E6E7A] font-bold text-2xl" id="va-payment-code"> - </h1>
                                     </div>
                                     <div class="w-[33%]">
                                         {{-- copy text --}}
-                                        <p class="text-orange-400 font-bold text-sm cursor-pointer">COPY</p>
+                                        <p class="text-orange-400 font-bold text-sm cursor-pointer"
+                                            onclick="navigator.clipboard.writeText($('#va-payment-code').text().trim())">
+                                            COPY
+                                        </p>
                                     </div>
                                 </div>
                                 <p class="text-[#898383] font-bold text-sm mt-6">
@@ -291,10 +297,10 @@
                             3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
                             4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
                         </p>
-                        <button
+                        {{-- <button
                             class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
                             data-modal-hide="payment-modal" data-modal-target="choose-payment-modal"
-                            data-modal-toggle="choose-payment-modal">Change</button>
+                            data-modal-toggle="choose-payment-modal">Change</button> --}}
                     </div>
                     {{-- end of modal content --}}
                 </div>
@@ -380,8 +386,6 @@
     </div>
     {{-- end of QR payment modal --}}
 
-
-
     {{-- success payment modal --}}
     <div id="payment-success-modal" tabindex="-1" aria-hidden="true"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
@@ -409,11 +413,16 @@
 
     @push('script')
         <script>
-            let choosePaymentModal, qrPaymentModal, paymentSuccessModal, orderId;
+            let choosePaymentModal, qrPaymentModal, vaPaymentModal, paymentSuccessModal, orderId;
 
             $(document).ready(function() {
                 choosePaymentModal = new Modal(document.getElementById('choose-payment-modal'));
                 qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'), {
+                    onHide: () => {
+                        window.location.href = `{{ route('order.show', ':id') }}`.replace(':id', orderId);
+                    }
+                });
+                vaPaymentModal = new Modal(document.getElementById('payment-modal'), {
                     onHide: () => {
                         window.location.href = `{{ route('order.show', ':id') }}`.replace(':id', orderId);
                     }
@@ -460,6 +469,7 @@
 
             function onPaymentSuccess(orderId) {
                 qrPaymentModal.hide();
+                vaPaymentModal.hide();
                 paymentSuccessModal.show();
                 setTimeout(() => {
                     window.location.href = "{{ route('order.show', ':id') }}".replace(':id', orderId);
@@ -486,26 +496,35 @@
 
             function onOrderSuccess(payment) {
                 orderId = payment.order_id;
-                $('#payment-qr').attr('src', payment.payment_code);
-                const amount = new Intl.NumberFormat('id-ID', {
-                    style: 'currency',
-                    currency: 'IDR',
-                    minimumFractionDigits: 0,
-                    maximumFractionDigits: 0
-                }).format(payment.amount);
-                $('#qr-payment-amount').text(`${amount},-`);
 
                 const expirationTime = moment(payment.expired_at).format('DD MMMM YYYY HH:mm');
                 const diff = moment.duration(moment(payment.expired_at).diff(moment()));
                 const hoursRemaining = Math.floor(diff.asHours());
                 const minutesRemaining = Math.floor(diff.asMinutes()) - (hoursRemaining * 60);
                 const timeRemaining = `${hoursRemaining} Hours ${minutesRemaining} Minutes`;
+                const amount = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0
+                }).format(payment.amount);
 
-                $('#expiration-time').text(expirationTime);
-                $('#expiration-time-remaining').text(timeRemaining);
 
                 choosePaymentModal.hide();
-                qrPaymentModal.show();
+                if (payment.payment_method == 'qris') {
+                    $('#payment-qr').attr('src', payment.payment_code);
+                    $('#qr-payment-amount').text(`${amount},-`);
+                    $('#expiration-time').text(expirationTime);
+                    $('#expiration-time-remaining').text(timeRemaining);
+                    qrPaymentModal.show();
+                } else {
+                    $('#va-payment-amout').text(`${amount},-`);
+                    $('#va-payment-expiration').text(expirationTime);
+                    $('#va-expiration-time-remaining').text(timeRemaining);
+                    $('#va-payment-method').text(payment.payment_method.toUpperCase());
+                    $('#va-payment-code').text(payment.payment_code);
+                    vaPaymentModal.show();
+                }
 
                 checkPaymentStatus(payment.id);
             }

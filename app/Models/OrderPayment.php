@@ -11,10 +11,12 @@ class OrderPayment extends Model
 
     static $paymentType = ['items', 'shipment'];
     static $status = ['pending', 'paid', 'failed'];
+    static $PAYMENT_METHODS = ['qris', 'bri', 'bni', 'bca', 'mandiri'];
 
     protected $fillable = [
         'order_id',
         'payment_type',
+        'payment_method',
         'status',
         'amount',
         'payment_code',

@@ -719,7 +719,7 @@
                         <!-- x button (exit modal) -->
                         <button type="button"
                             class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
-                            data-modal-hide="payment-modal">
+                            onclick="vaPaymentModal.hide()">
                             <p class="m-auto text-white text-base">X</p>
                         </button>
 
@@ -732,7 +732,9 @@
                                 </div>
                                 <div class="w-[30%]">
                                     {{-- total payment price --}}
-                                    <p class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 25.800.000,-</p>
+                                    <p class="text-[#3E6E7A] text-sm font-bold mr-auto" id="va-payment-amout">
+                                        Rp 0,-
+                                    </p>
                                 </div>
                             </div>
                             <div class="w-full h-fit flex flex-row mt-4">
@@ -741,10 +743,11 @@
                                 </div>
                                 {{-- pay in (time duration to pay) --}}
                                 <div class="w-[30%] h-fit flex flex-col">
-                                    <p class="text-[#3E6E7A] text-sm font-bold">24 Hours</p>
+                                    <p class="text-[#3E6E7A] text-sm font-bold" id="va-expiration-time-remaining"></p>
                                     {{-- pay time deadline --}}
                                     <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>
-                                        14 September 2024 00:00</p>
+                                        <span id="va-payment-expiration">00:00</span>
+                                    </p>
                                 </div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
@@ -755,16 +758,19 @@
                                 </div>
                                 {{-- no rekening and else container --}}
                                 <div class="w-[90%] flex flex-col">
-                                    <p class="text-[#898383] font-bold text-sm">Bank BRI</p>
-                                    <p class="text-[#898383] font-bold text-sm mt-6">No. Rekening:</p>
+                                    <p class="text-[#898383] font-bold text-sm" id="va-payment-method">Bank BRI</p>
+                                    <p class="text-[#898383] font-bold text-sm mt-6">No. Virtual Account:</p>
                                     <div class="w-full h-fit flex flex-row items-center mt-1">
                                         <div class="w-[67%]">
                                             {{-- NO REKENING --}}
-                                            <h1 class="text-[#3E6E7A] font-bold text-2xl">128 0812 1555 9315</h1>
+                                            <h1 class="text-[#3E6E7A] font-bold text-2xl" id="va-payment-code"> - </h1>
                                         </div>
                                         <div class="w-[33%]">
                                             {{-- copy text --}}
-                                            <p class="text-orange-400 font-bold text-sm cursor-pointer">COPY</p>
+                                            <p class="text-orange-400 font-bold text-sm cursor-pointer"
+                                                onclick="navigator.clipboard.writeText($('#va-payment-code').text().trim())">
+                                                COPY
+                                            </p>
                                         </div>
                                     </div>
                                     <p class="text-[#898383] font-bold text-sm mt-6">
@@ -797,10 +803,10 @@
                                 3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
                                 4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
                             </p>
-                            <button
+                            {{-- <button
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
                                 data-modal-hide="payment-modal" data-modal-target="choose-payment-modal"
-                                data-modal-toggle="choose-payment-modal">Change</button>
+                                data-modal-toggle="choose-payment-modal">Change</button> --}}
                         </div>
                         {{-- end of modal content --}}
                     </div>
@@ -820,7 +826,7 @@
                         <!-- x button (exit modal) -->
                         <button type="button"
                             class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
-                            onclick="qrPaymentModal.hide()">
+                            data-modal-hide="qr-payment-modal">
                             <p class="m-auto text-white text-base">X</p>
                         </button>
 
@@ -833,7 +839,8 @@
                                 </div>
                                 <div class="w-[30%]">
                                     {{-- total payment price --}}
-                                    <p class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 25.800.000,-</p>
+                                    <p id="qr-payment-amount" class="text-[#3E6E7A] text-sm font-bold mr-auto">Rp 0,-
+                                    </p>
                                 </div>
                             </div>
                             <div class="w-full h-fit flex flex-row mt-4">
@@ -842,14 +849,16 @@
                                 </div>
                                 {{-- pay in (time duration to pay) --}}
                                 <div class="w-[30%] h-fit flex flex-col">
-                                    <p class="text-[#3E6E7A] text-sm font-bold">24 Hours</p>
+                                    <p id="expiration-time-remaining" class="text-[#3E6E7A] text-sm font-bold">15 Minutes
+                                    </p>
                                     {{-- pay time deadline --}}
                                     <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>
-                                        14 September 2024 00:00</p>
+                                        <span id="expiration-time">00:00</span>
+                                    </p>
                                 </div>
                             </div>
 
-                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt="" id="qris-image"
+                            <img id="payment-qr" src="" alt="" loading="lazy"
                                 class="mx-auto w-52 object-contain">
 
                             {{-- title instructions --}}
@@ -872,9 +881,8 @@
                                 4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
                             </p>
                             {{-- <button
-                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
-                                data-modal-hide="qr-payment-modal" data-modal-target="choose-payment-modal"
-                                data-modal-toggle="choose-payment-modal">Change</button> --}}
+                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-sm font-semibold rounded-2xl py-1 px-10 mx-auto mt-4"
+                            onclick="qrPaymentModal.hide()">Change</button> --}}
                         </div>
                         {{-- end of modal content --}}
                     </div>
@@ -949,6 +957,7 @@
 
         function onPaymentSuccess(orderId) {
             qrPaymentModal.hide();
+            vaPaymentModal.hide();
             paymentSuccessModal.show();
             setTimeout(() => {
                 window.location.href = "{{ route('order.show', ':id') }}".replace(':id', orderId);
@@ -973,15 +982,36 @@
             }, 5000);
         }
 
-        function pay(ev, orderPayment) {
+        function pay(ev, payment) {
+            const expirationTime = moment(payment.expired_at).format('DD MMMM YYYY HH:mm');
+            const diff = moment.duration(moment(payment.expired_at).diff(moment()));
+            const hoursRemaining = Math.floor(diff.asHours());
+            const minutesRemaining = Math.floor(diff.asMinutes()) - (hoursRemaining * 60);
+            const timeRemaining = `${hoursRemaining} Hours ${minutesRemaining} Minutes`;
+            const amount = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(payment.amount);
+
             ev.preventDefault()
-            if (orderPayment.payment_method == 'qris') {
-                $('#qris-image').attr('src', orderPayment.payment_code)
+            if (payment.payment_method == 'qris') {
+                console.log(payment)
+                $('#payment-qr').attr('src', payment.payment_code);
+                $('#qr-payment-amount').text(`${amount},-`);
+                $('#expiration-time').text(expirationTime);
+                $('#expiration-time-remaining').text(timeRemaining);
                 qrPaymentModal.show()
-                checkPaymentStatus(orderPayment.id)
             } else {
+                $('#va-payment-amout').text(`${amount},-`);
+                $('#va-payment-expiration').text(expirationTime);
+                $('#va-expiration-time-remaining').text(timeRemaining);
+                $('#va-payment-method').text(payment.payment_method.toUpperCase());
+                $('#va-payment-code').text(payment.payment_code);
                 vaPaymentModal.show()
             }
+            checkPaymentStatus(payment.id)
         }
     </script>
 @endpush
