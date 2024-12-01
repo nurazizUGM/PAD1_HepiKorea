@@ -52,6 +52,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::get('history', 'history')->name('history');
     Route::post('/', 'store')->name('store');
     Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
+    Route::get('cancel/{id}', 'cancel')->name('cancel');
 });
 
 Route::get('faq', [FaqController::class, 'faq'])->name('faq');

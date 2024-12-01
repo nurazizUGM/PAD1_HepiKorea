@@ -12,11 +12,13 @@ class CustomOrderItem extends Model
     protected $fillable = [
         'order_id',
         'name',
-        'url',
-        'description',
         'quantity',
         'estimated_price',
         'total_price',
-        'is_available'
+        'url',
+        'description',
+        'image',
+        'is_available',
+        'admin_note'
     ];
 }

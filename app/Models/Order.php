@@ -52,7 +52,7 @@ class Order extends Model
 
     public function orderPayment()
     {
-        return $this->hasMany(OrderPayment::class);
+        return $this->hasMany(OrderPayment::class)->orderBy('created_at', 'desc');
     }
 
     // public function orderStatus()

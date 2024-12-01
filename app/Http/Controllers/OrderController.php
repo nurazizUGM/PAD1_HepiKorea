@@ -21,6 +21,22 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->paymentService = App::make('paymentService');
+
+        // mark order as cancelled if payment expired
+        $orders = Order::where('status', 'unpaid')->with('orderPayment')->get();
+        foreach ($orders as $order) {
+            $payment = $order->orderPayment->first();
+            if ($payment && $payment->status == 'pending' && $payment->expired_at < Carbon::now()) {
+                $order->status = 'cancelled';
+                $order->save();
+
+                OrderLog::create([
+                    'order_id' => $order->id,
+                    'status' => 'cancelled',
+                    'description' => 'Order cancelled due to payment expired',
+                ]);
+            }
+        }
     }
 
     // checkout page
@@ -84,7 +100,7 @@ class OrderController extends Controller
             'items.*.price' => 'required|numeric|min:0',
             'items.*.url' => 'required|url',
             'items.*.description' => 'required|string',
-            'items.*.image' => 'required|image'
+            'items.*.image' => 'nullable|image'
         ]);
 
         if (Auth::check()) {
@@ -146,8 +162,17 @@ class OrderController extends Controller
     // transaction history
     public function history()
     {
-        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        return view('customer.order.history', compact('orders'));
+        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
+        $confirmation = $orders->clone()->whereIn('status', ['unconfirmed', 'confirmed'])->with(['customOrderItems'])->get();
+
+        $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
+        $unpaid = $orders->clone()->where('status', 'unpaid')->with('orderPayment')->get();
+        $processed = $orders->clone()->whereIn('status', ['paid', 'processing'])->get();
+        $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sending', 'sent'])->get();
+        $finished = $orders->clone()->where('status', 'finished')->get();
+        $cancelled = $orders->clone()->where('status', 'cancelled')->get();
+
+        return view('customer.order.history', compact('confirmation', 'unpaid', 'processed', 'sent', 'finished', 'cancelled'));
     }
 
     // create order
@@ -250,5 +275,24 @@ class OrderController extends Controller
             'message' => 'Payment status checked',
             'payment' => $payment,
         ]);
+    }
+
+    public function cancel(string $id)
+    {
+        $order = Order::findOrFail($id);
+        if (array_search($order->status, Order::$status) >= array_search('paid', Order::$status)) {
+            return redirect()->back()->with('error', 'Order cannot be cancelled');
+        }
+
+        $order->status = 'cancelled';
+        $order->save();
+
+        OrderLog::create([
+            'order_id' => $order->id,
+            'status' => 'cancelled',
+            'description' => 'Order has been cancelled',
+        ]);
+
+        return redirect()->route('order.history', ['tab' => 'cancelled'])->with('success', 'Order has been cancelled');
     }
 }

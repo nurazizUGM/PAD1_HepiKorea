@@ -40,6 +40,11 @@
                         data-tabs-target="#finish-content" type="button" role="tab" aria-controls="finish"
                         aria-selected="{{ $tab == 'finished' ? 'true' : 'false' }}">Finish</button>
                 </li>
+                <li class="mx-auto" role="presentation">
+                    <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="cancelled-tab"
+                        data-tabs-target="#cancelled-content" type="button" role="tab" aria-controls="cancelled"
+                        aria-selected="{{ $tab == 'cancelled' ? 'true' : 'false' }}">Cancelled</button>
+                </li>
             </ul>
         </div>
 
@@ -50,59 +55,62 @@
                 {{-- list of unpaid order container --}}
                 <div class="w-full h-full flex flex-col gap-y-6">
 
-                    @for ($i = 0; $i < 1; $i++)
+                    @foreach ($confirmation as $order)
+                        @php
+                            $item = $order->customOrderItems->first();
+                            $items = $order->customOrderItems->count();
+                        @endphp
                         {{-- unpaid product --}}
                         <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
                             <div class="w-[20%]">
                                 {{-- unpaid product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
-                                    class="h-48 object-contain mx-auto">
+                                @if ($item->image && Storage::exists($item->image))
+                                    <img src="{{ Storage::url($item->image) }}" alt="unpaid_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @endif
                             </div>
                             <div class="w-[80%] flex flex-col">
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-[33%] h-full flex flex-col">
                                         {{-- unpaid product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        <h1 class="text-black font-semibold text-xl">{{ $item->name }}</h1>
                                         {{-- unpaid product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                        @if ($items > 1)
+                                            <p class="text-black text-opacity-50 font-semibold text-xl">
+                                                and {{ $items - 1 }} other items
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- unpaid product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    <div class="ms-auto h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">
+                                            Rp
+                                            {{ number_format($order->total_items_price + $order->service_price, 0, ',', '.') }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="w-full h-1/2 flex flex-row">
+                                    {{-- status --}}
                                     <div class="w-1/2">
                                         <div
-                                            class="w-full h-full bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md p-4">
-                                            {{-- text payment reminder --}}
-                                            <p>
-                                                Bayar dalam (Expired Time) dengan Bank
-                                                Republik Indonesia (BSI)
-                                            </p>
+                                            class="h-fit w-fit px-4 py-2 bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md">
+                                            <p>status: {{ $order->status }}</p>
                                         </div>
                                     </div>
                                     {{-- two button container --}}
-                                    <div class="w-1/2 flex flex-row justify-center items-center">
-                                        <button
-                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay
-                                            Product</button>
-                                        <button
+                                    <div class="w-1/2 ms-auto flex flex-row justify-end items-center">
+                                        <button onclick="window.location.href = '{{ route('order.show', $order->id) }}'"
+                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3">Detail</button>
+                                        <button onclick="window.location.href = '{{ route('order.cancel', $order->id) }}'"
                                             class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {{-- end of unpaid product --}}
-                    @endfor
-
+                    @endforeach
                 </div>
                 {{-- list of unpaid order container --}}
             </div>
@@ -113,58 +121,91 @@
                 {{-- list of unpaid order container --}}
                 <div class="w-full h-full flex flex-col gap-y-6">
 
-                    @for ($i = 0; $i < 1; $i++)
+                    @foreach ($unpaid as $order)
+                        @php
+                            if ($order->type == 'custom') {
+                                $item = $order->customOrderItems->first();
+                                $productName = $item->name;
+                                $totalPrice = $order->total_items_price + $order->service_price;
+                                $image = $item->image;
+                                $count = $order->customOrderItems->count();
+                            } else {
+                                $item = $order->orderItems->first();
+                                $productName = $item->product->name;
+                                $totalPrice = $order->total_items_price;
+                                $image = 'products/' . $item->product->images->first()->path;
+                                $count = $order->orderItems->count();
+                            }
+
+                            $totalPrice = number_format($totalPrice, 0, ',', '.');
+                            $lastPayment = $order->orderPayment->first();
+                            if ($lastPayment && $lastPayment->status == 'pending' && $lastPayment->expired_at > now()) {
+                                $expiredTime = $lastPayment->expired_at->format('d-M-Y H:i');
+                                $paymentMethod = ucwords(str_replace('_', ' ', $lastPayment->payment_method));
+                            } else {
+                                $lastPayment = null;
+                            }
+                        @endphp
                         {{-- unpaid product --}}
                         <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
                             <div class="w-[20%]">
                                 {{-- unpaid product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
-                                    class="h-48 object-contain mx-auto">
+                                @if ($image && Storage::exists($image))
+                                    <img src="{{ Storage::url($image) }}" alt="unpaid_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @endif
                             </div>
                             <div class="w-[80%] flex flex-col">
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-[33%] h-full flex flex-col">
                                         {{-- unpaid product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        <h1 class="text-black font-semibold text-xl cursor-pointer"
+                                            onclick="window.location.href='{{ route('order.show', $order->id) }}'">
+                                            {{ $productName }}</h1>
                                         {{-- unpaid product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                        @if ($count > 1)
+                                            <p class="text-black text-opacity-50 font-semibold text-xl">and
+                                                {{ $count - 1 }} other items</p>
+                                        @endif
                                     </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- unpaid product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    <div class="w-[22%] ms-auto h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp {{ $totalPrice }}</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-1/2 flex flex-row">
-                                    <div class="w-1/2">
-                                        <div
-                                            class="w-full h-full bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md p-4">
-                                            {{-- text payment reminder --}}
-                                            <p>
-                                                Bayar dalam (Expired Time) dengan Bank
-                                                Republik Indonesia (BSI)
-                                            </p>
+                                    @if ($lastPayment)
+                                        <div class="w-1/2">
+                                            <div
+                                                class="w-full h-full bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md p-4">
+                                                {{-- text payment reminder --}}
+                                                <p>
+                                                    Bayar sebelum {{ $expiredTime }} dengan
+                                                    {{ $paymentMethod }}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endif
+
                                     {{-- two button container --}}
-                                    <div class="w-1/2 flex flex-row justify-center items-center">
-                                        <button
-                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="payment-modal" data-modal-toggle="payment-modal">Pay
-                                            Product</button>
-                                        <button
+                                    <div class="w-1/2 ml-auto flex flex-row justify-end items-center">
+                                        @if ($lastPayment)
+                                            <button
+                                                class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                                onclick="pay(event, {{ $lastPayment }})">
+                                                Pay Product
+                                            </button>
+                                        @endif
+                                        <button onclick="window.location.href='{{ route('order.cancel', $order->id) }}'"
                                             class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {{-- end of unpaid product --}}
-                    @endfor
+                    @endforeach
 
                 </div>
                 {{-- list of unpaid order container --}}
@@ -178,31 +219,55 @@
                 {{-- list of processed order container --}}
                 <div class="w-full h-full flex flex-col gap-y-6">
 
-                    @for ($i = 0; $i < 1; $i++)
+                    @foreach ($processed as $order)
+                        @php
+                            if ($order->type == 'custom') {
+                                $item = $order->customOrderItems->first();
+                                $productName = $item->name;
+                                $totalPrice = $order->total_items_price + $order->service_price;
+                                $image = $item->image;
+                                $count = $order->customOrderItems->count();
+                            } else {
+                                $item = $order->orderItems->first();
+                                $productName = $item->product->name;
+                                $totalPrice = $order->total_items_price;
+                                $image = 'products/' . $item->product->images->first()->path;
+                                $count = $order->orderItems->count();
+                            }
+
+                            $totalPrice = number_format($totalPrice, 0, ',', '.');
+                            $arrivalTime = $order->arrival_time;
+                        @endphp
                         {{-- processed product --}}
                         <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
                             <div class="w-[20%]">
                                 {{-- processed product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="processed_image_product"
-                                    class="h-48 object-contain mx-auto">
+                                @if ($image && Storage::exists($image))
+                                    <img src="{{ Storage::url($image) }}" alt="processed_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @else
+                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="processed_image_product"
+                                        class="h-48 object-contain mx-auto">
+                                @endif
                             </div>
                             <div class="w-[80%] flex flex-col">
                                 <div class="w-full h-1/2 flex flex-row">
                                     <div class="w-[33%] h-full flex flex-col">
                                         {{-- processed product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        <h1 class="text-black font-semibold text-xl cursor-pointer"
+                                            onclick="window.location.href='{{ route('order.show', $order->id) }}'">
+                                            {{ $productName }}</h1>
                                         {{-- processed product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                        @if ($count > 1)
+                                            <p class="text-black text-opacity-50 font-semibold text-xl">
+                                                and {{ $count - 1 }} other items
+                                            </p>
+                                        @endif
                                     </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- processed product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    <div class="w-[22%] ms-auto h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">
+                                            Rp {{ $totalPrice }}
+                                        </p>
                                     </div>
                                 </div>
                                 <div class="w-full h-1/2 flex flex-row">
@@ -211,7 +276,11 @@
                                             class="w-full h-full flex bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md p-4">
                                             {{-- text payment reminder --}}
                                             <p class="my-auto">
-                                                Estimated Arrival in Indonesia: 5 Sep - 11 Sep <br>
+                                                @if ($arrivalTime)
+                                                    Estimated Arrival in Indonesia:
+                                                    {{ $arrivalTime->format('d M Y') }}
+                                                    <br>
+                                                @endif
                                                 The order is on its way to Indonesia
                                             </p>
                                         </div>
@@ -220,7 +289,7 @@
                             </div>
                         </div>
                         {{-- end of processed product --}}
-                    @endfor
+                    @endforeach
 
                 </div>
             </div>
@@ -347,6 +416,57 @@
                 </div>
             </div>
             {{-- FINISH CONTENT --}}
+
+            {{-- CANCELLED CONTENT --}}
+            <div class="hidden p-4 rounded-lg" id="cancelled-content" role="tabpanel" aria-labelledby="cancelled-tab">
+                {{-- list of finish order container --}}
+                <div class="w-full h-full flex flex-col gap-y-6">
+
+                    @for ($i = 0; $i < 2; $i++)
+                        {{-- finish product --}}
+                        <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
+                            <div class="w-[20%]">
+                                {{-- finish product image --}}
+                                <img src="{{ asset('img/example/example_phone.png') }}" alt="finish_image_product"
+                                    class="h-48 object-contain mx-auto">
+                            </div>
+                            <div class="w-[80%] flex flex-col">
+                                <div class="w-full h-1/2 flex flex-row">
+                                    <div class="w-[33%] h-full flex flex-col">
+                                        {{-- finish product name --}}
+                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
+                                        {{-- finish product variant --}}
+                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
+                                    </div>
+                                    <div class="w-[21%] h-full">
+                                        {{-- finish product weight --}}
+                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
+                                    </div>
+                                    <div class="w-[20%] h-full">
+                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
+                                    </div>
+                                    <div class="w-[22%] h-full flex">
+                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
+                                    </div>
+                                </div>
+                                <div class="w-full h-1/2 flex flex-row">
+                                    <div class="w-full flex flex-row justify-end items-center">
+                                        <button
+                                            class="w-[20%] h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                            data-modal-target="review-modal" data-modal-toggle="review-modal">
+                                            Review
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        {{-- end of finish product --}}
+                    @endfor
+
+                </div>
+            </div>
+            {{-- CANCELLED CONTENT --}}
 
 
         </div>
@@ -700,7 +820,7 @@
                         <!-- x button (exit modal) -->
                         <button type="button"
                             class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
-                            data-modal-hide="qr-payment-modal">
+                            onclick="qrPaymentModal.hide()">
                             <p class="m-auto text-white text-base">X</p>
                         </button>
 
@@ -729,7 +849,7 @@
                                 </div>
                             </div>
 
-                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt=""
+                            <img src="{{ asset('img/example/example_qrscan.svg') }}" alt="" id="qris-image"
                                 class="mx-auto w-52 object-contain">
 
                             {{-- title instructions --}}
@@ -803,5 +923,65 @@
                 })
             })
         })
+
+        $(document).ready(function() {
+            $('#default-styled-tab > li').click(function() {
+                const tab = $(this).find('button').attr('aria-controls');
+                window.history.pushState(null, null, `?tab=${tab}`);
+            });
+        })
     </script>
 @endsection
+
+@push('script')
+    <script>
+        let qrPaymentModal, vaPaymentModal, paymentSuccessModal, checkPaymentInterval;
+        const paymentModalOptions = {
+            onHide: () => {
+                clearInterval(checkPaymentInterval);
+            },
+        }
+        $(document).ready(function() {
+            qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'), paymentModalOptions)
+            vaPaymentModal = new Modal(document.getElementById('payment-modal'), paymentModalOptions)
+            paymentSuccessModal = new Modal(document.getElementById('payment-success-modal'))
+        })
+
+        function onPaymentSuccess(orderId) {
+            qrPaymentModal.hide();
+            paymentSuccessModal.show();
+            setTimeout(() => {
+                window.location.href = "{{ route('order.show', ':id') }}".replace(':id', orderId);
+            }, 1000);
+        }
+
+        function checkPaymentStatus(paymentId) {
+            checkPaymentInterval = setInterval(() => {
+                const url =
+                    `{{ route('order.payment-status') }}?paymentId=${paymentId}`;
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    success: function(response) {
+                        if (response.status == 'success' &&
+                            response.payment.status == 'success') {
+                            clearInterval(checkPaymentInterval);
+                            onPaymentSuccess(response.payment.order_id);
+                        }
+                    }
+                });
+            }, 5000);
+        }
+
+        function pay(ev, orderPayment) {
+            ev.preventDefault()
+            if (orderPayment.payment_method == 'qris') {
+                $('#qris-image').attr('src', orderPayment.payment_code)
+                qrPaymentModal.show()
+                checkPaymentStatus(orderPayment.id)
+            } else {
+                vaPaymentModal.show()
+            }
+        }
+    </script>
+@endpush
