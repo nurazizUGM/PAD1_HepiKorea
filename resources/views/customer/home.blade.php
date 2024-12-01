@@ -26,7 +26,13 @@
                             </h2>
                         </div>
                         <div class="w-1/2 h-full bg-white">
-                            <img src="img/example/example_phone.png" alt="" class="w-full h-full object-contain">
+                            {{-- <img src="img/example/example_phone.png" alt="" class="w-full h-full object-contain"> --}}
+
+                            {{-- test video --}}
+                            <video class="w-full h-full object-contain" controls autoplay muted loop>
+                                <source src="{{ asset('vid/test_vid_p3r.mp4') }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
                         </div>
                     </div>
                 </div>
@@ -41,6 +47,7 @@
                             </h2>
                         </div>
                         <div class="w-1/2 h-full bg-white">
+                            {{-- test image --}}
                             <img src="img/assets/bg/background_auth.svg" alt=""
                                 class="w-full h-full object-contain">
                         </div>
@@ -87,8 +94,20 @@
                             </h2>
                         </div>
                         <div class="w-1/2 h-full flex bg-white">
-                            <img src="img/example/logo_hepikorea_transparent.png" alt=""
-                                class="w-full h-full object-contain">
+                            {{-- <img src="img/example/logo_hepikorea_transparent.png" alt=""
+                                class="w-full h-full object-contain"> --}}
+                            {{-- <iframe class="w-full h-full"
+                                src="https://www.youtube.com/embed/VqJnmphV9R8?si=tm0uf-A89gyoBqF6"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
+                            <iframe class="w-full h-full"
+                                src="https://www.youtube.com/embed/VqJnmphV9R8?si=tm0uf-A89gyoBqF6&autoplay=1&mute=1"
+                                title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                            </iframe>
+
                         </div>
                     </div>
                 </div>
@@ -112,7 +131,7 @@
                 class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none scale-50 md:scale-100"
                 data-carousel-prev>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 shadow-xl group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
                     <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -125,7 +144,7 @@
                 class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none scale-50 md:scale-100"
                 data-carousel-next>
                 <span
-                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
+                    class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 shadow-xl group-hover:bg-white/50 group-focus:ring-4 group-focus:ring-white">
                     <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -396,6 +415,5 @@
                 });
             }
         });
-
     </script>
 @endsection
