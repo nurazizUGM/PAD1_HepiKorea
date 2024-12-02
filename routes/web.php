@@ -55,6 +55,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
     Route::get('arrived/{id}', 'arrived')->name('arrived');
     Route::get('cancel/{id}', 'cancel')->name('cancel');
+    Route::post('review', 'review')->name('review');
 })->middleware('auth');
 
 Route::get('faq', [FaqController::class, 'faq'])->name('faq');

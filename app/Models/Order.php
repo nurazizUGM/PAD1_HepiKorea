@@ -55,8 +55,8 @@ class Order extends Model
         return $this->hasMany(OrderPayment::class)->orderBy('created_at', 'desc');
     }
 
-    // public function orderStatus()
-    // {
-    //     return $this->hasMany(OrderStatus::class);
-    // }
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }

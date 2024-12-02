@@ -38,7 +38,7 @@
                 <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="finish-tab"
                         data-tabs-target="#finish-content" type="button" role="tab" aria-controls="finish"
-                        aria-selected="{{ $tab == 'finished' ? 'true' : 'false' }}">Finish</button>
+                        aria-selected="{{ $tab == 'finish' ? 'true' : 'false' }}">Finish</button>
                 </li>
                 <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="cancelled-tab"
@@ -472,19 +472,18 @@
                                         </p>
                                     </div>
                                 </div>
-                                @if ($order->status == 'sent')
-                                @endif
-                                <div class="w-full h-1/2 flex flex-row">
-                                    <div class="w-full flex flex-row justify-end items-center">
-                                        <button
-                                            class="w-[20%] h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="review-modal" data-modal-toggle="review-modal">
-                                            Review
-                                        </button>
+                                @if ($order->reviews->count() == 0)
+                                    <div class="w-full h-1/2 flex flex-row">
+                                        <div class="w-full flex flex-row justify-end items-center">
+                                            <button
+                                                class="w-[20%] h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
+                                                onclick="review({{ $order->id }})">
+                                                Review
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
+                                @endif
                             </div>
-
                         </div>
                         {{-- end of finish product --}}
                     @endforeach
@@ -609,14 +608,19 @@
                         <!-- x button (exit modal) -->
                         <button type="button"
                             class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1"
-                            data-modal-hide="review-modal">
+                            onclick="reviewModal.hide()">
                             <p class="m-auto text-white text-md">X</p>
                         </button>
 
                         {{-- modal content --}}
                         <div class="w-full h-full flex flex-col px-10 pt-10 pb-5">
                             <h1 class="text-black font-bold text-sm">Rating</h1>
-                            <form action="" class="w-full h-full flex flex-col">
+                            <form action="{{ route('order.review') }}" method="POST" enctype="multipart/form-data"
+                                class="w-full h-full flex flex-col">
+                                @csrf
+
+                                <input type="hidden" name="orderId">
+                                <input type="hidden" name="rating" value="0">
 
                                 <div class="flex flex-row gap-x-4 my-6" id="starContainer">
                                     <img src="{{ asset('img/assets/icon/icon_review_star.svg') }}" alt=""
@@ -631,14 +635,15 @@
                                         class="w-[29px] h-7 reviewStar grayscale">
                                 </div>
 
-                                <textarea name="" id="" cols="30" rows="5"
+                                <textarea name="content" id="review-content" cols="30" rows="5"
                                     class="rounded-2xl bg-gray-200 resize-none border-none text-sm font-semibold focus:border-0 focus:ring-0 placeholder:text-black placeholder:font-semibold placeholder:text-sm"
                                     placeholder="Add Comment..."></textarea>
 
-                                <div class="relative w-full h-56 bg-gray-200 rounded-2xl mt-6" id="add-carousel-upload">
+                                <div class="relative w-full h-56 bg-gray-200 rounded-2xl mt-6 bg-cover bg-center"
+                                    id="review-photo">
                                     <!-- Hidden file input -->
-                                    <input id="add-review-media" name="media" type="file" accept="image/*"
-                                        class="hidden">
+                                    <input id="add-review-media" name="photo" type="file" accept="image/*"
+                                        onchange="changeReviewPhoto(this)" class="hidden">
                                     <!-- Label that acts as the clickable area -->
                                     <label for="add-review-media"
                                         class="absolute inset-0 flex justify-center items-center cursor-pointer">
@@ -652,10 +657,8 @@
                                     </label>
                                 </div>
                                 {{-- Button Pay --}}
-                                <button
-                                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl py-2 px-16 ml-auto mt-6"
-                                    data-modal-target="success-review-modal" data-modal-toggle="success-review-modal"
-                                    data-modal-hide="review-modal">Save</button>
+                                <button type="submit"
+                                    class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl py-2 px-16 ml-auto mt-6">Save</button>
                             </form>
                         </div>
                         {{-- end of modal content --}}
@@ -962,7 +965,9 @@
         {{-- end of MODALS FOR TRANSACTION HISTORY --}}
 
     </div>
+@endsection
 
+@push('script')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const stars = document.querySelectorAll("#starContainer .reviewStar");
@@ -978,30 +983,39 @@
             })
         })
 
+        // switch tab url
         $(document).ready(function() {
             $('#default-styled-tab > li').click(function() {
                 const tab = $(this).find('button').attr('aria-controls');
                 window.history.pushState(null, null, `?tab=${tab}`);
             });
         })
-    </script>
-@endsection
 
-@push('script')
-    <script>
         let choosePaymentModal, qrPaymentModal, vaPaymentModal, paymentSuccessModal, checkPaymentInterval,
-            orderId, shipmentDetailModal;
+            orderId, shipmentDetailModal, reviewModal;
+
         const paymentModalOptions = {
             onHide: () => {
                 clearInterval(checkPaymentInterval);
             },
         }
+
         $(document).ready(function() {
             qrPaymentModal = new Modal(document.getElementById('qr-payment-modal'), paymentModalOptions)
             vaPaymentModal = new Modal(document.getElementById('payment-modal'), paymentModalOptions)
             paymentSuccessModal = new Modal(document.getElementById('payment-success-modal'))
             choosePaymentModal = new Modal(document.getElementById('choose-payment-modal'))
             shipmentDetailModal = new Modal(document.getElementById('detail-shipment-modal'))
+            reviewModal = new Modal(document.getElementById('review-modal'))
+
+            $('#starContainer > img').click(function() {
+                // remove grayscale from before element
+                $(this).prevAll().removeClass('grayscale');
+                // add grayscale to next element
+                $(this).nextAll().addClass('grayscale');
+                // set data-rating value
+                $('#review-modal input[name=rating]').val($(this).index() + 1);
+            })
         })
 
         function onPaymentSuccess(orderId) {
@@ -1097,6 +1111,16 @@
             const arrivalTime = moment($(el).data('shipment-arrival')).format('DD MMMM YYYY');
             $('#shipment-arrival-estimation').text(arrivalTime);
             shipmentDetailModal.show();
+        }
+
+        function review(id) {
+            $('#review-modal input[name="orderId"]').val(id);
+            return reviewModal.show();
+        }
+
+        function changeReviewPhoto(el) {
+            const previewUrl = URL.createObjectURL(el.files[0]);
+            $('#review-photo').css('background-image', `url(${previewUrl})`);
         }
     </script>
 @endpush

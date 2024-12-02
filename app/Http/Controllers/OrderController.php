@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderLog;
 use App\Models\OrderPayment;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -169,7 +170,7 @@ class OrderController extends Controller
         $unpaid = $orders->clone()->where('status', 'unpaid')->with('orderPayment')->get();
         $processed = $orders->clone()->whereIn('status', ['paid', 'processing'])->get();
         $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment')->get();
-        $finished = $orders->clone()->where('status', 'finished')->get();
+        $finished = $orders->clone()->where('status', 'finished')->with('reviews')->get();
         $cancelled = $orders->clone()->where('status', 'cancelled')->get();
 
         return view('customer.order.history', compact('confirmation', 'unpaid', 'processed', 'sent', 'finished', 'cancelled'));
@@ -414,5 +415,36 @@ class OrderController extends Controller
         ]);
 
         return redirect()->route('order.show', $order->id)->with('success', 'Order has been marked as arrived');
+    }
+
+    public function review(Request $request)
+    {
+        $userId = Auth::id();
+        $data = $request->validate([
+            'orderId' => 'required|exists:orders,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'content' => 'nullable|string',
+            'photo' => 'nullable|image',
+        ]);
+
+        $order = Order::findOrFail($data['orderId']);
+        $order->load('orderItems');
+
+        if ($request->hasFile('photo')) {
+            $data['photo'] = $request->file('photo')->store('reviews');
+        }
+
+        foreach ($order->orderItems as $item) {
+            Review::create([
+                'order_id' => $order->id,
+                'user_id' => $userId,
+                'product_id' => $item->product_id,
+                'rating' => $data['rating'],
+                'content' => $data['content'] ?? '',
+                'photo' => $data['photo'] ?? null,
+            ]);
+        }
+
+        return redirect()->route('order.show', $order->id)->with('success', 'Order has been rated');
     }
 }
