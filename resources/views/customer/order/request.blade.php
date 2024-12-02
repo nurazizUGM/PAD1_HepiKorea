@@ -253,12 +253,12 @@
                     style="background-image: url('${productImagePreview}')"></div>
                 <div class="w-[42%] pl-5 flex flex-col">
                     <div class="flex flex-row mb-auto align-middle">
-                        <h1 class="text-xs md:text-xl font-medium text-black mr-auto">${productName}</h1>
+                        <h1 class="w-fit md:max-w-[55%] h-fit text-xs md:text-xl font-medium text-black mr-auto">${productName}</h1>
                         <input type="hidden" form="form-request" name="items[${productCount}][name]" value="${productName}">
                         <h1 class="text-xs md:text-xl font-semibold text-[#B7B7B7] mx-auto">Rp ${productPrice}</h1>
                         <input type="hidden" form="form-request" name="items[${productCount}][price]" value="${productPrice}">
                     </div>
-                    <div class="w-full h-full flex flex-col mt-auto">
+                    <div class="w-full h-full flex flex-col mt-4">
                         <p class="font-medium text-xs md:text-lg text-black mt-auto">Link:</p>
                         <textarea form="form-request" name="items[${productCount}][url]" cols="" rows="2" readonly
                             class="rounded-2xl resize-none">${productLink}</textarea>
@@ -270,12 +270,12 @@
                         <h1 class="text-xs md:text-xl font-medium text-[#B7B7B7] mr-auto">${productQuantity}x</h1>
                         <h1 class="text-xs md:text-xl font-semibold text-orange-400 mx-auto">Rp ${productPrice*productQuantity}</h1>
                         <button href=""
-                            class="bg-orange-400 hover:bg-orange-500 focus:bg-orange-600 p-1 rounded-md"><img
+                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] p-1 rounded-md"><img
                                 src="{{ asset('img/assets/icon/icon_requestOrder_trashcan.svg') }}" alt=""
                                 class="w-3 md:w-6 h-3 md:h-6" data-modal-target="confirmation-delete-modal"
                                 data-modal-toggle="confirmation-delete-modal"></button>
                     </div>
-                    <div class="w-full h-full flex flex-col mt-auto">
+                    <div class="w-full h-full flex flex-col mt-4">
                         <p class="font-medium text-xs md:text-lg text-black mt-auto">Note:</p>
                         <textarea form="form-request" name="items[${productCount}][description]" cols="" rows="2" placeholder="" only
                             class="rounded-2xl resize-none text-[#898383]">${productDescription}</textarea>
