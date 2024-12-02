@@ -42,7 +42,7 @@ Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(f
     Route::post('update', 'update')->name('update');
 });
 
-Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout');
+Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 Route::view('request-order', 'customer.order.request')->name('request-order');
 Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');
 
@@ -55,7 +55,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
     Route::get('arrived/{id}', 'arrived')->name('arrived');
     Route::get('cancel/{id}', 'cancel')->name('cancel');
-});
+})->middleware('auth');
 
 Route::get('faq', [FaqController::class, 'faq'])->name('faq');
 
