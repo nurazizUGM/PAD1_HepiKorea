@@ -154,6 +154,16 @@ class AuthController extends Controller
                 ]);
             }
 
+            if ($user->role == Role::GUEST) {
+                $user->update([
+                    'role' => Role::USER,
+                ]);
+            }
+
+            $user->update([
+                'is_verified' => true
+            ]);
+
             // authenticate user
             Auth::login($user);
             Session::regenerate();
