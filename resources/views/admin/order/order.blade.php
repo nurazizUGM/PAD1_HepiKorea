@@ -92,12 +92,16 @@
                     </div>
                     {{-- two button container --}}
                     <div class="flex flex-row mt-auto">
-                        <button class="w-1/3 h-9 hover:bg-slate-50 border-2 border-[#376F7E] rounded-md flex ml-auto"
+                        {{-- <button class="w-1/3 h-9 hover:bg-slate-50 border-2 border-[#376F7E] rounded-md flex ml-auto"
                             data-modal-target="order-detail-{{ $order->id }}"
                             data-modal-toggle="order-detail-{{ $order->id }}">
                             <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
                                 alt="see_detail_icon" class="m-auto border-orange-400">
-                            {{-- icon_admin_order_see_detail.svg --}}
+                        </button> --}}
+                        <button class="w-1/3 h-9 hover:bg-slate-50 border-2 border-[#376F7E] rounded-md flex ml-auto"
+                            onclick="window.location.href='{{ route('admin.order.show', $order->id) }}'">
+                            <img src="{{ asset('img/assets/icon/icon_admin_order_see_detail.svg') }}"
+                                alt="see_detail_icon" class="m-auto border-orange-400">
                         </button>
                         @if ($order->status == 'paid')
                             <button
@@ -111,12 +115,18 @@
                                 data-modal-target="sent-order-{{ $order->id }}"
                                 data-modal-toggle="sent-order-{{ $order->id }}">Sent</button>
                             <x-admin.order.sent :id="$order->id" />
+                        @elseif($order->status == 'shipment_paid')
+                            <button
+                                class="w-2/3 h-9 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold rounded-md ml-1"
+                                data-modal-target="send-order-{{ $order->id }}"
+                                data-modal-toggle="send-order-{{ $order->id }}">Sent</button>
+                            <x-admin.order.send :id="$order->id" />
                         @endif
                     </div>
                 </div>
                 {{-- end of detail order container --}}
             </div>
-            <x-admin.order.detail :id="$order->id" :order="$order" />
+            {{-- <x-admin.order.detail :id="$order->id" :order="$order" /> --}}
         @endforeach
         {{-- end of card order --}}
     </div>

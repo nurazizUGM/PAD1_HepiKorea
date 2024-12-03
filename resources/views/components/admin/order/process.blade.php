@@ -17,24 +17,17 @@
                     <h1 class="text-black text-base font-semibold">Estimation Arrival</h1>
 
                     {{-- datepicker --}}
-                    <div id="datepicker-{{ $id }}" inline-datepicker data-date="02/25/2024"
-                        class="mt-1 w-full h-full mx-auto"></div>
+                    <div id="datepicker-{{ $id }}" inline-datepicker data-date="{{ date('Y-m-d') }}"
+                        datepicker-format="yyyy-mm-dd" class="mt-1 w-full h-full mx-auto"></div>
                     {{-- end of datepicker --}}
 
-                    <div class="flex flex-row ml-auto mt-2">
-                        {{-- timepicker --}}
-                        <form class="max-w-[8.5rem]">
-                            <div class="flex">
-                                <input type="time" id="time"
-                                    class="rounded-lg bg-gray-50 border text-gray-900 leading-none focus:ring-0 focus:border-0 block flex-1 text-sm border-gray-300 p-2.5"
-                                    min="09:00" max="18:00" value="00:00" required>
-                            </div>
-                        </form>
-                        {{-- end of timepicker --}}
-                    </div>
-                    <button class="rounded-lg bg-orange-400 hover:bg-orange-500 text-white block ml-auto mt-2 h-9 w-1/4"
-                        data-modal-hide="process-order-{{ $id }}">Save</button>
-
+                    <form id="form-process-order-{{ $id }}" action="{{ route('admin.order.process', $id) }}"
+                        method="POST" class="hidden">
+                        @csrf
+                        <input type="hidden" name="estimated_arrival" value="{{ date('Y-m-d') }}">
+                    </form>
+                    <button form="form-process-order-{{ $id }}" type="submit"
+                        class="rounded-lg bg-orange-400 hover:bg-orange-500 text-white block ml-auto mt-2 h-9 w-1/4">Save</button>
                 </div>
             </div>
             {{-- end of process order content container --}}
