@@ -18,9 +18,9 @@ class AdminOrderController extends Controller
         // filter order by type
         $orders = new Order();
         if ($tab == 'order') {
-            $orders = $orders->where('type', 'order');
+            $orders = $orders->whereNotIn('status', ['unconfirmed', 'confirmed']);
         } else {
-            $orders = $orders->where('type', 'custom');
+            $orders = $orders->whereIn('status', ['unconfirmed', 'confirmed']);
         }
 
         // get all years and months for monthly filter
@@ -68,7 +68,10 @@ class AdminOrderController extends Controller
             $orders = $orders->whereMonth('created_at', $m);
         }
 
-        $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])->orderBy('created_at', 'desc')->get();
+        $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])
+            ->orderByRaw("FIELD(status, 'unconfirmed', 'confirmed', 'paid', 'processing', 'shipment_paid', 'unpaid', 'shipment_unpaid', 'sent', 'finished', 'cancelled')")
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('admin.order.index', compact('tab', 'years', 'year', 'months', 'orders'));
     }
