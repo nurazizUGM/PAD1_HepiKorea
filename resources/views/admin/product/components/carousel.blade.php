@@ -11,7 +11,8 @@
 </div>
 
 <!-- start of Carousel card container -->
-<div class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
+<div
+    class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
     <!-- card Carousel -->
     <!-- ini for loop hanya untuk coba -->
     @foreach ($carousels as $carousel)
@@ -19,15 +20,14 @@
             <!-- image Carousel card -->
             <div class="w-full h-2/3 bg-cover">
                 @if ($carousel->media_type == 'image')
-                    <img src="{{ Storage::exists('public/' . $carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                    <img src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
                         alt="" class="w-full h-full object-cover">
                 @elseif ($carousel->media_type == 'video')
                     <video
-                        src="{{ Storage::exists('public/' . $carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
-                        class="w-full h-full object-cover" controls></video>
+                        src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                        class="w-full h-full object-cover" controls muted></video>
                 @elseif ($carousel->media_type == 'youtube')
-                    <iframe width="560" height="315"
-                        src="https://www.youtube.com/embed/nnntnYo9wHM?si=U0uesVfEZca5Am7B" title="YouTube video player"
+                    <iframe width="560" height="315" src="{{ $carousel->media }}" title="YouTube video player"
                         frameborder="0" class="w-full h-full object-cover"
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -40,8 +40,8 @@
             <!-- edit & delete Carousel card -->
             <div class="flex mt-auto mx-4 mb-4">
                 <!-- edit icon -->
-                <a href="#" class="mr-auto" data-modal-target="carousel-edit-modal"
-                    data-modal-toggle="carousel-edit-modal">
+                <a href="#" class="mr-auto" data-modal-target="carousel-edit-{{ $carousel->id }}"
+                    data-modal-toggle="carousel-edit-{{ $carousel->id }}">
                     <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}" alt=""
                         class="w-7 h-7">
                 </a>
@@ -54,6 +54,62 @@
                             class="w-7 h-7">
                     </button>
                 </form>
+
+
+                <!-- Carousel-edit-modal -->
+                <div id="carousel-edit-{{ $carousel->id }}" tabindex="-1" aria-hidden="true"
+                    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                    <div class="relative p-4 w-fit max-w-2xl max-h-full">
+                        <!-- Modal content -->
+                        <div class="bg-white w-[30vw] h-[75vh] rounded-lg shadow">
+                            <div class="relative w-full h-full flex flex-row">
+                                <!-- x button (exit modal) -->
+                                <button type="button"
+                                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
+                                    data-modal-hide="carousel-edit-{{ $carousel->id }}">
+                                    <p class="m-auto text-white text-sm">X</p>
+                                </button>
+                                <div class="w-full h-full flex flex-col">
+                                    <!-- start of form -->
+                                    <form action="{{ route('admin.carousel.update', $carousel->id) }}" method="POST"
+                                        class="flex flex-col h-full text-center py-10 px-5">
+                                        @csrf
+                                        @method('PATCH')
+                                        <!-- input file -->
+                                        {{-- <div class="relative w-full h-64 bg-gray-200 rounded-2xl">
+                                            <!-- Hidden file input -->
+                                            <input id="file-upload" type="file" class="hidden">
+                                            <label for="file-upload"
+                                                class="absolute inset-0 flex justify-center items-center cursor-pointer">
+                                                <div class="text-gray-500">Upload Image</div>
+                                            </label>
+                                            <!-- Upload icon in the bottom-right corner -->
+                                            <label for="file-upload"
+                                                class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
+                                                <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}"
+                                                    alt="Upload Icon" class="h-6 w-6 grayscale">
+                                            </label>
+                                        </div> --}}
+                                        <!-- end of input file -->
+                                        <!-- Input name -->
+                                        <input type="text" placeholder="Name" name="title" id=""
+                                            value="{{ $carousel->title }}"
+                                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
+                                        <!-- input Info -->
+                                        <textarea placeholder="Add info" name="description" id="edit-info-carousel" rows="3"
+                                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0">{{ $carousel->description }}</textarea>
+                                        <!-- Button "add" -->
+                                        <button type="submit"
+                                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">Save</button>
+                                    </form>
+                                    <!-- end of form -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of modal content -->
+                    </div>
+                </div>
+                <!-- end of Carousel-edit-modal -->
             </div>
         </div>
     @endforeach
@@ -63,57 +119,6 @@
 <!-- end of product card container -->
 
 {{-- MODALS FOR CAROUSEL --}}
-
-<!-- Carousel-edit-modal -->
-<div id="carousel-edit-modal" tabindex="-1" aria-hidden="true"
-    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
-    <div class="relative p-4 w-fit max-w-2xl max-h-full">
-        <!-- Modal content -->
-        <div class="bg-white w-[30vw] h-[75vh] rounded-lg shadow">
-            <div class="relative w-full h-full flex flex-row">
-                <!-- x button (exit modal) -->
-                <button type="button"
-                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2"
-                    data-modal-hide="carousel-edit-modal">
-                    <p class="m-auto text-white text-sm">X</p>
-                </button>
-                <div class="w-full h-full flex flex-col">
-                    <!-- start of form -->
-                    <form action="" method="" class="flex flex-col h-full text-center py-10 px-5">
-                        <!-- input file -->
-                        <div class="relative w-full h-64 bg-gray-200 rounded-2xl">
-                            <!-- Hidden file input -->
-                            <input id="file-upload" type="file" class="hidden">
-                            <label for="file-upload"
-                                class="absolute inset-0 flex justify-center items-center cursor-pointer">
-                                <div class="text-gray-500">Upload Image</div>
-                            </label>
-                            <!-- Upload icon in the bottom-right corner -->
-                            <label for="file-upload"
-                                class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
-                                <img src="{{ asset('img/assets/icon/icon_admin_category_edit.svg') }}" alt="Upload Icon"
-                                    class="h-6 w-6 grayscale">
-                            </label>
-                        </div>
-                        <!-- end of input file -->
-                        <!-- Input name -->
-                        <input type="text" placeholder="Name" name="" id=""
-                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0">
-                        <!-- input Info -->
-                        <textarea placeholder="Add info" name="" id="edit-info-carousel" rows="3"
-                            class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 cursor-pointer mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
-                        <!-- Button "add" -->
-                        <button type="submit" data-modal-hide="carousel-edit-modal"
-                            class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">Save</button>
-                    </form>
-                    <!-- end of form -->
-                </div>
-            </div>
-        </div>
-        <!-- end of modal content -->
-    </div>
-</div>
-<!-- end of Carousel-edit-modal -->
 
 <!-- Carousel-add-modal -->
 <div id="carousel-add-modal" tabindex="-1" aria-hidden="true"

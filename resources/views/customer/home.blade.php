@@ -15,102 +15,59 @@
         <div id="default-carousel" class="relative w-full rounded-t-2xl md:rounded-t-3xl" data-carousel="slide">
             <!-- Carousel wrapper -->
             <div class="relative h-[150px] md:h-[500px] overflow-hidden rounded-t-lg">
-                <!-- Item 1 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    {{-- <img src="{{ asset('img/assets/bg/background_auth.svg') }}"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
-                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
-                            <h1 class="text-md md:text-md md:text-5xl font-semibold">Are you ready to lead the way</h1>
-                            <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">Luxury meets ultimate sitting comfort
-                            </h2>
-                        </div>
-                        <div class="w-1/2 h-full bg-white">
-                            {{-- <img src="img/example/example_phone.png" alt="" class="w-full h-full object-contain"> --}}
-
-                            {{-- test video --}}
-                            <video class="w-full h-full object-contain" controls autoplay muted loop>
-                                <source src="{{ asset('vid/test_vid_p3r.mp4') }}" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                    </div>
-                </div>
-                <!-- Item 2 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    {{-- <img src="/docs/images/carousel/carousel-2.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
-                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
-                            <h1 class="text-md md:text-5xl font-semibold">Are you ready to lead the way</h1>
-                            <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">Luxury meets ultimate sitting comfort
-                            </h2>
-                        </div>
-                        <div class="w-1/2 h-full bg-white">
-                            {{-- test image --}}
-                            <img src="img/assets/bg/background_auth.svg" alt=""
-                                class="w-full h-full object-contain">
-                        </div>
-                    </div>
-                </div>
-                <!-- Item 3 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    {{-- <img src="/docs/images/carousel/carousel-3.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
-                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
-                            <h1 class="text-md md:text-5xl font-semibold">Are you ready to lead the way</h1>
-                            <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">Luxury meets ultimate sitting comfort
-                            </h2>
-                        </div>
-                        <div class="w-1/2 h-full flex bg-white">
-                            <img src="img/example/carousel_test.png" alt="" class="w-full h-full object-contain">
-                        </div>
-                    </div>
-                </div>
-                <!-- Item 4 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    {{-- <img src="/docs/images/carousel/carousel-4.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
-                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
-                            <h1 class="text-md md:text-5xl font-semibold">Are you ready to lead the way</h1>
-                            <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">Luxury meets ultimate sitting comfort
-                            </h2>
-                        </div>
-                        <div class="w-1/2 h-full flex bg-white">
-                            <img src="img/example/logo_hepikorea.jpg" alt="" class="w-full h-full object-contain">
+                @foreach (\App\Models\Carousel::all() as $carousel)
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        {{-- <img src="/docs/images/carousel/carousel-5.svg"
+                                class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
+                        <div
+                            class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
+                            <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
+                                <h1 class="text-md md:text-5xl font-semibold">{{ $carousel->title }}</h1>
+                                <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">
+                                    {{ $carousel->description }}
+                                </h2>
+                            </div>
+                            <div class="w-1/2 h-full flex bg-white">
+                                {{-- <img src="img/example/logo_hepikorea_transparent.png" alt=""
+                                        class="w-full h-full object-contain"> --}}
+                                {{-- <iframe class="w-full h-full"
+                                        src="https://www.youtube.com/embed/VqJnmphV9R8?si=tm0uf-A89gyoBqF6"
+                                        title="YouTube video player" frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
+                                @if ($carousel->media_type == 'image')
+                                    @if (Storage::disk('public')->exists($carousel->media))
+                                        <img src="{{ Storage::url($carousel->media) }}" alt=""
+                                            class="w-full h-full object-contain">
+                                    @elseif (filter_var($carousel->media, FILTER_VALIDATE_URL))
+                                        <img src="{{ $carousel->media }}" alt=""
+                                            class="w-full h-full object-contain">
+                                    @else
+                                        <img src="img/assets/bg/background_auth.svg" alt=""
+                                            class="w-full h-full object-contain">
+                                    @endif
+                                @elseif($carousel->media_type == 'video')
+                                    <video class="w-full h-full object-contain" controls autoplay muted loop>
+                                        @if (Storage::disk('public')->exists($carousel->media))
+                                            <source src="{{ Storage::url($carousel->media) }}" type="video/mp4">
+                                        @elseif (filter_var($carousel->media, FILTER_VALIDATE_URL))
+                                            <source src="{{ $carousel->media }}" type="video/mp4">
+                                        @else
+                                            <source src="{{ asset('vid/test_vid_p3r.mp4') }}" type="video/mp4">
+                                        @endif
+                                        Your browser does not support the video tag.
+                                    </video>
+                                @elseif($carousel->media_type == 'youtube')
+                                    <iframe class="w-full h-full" src="{{ $carousel->media }}" title="YouTube video player"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                                    </iframe>
+                                @endif
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- Item 5 -->
-                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                    {{-- <img src="/docs/images/carousel/carousel-5.svg"
-                        class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="..."> --}}
-                    <div class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
-                        <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-2 md:p-20 text-white">
-                            <h1 class="text-md md:text-5xl font-semibold">Are you ready to lead the way</h1>
-                            <h2 class="text-xs md:text-2xl font-medium mt-1 md:mt-8">Luxury meets ultimate sitting comfort
-                            </h2>
-                        </div>
-                        <div class="w-1/2 h-full flex bg-white">
-                            {{-- <img src="img/example/logo_hepikorea_transparent.png" alt=""
-                                class="w-full h-full object-contain"> --}}
-                            {{-- <iframe class="w-full h-full"
-                                src="https://www.youtube.com/embed/VqJnmphV9R8?si=tm0uf-A89gyoBqF6"
-                                title="YouTube video player" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
-                            <iframe class="w-full h-full"
-                                src="https://www.youtube.com/embed/VqJnmphV9R8?si=tm0uf-A89gyoBqF6&autoplay=1&mute=1"
-                                title="YouTube video player" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                            </iframe>
-
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
             <!-- Slider indicators -->
             <div
@@ -171,8 +128,8 @@
                 @foreach ($categories as $category)
                     <div class="bg-[#FFFCFC] h-24 md:h-52 flex flex-col text-center align-middle justify-center rounded-xl cursor-pointer"
                         onclick="window.location.href='{{ route('product.index', ['category' => $category->id]) }}'">
-                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}"
-                            alt="fashion_Category" class="w-12 h-12 md:w-40 md:h-40 mx-auto">
+                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
+                            class="w-12 h-12 md:w-40 md:h-40 mx-auto">
                         <h2 class="text-black text-[10px] md:text-lg font-semibold text-ellipsis overflow-hidden">
                             {{ $category->name }}</h2>
                     </div>
