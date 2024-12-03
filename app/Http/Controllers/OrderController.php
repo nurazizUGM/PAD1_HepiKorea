@@ -431,7 +431,7 @@ class OrderController extends Controller
         $order->load('orderItems');
 
         if ($request->hasFile('photo')) {
-            $data['photo'] = $request->file('photo')->store('reviews');
+            $data['photo'] = $request->file('photo')->store('review');
         }
 
         foreach ($order->orderItems as $item) {
