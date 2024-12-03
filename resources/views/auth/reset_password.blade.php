@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="bg-white h-auto w-1/2 max-w-lg p-10 m-auto shadow-lg rounded-2xl">
-        <h1 class="text-black text-xl font-bold mb-5">Password Reset</h1>
+        <h1 class="text-black text-xl font-extrabold mb-5">Change Password</h1>
         <!-- start of form -->
         <form action="{{ route('auth.set_password') }}" method="POST">
             @csrf
@@ -37,7 +37,7 @@
 
             <!-- login button -->
             <button type="submit"
-                class="w-full text-center bg-orange-400 h-12 rounded-xl mb-5 text-2xl font-bold text-white shadow-md mt-5">Send</button>
+                class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-12 rounded-xl mb-5 text-2xl font-bold text-white shadow-md mt-5">Submit</button>
         </form>
     </div>
 

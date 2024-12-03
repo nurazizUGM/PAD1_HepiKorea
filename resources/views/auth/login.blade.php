@@ -2,11 +2,11 @@
 @section('title', ' - Login')
 
 @section('content')
-    <div class="bg-white w-1/2 max-w-lg p-10 m-auto shadow-lg rounded-2xl">
-        <h1 class="text-black text-xl font-bold mb-5">Masuk Ke
-            <span class="text-3xl cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='{{ route('home') }}'">
-                <span class="text-orange-400">Hepi</span>
-                Korea
+    <div class="bg-white w-1/2 max-w-md p-10 m-auto shadow-lg rounded-2xl">
+        <h1 class="text-black text-xl font-extrabold mb-5">Masuk Ke
+            <span class="text-orange-400 cursor-pointer tracking-[-0.01rem]"
+                onclick="window.location.href='{{ route('home') }}'">
+                <span class="text-[#3E6E7A]">Hepi</span>Korea
             </span>
         </h1>
         <!-- start of form -->
@@ -35,7 +35,7 @@
                     <img src="{{ asset('img/assets/icon/icon_user.svg') }}" alt="User Icon" class="h-6 w-6">
                 </span>
                 <input type="email" placeholder="Email" name="email" value="{{ old('email') }}" required
-                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
+                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7]">
             </div>
 
             <div class="relative w-full mt-5">
@@ -43,7 +43,7 @@
                     <img src="{{ asset('img/assets/icon/icon_lock.svg') }}" alt="lock Icon" class="h-6 w-6">
                 </span>
                 <input id="password" type="password" name="password" placeholder="Password" required
-                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0">
+                    class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7]">
                 <!-- show/hide password -->
                 <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
                     <img id="togglePassword" src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}" alt="eye hide Icon"
@@ -52,17 +52,17 @@
             </div>
 
             <div class="text-right my-3">
-                <a href="{{ route('auth.forgot_password') }}" class="text-sm text-blue-600 ">Forgot Password</a>
+                <a href="{{ route('auth.forgot_password') }}" class="text-sm font-semibold text-blue-600 ">Forgot Password</a>
             </div>
             <!-- login button -->
             <button type="submit"
-                class="w-full text-center bg-orange-400 h-12 rounded-xl mb-5 text-2xl font-bold text-white">Login</button>
+                class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-12 rounded-xl mb-5 text-2xl font-normal text-white">Login</button>
         </form>
         <p class="text-sm font-semibold text-center text-black">Don't have an account? <a
                 href="{{ route('auth.register') }}" class="text-blue-600">Register</a></p>
         <div class="w-full relative">
             <hr class="border-t-2 border-slate-400 mt-8 relative">
-            <div class="absolute -top-5 left-[30%] bg-[#FFFCFC] py-2 px-10">or login with</div>
+            <div class="absolute -top-5 left-[25%] bg-[#FFFCFC] font-semibold text-[#B7B7B7] py-2 px-10">or login with</div>
         </div>
         <!-- button login google -->
         <a href="{{ route('auth.google') }}" id="btn-google"
