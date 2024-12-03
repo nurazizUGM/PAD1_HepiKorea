@@ -62,7 +62,7 @@
                     <canvas id="chartProductOrdered"></canvas>
                     <div class="absolute flex flex-col items-center justify-center text-center z-10">
                         {{-- text Product Ordered Percent --}}
-                        <h2 class="text-7xl font-bold text-black text-opacity-50">55%</h2>
+                        <h2 class="text-7xl font-bold text-black text-opacity-50">{{ $completionRate }}%</h2>
                         <h3 class="text-2xl font-semibold text-black text-opacity-50">Complete</h3>
                     </div>
                 </div>
@@ -95,7 +95,7 @@
                         'Completed'
                     ],
                     datasets: [{
-                        data: [45, 55],
+                        data: [{{ $uncompletedOrder }}, {{ $completedOrder }}],
                         backgroundColor: [
                             'rgb(217, 217, 217)',
                             'rgb(55, 111, 126)'
@@ -121,18 +121,10 @@
             new Chart(productMostChart, {
                 type: 'pie',
                 data: {
-                    labels: [
-                        'Music',
-                        'Beauty',
-                        'Electronic',
-                        'Healthy',
-                        'Fashion',
-                        'Merchandise',
-                        'Food'
-                    ],
+                    labels: {!! $categories->pluck('name')->toJson() !!},
                     datasets: [{
                         label: 'percent',
-                        data: [5, 5, 10, 10, 40, 10, 20],
+                        data: {!! $categories->pluck('total_order')->toJson() !!},
                         backgroundColor: [
                             'rgb(246, 223, 170)',
                             'rgb(255, 255, 255)',
