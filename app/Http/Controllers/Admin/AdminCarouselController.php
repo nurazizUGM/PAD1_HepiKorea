@@ -43,7 +43,14 @@ class AdminCarouselController extends Controller
 
         // store carousel media
         if ($request->media_type == 'youtube') {
-            $data['media'] = $request->youtube_url;
+            // get videoId from youtube url
+            $url = $request->youtube_url;
+            if (strpos($url, 'youtu.be')) {
+                $videoId = explode('youtu.be/', $url)[1];
+            } else {
+                $videoId = explode('v=', $url)[1];
+            }
+            $data['media'] = "https://www.youtube.com/embed/$videoId?autoplay=1&mute=1";
         } else if ($request->hasFile('media')) {
             $media = $request->file('media');
             $data['media'] = $media->storeAs('carousel', $media->hashName(), 'public');
@@ -82,6 +89,8 @@ class AdminCarouselController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $carousel = Carousel::findOrFail($id);
+        $carousel->delete();
+        return redirect()->route('admin.carousel.index')->with('success', 'Carousel deleted successfully');
     }
 }

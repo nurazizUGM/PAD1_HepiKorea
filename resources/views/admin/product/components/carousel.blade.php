@@ -11,7 +11,8 @@
 </div>
 
 <!-- start of Carousel card container -->
-<div class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
+<div
+    class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
     <!-- card Carousel -->
     <!-- ini for loop hanya untuk coba -->
     @foreach ($carousels as $carousel)
@@ -19,15 +20,14 @@
             <!-- image Carousel card -->
             <div class="w-full h-2/3 bg-cover">
                 @if ($carousel->media_type == 'image')
-                    <img src="{{ Storage::exists('public/' . $carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                    <img src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
                         alt="" class="w-full h-full object-cover">
                 @elseif ($carousel->media_type == 'video')
                     <video
-                        src="{{ Storage::exists('public/' . $carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
-                        class="w-full h-full object-cover" controls></video>
+                        src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                        class="w-full h-full object-cover" controls muted></video>
                 @elseif ($carousel->media_type == 'youtube')
-                    <iframe width="560" height="315"
-                        src="https://www.youtube.com/embed/nnntnYo9wHM?si=U0uesVfEZca5Am7B" title="YouTube video player"
+                    <iframe width="560" height="315" src="{{ $carousel->media }}" title="YouTube video player"
                         frameborder="0" class="w-full h-full object-cover"
                         allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
