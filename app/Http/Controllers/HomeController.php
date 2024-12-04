@@ -13,9 +13,10 @@ class HomeController extends Controller
     {
         // list of categories
         $categories = Category::all();
+        $products = Product::where('is_deleted', false);
 
         // 10 latest products
-        $newProducts = Product::with('category')->orderBy('created_at', 'desc')->limit(10)->get()->map(function ($product) {
+        $newProducts = $products->clone()->with('category')->orderBy('created_at', 'desc')->limit(10)->get()->map(function ($product) {
             return (object)[
                 'id' => $product->id,
                 'name' => $product->name,
@@ -25,7 +26,7 @@ class HomeController extends Controller
         });
 
         // 10 most ordered products
-        $popularProducts = Product::with(['orders', 'category'])
+        $popularProducts = $products->clone()->with(['orders', 'category'])
             ->withCount('orders')->orderBy('orders_count', 'desc')->limit(10)->get()->map(function ($product) {
                 return (object)[
                     'id' => $product->id,

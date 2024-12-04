@@ -47,7 +47,6 @@ Route::view('request-order', 'customer.order.request')->name('request-order');
 Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
     Route::get('show/{id}', 'show')->name('show');
     Route::get('history', 'history')->name('history');
     Route::post('/', 'store')->name('store');
