@@ -42,7 +42,7 @@
                             <div class="h-full flex flex-col space-y-4">
                                 <div class="w-full h-[20rem] mr-auto bg-white rounded-2xl p-3">
                                     <img id="mainImage"
-                                        src="{{ asset('storage/products/' . $product->images->first()->path) }}"
+                                        src="{{ Storage::url('products/' . $product->images->first()->path) }}"
                                         class="w-full h-full object-contain rounded-lg" alt="Main Image">
                                 </div>
                                 <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-image-preview"> </div>
@@ -53,7 +53,7 @@
                                                 class="absolute bg-black bg-opacity-50 w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 top-0 right-0">
                                                 <p class="m-auto text-white text-sm">x</p>
                                             </button>
-                                            <img src="{{ asset('storage/products/' . $image->path) }}"
+                                            <img src="{{ Storage::url('products/' . $image->path) }}"
                                                 class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
                                         </div>
                                     @endforeach

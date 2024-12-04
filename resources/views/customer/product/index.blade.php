@@ -124,7 +124,7 @@
                     @php
                         $image = $product->images->first()->path;
                         if (Storage::exists('products/' . $image)) {
-                            $image = asset('storage/products/' . $image);
+                            $image = Storage::url('products/' . $image);
                         } elseif (!filter_var($image, FILTER_VALIDATE_URL)) {
                             $image = asset('img/example/test_blouse.png');
                         }

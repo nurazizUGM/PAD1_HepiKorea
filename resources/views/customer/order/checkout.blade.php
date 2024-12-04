@@ -48,7 +48,7 @@
                             <div class="w-[20%]">
                                 {{-- product image --}}
                                 @if (Storage::disk('public')->exists('products/' . $item->product->image))
-                                    <img src="{{ asset('storage/products/' . $item->product->image) }}" alt="img_product"
+                                    <img src="{{ Storage::url('products/' . $item->product->image) }}" alt="img_product"
                                         class="w-36 object-contain">
                                 @elseif(strpos($item->product->image, 'http') !== false)
                                     <img src="{{ $item->product->image }}" alt="img_product" class="w-36 object-contain">

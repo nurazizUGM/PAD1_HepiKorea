@@ -6,7 +6,8 @@
         <h1 class="text-black font-semibold text-lg md:text-2xl text-left">Cart</h1>
 
         {{-- product card container --}}
-        <div class="relative w-full h-full grid grid-cols-2 md:grid-cols-3 gap-x-auto gap-y-2 md:gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
+        <div
+            class="relative w-full h-full grid grid-cols-2 md:grid-cols-3 gap-x-auto gap-y-2 md:gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
             @foreach ($carts as $cart)
                 {{-- product card --}}
                 <div class="w-[180px] md:w-[420px] h-[130px] md:h-[279px] bg-white rounded-2xl flex flex-col p-2 md:p-5">
@@ -17,7 +18,7 @@
                             @if (strpos($cart->product->image, 'http') === 0)
                                 <img src="{{ $cart->product->image }}" alt="" class="w-full h-full object-contain">
                             @elseif (Storage::disk('public')->exists('products/' . $cart->product->image))
-                                <img src="{{ asset('storage/products/' . $cart->product->image) }}" alt=""
+                                <img src="{{ Storage::url('products/' . $cart->product->image) }}" alt=""
                                     class="w-full h-full bg-contain">
                             @else
                                 <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt=""
@@ -26,7 +27,8 @@
                         </div>
                         {{-- name,variant,price --}}
                         <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-2 md:pl-5">
-                            <h1 class="text-[#3E6E7A] font-semibold text-xs md:text-base truncate">{{ $cart->product->name }}</h1>
+                            <h1 class="text-[#3E6E7A] font-semibold text-xs md:text-base truncate">
+                                {{ $cart->product->name }}</h1>
                             <h2 class="text-orange-400 font-semibold text-[10px] md:text-xl mt-auto">Rp
                                 {{ number_format($cart->product->price, 0, ',', '.') }}</h2>
 
@@ -66,7 +68,8 @@
                         class="w-3 md:w-6 h-3 md:h-6 hover:bg-slate-100  rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
 
                     {{-- select All text --}}
-                    <p class="text-black text-opacity-50 font-semibold text-[8px] md:text-base ml-3 md:ml-6 my-auto">Select All
+                    <p class="text-black text-opacity-50 font-semibold text-[8px] md:text-base ml-3 md:ml-6 my-auto">Select
+                        All
                         ({{ $carts->count() }})</p>
 
                     {{-- button delete --}}
@@ -82,10 +85,12 @@
                 {{-- end of select all and checkbox container --}}
 
                 {{-- text count total product --}}
-                <p class="text-black text-opacity-50 font-semibold text-center md:text-end text-xs md:text-base mx-auto md:mr-0 md:ml-auto my-auto" id="total-product">
+                <p class="text-black text-opacity-50 font-semibold text-center md:text-end text-xs md:text-base mx-auto md:mr-0 md:ml-auto my-auto"
+                    id="total-product">
                     Total (0) Product</p>
                 {{-- total price --}}
-                <h1 class="text-orange-400 font-semibold text-sm md:text-2xl ml-8 md:ml-16 my-auto" id="total-price">Rp 0,-</h1>
+                <h1 class="text-orange-400 font-semibold text-sm md:text-2xl ml-8 md:ml-16 my-auto" id="total-price">Rp 0,-
+                </h1>
             </div>
             <form action="{{ route('checkout') }}" method="post" id="form-checkout" class="ml-auto">
                 @csrf

@@ -20,14 +20,15 @@
                 <!-- end of search bar -->
             </div>
             <!-- start of customer card container -->
-            <div class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar justify-start items-start content-start">
+            <div
+                class="w-full h-[85%] mt-5 flex flex-wrap flex-row gap-8 overflow-y-auto no-scrollbar justify-start items-start content-start">
                 <!-- card customer -->
                 @foreach ($customers as $customer)
                     <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col"
                         onclick="window.location.href='{{ route('admin.customer.show', $customer->id) }}'">
                         <!-- image customer card -->
                         <div class="w-full h-4/6">
-                            <img src="{{ $customer->photo && Storage::exists('public/profile/' . $customer->photo) ? asset('storage/profile/' . $customer->photo) : asset('img/assets/icon/icon_user.svg') }}"
+                            <img src="{{ $customer->photo && Storage::exists('public/profile/' . $customer->photo) ? Storage::url('profile/' . $customer->photo) : asset('img/assets/icon/icon_user.svg') }}"
                                 alt="customer photo" class="w-full h-full object-cover object-top">
                         </div>
                         <!-- header & detail customer card -->

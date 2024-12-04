@@ -32,7 +32,7 @@
                             <img src="{{ Storage::url($review->photo) }}" alt="Review Image"
                                 class="w-full h-full object-cover">
                         @else
-                            <img src="{{ asset('storage/products/' . $review->product->images->first()->path) }}"
+                            <img src="{{ Storage::url('products/' . $review->product->images->first()->path) }}"
                                 class="w-full h-full object-cover" alt="Product Photo">
                         @endif
                     </div>

@@ -87,7 +87,7 @@
                     <div class="flex flex-row mt-3 -ml-1.5">
                         <p class="text-[#656565] text-opacity-50 ml-2.5 font-semibold text-sm">Status :</p>
                         <p class="text-[#656565] text-opacity-50 ml-2.5 font-semibold text-sm">
-                            {{ ucfirst($order->status) }}
+                            {{ str_replace('_', ' ', ucfirst($order->status)) }}
                         </p>
                     </div>
                     {{-- two button container --}}
