@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         // list of categories
         $categories = Category::all();
-        $products = Product::where('is_deleted', false);
+        $products = Product::where('is_deleted', false)->with('images');
 
         // 10 latest products
         $newProducts = $products->clone()->with('category')->orderBy('created_at', 'desc')->limit(10)->get()->map(function ($product) {

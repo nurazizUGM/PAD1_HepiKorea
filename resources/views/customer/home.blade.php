@@ -170,8 +170,22 @@
                             <div class="bg-white h-[200px] md:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
                                 onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
-                                <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                    style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
+                                @php
+                                    $image = \App\Models\ProductImage::where('product_id', $product->id)->first();
+                                @endphp
+                                @if ($image && Storage::exists('products/' . $image->path))
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                                    </div>
+                                @elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL))
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('{{ $image->path }}');">
+                                    </div>
+                                @else
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('https://placehold.co/200');">
+                                    </div>
+                                @endif
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
@@ -239,8 +253,22 @@
                             <div class="bg-white h-[200px] md:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
                                 onclick="window.location.href='{{ route('product.show', $product->id) }}'">
                                 {{-- image product --}}
-                                <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                    style="background-image: url('{{ asset('img/example/test_blouse.png') }}')"></div>
+                                @php
+                                    $image = \App\Models\ProductImage::where('product_id', $product->id)->first();
+                                @endphp
+                                @if ($image && Storage::exists('products/' . $image->path))
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                                    </div>
+                                @elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL))
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('{{ $image->path }}');">
+                                    </div>
+                                @else
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
+                                        style="background-image: url('https://placehold.co/200');">
+                                    </div>
+                                @endif
                                 {{-- text product --}}
                                 <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                     {{-- product title --}}
