@@ -17,7 +17,7 @@ class ProductController extends Controller
         $minPrice = $request->query('min_price', null);
 
         // search by name
-        $products = Product::where('name', 'like', "%$search%");
+        $products = Product::where('is_deleted', false)->where('name', 'like', "%$search%");
 
         // filter by category
         if ($category) {
