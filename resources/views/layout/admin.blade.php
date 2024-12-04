@@ -71,9 +71,7 @@
                                 <span class="sr-only">Open user menu</span>
                                 @php
                                     $photo = auth()->user()->photo;
-                                    $photo = $photo
-                                        ? asset('storage/' . $photo)
-                                        : asset('img/assets/icon/icon_user2.png');
+                                    $photo = $photo ? Storage::url($photo) : asset('img/assets/icon/icon_user2.png');
                                 @endphp
                                 <img class="w-8 h-8 rounded-full" src="{{ $photo }}" alt="user photo">
                             </button>

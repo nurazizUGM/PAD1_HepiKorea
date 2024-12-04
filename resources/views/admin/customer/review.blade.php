@@ -18,17 +18,18 @@
             <!-- end of search bar -->
         </div>
         <!-- start of Review card container -->
-        <div class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8 justify-start items-start content-start">
+        <div
+            class="container w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-8 justify-start items-start content-start">
             <!-- card Review -->
             <!-- ini for loop hanya untuk coba -->
             @foreach ($reviews as $review)
                 <div class="bg-white w-40 h-52 rounded-lg overflow-hidden flex flex-col cursor-pointer"
                     data-modal-target="review-modal" data-modal-toggle="review-modal"
-                    onclick="reviewDetail('{{ $review->rating }}', '{{ $review->photo ? asset('storage/' . $review->photo) : '' }}', '{{ $review->content }}')">
+                    onclick="reviewDetail('{{ $review->rating }}', '{{ $review->photo ? Storage::url($review->photo) : '' }}', '{{ $review->content }}')">
                     <!-- image Review card -->
                     <div class="w-full h-2/3 bg-cover bg-top">
                         @if ($review->photo)
-                            <img src="{{ asset('storage/' . $review->photo) }}" alt="Review Image"
+                            <img src="{{ Storage::url($review->photo) }}" alt="Review Image"
                                 class="w-full h-full object-cover">
                         @else
                             <img src="{{ asset('storage/products/' . $review->product->images->first()->path) }}"

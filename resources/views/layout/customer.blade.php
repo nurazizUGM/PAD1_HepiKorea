@@ -138,9 +138,7 @@
                             <div>
                                 @php
                                     $photo = auth()->user()->photo;
-                                    $photo = $photo
-                                        ? asset('storage/' . $photo)
-                                        : 'img/example/admin_order_img_user.png';
+                                    $photo = $photo ? Storage::url($photo) : 'img/example/admin_order_img_user.png';
                                 @endphp
                                 <button type="button"
                                     class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"

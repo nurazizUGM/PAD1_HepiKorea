@@ -20,11 +20,11 @@
             <!-- image Carousel card -->
             <div class="w-full h-2/3 bg-cover">
                 @if ($carousel->media_type == 'image')
-                    <img src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                    <img src="{{ Storage::exists($carousel->media) ? Storage::url($carousel->media) : $carousel->media }}"
                         alt="" class="w-full h-full object-cover">
                 @elseif ($carousel->media_type == 'video')
                     <video
-                        src="{{ Storage::exists($carousel->media) ? asset('storage/' . $carousel->media) : $carousel->media }}"
+                        src="{{ Storage::exists($carousel->media) ? Storage::url($carousel->media) : $carousel->media }}"
                         class="w-full h-full object-cover" controls muted></video>
                 @elseif ($carousel->media_type == 'youtube')
                     <iframe width="560" height="315" src="{{ $carousel->media }}" title="YouTube video player"

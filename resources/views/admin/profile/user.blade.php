@@ -12,7 +12,7 @@
                     <div class="rounded-xl bg-slate-300">
                         @php
                             $photo = auth()->user()->photo;
-                            $photo = $photo ? asset('storage/' . $photo) : asset('img/assets/icon/icon_user2.png');
+                            $photo = $photo ? Storage::url($photo) : asset('img/assets/icon/icon_user2.png');
 
                         @endphp
                         {{-- admin profile photo --}}
@@ -20,7 +20,8 @@
                             alt="Profile Picture">
                     </div>
                     {{-- choose photo button --}}
-                    <button class="w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
+                    <button
+                        class="w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
                         onclick="$('input[name=photo]').click()">
                         <h1 class="text-lg text-white font-semibold">Choose Photo</h1>
                     </button>
@@ -156,7 +157,7 @@
 
                                         </td>
                                     </tr>
-                                    
+
                                     {{-- new password confirmation --}}
                                     <tr class="bg-white">
                                         <th scope="row">

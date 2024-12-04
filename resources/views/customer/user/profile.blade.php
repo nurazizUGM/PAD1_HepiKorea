@@ -10,7 +10,7 @@
                     <div class="rounded-xl bg-slate-300">
                         @php
                             $photo = auth()->user()->photo;
-                            $photo = $photo ? asset('storage/' . $photo) : null;
+                            $photo = $photo ? Storage::url($photo) : null;
                         @endphp
                         <img class="w-full min-h-[10rem] m-0 p-2 object-contain object-center" id="profile_picture"
                             src="{{ $photo }}" alt="Profile Picture">
