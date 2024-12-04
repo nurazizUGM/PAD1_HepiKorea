@@ -24,6 +24,7 @@ class AdminDashboardController extends Controller
         $uncompletedOrder = Order::whereNotIn('status', ['canceled', 'finised'])->count();
         $completedOrder = Order::where('status', 'finished')->count();
         $completionRate = $uncompletedOrder + $completedOrder > 0 ? ($completedOrder / ($uncompletedOrder + $completedOrder)) * 100 : 0;
+        $completionRate = number_format($completionRate, 2);
 
         // Get total order for each category
         $categories = Category::with('products', 'products.orders')->get();
