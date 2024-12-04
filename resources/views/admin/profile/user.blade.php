@@ -4,11 +4,11 @@
 @section('content')
     <div class="p-4 border-2 bg-[#EFEFEF] border-gray-200 rounded-lg dark:border-gray-700 h-full overflow-y-auto">
 
-        <div class="rounded-lg flex flex-col bg-white p-8">
+        <div class="rounded-lg h-full flex flex-col bg-white p-8">
             {{-- profile detail title --}}
-            <h1 class="text-black text-2xl font-semibold">Profile Detail</h1>
-            <div class="grid gap-x-20 grid-cols-[2fr_4fr] mt-6">
-                <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
+            <h1 class="text-black text-2xl font-semibold">Profile Admin</h1>
+            <div class="grid h-full gap-x-20 grid-cols-[2fr_4fr] mt-6">
+                <div class="bg-white h-full flex flex-col rounded-xl mt-4">
                     <div class="rounded-xl bg-slate-300">
                         @php
                             $photo = auth()->user()->photo;
@@ -80,7 +80,7 @@
                                     </tr>
 
                                     {{-- Gender --}}
-                                    <tr class="bg-white">
+                                    {{-- <tr class="bg-white">
                                         <th scope="row"
                                             class="px-6 py-4 font-medium text-[#898383] whitespace-nowrap dark:text-white">
                                             <label for="gender"
@@ -106,7 +106,7 @@
                                                 </label>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tr> --}}
 
                                     {{-- Email --}}
                                     <tr class="bg-white">
@@ -132,7 +132,7 @@
                                         <td class="px-6 py-4 relative">
                                             <input type="password" id="old_password" name="old_password"
                                                 class="h-12 bg-gray-50 border- border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                placeholder="Old Password" />
+                                                placeholder="Current Password" />
                                             <span
                                                 class="absolute inset-y-0 right-4 pr-6 flex items-center btn-show-password">
                                                 <img src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}"
@@ -176,63 +176,7 @@
                                         </td>
                                     </tr>
 
-                                    {{-- phone number --}}
-                                    <tr class="bg-white">
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-[#898383] whitespace-nowrap dark:text-white">
-                                            <label for="phone"
-                                                class="flex items-center mb-2 text-lg font-medium text-[#898383] dark:text-white">Phone
-                                                Number</label>
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            <input type="text" id="phone" name="phone"
-                                                value="{{ $user->phone }}"
-                                                class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                placeholder="Your Phone Number" />
-                                        </td>
-                                    </tr>
-
-                                    {{-- address --}}
-                                    <tr class="bg-white">
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-[#898383] whitespace-nowrap dark:text-white">
-                                            <label for="address"
-                                                class="flex items-center mb-2 text-lg font-medium text-[#898383] dark:text-white">Address</label>
-                                        </th>
-                                        <td class="px-6 py-4"> <!-- Change here to span two columns -->
-                                            <div class="flex"> <!-- Flex container to arrange textareas side by side -->
-                                                <input type="text" id="province" name="province"
-                                                    value="{{ $address->province ?? '' }}"
-                                                    class="w-full h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block mr-8 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                    placeholder="Your Province" />
-                                                <input type="text" id="city" name="city"
-                                                    value="{{ $address->city ?? '' }}"
-                                                    class="w-full h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                    placeholder="Your City" />
-                                            </div>
-                                        </td>
-                                    </tr>
-
-                                    {{-- Postal Code --}}
-                                    <tr class="bg-white">
-                                        <th scope="row"></th>
-                                        <td class="px-6 py-4"> <!-- Change here to span two columns -->
-                                            <input type="text" id="postal_code" name="postal_code"
-                                                value="{{ $address->postal_code ?? '' }}"
-                                                class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                placeholder="Your Postal Code" />
-                                        </td>
-                                    </tr>
-
-                                    {{-- address --}}
-                                    <tr class="bg-white">
-                                        <th scope="row"></th>
-                                        <td class="px-6 py-4"> <!-- Change here to span two columns -->
-                                            <textarea name="address" id="address" cols="5" rows="5"
-                                                class="h-24 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
-                                                placeholder="Your Address">{{ $address->address ?? '' }}</textarea>
-                                        </td>
-                                    </tr>
+                                    
                                     {{-- save change di remove dlu --}}
 
                                     {{-- <tr class="bg-white">
