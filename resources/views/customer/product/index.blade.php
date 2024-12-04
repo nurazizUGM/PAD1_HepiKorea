@@ -122,10 +122,12 @@
                     onclick="window.location.href = '{{ route('product.show', $product->id) }}'">
                     {{-- image product --}}
                     @php
-                        $image = $product->images->first()->path;
-                        if (Storage::exists('products/' . $image)) {
-                            $image = Storage::url('products/' . $image);
-                        } elseif (!filter_var($image, FILTER_VALIDATE_URL)) {
+                        $image = $product->images->first();
+                        if ($image && Storage::exists('products/' . $image->path)) {
+                            $image = Storage::url('products/' . $image->path);
+                        } elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL)) {
+                            $image = $image->path;
+                        } else {
                             $image = asset('img/example/test_blouse.png');
                         }
                     @endphp
