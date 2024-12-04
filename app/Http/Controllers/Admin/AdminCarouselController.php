@@ -47,8 +47,10 @@ class AdminCarouselController extends Controller
             $url = $request->youtube_url;
             if (strpos($url, 'youtu.be')) {
                 $videoId = explode('youtu.be/', $url)[1];
+                $videoId = explode('?', $videoId)[0];
             } else {
                 $videoId = explode('v=', $url)[1];
+                $videoId = explode('&', $videoId)[0];
             }
             $data['media'] = "https://www.youtube.com/embed/$videoId?autoplay=1&mute=1";
         } else if ($request->hasFile('media')) {
