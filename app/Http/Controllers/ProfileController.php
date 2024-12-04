@@ -41,7 +41,7 @@ class ProfileController extends Controller
 
             $photo = $request->file('photo');
             $filename = $photo->hashName();
-            $data['photo'] = $photo->storeAs('profile', $filename, 'public');
+            $data['photo'] = $photo->storeAs('profile', $filename);
         }
 
         // Check if password is updated

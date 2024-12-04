@@ -55,7 +55,7 @@ class AdminProductController extends Controller
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->hashName();
-                $image->storeAs('products', $filename, 'public');
+                $image->storeAs('products', $filename);
                 $product->images()->create([
                     'path' => $filename
                 ]);
@@ -96,7 +96,7 @@ class AdminProductController extends Controller
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
                 $filename = $image->hashName();
-                $image->storeAs('products', $filename, 'public');
+                $image->storeAs('products', $filename);
                 $product->images()->create([
                     'path' => $filename
                 ]);

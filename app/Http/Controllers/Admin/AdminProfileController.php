@@ -70,7 +70,7 @@ class AdminProfileController extends Controller
             }
             $photo = $request->file('photo');
             $filename = $photo->hashName();
-            $data['photo'] = $photo->storeAs('profile', $filename, 'public');
+            $data['photo'] = $photo->storeAs('profile', $filename);
         }
 
         $user->update($data);

@@ -53,7 +53,7 @@ class AdminCarouselController extends Controller
             $data['media'] = "https://www.youtube.com/embed/$videoId?autoplay=1&mute=1";
         } else if ($request->hasFile('media')) {
             $media = $request->file('media');
-            $data['media'] = $media->storeAs('carousel', $media->hashName(), 'public');
+            $data['media'] = $media->storeAs('carousel', $media->hashName());
         }
 
         Carousel::create($data);

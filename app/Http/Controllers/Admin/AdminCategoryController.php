@@ -30,7 +30,7 @@ class AdminCategoryController extends Controller
 
         $icon = $request->file('icon');
         $data['icon'] = $icon->hashName();
-        $icon->storeAs('category', $data['icon'], 'public');
+        $icon->storeAs('category', $data['icon']);
 
         Category::create($data);
         return redirect()->route('admin.category.index')->with('success', 'Category created successfully');
@@ -55,7 +55,7 @@ class AdminCategoryController extends Controller
 
             $icon = $request->file('icon');
             $data['icon'] = $icon->hashName();
-            $icon->storeAs('category', $data['icon'], 'public');
+            $icon->storeAs('category', $data['icon']);
         }
 
         $category->update($data);
