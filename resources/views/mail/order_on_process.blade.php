@@ -78,7 +78,7 @@
                     <li>Produk 2 - Rp 50.000</li>
                 </ul>
                 <p><b>Total:</b> Rp 150.000</p> --}}
-                <p><b>Estimated Arrival in Destination</b>: 11 Sep - 20 Sep</p>
+                <p><b>Estimated Arrival in Indonesia</b>: 11 Sep - 20 Sep</p>
             </div>
         </div>
 

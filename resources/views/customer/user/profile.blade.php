@@ -172,11 +172,11 @@
                                                 class="h-12 bg-gray-50 border- border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 "
                                                 placeholder="Confirm Password" />
                                             <span
-                                                class="absolute inset-y-0 right-4 pr-6 flex items-center btn-show-password">
+                                                class="absolute inset-y-0 -top-7 right-4 pr-6 flex items-center btn-show-password">
                                                 <img src="{{ asset('img/assets/icon/icon_hide_eye.svg') }}"
                                                     alt="eye hide Icon" class="h-6 w-6 cursor-pointer">
                                             </span>
-
+                                            <a href="{{ route('auth.verify') }}" class="text-end block text-[#4F7AE8] mt-2 cursor-pointer">Verify email</a>
                                         </td>
                                     </tr>
 
@@ -232,7 +232,7 @@
                                         <th scope="row"></th>
                                         <td class="py-4"> <!-- Change here to span two columns -->
                                             <textarea name="address" id="address" cols="5" rows="5"
-                                                class="h-24 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400"
+                                                class="h-24 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-orange-400 dark:focus:border-orange-400 resize-none"
                                                 placeholder="Your Address">{{ $address->address ?? '' }}</textarea>
                                         </td>
                                     </tr>
