@@ -10,15 +10,24 @@
 </div>
 
 <!-- start of product card container -->
-<div class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
+<div
+    class="w-full h-[85%] mt-5 overflow-y-scroll flex flex-wrap flex-row gap-x-12 gap-y-8 justify-start items-start content-start">
     <!-- card product -->
     <!-- ini for loop hanya untuk coba -->
     @foreach ($categories as $category)
         <div class="bg-white w-60 h-72 rounded-lg overflow-hidden flex flex-col">
             <!-- image product card -->
-            <div class="w-full h-2/3 bg-cover bg-top"
-                style="background-image: url('{{ str_starts_with($category->icon, 'http') ? $category->icon : asset('storage/category/' . $category->icon) }}');">
-            </div>
+            @if (Storage::exists('category/' . $category->icon))
+                <div class="w-full h-2/3 bg-cover bg-top"
+                    style="background-image: url('{{ Storage::url('category/' . $category->icon) }}');">
+                </div>
+            @elseif (filter_var($category->icon, FILTER_VALIDATE_URL))
+                <div class="w-full h-2/3 bg-cover bg-top" style="background-image: url('{{ $category->icon }}');">
+                </div>
+            @else
+                <div class="w-full h-2/3 bg-cover bg-top" style="background-image: url('https://placehold.co/200');">
+                </div>
+            @endif
             <!-- header & detail product card -->
             <div class="p-2">
                 <p class="text-lg text-[#3E6E7A] text-center font-bold truncate">{{ $category->name }}</p>
