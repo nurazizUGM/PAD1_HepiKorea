@@ -8,9 +8,9 @@
 </a>
 
 @section('content')
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-3 md:py-6 px-3 md:px-6">
+    <div class="w-full w-max[100%] rounded-3xl bg-[#EFEFEF] shadow-md overflow-hidden py-3 md:py-6 px-3 md:px-6">
         {{-- start of welcome container --}}
-        <div class="bg-white w-full h-full flex flex-col rounded-xl pt-2 md:pt-4 pb-4 md:pb-8 px-4 md:px-8">
+        <div class="bg-white w-full flex flex-col rounded-xl pt-2 md:pt-4 pb-4 md:pb-8 px-4 md:px-8">
             <h1 class="text-lg md:text-2xl font-bold">Welcome !</h1>
             <p class="font-semibold text-xs md:text-lg">
                 Once you've selected your items from your preferred Korean store, complete this form to place your custom
@@ -24,11 +24,11 @@
         {{-- end of welcome container --}}
 
         {{-- start of step pemesanan & form customer details --}}
-        <div class="w-full h-full bg-white flex-col rounded-xl mt-6 py-2 md:py-6 px-2 md:px-8">
+        <div class="w-full bg-white flex-col rounded-xl mt-6 py-2 md:py-6 px-2 md:px-8">
             <h1 class="text-center text-xl md:text-4xl text-black font-bold mb-1 md:mb-5">Step of Request Order</h1>
 
             {{-- container card step pemesanan --}}
-            <div class="w-full h-full flex flex-col">
+            <div class="w-full flex flex-col">
                 <div class="flex flex-row h-1/2">
                     <div class="w-1/2 h-full flex p-2">
                         {{-- step number 1 --}}
@@ -81,7 +81,7 @@
 
             {{-- form Customer details --}}
             <form id="form-request" action="{{ route('request-order') }}" method="POST" enctype="multipart/form-data"
-                class="w-full h-full flex flex-col mt-2 md:mt-10 {{ Auth::check() ? 'hidden' : '' }}">
+                class="w-full flex flex-col mt-2 md:mt-10 {{ Auth::check() ? 'hidden' : '' }}">
                 @csrf
                 <label for="name" class="text-base md:text-xl text-black font-medium my-0.5 md:my-2">Name</label>
                 <input type="text" name="fullname" value="{{ Auth::check() ? Auth::user()->fullname : '' }}"
@@ -100,17 +100,22 @@
 
         {{-- container list request order --}}
         <div class="w-full h-fit pt-6 flex flex-col" id="request-items">
-            <a href="#" class="ml-auto w-1/4 md:w-1/12"><button type="submit" form="form-request"
-                    class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-lg text-white text-sm md:text-lg py-1.5 md:py-2 px-2 md:px-5 ">Confirm</button></a>
+            <a href="#" class="ml-auto w-1/4 md:w-1/12 hidden">
+                <button type="submit" form="form-request"
+                    class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-lg text-white text-sm md:text-lg py-1.5 md:py-2 px-2 md:px-5 ">
+                    Confirm
+                </button>
+            </a>
         </div>
         {{-- end container list request order --}}
 
         {{-- start of request order form --}}
-        <div class="w-full h-full bg-white flex-col rounded-xl mt-6 py-3 md:py-6 px-4 md:px-8">
-            <form action="" class="w-full h-fit flex flex-col text-orange-400 font-semibold text-base md:text-xl">
+        <div class="w-full bg-white flex-col rounded-xl mt-6 py-3 md:py-6 px-4 md:px-8">
+            <form id="form-add-item" onsubmit="addOrderItem(event, this)"
+                class="w-full h-fit flex flex-col text-orange-400 font-semibold text-base md:text-xl">
                 <label for="">Product Name</label>
                 {{-- input product name --}}
-                <input type="text" id="product-name" name="product-name"
+                <input type="text" id="product-name" name="product-name" required
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
                 <label for="">Product Photo</label>
                 <!-- input file image -->
@@ -128,25 +133,25 @@
 
                 {{-- input product link --}}
                 <label for="product-link">Product Link</label>
-                <input type="text" id="product-link" name="product-link"
+                <input type="text" id="product-link" name="product-link" required
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
 
                 {{-- input price --}}
                 <label for="product-price">Price</label>
-                <input type="number" id="product-price"
+                <input type="number" id="product-price" required
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
 
                 {{-- input quantity --}}
                 <label for="product-quantity">Quantity</label>
-                <input type="number" id="product-quantity"
+                <input type="number" id="product-quantity" required
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black pl-6 focus:border-black focus:ring-0 my-2">
 
                 {{-- input note --}}
                 <label for="product-note">Note</label>
-                <textarea id="product-description" cols="30" rows="10"
+                <textarea id="product-description" cols="30" rows="10" required
                     class="rounded-xl bg-white border text-[#898383] font-normal border-black px-6 focus:border-black focus:ring-0 resize-none my-2"></textarea>
 
-                <button type="button" onclick="addOrderItem()"
+                <button type="submit"
                     class="text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] w-1/5 md:w-1/12 py-1 md:py-2 rounded-lg font-normal mt-0.5 mr-auto">Add</button>
             </form>
         </div>
@@ -218,6 +223,9 @@
     <script>
         $(document).ready(function() {
             $('#form-request').submit(function(e) {
+                if ($('#product-name').val()) {
+                    $('#form-add-item').submit();
+                }
                 const productCount = $('#request-items').find('.request-order-items').length;
                 if (productCount == 0) {
                     e.preventDefault();
@@ -226,7 +234,7 @@
             })
         })
 
-        function addOrderItem() {
+        function addOrderItem(ev, el) {
             let productImagePreview = "{{ asset('img/assets/icon/icon_admin_order_product.svg') }}";
             const productCount = $('#request-items').find('.request-order-items').length;
 
@@ -243,14 +251,6 @@
             const productPrice = $('#product-price').val();
             const productQuantity = $('#product-quantity').val();
             const productDescription = $('#product-description').val();
-            console.log({
-                productName,
-                productImage,
-                productLink,
-                productPrice,
-                productQuantity,
-                productDescription
-            });
 
             const component = $(`
             <div class="w-full h-fit bg-white rounded-xl flex flex-row px-1 md:px-4 py-2 md:py-4 mb-4 request-order-items">
@@ -292,7 +292,13 @@
             if (productImage.files.length > 0) {
                 component.append(productImage);
             }
-            $('#request-items').prepend(component);
+            // $('#request-items').prepend(component);
+            $('#request-items').find('a').before(component);
+            $('#request-items').find('a.hidden').removeClass('hidden');
+
+            ev.preventDefault();
+            // clear form
+            el.reset();
         }
     </script>
 @endpush
