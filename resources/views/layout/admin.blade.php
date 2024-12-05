@@ -190,7 +190,7 @@
     <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full relative">
         @yield('content')
 
-        @if (config()->get('app.env') == 'local')
+        @if (config('app.debug'))
             @if ($errors->any())
                 @foreach ($errors->all() as $error)
                     <div id="alert-2"

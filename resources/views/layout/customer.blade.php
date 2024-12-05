@@ -212,7 +212,7 @@
 
     @yield('footer', View::make('layout.footer'))
 
-    @if (config()->get('app.env') == 'local')
+    @if (config('app.debug'))
         <div class="absolute top-24 right-8 z-60">
             @if ($errors->any())
                 @foreach ($errors->all() as $error)

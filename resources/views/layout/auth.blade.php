@@ -24,16 +24,18 @@
     @yield('content')
     <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.js"></script>
 
-    @if (!auth()->check())
+    @if (!Auth::check() && config('services.google.client_id'))
         <script src="https://accounts.google.com/gsi/client" async></script>
         <script>
             function handleCredentialResponse(response) {
-                console.log("Encoded JWT ID token: " + response.credential);
+                @if (config('app.debug'))
+                    console.log("Encoded JWT ID token: " + response.credential);
+                @endif
                 window.location.href = "{{ route('auth.callback') }}?credential=" + response.credential;
             }
             window.onload = function() {
                 google.accounts.id.initialize({
-                    client_id: "{{ config('app.g_client_id') }}",
+                    client_id: "{{ config('services.google.client_id') }}",
                     callback: handleCredentialResponse,
                     cancel_on_tap_outside: true
                 });

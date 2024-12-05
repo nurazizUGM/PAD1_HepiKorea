@@ -52,7 +52,8 @@
             </div>
 
             <div class="text-right my-3">
-                <a href="{{ route('auth.forgot_password') }}" class="text-sm font-semibold text-blue-600 ">Forgot Password</a>
+                <a href="{{ route('auth.forgot_password') }}" class="text-sm font-semibold text-blue-600 ">Forgot
+                    Password</a>
             </div>
             <!-- login button -->
             <button type="submit"
@@ -60,18 +61,20 @@
         </form>
         <p class="text-sm font-semibold text-center text-black">Don't have an account? <a
                 href="{{ route('auth.register') }}" class="text-blue-600">Register</a></p>
-        <div class="w-full relative">
-            <hr class="border-t-2 border-slate-400 mt-8 relative">
-            <div class="absolute -top-5 left-[25%] bg-[#FFFCFC] font-semibold text-[#B7B7B7] py-2 px-10">or login with</div>
-        </div>
-        <!-- button login google -->
-        <a href="{{ route('auth.google') }}" id="btn-google"
-            class="w-full flex items-center justify-center bg-[#EFEFEF] h-12 rounded-xl mb-5 text-2xl font-bold text-black mt-10">
-            <img src="{{ asset('img/assets/icon/icon_google.png') }}" alt="Google Icon" class="h-6 w-6 mr-3">
-            Login With Google
-        </a>
 
-
+        @if (config('services.google.client_id'))
+            <div class="w-full relative">
+                <hr class="border-t-2 border-slate-400 mt-8 relative">
+                <div class="absolute -top-5 left-[25%] bg-[#FFFCFC] font-semibold text-[#B7B7B7] py-2 px-10">or login with
+                </div>
+            </div>
+            <!-- button login google -->
+            <a href="{{ route('auth.google') }}" id="btn-google"
+                class="w-full flex items-center justify-center bg-[#EFEFEF] h-12 rounded-xl mb-5 text-2xl font-bold text-black mt-10">
+                <img src="{{ asset('img/assets/icon/icon_google.png') }}" alt="Google Icon" class="h-6 w-6 mr-3">
+                Login With Google
+            </a>
+        @endif
     </div>
 
     <script>

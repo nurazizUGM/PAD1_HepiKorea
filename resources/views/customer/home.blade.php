@@ -307,9 +307,9 @@
         {{-- end of category,recent,best seller container --}}
     </div>
     {{-- end of homapege content container --}}
+@endsection
 
-
-
+@push('script')
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const newArrivalContainer = document.getElementById('new-arrival-container');
@@ -402,4 +402,23 @@
             }
         });
     </script>
-@endsection
+    @if (!Auth::check() && config('services.google.client_id'))
+        <script src="https://accounts.google.com/gsi/client" async></script>
+        <script>
+            function handleCredentialResponse(response) {
+                @if (config('app.debug'))
+                    console.log("Encoded JWT ID token: " + response.credential);
+                @endif
+                window.location.href = "{{ route('auth.callback') }}?credential=" + response.credential;
+            }
+            window.onload = function() {
+                google.accounts.id.initialize({
+                    client_id: "{{ config('services.google.client_id') }}",
+                    callback: handleCredentialResponse,
+                    cancel_on_tap_outside: true
+                });
+                google.accounts.id.prompt();
+            }
+        </script>
+    @endif
+@endpush
