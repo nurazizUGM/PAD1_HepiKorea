@@ -65,12 +65,11 @@ class AdminProfileController extends Controller
 
         // check if photo changed
         if ($request->hasFile('photo')) {
-            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-                Storage::disk('public')->delete($user->photo);
+            if ($user->photo && Storage::exists($user->photo)) {
+                Storage::delete($user->photo);
             }
             $photo = $request->file('photo');
-            $filename = $photo->hashName();
-            $data['photo'] = $photo->storeAs('profile', $filename);
+            $data['photo'] = $photo->store('profile');
         }
 
         $user->update($data);

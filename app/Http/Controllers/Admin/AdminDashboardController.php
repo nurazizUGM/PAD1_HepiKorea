@@ -18,12 +18,12 @@ class AdminDashboardController extends Controller
     {
         // get total products, orders and customers
         $products = Product::where('is_deleted', false)->count();
-        $orders = Order::where('status', '!=', 'cancelled')->count();
         $customers = User::where('role', Role::USER)->count();
 
-        $uncompletedOrder = Order::whereNotIn('status', ['canceled', 'finised'])->count();
+        $uncompletedOrder = Order::whereIn('status', ['paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sent'])->count();
         $completedOrder = Order::where('status', 'finished')->count();
-        $completionRate = $uncompletedOrder + $completedOrder > 0 ? ($completedOrder / ($uncompletedOrder + $completedOrder)) * 100 : 0;
+        $totalOrder = $uncompletedOrder + $completedOrder;
+        $completionRate = $totalOrder > 0 ? ($completedOrder / ($totalOrder)) * 100 : 0;
         $completionRate = number_format($completionRate, 2);
 
         // Get total order for each category
@@ -36,6 +36,6 @@ class AdminDashboardController extends Controller
                         ->count();
                 });
         }
-        return view('admin.dashboard', compact('products', 'orders', 'customers', 'uncompletedOrder', 'completedOrder', 'completionRate', 'categories'));
+        return view('admin.dashboard', compact('products', 'customers', 'totalOrder', 'uncompletedOrder', 'completedOrder', 'completionRate', 'categories'));
     }
 }

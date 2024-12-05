@@ -123,8 +123,8 @@
                     {{-- image product --}}
                     @php
                         $image = $product->images->first();
-                        if ($image && Storage::exists('products/' . $image->path)) {
-                            $image = Storage::url('products/' . $image->path);
+                        if ($image && Storage::exists($image->path)) {
+                            $image = Storage::url($image->path);
                         } elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL)) {
                             $image = $image->path;
                         } else {

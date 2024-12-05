@@ -28,7 +28,7 @@
                         onclick="window.location.href='{{ route('admin.customer.show', $customer->id) }}'">
                         <!-- image customer card -->
                         <div class="w-full h-4/6">
-                            <img src="{{ $customer->photo && Storage::exists('public/profile/' . $customer->photo) ? Storage::url('profile/' . $customer->photo) : asset('img/assets/icon/icon_user.svg') }}"
+                            <img src="{{ $customer->photo && Storage::exists($customer->photo) ? Storage::url($customer->photo) : asset('img/assets/icon/icon_user.svg') }}"
                                 alt="customer photo" class="w-full h-full object-cover object-top">
                         </div>
                         <!-- header & detail customer card -->

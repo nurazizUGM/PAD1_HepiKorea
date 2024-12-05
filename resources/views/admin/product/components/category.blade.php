@@ -17,9 +17,9 @@
     @foreach ($categories as $category)
         <div class="bg-white w-60 h-72 rounded-lg overflow-hidden flex flex-col">
             <!-- image product card -->
-            @if (Storage::exists('category/' . $category->icon))
+            @if (Storage::exists($category->icon))
                 <div class="w-full h-2/3 bg-cover bg-top"
-                    style="background-image: url('{{ Storage::url('category/' . $category->icon) }}');">
+                    style="background-image: url('{{ Storage::url($category->icon) }}');">
                 </div>
             @elseif (filter_var($category->icon, FILTER_VALIDATE_URL))
                 <div class="w-full h-2/3 bg-cover bg-top" style="background-image: url('{{ $category->icon }}');">

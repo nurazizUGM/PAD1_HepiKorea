@@ -12,9 +12,9 @@
                             $image = $product->images->first();
                         @endphp
                         {{-- main image --}}
-                        @if (Storage::disk('public')->exists('products/' . $image->path))
-                            <img id="mainImage" src="{{ Storage::url('products/' . $image->path) }}"
-                                class="w-full h-full object-contain" alt="Main Image">
+                        @if (Storage::exists($image->path))
+                            <img id="mainImage" src="{{ Storage::url($image->path) }}" class="w-full h-full object-contain"
+                                alt="Main Image">
                         @elseif (filter_var($image->path, FILTER_VALIDATE_URL))
                             <img id="mainImage" src="{{ $image->path }}" class="w-full h-full object-contain"
                                 alt="Main Image">
@@ -27,8 +27,8 @@
                     <div class="flex space-x-4 mx-auto overflow-x-auto" id="product-images">
                         @foreach ($product->images as $image)
                             <div class="relative w-14 h-14">
-                                @if (Storage::disk('public')->exists('products/' . $image->path))
-                                    <img src="{{ Storage::url('products/' . $image->path) }}"
+                                @if (Storage::exists($image->path))
+                                    <img src="{{ Storage::url($image->path) }}"
                                         class="w-full h-full object-cover rounded-lg cursor-pointer border border-gray-100">
                                 @elseif (filter_var($image->path, FILTER_VALIDATE_URL))
                                     <img src="{{ $image->path }}"

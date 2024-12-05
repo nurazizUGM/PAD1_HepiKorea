@@ -13,7 +13,7 @@ class AdminAnalyticController extends Controller
     public function index(Request $request)
     {
         $tab = $request->query('tab', 'chart');
-        $totalOrder = Order::where('status', '!=', 'cancelled')->count();
+        $totalOrder = Order::whereIn('status', ['paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sent', 'finished'])->count();
         $completedOrder = Order::where('status', 'finished')->count();
 
         // Get total order for each category

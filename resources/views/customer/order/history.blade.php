@@ -57,7 +57,7 @@
                                 $item = $order->orderItems->first();
                                 $productName = $item->product->name;
                                 $totalPrice = $order->total_items_price;
-                                $image = 'products/' . $item->product->images->first()->path;
+                                $image = $item->product->images->first()->path;
                                 $count = $order->orderItems->count();
                             }
 
@@ -155,7 +155,7 @@
                                 $item = $order->orderItems->first();
                                 $productName = $item->product->name;
                                 $totalPrice = $order->total_items_price;
-                                $image = 'products/' . $item->product->images->first()->path;
+                                $image = $item->product->images->first()->path;
                                 $count = $order->orderItems->count();
                             }
 
@@ -241,7 +241,7 @@
                                 $item = $order->orderItems->first();
                                 $productName = $item->product->name;
                                 $totalPrice = $order->total_items_price;
-                                $image = 'products/' . $item->product->images->first()->path;
+                                $image = $item->product->images->first()->path;
                                 $count = $order->orderItems->count();
                             }
 
@@ -360,7 +360,7 @@
                                 $item = $order->orderItems->first();
                                 $productName = $item->product->name;
                                 $totalPrice = $order->total_items_price;
-                                $image = 'products/' . $item->product->images->first()->path;
+                                $image = $item->product->images->first()->path;
                                 $count = $order->orderItems->count();
                             }
 

@@ -54,8 +54,7 @@ class AdminProductController extends Controller
         // store images
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = $image->hashName();
-                $image->storeAs('products', $filename);
+                $filename = $image->store('products');
                 $product->images()->create([
                     'path' => $filename
                 ]);
@@ -95,8 +94,7 @@ class AdminProductController extends Controller
         // store images
         if ($request->has('images')) {
             foreach ($request->file('images') as $image) {
-                $filename = $image->hashName();
-                $image->storeAs('products', $filename);
+                $filename = $image->store('products');
                 $product->images()->create([
                     'path' => $filename
                 ]);
@@ -107,8 +105,8 @@ class AdminProductController extends Controller
         if ($request->has('deleted_images')) {
             foreach ($request->input('deleted_images') as $image) {
                 $image = $product->images()->find($image);
-                if ($image && Storage::exists('public/products/' . $image->path)) {
-                    Storage::delete('public/products/' . $image->path);
+                if ($image && Storage::exists($image->path)) {
+                    Storage::delete($image->path);
                 }
                 if ($image) {
                     $image->delete();

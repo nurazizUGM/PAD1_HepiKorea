@@ -35,13 +35,12 @@ class ProfileController extends Controller
 
         // Check if photo is uploaded
         if ($request->hasFile('photo')) {
-            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
-                Storage::disk('public')->delete($user->photo);
+            if ($user->photo && Storage::exists($user->photo)) {
+                Storage::delete($user->photo);
             }
 
             $photo = $request->file('photo');
-            $filename = $photo->hashName();
-            $data['photo'] = $photo->storeAs('profile', $filename);
+            $data['photo'] = $photo->store('profile');
         }
 
         // Check if password is updated

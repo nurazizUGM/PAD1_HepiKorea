@@ -126,7 +126,7 @@ class AuthController extends Controller
 
                 try {
                     $photo =  'profile/' . Uuid::uuid4() . '.' . $ext;
-                    Storage::disk('public')->put($photo, file_get_contents($googleUser['picture']));
+                    Storage::put($photo, file_get_contents($googleUser['picture']));
                 } catch (\Throwable $th) {
                     error_log("[Exception] " . $th->getMessage() .
                         " in " . $th->getFile() .

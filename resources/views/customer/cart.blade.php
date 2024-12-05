@@ -17,8 +17,8 @@
                         <div class="w-[40%] md:w-[35%] h-full">
                             @if (strpos($cart->product->image, 'http') === 0)
                                 <img src="{{ $cart->product->image }}" alt="" class="w-full h-full object-contain">
-                            @elseif (Storage::disk('public')->exists('products/' . $cart->product->image))
-                                <img src="{{ Storage::url('products/' . $cart->product->image) }}" alt=""
+                            @elseif (Storage::exists($cart->product->image))
+                                <img src="{{ Storage::url($cart->product->image) }}" alt=""
                                     class="w-full h-full bg-contain">
                             @else
                                 <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt=""

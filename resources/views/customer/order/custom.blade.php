@@ -1,5 +1,6 @@
-@extends('layout.customer_nofooter')
+@extends('layout.customer')
 @section('title', 'Product Confirmed')
+@section('footer', '')
 
 @section('content')
     <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] py-2 px-14">

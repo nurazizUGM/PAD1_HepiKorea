@@ -10,7 +10,7 @@
 
 @section('content')
     {{-- homapege content container --}}
-    <div class="w-full w-max[100%] h-full rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
+    <div class="w-full w-max[100%] rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
         {{-- start of carousel --}}
         <div id="default-carousel" class="relative w-full rounded-t-2xl md:rounded-t-3xl" data-carousel="slide">
             <!-- Carousel wrapper -->
@@ -110,7 +110,7 @@
         {{--  --}}
 
         {{-- start of category,recent,best seller container --}}
-        <div class="w-full h-full flex flex-col py-5 md:py-10 px-4 md:px-12">
+        <div class="w-full flex flex-col py-5 md:py-10 px-4 md:px-12">
             {{-- category text --}}
             <div class="w-fit md:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0">
                 <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">Category</h1>
@@ -122,8 +122,16 @@
                 @foreach ($categories as $category)
                     <div class="bg-[#FFFCFC] h-24 md:h-52 flex flex-col text-center align-middle justify-center rounded-xl cursor-pointer"
                         onclick="window.location.href='{{ route('product.index', ['category' => $category->id]) }}'">
-                        <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}" alt="fashion_Category"
-                            class="w-12 h-12 md:w-40 md:h-40 mx-auto">
+                        @if ($category->icon && Storage::exists($category->icon))
+                            <img src="{{ Storage::url($category->icon) }}" alt="fashion_Category"
+                                class="w-12 h-12 md:w-40 md:h-40 mx-auto">
+                        @elseif ($category->icon && filter_var($category->icon, FILTER_VALIDATE_URL))
+                            <img src="{{ $category->icon }}" alt="fashion_Category"
+                                class="w-12 h-12 md:w-40 md:h-40 mx-auto">
+                        @else
+                            <img src="{{ asset('img/assets/icon/icon_homepage_category_fashion.png') }}"
+                                alt="fashion_Category" class="w-12 h-12 md:w-40 md:h-40 mx-auto">
+                        @endif
                         <h2 class="text-black text-[10px] md:text-lg font-semibold text-ellipsis overflow-hidden">
                             {{ $category->name }}</h2>
                     </div>
@@ -173,9 +181,9 @@
                                 @php
                                     $image = \App\Models\ProductImage::where('product_id', $product->id)->first();
                                 @endphp
-                                @if ($image && Storage::exists('products/' . $image->path))
+                                @if ($image && Storage::exists($image->path))
                                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                                        style="background-image: url('{{ Storage::url($image->path) }}');">
                                     </div>
                                 @elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL))
                                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
@@ -213,7 +221,6 @@
                 </div>
             </div>
             {{-- end of new arrival container --}}
-
             {{--  --}}
 
             {{-- best seller text --}}
@@ -256,9 +263,9 @@
                                 @php
                                     $image = \App\Models\ProductImage::where('product_id', $product->id)->first();
                                 @endphp
-                                @if ($image && Storage::exists('products/' . $image->path))
+                                @if ($image && Storage::exists($image->path))
                                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                                        style="background-image: url('{{ Storage::url($image->path) }}');">
                                     </div>
                                 @elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL))
                                     <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"

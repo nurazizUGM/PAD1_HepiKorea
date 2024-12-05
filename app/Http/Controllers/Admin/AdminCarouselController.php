@@ -35,7 +35,7 @@ class AdminCarouselController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'description' => 'nullable|string',
             'media_type' => 'required|in:image,video,youtube',
             'media' => 'required_if:media_type,image,video|file|mimes:jpeg,jpg,png,mp4|max:2048',
             'youtube_url' => 'required_if:media_type,youtube',
@@ -55,7 +55,11 @@ class AdminCarouselController extends Controller
             $data['media'] = "https://www.youtube.com/embed/$videoId?autoplay=1&mute=1";
         } else if ($request->hasFile('media')) {
             $media = $request->file('media');
-            $data['media'] = $media->storeAs('carousel', $media->hashName());
+            $data['media'] = $media->store('carousel');
+        }
+
+        if ($data['description'] == null) {
+            $data['description'] = '';
         }
 
         Carousel::create($data);

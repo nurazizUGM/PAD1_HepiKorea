@@ -81,9 +81,9 @@
                 @php
                     $image = $product->images->first();
                 @endphp
-                @if ($image && Storage::exists('products/' . $image->path))
+                @if ($image && Storage::exists($image->path))
                     <div class="w-full h-2/3 bg-cover bg-top"
-                        style="background-image: url('{{ Storage::url('products/' . $image->path) }}');">
+                        style="background-image: url('{{ Storage::url($image->path) }}');">
                     </div>
                 @elseif ($image && filter_var($image->path, FILTER_VALIDATE_URL))
                     <div class="w-full h-2/3 bg-cover bg-top" style="background-image: url('{{ $image->path }}');">

@@ -25,7 +25,7 @@
                 onclick="window.location.href='{{ route('admin.order.index') }}'">
                 <div class="mb-auto flex w-full px-4 py-3 justify-between overflow-hidden">
                     <!-- Order count -->
-                    <p class="text-6xl font-bold">{{ $orders }}</p>
+                    <p class="text-6xl font-bold">{{ $totalOrder }}</p>
                     <!-- Order icon -->
                     <img src="{{ asset('img/assets/icon/icon_dashboard_order.svg') }}" alt="Order Icon" class="h-12 w-12">
                 </div>
