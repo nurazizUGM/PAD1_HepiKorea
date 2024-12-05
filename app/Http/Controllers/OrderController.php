@@ -90,90 +90,19 @@ class OrderController extends Controller
         ];
     }
 
-    // custom request order
-    public function requestOrder(Request $request)
-    {
-        DB::beginTransaction();
-        $data = $request->validate([
-            'fullname' => 'required|string',
-            'email' => 'required|email',
-            'items' => 'required|array',
-            'items.*.name' => 'required|string',
-            'items.*.quantity' => 'required|integer|min:1',
-            'items.*.price' => 'required|numeric|min:0',
-            'items.*.url' => 'required|url',
-            'items.*.description' => 'required|string',
-            'items.*.image' => 'nullable|image'
-        ]);
-
-        if (Auth::check()) {
-            $user = Auth::user();
-        } else {
-            $user = User::where('email', User::$guestEmail)->first();
-        }
-
-        $order = Order::create([
-            'user_id' => $user->id,
-            'type' => 'custom',
-            'status' => 'unconfirmed',
-            'total_items_price' => 0,
-        ]);
-
-        if ($user->role == Role::GUEST) {
-            $order->orderDetail()->create([
-                'fullname' => $data['fullname'],
-                'email' => $data['email'],
-            ]);
-        }
-
-        foreach ($data['items'] as $item) {
-            if (isset($item['image'])) {
-                $item['image'] = $item['image']->store('orders');
-            } else {
-                $item['image'] = null;
-            }
-
-            $order->customOrderItems()->create([
-                'name' => $item['name'],
-                'quantity' => $item['quantity'],
-                'estimated_price' => $item['price'],
-                'total_price' => $item['price'] * $item['quantity'],
-                'url' => $item['url'],
-                'description' => $item['description'],
-                'image' => $item['image'],
-            ]);
-
-            $order->total_items_price += $item['price'] * $item['quantity'];
-        }
-
-        $order->save();
-
-        DB::commit();
-        return redirect()->route('order.show', $order->id)->with('success', 'Order has been requested');
-    }
-
     public function show(string $id)
     {
-        $order = Order::with(['orderDetail'])->findOrFail($id);
-
-        // render page depending on the order type
-        if ($order->type == 'custom') {
-            $order->load('customOrderItems');
-            $items = $order->customOrderItems;
-
-            return view('customer.order.custom', compact('items'));
-        } else {
-            $order->load([
-                'orderItems',
-                'orderItems.product',
-                'orderItems.product.images',
-                'orderPayment',
-                'orderShipment',
-                'reviews',
-                'orderLogs',
-            ]);
-            return view('customer.order.show', compact('order'));
-        }
+        $order = Order::with([
+            'orderDetail',
+            'orderItems',
+            'orderItems.product',
+            'orderItems.product.images',
+            'orderPayment',
+            'orderShipment',
+            'reviews',
+            'orderLogs',
+        ])->findOrFail($id);
+        return view('customer.order.show', compact('order'));
     }
 
     // transaction history

@@ -21,4 +21,14 @@ class CustomOrderItem extends Model
         'is_available',
         'admin_note'
     ];
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
+
+    public function orderDetail()
+    {
+        return $this->hasOneThrough(OrderDetail::class, Order::class, 'id', 'order_id');
+    }
 }

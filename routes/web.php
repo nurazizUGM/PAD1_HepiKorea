@@ -15,6 +15,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FaqController;
+use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -43,7 +44,7 @@ Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(f
 });
 
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
-Route::view('request-order', 'customer.order.request')->name('request-order');
+Route::get('request-order', [RequestOrderController::class, 'show'])->name('request-order');
 Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
