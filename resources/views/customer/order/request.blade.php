@@ -80,16 +80,16 @@
             </div>
 
             {{-- form Customer details --}}
-            <form id="form-request" action="{{ route('request-order') }}" class="w-full h-full flex flex-col mt-2 md:mt-10"
-                method="POST" enctype="multipart/form-data">
+            <form id="form-request" action="{{ route('request-order') }}" method="POST" enctype="multipart/form-data"
+                class="w-full h-full flex flex-col mt-2 md:mt-10 {{ Auth::check() ? 'hidden' : '' }}">
                 @csrf
                 <label for="name" class="text-base md:text-xl text-black font-medium my-0.5 md:my-2">Name</label>
-                <input type="text" name="fullname"
+                <input type="text" name="fullname" value="{{ Auth::check() ? Auth::user()->fullname : '' }}"
                     class="w-full md:w-[55%] h-8 md:h-12 pl-5 bg-white outline outline-1 border-black rounded-lg md:rounded-xl my-0.5 md:my-2 border-0 focus:border-1 focus:border-black focus:ring-black"
                     placeholder="Enter your name">
                 <label for="email" class="text-base md:text-xl text-black font-medium my-0.5 md:my-2">Email</label>
                 <div class="my-2 flex flex-row">
-                    <input type="email" name="email"
+                    <input type="email" name="email" value="{{ Auth::check() ? Auth::user()->email : '' }}"
                         class="w-full md:w-[55%] h-8 md:h-12 pl-5 bg-white outline outline-1 border-black rounded-lg md:rounded-xl py-2 border-0 focus:border-1 focus:border-black focus:ring-black"
                         placeholder="Email address">
                 </div>
@@ -100,11 +100,6 @@
 
         {{-- container list request order --}}
         <div class="w-full h-fit pt-6 flex flex-col" id="request-items">
-            @for ($i = 0; $i < 2; $i++)
-                {{-- request order product card --}}
-
-                {{-- end of request order product card --}}
-            @endfor
             <a href="#" class="ml-auto w-1/4 md:w-1/12"><button type="submit" form="form-request"
                     class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-lg text-white text-sm md:text-lg py-1.5 md:py-2 px-2 md:px-5 ">Confirm</button></a>
         </div>
@@ -221,6 +216,16 @@
 
 @push('script')
     <script>
+        $(document).ready(function() {
+            $('#form-request').submit(function(e) {
+                const productCount = $('#request-items').find('.request-order-items').length;
+                if (productCount == 0) {
+                    e.preventDefault();
+                    alert('Please add at least add one product');
+                }
+            })
+        })
+
         function addOrderItem() {
             let productImagePreview = "{{ asset('img/assets/icon/icon_admin_order_product.svg') }}";
             const productCount = $('#request-items').find('.request-order-items').length;

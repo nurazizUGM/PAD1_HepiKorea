@@ -69,7 +69,7 @@
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Request
                             Order</span></a>
                     {{-- confirmed nav link --}}
-                    <a href="{{ route('order.history', ['tab' => 'confirmation']) }}"><span
+                    <a href="#"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                     {{-- FAQ nav link --}}
                     <a href="{{ route('faq') }}"><span

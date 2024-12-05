@@ -36,7 +36,7 @@
                                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> --}}
                                 @if ($carousel->media_type == 'image')
-                                    @if (Storage::disk('public')->exists($carousel->media))
+                                    @if (Storage::exists($carousel->media))
                                         <img src="{{ Storage::url($carousel->media) }}" alt=""
                                             class="w-full h-full object-contain">
                                     @elseif (filter_var($carousel->media, FILTER_VALIDATE_URL))
@@ -48,7 +48,7 @@
                                     @endif
                                 @elseif($carousel->media_type == 'video')
                                     <video class="w-full h-full object-contain" controls autoplay muted loop>
-                                        @if (Storage::disk('public')->exists($carousel->media))
+                                        @if (Storage::exists($carousel->media))
                                             <source src="{{ Storage::url($carousel->media) }}" type="video/mp4">
                                         @elseif (filter_var($carousel->media, FILTER_VALIDATE_URL))
                                             <source src="{{ $carousel->media }}" type="video/mp4">

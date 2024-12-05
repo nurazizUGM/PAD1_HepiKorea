@@ -16,11 +16,6 @@
                 data-tabs-toggle="#default-styled-tab-content" data-tabs-active-classes="text-black border-orange-400"
                 data-tabs-inactive-classes="text-black border-none" role="tablist">
                 <li class="mx-auto" role="presentation">
-                    <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="confirmation-tab"
-                        data-tabs-target="#confirmation-content" type="button" role="tab" aria-controls="confirmation"
-                        aria-selected="{{ $tab == 'confirmation' ? 'true' : 'false' }}">Confirmation</button>
-                </li>
-                <li class="mx-auto" role="presentation">
                     <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="unpaid-tab"
                         data-tabs-target="#unpaid-content" type="button" role="tab" aria-controls="unpaid"
                         aria-selected="{{ $tab == 'unpaid' ? 'true' : 'false' }}">Unpaid</button>
@@ -40,82 +35,11 @@
                         data-tabs-target="#finish-content" type="button" role="tab" aria-controls="finish"
                         aria-selected="{{ $tab == 'finish' ? 'true' : 'false' }}">Finish</button>
                 </li>
-                <li class="mx-auto" role="presentation">
-                    <button class="inline-block p-4 border-b-4 rounded-t-lg text-xl font-semibold" id="cancelled-tab"
-                        data-tabs-target="#cancelled-content" type="button" role="tab" aria-controls="cancelled"
-                        aria-selected="{{ $tab == 'cancelled' ? 'true' : 'false' }}">Cancelled</button>
-                </li>
             </ul>
         </div>
 
         {{-- TAB CONTENT --}}
         <div id="default-styled-tab-content">
-            {{-- CONFIRMATION CONTENT --}}
-            <div class="hidden p-4 rounded-lg" id="confirmation-content" role="tabpanel" aria-labelledby="confirmation-tab">
-                {{-- list of unpaid order container --}}
-                <div class="w-full h-full flex flex-col gap-y-6">
-
-                    @foreach ($confirmation as $order)
-                        @php
-                            $item = $order->customOrderItems->first();
-                            $items = $order->customOrderItems->count();
-                        @endphp
-                        {{-- unpaid product --}}
-                        <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
-                            <div class="w-[20%]">
-                                {{-- unpaid product image --}}
-                                @if ($item->image && Storage::exists($item->image))
-                                    <img src="{{ Storage::url($item->image) }}" alt="unpaid_image_product"
-                                        class="h-48 object-contain mx-auto">
-                                @else
-                                    <img src="{{ asset('img/example/example_phone.png') }}" alt="unpaid_image_product"
-                                        class="h-48 object-contain mx-auto">
-                                @endif
-                            </div>
-                            <div class="w-[80%] flex flex-col">
-                                <div class="w-full h-1/2 flex flex-row">
-                                    <div class="w-[33%] h-full flex flex-col">
-                                        {{-- unpaid product name --}}
-                                        <h1 class="text-black font-semibold text-xl">{{ $item->name }}</h1>
-                                        {{-- unpaid product variant --}}
-                                        @if ($items > 1)
-                                            <p class="text-black text-opacity-50 font-semibold text-xl">
-                                                and {{ $items - 1 }} other items
-                                            </p>
-                                        @endif
-                                    </div>
-                                    <div class="ms-auto h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">
-                                            Rp
-                                            {{ number_format($order->total_items_price + $order->service_price, 0, ',', '.') }}
-                                        </p>
-                                    </div>
-                                </div>
-                                <div class="w-full h-1/2 flex flex-row">
-                                    {{-- status --}}
-                                    <div class="w-1/2">
-                                        <div
-                                            class="h-fit w-fit px-4 py-2 bg-[#3E6E7A] text-white font-semibold text-base rounded-2xl shadow-md">
-                                            <p>status: {{ $order->status }}</p>
-                                        </div>
-                                    </div>
-                                    {{-- two button container --}}
-                                    <div class="w-1/2 ms-auto flex flex-row justify-end items-center">
-                                        <button onclick="window.location.href = '{{ route('order.show', $order->id) }}'"
-                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3">Detail</button>
-                                        <button onclick="window.location.href = '{{ route('order.cancel', $order->id) }}'"
-                                            class="w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3 ml-4">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- end of unpaid product --}}
-                    @endforeach
-                </div>
-                {{-- list of unpaid order container --}}
-            </div>
-            {{-- end of CONFIRMATION CONTENT --}}
-
             {{-- UNPAID CONTENT --}}
             <div class="hidden p-4 rounded-lg" id="unpaid-content" role="tabpanel" aria-labelledby="unpaid-tab">
                 {{-- list of unpaid order container --}}
@@ -491,59 +415,6 @@
                 </div>
             </div>
             {{-- FINISH CONTENT --}}
-
-            {{-- CANCELLED CONTENT --}}
-            <div class="hidden p-4 rounded-lg" id="cancelled-content" role="tabpanel" aria-labelledby="cancelled-tab">
-                {{-- list of finish order container --}}
-                <div class="w-full h-full flex flex-col gap-y-6">
-
-                    @for ($i = 0; $i < 2; $i++)
-                        {{-- finish product --}}
-                        <div class="w-full h-full bg-white rounded-2xl flex flex-row py-8 px-8">
-                            <div class="w-[20%]">
-                                {{-- finish product image --}}
-                                <img src="{{ asset('img/example/example_phone.png') }}" alt="finish_image_product"
-                                    class="h-48 object-contain mx-auto">
-                            </div>
-                            <div class="w-[80%] flex flex-col">
-                                <div class="w-full h-1/2 flex flex-row">
-                                    <div class="w-[33%] h-full flex flex-col">
-                                        {{-- finish product name --}}
-                                        <h1 class="text-black font-semibold text-xl">Samsung S24 Ultra</h1>
-                                        {{-- finish product variant --}}
-                                        <p class="text-black text-opacity-50 font-semibold text-xl">Black</p>
-                                    </div>
-                                    <div class="w-[21%] h-full">
-                                        {{-- finish product weight --}}
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">300g</p>
-                                    </div>
-                                    <div class="w-[20%] h-full">
-                                        <p class="text-black text-opacity-60 font-semibold text-xl">1x</p>
-                                    </div>
-                                    <div class="w-[22%] h-full flex">
-                                        <p class="text-[#3E6E7A] text-xl font-semibold ml-auto">Rp 24.000.000</p>
-                                    </div>
-                                </div>
-                                <div class="w-full h-1/2 flex flex-row">
-                                    <div class="w-full flex flex-row justify-end items-center">
-                                        <button
-                                            class="w-[20%] h-fit rounded-2xl bg-white border-2 border-[#3E6E7A] text-xl text-[#3E6E7A] py-3"
-                                            data-modal-target="review-modal" data-modal-toggle="review-modal">
-                                            Review
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        {{-- end of finish product --}}
-                    @endfor
-
-                </div>
-            </div>
-            {{-- CANCELLED CONTENT --}}
-
-
         </div>
         {{-- end of TAB CONTENT --}}
 

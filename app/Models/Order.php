@@ -59,4 +59,9 @@ class Order extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function orderLogs()
+    {
+        return $this->hasMany(OrderLog::class);
+    }
 }

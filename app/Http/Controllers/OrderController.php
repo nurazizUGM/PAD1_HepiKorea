@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\Role;
+use App\Models\CustomOrderItem;
 use App\Models\Order;
 use App\Models\OrderLog;
 use App\Models\OrderPayment;
@@ -10,6 +11,7 @@ use App\Models\Product;
 use App\Models\Review;
 use App\Models\User;
 use Carbon\Carbon;
+use Google\Service\Monitoring\Custom;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -105,26 +107,30 @@ class OrderController extends Controller
         ]);
 
         if (Auth::check()) {
-            $user = User::find(Auth::id());
+            $user = Auth::user();
         } else {
-            // create a guest user
-            $user = User::create([
-                'fullname' => $data['fullname'],
-                'email' => $data['email'],
-                'role' => Role::GUEST
-            ]);
-            Auth::login($user);
-        };
+            $user = User::where('email', User::$guestEmail)->first();
+        }
 
-        $order = $user->orders()->create([
+        $order = Order::create([
+            'user_id' => $user->id,
             'type' => 'custom',
             'status' => 'unconfirmed',
             'total_items_price' => 0,
         ]);
 
+        if ($user->role == Role::GUEST) {
+            $order->orderDetail()->create([
+                'fullname' => $data['fullname'],
+                'email' => $data['email'],
+            ]);
+        }
+
         foreach ($data['items'] as $item) {
-            if ($item['image']) {
+            if (isset($item['image'])) {
                 $item['image'] = $item['image']->store('orders');
+            } else {
+                $item['image'] = null;
             }
 
             $order->customOrderItems()->create([
@@ -143,19 +149,29 @@ class OrderController extends Controller
         $order->save();
 
         DB::commit();
-        return redirect()->route('order.history', ['tab' => 'confirmation']);
+        return redirect()->route('order.show', $order->id)->with('success', 'Order has been requested');
     }
 
     public function show(string $id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with(['orderDetail'])->findOrFail($id);
 
         // render page depending on the order type
         if ($order->type == 'custom') {
             $order->load('customOrderItems');
-            return view('customer.order.custom', compact('order'));
+            $items = $order->customOrderItems;
+
+            return view('customer.order.custom', compact('items'));
         } else {
-            $order->load(['orderItems', 'orderItems.product', 'orderItems.product.images']);
+            $order->load([
+                'orderItems',
+                'orderItems.product',
+                'orderItems.product.images',
+                'orderPayment',
+                'orderShipment',
+                'reviews',
+                'orderLogs',
+            ]);
             return view('customer.order.show', compact('order'));
         }
     }
@@ -164,16 +180,19 @@ class OrderController extends Controller
     public function history()
     {
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
-        $confirmation = $orders->clone()->whereIn('status', ['unconfirmed', 'confirmed'])->with(['customOrderItems'])->get();
 
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
         $unpaid = $orders->clone()->where('status', 'unpaid')->with('orderPayment')->get();
         $processed = $orders->clone()->whereIn('status', ['paid', 'processing'])->get();
         $sent = $orders->clone()->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment')->get();
-        $finished = $orders->clone()->where('status', 'finished')->with('reviews')->get();
-        $cancelled = $orders->clone()->where('status', 'cancelled')->get();
+        $finished = Order::where('user_id', Auth::id())
+            ->whereIn('status', ['finished', 'cancelled'])
+            ->with('reviews')
+            ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        return view('customer.order.history', compact('confirmation', 'unpaid', 'processed', 'sent', 'finished', 'cancelled'));
+        return view('customer.order.history', compact('unpaid', 'processed', 'sent', 'finished'));
     }
 
     // create order

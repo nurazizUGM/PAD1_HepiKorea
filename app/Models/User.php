@@ -29,6 +29,8 @@ class User extends Model implements Authenticatable
 
     protected $casts = ['password' => 'hashed', 'role' => Role::class];
 
+    public static $guestEmail = 'guest@guest.com';
+
     public function carts()
     {
         return $this->hasMany(Cart::class);
