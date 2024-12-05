@@ -2,13 +2,13 @@
 @php
     $lineId = \App\Models\Setting::where('key', 'line')->first()->value;
 @endphp
-<a href="https://line.me/ti/p/~{{ $lineId }}" target="_blank"
-    class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-base md:text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
-    <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-5 h-5 md:w-10 md:h-10 mr-1">
-    <p>Chat</p>
-</a>
 
 @section('content')
+    <a href="https://line.me/ti/p/~{{ $lineId }}" target="_blank"
+        class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-base md:text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
+        <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-5 h-5 md:w-10 md:h-10 mr-1">
+        <p>Chat</p>
+    </a>
     {{-- homapege content container --}}
     <div class="w-full w-max[100%] rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden">
         {{-- start of carousel --}}
@@ -402,23 +402,4 @@
             }
         });
     </script>
-    @if (!Auth::check() && config('services.google.client_id'))
-        <script src="https://accounts.google.com/gsi/client" async></script>
-        <script>
-            function handleCredentialResponse(response) {
-                @if (config('app.debug'))
-                    console.log("Encoded JWT ID token: " + response.credential);
-                @endif
-                window.location.href = "{{ route('auth.callback') }}?credential=" + response.credential;
-            }
-            window.onload = function() {
-                google.accounts.id.initialize({
-                    client_id: "{{ config('services.google.client_id') }}",
-                    callback: handleCredentialResponse,
-                    cancel_on_tap_outside: true
-                });
-                google.accounts.id.prompt();
-            }
-        </script>
-    @endif
 @endpush

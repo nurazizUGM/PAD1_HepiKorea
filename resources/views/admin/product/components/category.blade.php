@@ -109,7 +109,7 @@
                             <!-- flex grow untuk dorong button ke bawah -->
                             <div class="flex-grow"></div>
                             <!-- Button "add" -->
-                            <button type="submit" data-modal-hide="category-edit-modal"
+                            <button type="submit"
                                 class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto ml-auto inline-block w-1/4 h-10 rounded-2xl">Change</button>
                         </form>
                     </div>
@@ -167,7 +167,7 @@
                             <!-- flex grow untuk dorong button ke bawah -->
                             <div class="flex-grow"></div>
                             <!-- Button "add" -->
-                            <button type="submit" data-modal-hide="category-add-modal"
+                            <button type="submit"
                                 class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto ml-auto inline-block w-1/4 h-10 rounded-2xl">Save</button>
                         </form>
                     </div>
