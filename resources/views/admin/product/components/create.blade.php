@@ -91,8 +91,8 @@
                                     </div>
                                     <!-- Icon -->
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
-                                            alt="edit icon" class="w-6 h-6">
+                                        {{-- <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
+                                            alt="edit icon" class="w-6 h-6"> --}}
                                     </div>
                                 </div>
 
@@ -109,8 +109,8 @@
                                     </div>
                                     <!-- icon -->
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
-                                            alt="edit icon" class="w-6 h-6">
+                                        {{-- <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
+                                            alt="edit icon" class="w-6 h-6"> --}}
                                     </div>
                                 </div>
 
@@ -133,8 +133,8 @@
                                     </div>
                                     <!-- icon (kosong) -->
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
-                                            alt="edit icon" class="w-6 h-6">
+                                        {{-- <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
+                                            alt="edit icon" class="w-6 h-6"> --}}
                                     </div>
                                 </div>
 
@@ -151,8 +151,8 @@
                                             class="w-full rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 text-md resize-none"></textarea>
                                     </div>
                                     <div class="w-1/12 flex justify-end">
-                                        <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
-                                            alt="edit icon" class="w-6 h-6">
+                                        {{-- <img src="{{ asset('img/assets/icon/icon_admin_product_edit_green.svg') }}"
+                                            alt="edit icon" class="w-6 h-6"> --}}
                                     </div>
                                 </div>
 

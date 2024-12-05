@@ -69,17 +69,19 @@
             style="width: 100%; height: 100%; object-fit: cover">
         <!-- Header -->
         <div class="header">
-            <h1>Verify your Email</h1>
+            <h1>Reset Your Password</h1>
         </div>
 
         <!-- Content -->
         <div class="content">
-            {{-- <h2>Halo, *ini nanti diganti nama customer* !</h2> --}}
+            <h2 style="color: #3E6E7A">Halo, *ini nanti diganti nama customer* !</h2>
+            <p>We received a request to reset your password for your account at <span style="color: #FF9D66">Hepi</span><span style="color: #3E6E7A">Korea</span></p>
+            <p>If you requested this change, please click the button below to reset your password. If you did not request this, you can safely ignore this email.</p>
 
-            <p>Thank you for registering at HepiKorea</p>
-            <p>Use the following code to verify your email:</p>
-            <h2>OTP code:</h2>
-            <div style="text-align: center"><h1 style="font-size: 40px; color: #FF9D66"> {{ $code }}  </h1></div>
+
+            <p>Use the following code to reset your password:</p>
+            <h3>OTP code:</h3>
+            <div style="text-align: center"><h1 style="font-size: 40px; color: #FF9D66">  $code </h1></div>
             {{-- <h2>OTP code: {{ $code }}</h2> --}}
             <p>If you did not request this verification, ignore this email.</p>
         </div>
