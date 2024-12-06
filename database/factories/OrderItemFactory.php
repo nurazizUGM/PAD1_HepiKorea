@@ -16,10 +16,13 @@ class OrderItemFactory extends Factory
      */
     public function definition(): array
     {
+        $product = $this->faker->randomElement(\App\Models\Product::all());
+        $quantity = $this->faker->randomNumber(1);
+
         return [
-            'product_id' => $this->faker->randomElement(\App\Models\Product::pluck('id')->toArray()),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'price' => $this->faker->randomNumber(7),
+            'product_id' => $product->id,
+            'quantity' => $quantity,
+            'price' => $product->price * $quantity,
         ];
     }
 }

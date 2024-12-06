@@ -16,14 +16,16 @@ class CustomOrderItemFactory extends Factory
      */
     public function definition(): array
     {
+        $price = $this->faker->randomNumber(6);
+        $quantity = $this->faker->randomNumber(1);
         return [
             'name' => $this->faker->sentence(2),
             'url' => $this->faker->url,
             'description' => $this->faker->sentence(10),
-            'quantity' => $this->faker->numberBetween(1, 10),
-            'estimated_price' => $this->faker->randomNumber(6),
-            'total_price' => $this->faker->randomNumber(6),
-            'is_available' => $this->faker->boolean,
+            'quantity' => $quantity,
+            'estimated_price' => $price,
+            'total_price' => $price * $quantity,
+            'image' => 'example/request.png',
         ];
     }
 }

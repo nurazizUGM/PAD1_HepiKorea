@@ -1,8 +1,4 @@
 *
+!example
+!example/*
 !.gitignore
-!profile/
-!products/
-!category/
-!carousel/
-!review/
-!orders/

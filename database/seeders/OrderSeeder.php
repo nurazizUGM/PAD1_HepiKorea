@@ -3,6 +3,9 @@
 namespace Database\Seeders;
 
 use App\Enums\Role;
+use App\Models\CustomOrderItem;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -15,25 +18,34 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         DB::beginTransaction();
-        $orders = \Database\Factories\OrderFactory::new()->count(10)->create([
-            'type' => 'order',
-        ]);
-
-        $customOrders = \Database\Factories\OrderFactory::new()->count(1)->create([
-            'type' => 'custom',
-        ]);
-
-
+        $orders = Order::factory()->count(10)->create();
         foreach ($orders as $order) {
-            $order->orderItems()->saveMany(\Database\Factories\OrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
-                'order_id' => $order->id,
-                'product_id' => \App\Models\Product::inRandomOrder()->first()->id,
-            ]));
-        }
-        foreach ($customOrders as $customOrder) {
-            $customOrder->customOrderItems()->saveMany(\Database\Factories\CustomOrderItemFactory::new()->count(fake()->numberBetween(1, 2))->make([
-                'order_id' => $order->id,
-            ]));
+            if ($order->type == 'order') {
+                $order->orderItems()->saveMany(OrderItem::factory()->count(2)->make());
+                $order->update([
+                    'total_items_price' => $order->orderItems->sum(function ($item) {
+                        return $item->price * $item->quantity;
+                    }),
+                ]);
+            } else {
+                $order->customOrderItems()->saveMany(CustomOrderItem::factory()->count(2)->make());
+                $order->orderDetail()->create([
+                    'customer_name' => fake()->name,
+                    'customer_email' => fake()->safeEmail,
+                ]);
+                $order->update([
+                    'total_items_price' => $order->customOrderItems->sum('total_price'),
+                ]);
+            }
+
+            if (strpos($order->status, 'shipment_') === 0) {
+                $order->orderShipment()->create([
+                    'shipment_service' => 'JNE',
+                    'price' => fake()->randomNumber(5),
+                    'tracking_code' => fake()->randomNumber(6, true),
+                    'arrival_estimation' => fake()->dateTimeBetween('now', '+7 days'),
+                ]);
+            }
         }
         DB::commit();
     }

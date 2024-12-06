@@ -5,12 +5,10 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ProductImage>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review>
  */
-class ProductImageFactory extends Factory
+class ReviewFactory extends Factory
 {
-    protected $model = \App\Models\ProductImage::class;
-
     /**
      * Define the model's default state.
      *
@@ -19,7 +17,7 @@ class ProductImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'path' => $this->faker->imageUrl(),
+            //
         ];
     }
 }

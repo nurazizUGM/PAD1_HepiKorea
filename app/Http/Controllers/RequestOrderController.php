@@ -46,8 +46,8 @@ class RequestOrderController extends Controller
 
         if ($user->role == Role::GUEST) {
             $order->orderDetail()->create([
-                'fullname' => $data['fullname'],
-                'email' => $data['email'],
+                'customer_fullname' => $data['fullname'],
+                'customer_email' => $data['email'],
             ]);
         }
 

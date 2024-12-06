@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Database\Factories\CategoryFactory;
+use Database\Factories\NotificationFactory;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -14,20 +14,15 @@ class DataSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Category::insert([[
+        $this->call(CarouselSeeder::class);
+        \App\Models\Category::create([
             'name' => 'Fashion',
-            'icon' => 'https://via.placeholder.com/150',
-        ], [
-            'name' => 'Electronics',
-            'icon' => 'https://via.placeholder.com/150',
-        ],  [
-            'name' => 'Health & Beauty',
-            'icon' => 'https://via.placeholder.com/150',
-        ]]);
+            'icon' => 'public/storage/example/category.png',
+        ]);
 
-        $this->call(ProductSeeder::class);
         UserFactory::new()->count(3)->create();
+        NotificationFactory::new()->count(3)->create();
+        $this->call(ProductSeeder::class);
         $this->call(OrderSeeder::class);
-        $this->call(NotificationSeeder::class);
     }
 }

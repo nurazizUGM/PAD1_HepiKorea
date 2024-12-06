@@ -13,15 +13,15 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         foreach (\App\Models\Category::all() as $category) {
-            $category->products()->saveMany(\Database\Factories\ProductFactory::new()->count(5)->make([
+            $category->products()->saveMany(\Database\Factories\ProductFactory::new()->count(3)->make([
                 'category_id' => $category->id,
             ]));
         }
 
         foreach (\App\Models\Product::all() as $product) {
-            $product->images()->saveMany(\Database\Factories\ProductImageFactory::new()->count(2)->make([
-                'product_id' => $product->id,
-            ]));
+            $product->images()->create([
+                'path' => 'example/product.png',
+            ]);
         }
     }
 }
