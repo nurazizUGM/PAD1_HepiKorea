@@ -1,10 +1,10 @@
 @extends('layout.customer')
 @php
-    $lineId = \App\Models\Setting::where('key', 'line')->first()->value;
+    $lineUrl = \App\Models\Setting::where('key', 'line')->first()->value;
 @endphp
 
 @section('content')
-    <a href="https://line.me/ti/p/~{{ $lineId }}" target="_blank"
+    <a href="{{ $lineUrl }}" target="_blank"
         class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-base md:text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl align-middle items-center shadow-md hover:shadow-lg z-30">
         <img src="{{ asset('img/assets/icon/icon_customer_chat.svg') }}" alt="icon_Chat" class="w-5 h-5 md:w-10 md:h-10 mr-1">
         <p>Chat</p>
