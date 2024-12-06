@@ -16,8 +16,8 @@ class Admin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!auth()->check() || auth()->user()->role != Role::ADMIN->value) {
-            return response('Unauthorized.', 401);
+        if (auth()->user()->role != Role::ADMIN) {
+            return redirect('/')->withErrors(['error' => 'You are not authorized to access this page']);
         }
         return $next($request);
     }

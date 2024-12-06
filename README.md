@@ -9,45 +9,73 @@
 
 ## Setup
 
-1. clone repository
+1.  clone repository
 
-```bash
-git clone https://github.com/nurazizUGM/PAD1_HepiKorea.git
-cd PAD1_HepiKorea
-```
+    -   master
 
-2. install dependencies
+        ```bash
+        git clone https://github.com/nurazizUGM/PAD1_HepiKorea.git;
 
-```bash
-composer install
-```
+        cd PAD1_HepiKorea
+        ```
 
-3. setup .env file
+    -   development
 
-4. generate session key
+        ```bash
 
-```bash
-php artisan key:generate
-```
+        git clone https://github.com/nurazizUGM/PAD1_HepiKorea.git -b development;
 
-5. migrate database
+        cd PAD1_HepiKorea
 
-```bash
-php artisan migrate:fresh
-```
+        ```
 
-6. setup default administrator account
+2.  install dependencies
 
-email: `admin@admin.com`
+    ```bash
+    composer install
+    npm install
+    ```
 
-password: `123`
+3.  setup .env file
 
-```bash
-php artisan db:seed AdminSeeder
-```
+4.  generate session key
 
-7. serve project
+    ```bash
+    php artisan key:generate
+    ```
 
-```bash
-php artisan serve
-```
+5.  migrate database
+
+    ```bash
+    php artisan migrate:fresh
+    ```
+
+6.  setup default administrator account
+
+    email: `admin@admin.com`
+
+    password: `123`
+
+    ```bash
+    php artisan db:seed AdminSeeder
+    ```
+
+7.  setup `tailwind` & `flowbite` UI framework
+
+    -   development
+
+        ```bash
+        npm run dev
+        ```
+
+    -   production
+
+        ```bash
+        npm run build
+        ```
+
+8.  serve project
+
+    ```bash
+    php artisan serve
+    ```
