@@ -69,7 +69,7 @@
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Request
                             Order</span></a>
                     {{-- confirmed nav link --}}
-                    <a href="#"><span
+                    <a href="{{ route('confirmed') }}"><span
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">Confirmed</span></a>
                     {{-- FAQ nav link --}}
                     <a href="{{ route('faq') }}"><span
@@ -132,7 +132,7 @@
                 </div>
                 {{-- end of cart and notification container --}}
 
-                @if (auth()->check() && auth()->user()->role != \App\Enums\Role::GUEST)
+                @if (auth()->check())
                     <div class="hidden md:flex items-center" id="user-profile-container">
                         <div class="flex items-center ms-3">
                             <div>

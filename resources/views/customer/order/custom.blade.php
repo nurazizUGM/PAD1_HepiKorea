@@ -9,15 +9,34 @@
         <div class="overflow-y-scroll no-scrollbar h-[50vh] mt-2 mb-52">
             {{-- product card container --}}
             <div class="relative w-full h-fit grid grid-cols-3 gap-x-5 gap-y-5 mt-2 mb-12">
-                @for ($i = 0; $i < 5; $i++)
+                @foreach ($items as $item)
                     {{-- product card --}}
                     <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5 relative">
+                        {{-- overlay disabled --}}
+                        @if ($item->order->status == 'unconfirmed')
+                            <div
+                                class="absolute inset-0 bg-[#898383] bg-opacity-60 rounded-2xl flex items-center justify-center text-black text-2xl font-semibold z-10">
+                                Unconfirmed!
+                            </div>
+                        @elseif (!$item->is_available)
+                            <div
+                                class="absolute inset-0 bg-[#898383] bg-opacity-60 rounded-2xl flex items-center justify-center text-black text-2xl font-semibold z-10">
+                                Not Available!
+                            </div>
+                        @endif
+                        {{-- end of overlay disabled --}}
+
                         {{-- photo, name, price of product --}}
                         <div class="w-full h-[65%] flex flex-row">
                             {{-- image container --}}
                             <div class="w-[35%] h-full">
-                                <img src="{{ asset('img/example/admin_order_img_phone.png') }}" alt=""
-                                    class="w-full h-full bg-contain">
+                                @if ($item->image && Storage::exists($item->image))
+                                    <img src="{{ Storage::url($item->image) }}" alt=""
+                                        class="w-full h-full bg-contain">
+                                @else
+                                    <img src="{{ asset('img/assets/icon/icon_admin_order_product.svg') }}" alt=""
+                                        class="w-full h-full bg-contain">
+                                @endif
                             </div>
                             {{-- name,variant,price --}}
                             <div class="w-[65%] h-full flex flex-col pl-5">
@@ -39,7 +58,7 @@
                         {{-- checkbox --}}
                     </div>
                     {{-- end of product card --}}
-                @endfor
+                @endforeach
 
                 {{-- product card NOT AVAILABLE --}}
                 <div class="w-[420px] h-[279px] bg-white rounded-2xl flex flex-col p-5 relative">

@@ -44,8 +44,12 @@ Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(f
 });
 
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
-Route::get('request-order', [RequestOrderController::class, 'show'])->name('request-order');
-Route::post('request-order', [OrderController::class, 'requestOrder'])->name('request-order');
+
+Route::prefix('request-order')->group(function () {
+    Route::view('/', 'customer.order.request')->name('request-order');
+    Route::post('/', [OrderController::class, 'requestOrder'])->name('request-order');
+    Route::get('confirmed', [RequestOrderController::class, 'show'])->name('confirmed');
+});
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
     Route::get('show/{id}', 'show')->name('show');

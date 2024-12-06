@@ -99,7 +99,10 @@ class RequestOrderController extends Controller
             });
         }
 
-        $items = $items->get();
+        $items = $items->get()
+            ->sortBy(function ($item) {
+                return $item->order->status == 'unconfirmed' ? 1 : 0;
+            });
         return view('customer.order.custom', compact('items'));
     }
 }
