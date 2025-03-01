@@ -1,10 +1,5 @@
-import Chart from "chart.js/auto";
 import "flowbite";
-import moment from "moment";
-import "./bootstrap";
-
-window.Chart = Chart;
-window.moment = moment;
+import "./axios";
 
 import { createInertiaApp } from "@inertiajs/vue3";
 import { createApp, h } from "vue";

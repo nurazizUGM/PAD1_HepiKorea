@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
 use Ramsey\Uuid\Uuid;
 
@@ -46,10 +47,8 @@ class AuthController extends Controller
         Auth::login($user);
         Session::regenerate();
 
-        if ($user->role == Role::ADMIN) {
-            return redirect()->intended('/admin');
-        }
-        return redirect()->intended();
+        $location = $user->role == Role::ADMIN ? route('admin.dashboard') : Session::get('url.intended', route('home'));
+        return Inertia::location($location);
     }
 
     // register new user

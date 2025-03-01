@@ -60,7 +60,7 @@
     php artisan db:seed AdminSeeder
     ```
 
-7.  setup `tailwind` & `flowbite` UI framework
+7.  build javascript assets
 
     -   development
 

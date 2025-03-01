@@ -9,8 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model implements Authenticatable
 {
-    use HasFactory;
-    use \Illuminate\Auth\Authenticatable;
+    use HasFactory, \Illuminate\Auth\Authenticatable;
 
     protected $fillable = [
         'fullname',

@@ -1,6 +1,33 @@
 <script setup>
-import { Link } from "@inertiajs/vue3";
-import { Head } from "@inertiajs/vue3";
+import { Head, usePage } from "@inertiajs/vue3";
+import { computed, onBeforeMount } from 'vue';
+
+
+const page = usePage()
+const googleClientId = computed(() => page.props.g_client_id)
+const debug = computed(() => page.props.app.debug)
+
+
+function handleCredentialResponse(response) {
+    if (debug) console.log("Encoded JWT ID token: " + response.credential);
+    window.location.href = "/auth/callback?credential=" + response.credential;
+}
+
+onBeforeMount(() => {
+    const script = document.createElement('script')
+    script.async = true;
+    script.src = "https://accounts.google.com/gsi/client";
+    script.onload = () => {
+        window.google.accounts.id.initialize({
+            client_id: googleClientId.value,
+            callback: handleCredentialResponse,
+            cancel_on_tap_outside: true
+        });
+        window.google.accounts.id.prompt();
+    }
+
+    document.head.appendChild(script)
+})
 </script>
 
 <template>
