@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -154,3 +155,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 Route::get('/view/{view}', function ($view) {
     return view($view);
 });
+
+Route::inertia('/auth/login-inertia', 'Auth/Login')->name('auth.login-inertia');
+Route::post('/auth/login-inertia', function (Request $request) {
+    return response()->json(['message' => 'Login Success', 'data' => $request->all()]);
+})->name('auth.login-inertia');
