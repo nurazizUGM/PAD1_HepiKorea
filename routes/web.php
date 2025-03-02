@@ -19,6 +19,7 @@ use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,6 +31,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+/**
+ * Testing Inertia
+ * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
+ */
+Route::get('/inertia/{folder}/{view}', function ($folder, $view) {
+    return Inertia::render("{$folder}/{$view}");
+});
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
@@ -158,8 +167,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 Route::get('/view/{view}', function ($view) {
     return view($view);
 });
-
-Route::inertia('/auth/login-inertia', 'Auth/Login')->name('auth.login-inertia');
-Route::post('/auth/login-inertia', function (Request $request) {
-    return response()->json(['message' => 'Login Success', 'data' => $request->all()]);
-})->name('auth.login-inertia');

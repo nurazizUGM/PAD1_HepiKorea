@@ -1,4 +1,6 @@
 <script setup>
+// example of composition API
+
 import { Head, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
