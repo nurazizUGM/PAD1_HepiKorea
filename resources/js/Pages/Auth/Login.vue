@@ -1,5 +1,6 @@
 <script setup>
 import { Head, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
 
 defineProps({ errors: Object })
@@ -7,21 +8,14 @@ const form = useForm({
     email: '',
     password: '',
 })
-
-function togglePassword() {
-    const password = document.getElementById('password');
-    const togglePassword = document.getElementById('togglePassword');
-    if (password.type === 'password') {
-        password.type = 'text';
-        togglePassword.src = '/img/assets/icon/icon_show_eye.svg';
-    } else {
-        password.type = 'password';
-        togglePassword.src = '/img/assets/icon/icon_hide_eye.svg';
-    }
-}
-
 function submit() {
     router.post('/auth/login', form)
+}
+
+const showPassword = ref(false);
+function togglePassword() {
+    showPassword.value = !showPassword.value;
+    console.log(showPassword.value);
 }
 
 function google() {
@@ -71,12 +65,14 @@ function google() {
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <img src="/img/assets/icon/icon_lock.svg" alt="lock Icon" class="h-6 w-6">
                     </span>
-                    <input id="password" type="password" placeholder="Password" v-model="form.password" required
+                    <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="Password"
+                        v-model="form.password" required
                         class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7]">
                     <!-- show/hide password -->
                     <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
-                        <img @click="togglePassword" src="/img/assets/icon/icon_hide_eye.svg" alt="eye hide Icon"
-                            class="h-6 w-6 cursor-pointer">
+                        <img @click="togglePassword"
+                            :src="showPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
+                            alt="eye hide Icon" class="h-6 w-6 cursor-pointer">
                     </span>
                 </div>
 
