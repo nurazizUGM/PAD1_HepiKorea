@@ -19,6 +19,7 @@ use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +32,45 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/**
+ * Testing Inertia
+ * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
+ */
+Route::get('/inertia/{folder}/{view}', function ($folder, $view) {
+    return Inertia::render("{$folder}/{$view}");
+});
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::prefix('auth')->name('auth.')->group(function () {
+    Route::middleware(GuestMiddleware::class)->group(function () {
+        Route::inertia('login', 'Auth/Login')->name('login');
+        Route::post('login', [AuthController::class, 'authenticate'])->name('login');
+
+        Route::inertia('register', 'Auth/Register')->name('register');
+        Route::post('register', [AuthController::class, 'register'])->name('register');
+    });
+
+    Route::get('/', [AuthController::class, 'index'])->name('index');
+    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::get('google', [AuthController::class, 'google'])->name('google');
+    Route::get('callback', [AuthController::class, 'callback'])->name('callback');
+    Route::get('verify', [AuthController::class, 'verify'])->name('verify');
+    Route::post('verify', [AuthController::class, 'verifyCode'])->name('verify_code');
+
+    Route::view('forgot_password', 'auth.forgot_password')->name('forgot_password');
+    Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
+    Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('reset_password');
+    Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
+
+    Route::middleware('auth')->group(function () {
+        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+        Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
+        Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
+        Route::get('address', [ProfileController::class, 'address'])->name('address');
+    });
+});
+
 Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
     Route::get('/', 'index')->name('index');
     Route::get('/{product}', 'show')->name('show');
@@ -64,34 +103,6 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
 })->middleware('auth');
 
 Route::get('faq', [FaqController::class, 'faq'])->name('faq');
-
-Route::prefix('auth')->name('auth.')->group(function () {
-    Route::middleware(GuestMiddleware::class)->group(function () {
-        Route::view('login', 'auth.login')->name('login');
-        Route::post('login', [AuthController::class, 'authenticate'])->name('login');
-        Route::view('register', 'auth.register')->name('registerView');
-        Route::post('register', [AuthController::class, 'register'])->name('register');
-    });
-
-    Route::get('/', [AuthController::class, 'index'])->name('index');
-    Route::get('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('google', [AuthController::class, 'google'])->name('google');
-    Route::get('callback', [AuthController::class, 'callback'])->name('callback');
-    Route::get('verify', [AuthController::class, 'verify'])->name('verify');
-    Route::post('verify', [AuthController::class, 'verifyCode'])->name('verify_code');
-
-    Route::view('forgot_password', 'auth.forgot_password')->name('forgot_password');
-    Route::post('forgot_password', [AuthController::class, 'forgotPassword'])->name('forgot_password');
-    Route::get('reset_password', [AuthController::class, 'resetPassword'])->name('reset_password');
-    Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
-
-    Route::middleware('auth')->group(function () {
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
-        Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
-        Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
-        Route::get('address', [ProfileController::class, 'address'])->name('address');
-    });
-});
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
@@ -155,8 +166,3 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 Route::get('/view/{view}', function ($view) {
     return view($view);
 });
-
-Route::inertia('/auth/login-inertia', 'Auth/Login')->name('auth.login-inertia');
-Route::post('/auth/login-inertia', function (Request $request) {
-    return response()->json(['message' => 'Login Success', 'data' => $request->all()]);
-})->name('auth.login-inertia');

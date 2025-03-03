@@ -2,11 +2,9 @@
 import { Head, usePage } from "@inertiajs/vue3";
 import { computed, onBeforeMount } from 'vue';
 
-
 const page = usePage()
 const googleClientId = computed(() => page.props.g_client_id)
 const debug = computed(() => page.props.app.debug)
-
 
 function handleCredentialResponse(response) {
     if (debug) console.log("Encoded JWT ID token: " + response.credential);
@@ -28,12 +26,16 @@ onBeforeMount(() => {
 
     document.head.appendChild(script)
 })
+
+const props = defineProps({
+    title: String,
+})
 </script>
 
 <template>
 
     <Head>
-        <title>Auth Page</title>
+        <title>Auth{{ props.title ? ` - ${props.title}` : '' }}</title>
         <meta name="description" content="This is the authentication page." />
     </Head>
 

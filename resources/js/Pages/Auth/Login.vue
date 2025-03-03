@@ -1,5 +1,8 @@
 <script setup>
-import { Head, router, useForm } from '@inertiajs/vue3';
+// example of composition API
+
+import { Link, router, useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
 
 defineProps({ errors: Object })
@@ -7,21 +10,14 @@ const form = useForm({
     email: '',
     password: '',
 })
-
-function togglePassword() {
-    const password = document.getElementById('password');
-    const togglePassword = document.getElementById('togglePassword');
-    if (password.type === 'password') {
-        password.type = 'text';
-        togglePassword.src = '/img/assets/icon/icon_show_eye.svg';
-    } else {
-        password.type = 'password';
-        togglePassword.src = '/img/assets/icon/icon_hide_eye.svg';
-    }
-}
-
 function submit() {
     router.post('/auth/login', form)
+}
+
+const showPassword = ref(false);
+function togglePassword() {
+    showPassword.value = !showPassword.value;
+    console.log(showPassword.value);
 }
 
 function google() {
@@ -31,10 +27,7 @@ function google() {
 </script>
 
 <template>
-    <Layout>
-
-
-        <Head title="Login" />
+    <Layout title="Login">
         <div class="bg-white w-1/2 max-w-md p-10 m-auto shadow-lg rounded-2xl">
             <h1 class="text-black text-xl font-extrabold mb-5">Masuk Ke
                 <span class="text-orange-400 cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='/'">
@@ -71,24 +64,26 @@ function google() {
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
                         <img src="/img/assets/icon/icon_lock.svg" alt="lock Icon" class="h-6 w-6">
                     </span>
-                    <input id="password" type="password" placeholder="Password" v-model="form.password" required
+                    <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="Password"
+                        v-model="form.password" required
                         class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7]">
                     <!-- show/hide password -->
                     <span class="absolute inset-y-0 right-0 pr-6 flex items-center">
-                        <img @click="togglePassword" src="/img/assets/icon/icon_hide_eye.svg" alt="eye hide Icon"
-                            class="h-6 w-6 cursor-pointer">
+                        <img @click="togglePassword"
+                            :src="showPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
+                            alt="eye hide Icon" class="h-6 w-6 cursor-pointer">
                     </span>
                 </div>
 
                 <div class="text-right my-3">
-                    <a href="/auth/forgot_password" class="text-sm font-semibold text-blue-600 ">Forgot Password</a>
+                    <a href="/auth/forgot_password" class="text-sm font-semibold text-blue-600">Forgot Password</a>
                 </div>
                 <!-- login button -->
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-12 rounded-xl mb-5 text-2xl font-normal text-white">Login</button>
             </form>
-            <p class="text-sm font-semibold text-center text-black">Don't have an account? <a href="/auth/register"
-                    class="text-blue-600">Register</a>
+            <p class="text-sm font-semibold text-center text-black">Don't have an account?
+                <Link href="/auth/register" class="text-blue-600">Register</Link>
             </p>
             <div class="w-full relative">
                 <hr class="border-t-2 border-slate-400 mt-8 relative">
