@@ -64,7 +64,7 @@ class AuthController extends Controller
         Auth::login($user);
         Session::regenerate();
 
-        return redirect()->intended();
+        return Inertia::location(Session::get('url.intended', route('home')));
     }
 
     // logout user

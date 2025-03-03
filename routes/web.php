@@ -44,11 +44,10 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {
-        // Route::view('login', 'auth.login')->name('login');
         Route::inertia('login', 'Auth/Login')->name('login');
-
         Route::post('login', [AuthController::class, 'authenticate'])->name('login');
-        Route::view('register', 'auth.register')->name('registerView');
+
+        Route::inertia('register', 'Auth/Register')->name('register');
         Route::post('register', [AuthController::class, 'register'])->name('register');
     });
 
