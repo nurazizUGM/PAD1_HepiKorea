@@ -1,7 +1,7 @@
 <script setup>
 // example of composition API
 
-import { Head, router, useForm } from '@inertiajs/vue3';
+import { router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
 
@@ -27,10 +27,7 @@ function google() {
 </script>
 
 <template>
-    <Layout>
-
-
-        <Head title="Login" />
+    <Layout title="Login">
         <div class="bg-white w-1/2 max-w-md p-10 m-auto shadow-lg rounded-2xl">
             <h1 class="text-black text-xl font-extrabold mb-5">Masuk Ke
                 <span class="text-orange-400 cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='/'">

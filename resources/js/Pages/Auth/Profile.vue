@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import { Head } from '@inertiajs/vue3';
 </script>
 
 <template>
-    <Layout>
+    <Layout title="Profile">
 
-        <Head title="Profile" />
     </Layout>
 </template>
