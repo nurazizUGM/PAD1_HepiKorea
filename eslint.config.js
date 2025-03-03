@@ -12,7 +12,7 @@ export default [
         rules: {
             "no-unused-vars": "warn",
             "no-undef": "warn",
-            semi: "off",
+            semi: "warn",
             "prefer-const": "error",
             "vue/multi-word-component-names": "off",
             "vue/no-mutating-props": "off",
