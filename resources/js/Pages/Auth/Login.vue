@@ -5,13 +5,13 @@ import { Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
 
-defineProps({ errors: Object })
+defineProps({ errors: Object });
 const form = useForm({
     email: '',
     password: '',
-})
+});
 function submit() {
-    router.post('/auth/login', form)
+    router.post('/auth/login', form);
 }
 
 const showPassword = ref(false);
