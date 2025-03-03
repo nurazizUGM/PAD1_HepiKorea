@@ -1,7 +1,7 @@
 <script setup>
 // example of composition API
 
-import { router, useForm } from '@inertiajs/vue3';
+import { Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import Layout from '../Layouts/Auth.vue';
 
@@ -76,14 +76,14 @@ function google() {
                 </div>
 
                 <div class="text-right my-3">
-                    <a href="/auth/forgot_password" class="text-sm font-semibold text-blue-600 ">Forgot Password</a>
+                    <a href="/auth/forgot_password" class="text-sm font-semibold text-blue-600">Forgot Password</a>
                 </div>
                 <!-- login button -->
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-12 rounded-xl mb-5 text-2xl font-normal text-white">Login</button>
             </form>
-            <p class="text-sm font-semibold text-center text-black">Don't have an account? <a href="/auth/register"
-                    class="text-blue-600">Register</a>
+            <p class="text-sm font-semibold text-center text-black">Don't have an account?
+                <Link href="/auth/register" class="text-blue-600">Register</Link>
             </p>
             <div class="w-full relative">
                 <hr class="border-t-2 border-slate-400 mt-8 relative">
