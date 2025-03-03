@@ -91,8 +91,6 @@ import Layout from '../Layouts/Auth.vue';
 export default {
     props: {
         errors: Object,
-        showPassword: Boolean,
-        form: Object,
     },
     data() {
         return {

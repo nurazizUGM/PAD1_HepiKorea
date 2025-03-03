@@ -7,7 +7,7 @@ const googleClientId = computed(() => page.props.g_client_id)
 const debug = computed(() => page.props.app.debug)
 
 function handleCredentialResponse(response) {
-    if (debug) console.log("Encoded JWT ID token: " + response.credential);
+    if (debug.value) console.log("Encoded JWT ID token: " + response.credential);
     window.location.href = "/auth/callback?credential=" + response.credential;
 }
 
