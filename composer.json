@@ -10,7 +10,6 @@
         "guzzlehttp/guzzle": "^7.2",
         "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^10.10",
-        "laravel/passport": "*",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.8",

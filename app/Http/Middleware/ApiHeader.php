@@ -15,6 +15,7 @@ class ApiHeader
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // add Accept: application/json header
         $request->headers->set('Accept', 'application/json');
         return $next($request);
     }

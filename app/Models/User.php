@@ -6,10 +6,11 @@ use App\Enums\Role;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\Contracts\HasApiTokens;
 
-class User extends Model implements Authenticatable
+class User extends Model implements Authenticatable, HasApiTokens
 {
-    use HasFactory, \Illuminate\Auth\Authenticatable;
+    use HasFactory, \Illuminate\Auth\Authenticatable, \Laravel\Sanctum\HasApiTokens;
 
     protected $fillable = [
         'fullname',
