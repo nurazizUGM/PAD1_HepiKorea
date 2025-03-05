@@ -29,7 +29,7 @@ function google() {
 <template>
     <Layout title="Login">
         <div
-            class="bg-white w-1/2 md:w-[241px] lg:w-[512px] max-w-md md:px-5 md:pt-6 lg:px-10 lg:py-10 m-auto shadow-lg rounded-2xl">
+            class="bg-white w-1/2 md:w-[241px] lg:w-[512px] max-w-md md:px-5 md:pt-6 md:pb-3 lg:px-10 lg:py-10 m-auto shadow-lg rounded-2xl">
             <h1 class="text-black text-sm lg:text-xl font-extrabold mb-5">Masuk Ke
                 <span class="text-orange-400 cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='/'">
                     <span class="text-[#3E6E7A]">Hepi</span>Korea
@@ -69,7 +69,7 @@ function google() {
                         v-model="form.password" required
                         class="md:pl-9 lg:pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none md:h-8 lg:h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7] md:placeholder:text-xs lg:placeholder:text-lg">
                     <!-- show/hide password -->
-                    <span class="absolute inset-y-0 right-0 pr-2 lg:pr-6 flex items-center">
+                    <span class="absolute inset-y-0 right-0 md:pr-2 lg:pr-6 flex items-center">
                         <img @click="togglePassword"
                             :src="showPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
                             alt="eye hide Icon" class="md:h-4 md:w-4 lg:h-6 lg:w-6 cursor-pointer">
@@ -84,7 +84,7 @@ function google() {
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] md:h-8 lg:h-12 md:rounded-md lg:rounded-xl md:mb-3 lg:mb-5 md:text-xs lg:text-2xl font-normal text-white">Login</button>
             </form>
-            <p class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold text-center text-black">Don't have an
+            <p class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold md:text-center lg:text-center text-black">Don't have an
                 account?
                 <Link href="/auth/register" class="text-blue-600">Register</Link>
             </p>
@@ -98,7 +98,7 @@ function google() {
             </div>
             <!-- button login google -->
             <a @click.prevent="google"
-                class="w-full flex items-center justify-center bg-[#EFEFEF] md:h-8 lg:h-12 rounded-xl mb-5 md:text-xs lg:text-2xl font-bold text-black md:mt-8 lg:mt-10 cursor-pointer">
+                class="w-full flex items-center justify-center bg-[#EFEFEF] md:h-8 lg:h-12 rounded-xl md:mb-2 lg:mb-5 md:text-xs lg:text-2xl font-bold text-black md:mt-8 lg:mt-10 cursor-pointer">
                 <img src="/img/assets/icon/icon_google.png" alt="Google Icon" class="md:h-4 lg:h-6 md:w-4 lg:w-6 mr-3">
                 Login With Google
             </a>
