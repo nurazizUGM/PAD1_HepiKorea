@@ -91,7 +91,7 @@ function google() {
             <div class="w-full relative">
                 <hr class="border-t-2 border-slate-400 md:mt-5 lg:mt-8 relative">
                 <div
-                    class="absolute md:-top-3 lg:-top-5 md:left-[24%] lg:left-[25%] bg-[#EFEFEF] md:text-xs lg:text-base font-semibold text-[#B7B7B7] md:py-1 md:px-5 lg:py-2 lg:px-10">
+                    class="absolute md:-top-3 lg:-top-5 md:left-[24%] lg:left-[25%] bg-[#FFFFFF] md:text-xs lg:text-base font-semibold text-[#B7B7B7] md:py-1 md:px-5 lg:py-2 lg:px-10">
                     or login
                     with
                 </div>
