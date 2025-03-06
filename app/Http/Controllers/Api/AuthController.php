@@ -74,9 +74,7 @@ class AuthController extends Controller
 
     public function profile()
     {
-        return response()->json([
-            'user' => Auth::user(),
-        ]);
+        return response()->json(Auth::user());
     }
 
     public function updateProfile(Request $request)
