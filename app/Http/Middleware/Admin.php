@@ -17,6 +17,9 @@ class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (auth()->user()->role != Role::ADMIN) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'You are not authorized to access this page'], 403);
+            }
             return redirect('/')->withErrors(['error' => 'You are not authorized to access this page']);
         }
         return $next($request);
