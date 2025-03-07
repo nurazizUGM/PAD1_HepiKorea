@@ -6,7 +6,9 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\ApiAuth;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,18 @@ Route::name('api.')->group(function () {
     Route::get('ping', function () {
         return response()->json(['message' => 'pong']);
     })->name('ping');
+
+    // File route
+    Route::get('file', function (Request $request) {
+        $path = $request->query('path');
+        if (!$path || !Storage::exists($path)) {
+            return response()->json(['message' => 'File not found'], 404);
+        } else if (config('filesystems.default') === 's3') {
+            return redirect(Storage::temporaryUrl($path, now()->addMinutes(5)));
+        } else {
+            return response()->file(Storage::path($path));
+        }
+    });
 
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('register', 'register');
