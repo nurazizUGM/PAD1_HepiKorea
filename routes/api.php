@@ -2,7 +2,10 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CarouselController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\FaqController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\ApiAuth;
@@ -88,5 +91,29 @@ Route::name('api.')->group(function () {
             Route::post('/{id}', 'update');
             Route::delete('/{id}', 'delete');
         });
+    });
+
+    Route::prefix('cart')->middleware(ApiAuth::class)->controller(CartController::class)->group(function () {
+        Route::get('/', 'findAll');
+        Route::post('/', 'add');
+        Route::delete('/', 'delete');
+        Route::post('/{id}', 'update');
+        Route::post('synchronize', 'synchronize');
+    });
+
+    Route::prefix('faq')->controller(FaqController::class)->group(function () {
+        Route::get('/', 'findAll');
+
+        Route::middleware([ApiAuth::class, Admin::class])->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+    });
+
+    Route::prefix('customer')->middleware([ApiAuth::class, Admin::class])->controller(CustomerController::class)->group(function () {
+        Route::get('/', 'findAll');
+        Route::get('/review', 'review');
+        Route::get('/{id}', 'show');
     });
 });
