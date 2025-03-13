@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Jobs\MailJob;
 use App\Mail\Verification;
@@ -12,11 +11,8 @@ use Google\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
-use Inertia\Inertia;
 use Laravel\Socialite\Facades\Socialite;
-use Ramsey\Uuid\Uuid;
 
 class AuthController extends Controller
 {
@@ -34,7 +30,7 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Email is not registered.',
             ], 401);
-        } else if (!Hash::check($body['password'], $user->password)) {
+        } else if (!$user->password || !Hash::check($body['password'], $user->password)) {
             return response()->json([
                 'message' => 'Invalid password.',
             ], 401);
