@@ -20,7 +20,7 @@ const submit = () => {
                 <!-- input text email -->
                 <div class="relative w-full mt-5">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center">
-                        <img src="img/assets/icon/icon_email.png" alt="email Icon" class="md:h-4 md:w-4 lg:h-6 lg:w-6">
+                        <img src="/img/assets/icon/icon_email.png" alt="email Icon" class="md:h-4 md:w-4 lg:h-6 lg:w-6">
                     </span>
                     <input v-model="form.email" type="email" placeholder="Email" name="email"
                         class="pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none md:h-8 lg:h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7] md:placeholder:text-xs lg:placeholder:text-lg">
