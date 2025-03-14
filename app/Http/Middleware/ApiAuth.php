@@ -27,8 +27,6 @@ class ApiAuth
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
         } else if (!Auth::check()) {
-            return response()->json(['message' => 'Unauthorized'], 401);
-        } else {
             return response()->json(['message' => 'Authorization header not found'], 401);
         }
 
