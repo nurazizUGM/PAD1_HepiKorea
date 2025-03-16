@@ -34,7 +34,7 @@
         rel="stylesheet">
     <title>{{ config()->get('app.name') }} - Admin @yield('title')</title>
     <script src="{{ asset('js/jquery-3.7.1.min.js') }}"></script>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.ts'])
 </head>
 
 <body class="flex font-poppins w-screen h-screen overflow-hidden">

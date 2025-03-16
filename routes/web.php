@@ -107,7 +107,8 @@ Route::get('faq', [FaqController::class, 'faq'])->name('faq');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::controller(AdminProfileController::class)->group(function () {
-        Route::get('profile', 'index')->name('profile.user');
+        Route::inertia('profile', 'Admin/Profile')->name('profile');
+        
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
     });

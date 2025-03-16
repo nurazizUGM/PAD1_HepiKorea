@@ -1,6 +1,5 @@
 import "flowbite";
 import { ZiggyVue } from "ziggy-js";
-import "./axios";
 
 import { createInertiaApp } from "@inertiajs/vue3";
 import { createApp, h } from "vue";
