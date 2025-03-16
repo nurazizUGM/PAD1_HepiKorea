@@ -1,8 +1,17 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CarouselController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Middleware\Admin;
+use App\Http\Middleware\ApiAuth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +29,18 @@ Route::name('api.')->group(function () {
         return response()->json(['message' => 'pong']);
     })->name('ping');
 
+    // File route
+    Route::get('file', function (Request $request) {
+        $path = $request->query('path');
+        if (!$path || !Storage::exists($path)) {
+            return response()->json(['message' => 'File not found'], 404);
+        } else if (config('filesystems.default') === 's3') {
+            return redirect(Storage::temporaryUrl($path, now()->addMinutes(5)));
+        } else {
+            return response()->file(Storage::path($path));
+        }
+    });
+
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
@@ -30,12 +51,69 @@ Route::name('api.')->group(function () {
             Route::post('reset-password', 'resetPassword');
         });
 
-        Route::middleware('auth:sanctum')->group(function () {
+        Route::middleware(ApiAuth::class)->group(function () {
             Route::post('logout', 'logout');
             Route::get('profile', 'profile');
             Route::post('profile', 'updateProfile');
             Route::post('verify', 'verify');
             Route::post('verify-otp', 'verifyOtp');
         });
+    });
+
+    Route::prefix('product')->controller(ProductController::class)->group(function () {
+        Route::get('latest', 'latest');
+        Route::get('popular', 'popular');
+        Route::get('/', 'findAll');
+        Route::get('/{id}', 'findOne');
+
+        Route::middleware([ApiAuth::class, Admin::class])->group(function () {
+            Route::post('/', 'create');
+            Route::post('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+    });
+
+    Route::prefix('category')->controller(CategoryController::class)->group(function () {
+        Route::get('/', 'findAll');
+
+        Route::middleware([ApiAuth::class, Admin::class])->group(function () {
+            Route::post('/', 'create');
+            Route::post('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+    });
+
+    Route::prefix('carousel')->controller(CarouselController::class)->group(function () {
+        Route::get('/', 'findAll');
+
+        Route::middleware([ApiAuth::class, Admin::class])->group(function () {
+            Route::post('/', 'create');
+            Route::post('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+    });
+
+    Route::prefix('cart')->middleware(ApiAuth::class)->controller(CartController::class)->group(function () {
+        Route::get('/', 'findAll');
+        Route::post('/', 'add');
+        Route::delete('/', 'delete');
+        Route::post('/{id}', 'update');
+        Route::post('synchronize', 'synchronize');
+    });
+
+    Route::prefix('faq')->controller(FaqController::class)->group(function () {
+        Route::get('/', 'findAll');
+
+        Route::middleware([ApiAuth::class, Admin::class])->group(function () {
+            Route::post('/', 'store');
+            Route::post('/{id}', 'update');
+            Route::delete('/{id}', 'delete');
+        });
+    });
+
+    Route::prefix('customer')->middleware([ApiAuth::class, Admin::class])->controller(CustomerController::class)->group(function () {
+        Route::get('/', 'findAll');
+        Route::get('/review', 'review');
+        Route::get('/{id}', 'show');
     });
 });
