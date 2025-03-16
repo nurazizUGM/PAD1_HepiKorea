@@ -8,7 +8,9 @@ const props = defineProps({
     user: Object,
 });
 
-const profilePicture = computed(() => props?.user?.photo?.startsWith('http') ? props.user.photo : `/${props?.user?.photo}`);
+const user = computed(() => props.user || {});
+
+const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.photo : `/${user?.photo}`);
 </script>
 
 <template>
@@ -54,10 +56,10 @@ const profilePicture = computed(() => props?.user?.photo?.startsWith('http') ? p
                             id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    {{ props.user.fullname }}
+                                    {{ user.fullname }}
                                 </p>
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    {{ props.user.email }}
+                                    {{ user.email }}
                                 </p>
                             </div>
                             <ul class="py-1" role="none">
@@ -161,7 +163,7 @@ const profilePicture = computed(() => props?.user?.photo?.startsWith('http') ? p
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 w-full relative">
+    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 relative">
         <slot />
 
         <!-- <div id="alert-2"
