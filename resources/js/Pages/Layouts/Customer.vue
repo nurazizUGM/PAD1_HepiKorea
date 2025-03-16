@@ -1,7 +1,53 @@
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+import { Head } from '@inertiajs/vue3';
+import Footer from './Footer.vue';
+// import { useRoute, useRouter } from 'vue-router';
+
+// const route = useRoute();
+// const router = useRouter();
+const search = ref('');
+const isAuthenticated = ref(false); // Replace with actual authentication check
+const isAdmin = ref(false); // Replace with actual role check
+const notifications = ref([]); // Fetch notifications from API
+const notificationCount = ref(0); // Fetch notification count from API
+const showNotifications = ref(false);
+const showUserProfile = ref(false);
+const userPhoto = ref(''); // Fetch user photo from API
+
+// const category = computed(() => route.query.category || '');
+// const sortBy = computed(() => route.query.sort_by || '');
+
+const toggleNavbar = () => {
+    // Logic to toggle navbar visibility
+};
+
+const submitSearch = () => {
+    router.push({ path: '/products', query: { search: search.value, category: category.value, sort_by: sortBy.value } });
+};
+
+const toggleNotifications = () => {
+    showNotifications.value = !showNotifications.value;
+};
+
+const toggleUserProfile = () => {
+    showUserProfile.value = !showUserProfile.value;
+};
+
+const props = defineProps({
+    title: String,
+});
+
+onMounted(() => {
+    // Fetch user authentication status, notifications, and user photo here
+});
+</script>
+
 <template>
 
     <Head>
-
+        <title>HepiKorea{{ props.title ? ` - ${props.title}` : '' }}</title>
+        <meta name="description" content="This is the Customer page." />
     </Head>
 
     <div>
@@ -10,8 +56,7 @@
                 <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
                     <div class="w-full md:w-fit flex justify-between md:justify-start">
                         <router-link to="/" class="flex ms-6 me-24 md:me-2">
-                            <span
-                                class="self-center text-xl md:text-sm lg:text-2xl text-orange-400 font-semibold">
+                            <span class="self-center text-xl md:text-sm lg:text-2xl text-orange-400 font-semibold">
                                 <span class="text-[#3E6E7A]">Hepi</span>Korea
                             </span>
                         </router-link>
@@ -61,7 +106,7 @@
                                 <img src="/img/assets/icon/icon_customer_notification_green.svg" alt="" class="w-4 h-5">
                                 <span v-if="notificationCount > 0"
                                     class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{
-                                    notificationCount }}</span>
+                                        notificationCount }}</span>
                             </router-link>
                             <div v-if="showNotifications"
                                 class="w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl px-3">
@@ -72,7 +117,7 @@
                                     <li v-for="notification in notifications" :key="notification.id">
                                         <router-link :to="notification.link"
                                             class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">{{
-                                            notification.title }}</router-link>
+                                                notification.title }}</router-link>
                                     </li>
                                     <router-link to="/notifications"
                                         class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">View
@@ -135,56 +180,10 @@
             </div>
         </nav>
 
-        <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-32 mb-20 overflow-hidden no-scrollbar">
+        <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-20 overflow-hidden no-scrollbar">
             <slot></slot>
         </div>
 
         <Footer></Footer>
     </div>
 </template>
-
-<script>
-import Footer from './Footer.vue';
-import { Head } from '@inertiajs/vue3';
-
-export default {
-    components: {
-        Footer,
-    },
-    data() {
-        return {
-            search: '',
-            // category: this.$route.query.category || '',
-            // sortBy: this.$route.query.sort_by || '',
-            isAuthenticated: false, // Replace with actual authentication check
-            isAdmin: false, // Replace with actual role check
-            notifications: [], // Fetch notifications from API
-            notificationCount: 0, // Fetch notification count from API
-            showNotifications: false,
-            showUserProfile: false,
-            userPhoto: '', // Fetch user photo from API
-        };
-    },
-    methods: {
-        toggleNavbar() {
-            // Logic to toggle navbar visibility
-        },
-        submitSearch() {
-            this.$router.push({ path: '/products', query: { search: this.search, category: this.category, sort_by: this.sortBy } });
-        },
-        toggleNotifications() {
-            this.showNotifications = !this.showNotifications;
-        },
-        toggleUserProfile() {
-            this.showUserProfile = !this.showUserProfile;
-        },
-    },
-    mounted() {
-        // Fetch user authentication status, notifications, and user photo here
-    },
-};
-</script>
-
-<style scoped>
-/* Add any scoped styles here */
-</style>
