@@ -33,5 +33,7 @@ class AppServiceProvider extends ServiceProvider
 
         Inertia::share('g_client_id', env('GOOGLE_CLIENT_ID'));
         Inertia::share('app.debug', config('app.debug'));
+        Inertia::share('app.name', config('app.name'));
+        Inertia::share('apiUrl', env('API_URL', 'http://localhost:8000/api'));
     }
 }
