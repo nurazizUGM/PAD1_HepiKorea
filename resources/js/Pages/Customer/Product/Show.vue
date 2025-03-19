@@ -157,7 +157,7 @@ onMounted(async () => {
         <p class="text-[#898383] font-semibold text-sm md:text-lg mt-2 md:mt-8">{{ product.description }}</p>
       </div>
 
-      <div v-if="product?.reviews?.length > 0"
+      <div 
         class="w-[100%] h-full flex-col px-8 pt-6 pb-8 bg-[#FFFCFC] rounded-2xl mt-6">
         <h1 class="text-black font-bold text-2xl">Product Rating</h1>
         <div class="w-full h-full flex flex-row">
