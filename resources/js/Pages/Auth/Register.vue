@@ -1,7 +1,6 @@
 <template>
     <Layout title="Register">
 
-        <!-- <Head title="Register" /> -->
         <div class="bg-white h-auto w-1/2 max-w-md p-10 m-auto shadow-lg rounded-2xl">
             <h1 class="text-black text-xl font-extrabold mb-5">Daftar di
                 <span class="text-orange-400 cursor-pointer tracking-[-0.01rem]" onclick="window.location.href='/'">
