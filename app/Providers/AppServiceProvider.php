@@ -30,10 +30,5 @@ class AppServiceProvider extends ServiceProvider
         if (env('DEBUGBAR_ENABLED', false)) {
             config()->push('app.providers', 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
         }
-
-        Inertia::share('g_client_id', env('GOOGLE_CLIENT_ID'));
-        Inertia::share('app.debug', config('app.debug'));
-        Inertia::share('app.name', config('app.name'));
-        Inertia::share('apiUrl', env('API_URL', 'http://localhost:8000/api'));
     }
 }
