@@ -3,8 +3,7 @@ name: Sonarqube scan
 on:
   push:
     branches:
-      - dev-aziz
-      - development2
+      - verval
 
 jobs:
   build:
