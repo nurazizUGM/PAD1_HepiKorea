@@ -18,6 +18,10 @@ const averageRating = computed(() => {
   return "0.0";
 });
 
+// const formatPrice = (price) => {
+//   return price.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+// };
+
 const changeMainImage = (image) => {
   modalImage.value = image || product.value.main_image;
 };
@@ -88,11 +92,11 @@ onMounted(async () => {
             </p>
           </div>
 
-          <h1 class="text-black text-opacity-50 font-bold text-xl md:text-3xl text-left mt-2 md:mt-8">
+          <h1 class="text-black text-opacity-50 font-bold text-xl md:text-xl lg:text-3xl text-left mt-2 md:mt-8">
             {{ product.name }}
           </h1>
 
-          <h1 class="text-[#3E6E7A] font-bold text-base md:text-3xl text-left mt-2 md:mt-6">
+          <h1 class="text-[#3E6E7A] font-bold text-base md:text-xl lg:text-3xl text-left mt-2 md:mt-6">
             <!-- Rp {{ formatPrice(product.price) }} -->
             Rp {{ product.price }}
           </h1>
@@ -100,33 +104,33 @@ onMounted(async () => {
           <div class="w-full mt-6 md:mt-12 flex flex-col gap-y-4 md:gap-y-8">
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_plane.svg" class="w-3 h-3 md:w-6 md:h-6" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">Ships Straight</p>
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">Ships Straight</p>
             </div>
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_box.svg" class="w-3 h-3 md:w-6 md:h-6" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">Ships straight from Korea to your address</p>
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">Ships straight from Korea to your address</p>
             </div>
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_fasttruck.svg" class="w-3 h-3 md:w-6 md:h-6" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">Quick Delivery</p>
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">Quick Delivery</p>
             </div>
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_fasttime.svg" class="w-3 h-3 md:w-6 md:h-6 my-auto" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">Expedited Shipping—delivered in 4-10 days
                 post-shipment</p>
             </div>
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_heart.svg" class="w-3 h-3 md:w-6 md:h-6" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">100% Authentic</p>
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">100% Authentic</p>
             </div>
             <div class="flex flex-row">
               <img src="/img/assets/icon/icon_shield.svg" class="w-3 h-3 md:w-6 md:h-6" alt="" />
-              <p class="text-xs md:text-base text-black font-normal ml-2">Reliable payment methods</p>
+              <p class="text-xs md:text-sm lg:text-base text-black font-normal ml-2">Reliable payment methods</p>
             </div>
           </div>
 
           <div class="w-full h-fit flex flex-row mt-10 mx-auto">
-            <div class="w-[40%] md:w-[10%] h-full text-xl">Qty</div>
+            <div class="w-[40%] md:w-[10%] h-full text-xl md:mr-4 lg:mr-0">Qty</div>
             <div class="w-[60%] md:w-[90%] h-full flex flex-row">
               <div @click="reduceQuantity"
                 class="border border-black rounded-full py-1 px-3.5 text-2xl cursor-pointer hover:bg-slate-100">-</div>
@@ -157,8 +161,7 @@ onMounted(async () => {
         <p class="text-[#898383] font-semibold text-sm md:text-lg mt-2 md:mt-8">{{ product.description }}</p>
       </div>
 
-      <div 
-        class="w-[100%] h-full flex-col px-8 pt-6 pb-8 bg-[#FFFCFC] rounded-2xl mt-6">
+      <div class="w-[100%] h-full flex-col px-8 pt-6 pb-8 bg-[#FFFCFC] rounded-2xl mt-6">
         <h1 class="text-black font-bold text-2xl">Product Rating</h1>
         <div class="w-full h-full flex flex-row">
           <div class="w-[38%] h-full flex flex-row px-8 py-10">

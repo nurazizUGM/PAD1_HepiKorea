@@ -130,10 +130,10 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
     </div>
 
     <div
-      class="w-full md:w-max[100%] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-5 lg:py-10 px-1 lg:px-14">
+      class="w-full md:w-max[100%] min-h-[600px] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-5 lg:py-10 px-1 lg:px-14">
       <div class="w-auto md:w-full flex flex-row mb-5 mx-auto md:mx-0 gap-2 justify-around relative">
         <button id="dropdownCategoryButton" @click="toggleDropdown('category')"
-          class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-20 md:w-40 lg:w-44 lg:h-10 md:h-8 group"
+          class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-16 md:w-40 lg:w-44 lg:h-10 md:h-8 group"
           type="button">
           <span class="text-left text-[10px] md:text-xs lg:text-lg">{{ selectedCategoryName }}</span>
           <svg class="w-2.5 h-2.5 md:ml-10 text-black group-focus:rotate-180 transition duration-200" aria-hidden="true"
@@ -145,7 +145,7 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
 
         <!-- Dropdown menu -->
         <div v-if="dropdowns.category"
-          class="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-20 md:w-28 lg:w-48 left-0 top-12 mt-1">
+          class="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-16 md:w-28 lg:w-48 left-0 top-12 mt-1">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
             <li @click="selectCategory('')">
               <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">All</a>
@@ -158,12 +158,12 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
 
 
         <input type="number" v-model="minPrice" placeholder="Minimum Price"
-          class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[10px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-24 md:w-40 lg:w-60 lg:h-10 md:h-7 my-auto ml-auto lg:ml-10" />
+          class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[8px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-16 md:w-40 lg:w-60 lg:h-10 md:h-7 my-auto ml-auto lg:ml-10" />
         <input type="number" v-model="maxPrice" placeholder="Maximum Price"
-          class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[10px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-24 md:w-40 lg:w-60 lg:h-10 md:h-7 my-auto ml-0 lg:ml-6" />
+          class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[8px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-16 md:w-40 lg:w-60 lg:h-10 md:h-7 my-auto ml-0 lg:ml-6" />
 
         <button id="dropdownSortByButton" @click="toggleDropdown('sortBy')"
-          class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-20 md:w-28 lg:w-48 md:h-8 lg:h-10"
+          class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-16 md:w-28 lg:w-48 md:h-8 lg:h-10"
           type="button">
           <span class="text-left text-[10px] md:text-xs lg:text-lg">{{ sortByDisplay }}</span>
           <svg class="w-2.5 h-2.5 ml-auto text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -175,7 +175,7 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
 
         <!-- Dropdown menu -->
         <div v-if="dropdowns.sortBy"
-          class="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-20 md:w-28 lg:w-48 right-0 top-12 mt-1">
+          class="absolute z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-16 md:w-28 lg:w-48 right-0 top-12 mt-1">
           <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
             <li @click="selectSortBy('')">
               <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">Sort By</a>
