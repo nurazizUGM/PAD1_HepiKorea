@@ -37,16 +37,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        $user = Auth::check() ? User::find(Auth::id()) : null;
-        $accessToken = $user ? $user->createToken('web')->plainTextToken : null;
-
         return array_merge(parent::share($request), [
             'g_client_id' => env('GOOGLE_CLIENT_ID'),
             'app.debug' => config('app.debug'),
             'app.name' => config('app.name'),
             'apiUrl' => env('API_URL', 'http://localhost:8000/api'),
-            'user' => $user ? $user->only('id', 'name', 'email') : null,
-            'accessToken' => $accessToken,
+            'user' => Auth::check() ?
+                User::find(Auth::id())->only(
+                    'fullname',
+                    'email',
+                    'photo',
+                    'role'
+                )
+                : null,
         ]);
     }
 }
