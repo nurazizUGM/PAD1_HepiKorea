@@ -3,15 +3,36 @@
 
 import { Link, router, useForm } from '@inertiajs/vue3';
 import { ref } from 'vue';
+import axios from '../../axios';
 import Layout from '../Layouts/Auth.vue';
 
-defineProps({ errors: Object });
+const props = defineProps({ errors: Object, apiUrl: String });
+
+const loading = ref(false);
 const form = useForm({
     email: '',
     password: '',
 });
 function submit() {
-    router.post('/auth/login', form);
+    if (loading.value) return;
+    for (const k in props.errors) {
+        delete props.errors[k];
+    }
+
+    loading.value = true;
+    axios.post('/auth/login', { email: form.email, password: form.password })
+        .then(({ status, data }) => {
+            loading.value = false;
+            if (status === 200) {
+                sessionStorage.setItem('token', data.token);
+                router.push('/');
+
+                // for development
+                window.location.href = '/';
+            } else if (data.message) {
+                props.errors.message = data.message;
+            }
+        })
 }
 
 const showPassword = ref(false);
@@ -21,9 +42,8 @@ function togglePassword() {
 }
 
 function google() {
-    window.open('/auth/google', '_blank', 'width=600,height=600');
+    window.open(props.apiUrl + '/auth/google', '_blank', 'width=600,height=600');
 }
-
 </script>
 
 <template>
@@ -84,7 +104,9 @@ function google() {
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] md:h-8 lg:h-12 md:rounded-md lg:rounded-xl md:mb-3 lg:mb-5 md:text-xs lg:text-2xl font-normal text-white">Login</button>
             </form>
-            <p class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold md:text-center lg:text-center text-black">Don't have an
+            <p
+                class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold md:text-center lg:text-center text-black">
+                Don't have an
                 account?
                 <Link href="/auth/register" class="text-blue-600">Register</Link>
             </p>

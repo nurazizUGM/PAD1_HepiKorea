@@ -7,7 +7,25 @@ const axios = new Axios({
         "X-CSRF-TOKEN": document
             .querySelector('meta[name="csrf-token"]')
             ?.getAttribute("content"),
+        "Content-Type": "application/json",
     },
+    transformRequest: [
+        (data, headers) => {
+            const token = sessionStorage.getItem("token");
+            if (token) {
+                headers["Authorization"] = `Bearer ${token}`;
+            }
+
+            if (data instanceof FormData) {
+                headers["Content-Type"] = "multipart/form-data";
+                return data;
+            } else if (data instanceof Object) {
+                headers["Content-Type"] = "application/json";
+                return JSON.stringify(data);
+            }
+            return data;
+        },
+    ],
     transformResponse: [
         (data) => {
             try {

@@ -6,7 +6,9 @@ use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\RequestOrderController;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\ApiAuth;
 use Illuminate\Http\Request;
@@ -115,5 +117,35 @@ Route::name('api.')->group(function () {
         Route::get('/', 'findAll');
         Route::get('/review', 'review');
         Route::get('/{id}', 'show');
+    });
+
+    Route::middleware(ApiAuth::class)->prefix('order')->controller(OrderController::class)->group(function () {
+        Route::get('/', 'history');
+        Route::post('/calculate', 'calculateItems');
+        Route::post('/', 'checkout');
+
+        Route::get('/payment/{id}', 'paymentStatus');
+        Route::post('/{id}/cancel', 'cancel');
+        Route::post('/{id}/pay-shipment', 'payShipment');
+        Route::post('/{id}/arrived', 'arrived');
+        Route::post('/{id}/review', 'review');
+        Route::get('/{id}', 'show');
+    });
+
+    Route::middleware([ApiAuth::class, Admin::class])->prefix('/admin/order')->controller(OrderController::class)->group(function () {
+        Route::post('/', 'orders');
+        Route::post('/request-order/{id}', 'confirmationDetails');
+        
+        Route::get('/{id}', 'show');
+        Route::post('/{id}/confirm', 'confirm');
+        Route::post('/{id}/process', 'process');
+        Route::post('/{id}/ship', 'createShipmentInvoice');
+        Route::post('/{id}/send', 'send');
+    });
+
+    Route::prefix('request-order')->controller(RequestOrderController::class)->group(function () {
+        Route::get('/', 'show');
+        Route::post('/calculate', 'calculateItems');
+        Route::post('/', 'checkout');
     });
 });
