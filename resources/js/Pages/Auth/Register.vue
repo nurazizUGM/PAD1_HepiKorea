@@ -67,9 +67,7 @@
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] md:h-8 lg:h-12 md:rounded-md lg:rounded-xl md:mb-3 lg:mb-5 md:text-xs lg:text-2xl font-bold text-white shadow-md md:mt-4 lg:mt-5">Register</button>
             </form>
-            <p
-                class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold md:text-right lg:text-center text-black">
-                Have an account?
+            <p class="md:text-[10px] lg:text-sm md:font-normal lg:font-semibold md:text-right lg:text-center text-black">Have an account?
                 <Link href="/auth/login" class="text-blue-600 cursor-pointer">Login</Link>
             </p>
             <div class="w-full relative">
@@ -93,14 +91,12 @@
 <script lang="ts">
 // example of options API
 
-import { Link } from '@inertiajs/vue3';
-import axios from '../../axios';
+import { Link, router } from '@inertiajs/vue3';
 import Layout from '../Layouts/Auth.vue';
 
 export default {
     props: {
         errors: Object,
-        apiUrl: String,
     },
     data() {
         return {
@@ -111,7 +107,7 @@ export default {
                 password: '',
                 password_confirmation: '',
             },
-            loading: false,
+            router
         };
     },
     components: {
@@ -123,30 +119,20 @@ export default {
             window.open('/auth/google', '_blank', 'width=600,height=600');
         },
         submitForm() {
-            if (this.loading) return;
-            for (const k in this.errors) {
-                delete this.errors[k];
-            }
-            if (this.form.password !== this.form.password_confirmation) {
-                this.errors.password = 'Password and Confirm Password must be the same';
-                return;
-            }
-
-            this.loading = true;
-            axios.post('/auth/register', this.form)
-                .then(({ status, data }) => {
-                    this.loading = false;
-                    if (status == 200) {
-                        sessionStorage.setItem('token', data.token);
-                        this.router.push('/');
-                    } else {
-                        if (data.errors) {
-                            for (const k in data.errors) {
-                                this.errors[k] = data.errors[k][0];
-                            }
-                        }
-                    }
-                })
+            this.$inertia.post('/auth/register', this.form, {
+                onSuccess: () => {
+                    this.form = {
+                        fullname: '',
+                        email: '',
+                        password: '',
+                        password_confirmation: '',
+                    };
+                },
+                onError: (errors) => {
+                    console.log(errors);
+                    this.errors = errors;
+                },
+            });
         }
     },
 };
