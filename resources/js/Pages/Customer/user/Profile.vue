@@ -3,7 +3,7 @@
     <div class="p-4 lg:p-8 border-2 bg-[#EFEFEF] border-gray-200 rounded-2xl h-full overflow-y-auto">
       <div class="rounded-2xl flex flex-col bg-white p-5 lg:p-10">
         <h1 class="text-black text-xs md:text-sm lg:text-2xl font-semibold">Profile Detail</h1>
-        <div class="grid gap-x-16 grid-flow-row lg:grid-cols-[2fr_4fr] mt-0 md:mt-4 lg:mt-6">
+        <div class="grid gap-x-8 lg:gap-x-16 grid-flow-row lg:grid-cols-[2fr_4fr] mt-0 md:mt-4 lg:mt-6">
           <!-- Profile Picture Section -->
           <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
             <div class="rounded-xl bg-slate-300">
@@ -13,7 +13,7 @@
             <button
               class="w-[50%] lg:w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
               @click="$refs.photoInput.click()">
-              <h1 class="text-lg text-white font-semibold">Choose Photo</h1>
+              <h1 class="text-xs lg:text-lg text-white font-semibold">Choose Photo</h1>
             </button>
             <input type="file" ref="photoInput" class="hidden" @change="handlePhotoChange" accept="image/*">
           </div>
@@ -28,7 +28,7 @@
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="fullname"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Name</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Name</label>
                       </th>
                       <td class="py-4">
                         <input v-model="form.fullname" type="text" id="fullname" name="fullname"
@@ -41,7 +41,7 @@
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="date_of_birth"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Date of Birth</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Date of Birth</label>
                       </th>
                       <td class="py-4 relative">
                         <input v-model="form.date_of_birth" type="date" id="date_of_birth" name="date_of_birth"
@@ -54,7 +54,7 @@
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="gender"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Gender</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Gender</label>
                       </th>
                       <td class="py-4 flex justify-end lg:justify-around" colspan="2">
                         <div class="flex items-center mr-5">
@@ -75,7 +75,7 @@
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="email"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Email</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Email</label>
                       </th>
                       <td class="py-4">
                         <input v-model="form.email" type="email" id="email"
@@ -88,14 +88,14 @@
                     <tr class="bg-white">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="old_password"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Password</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Password</label>
                       </th>
                       <td class="py-4 relative">
                         <input v-model="form.old_password" :type="showOldPassword ? 'text' : 'password'"
                           id="old_password" name="old_password"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Old Password" :required="form.new_password !== ''" :disabled="!isEditing" />
-                        <span class="absolute inset-y-0 right-4 pr-6 flex items-center cursor-pointer"
+                        <span class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
                           @click="togglePassword('old')">
                           <img
                             :src="showOldPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
@@ -112,7 +112,7 @@
                           id="new_password" name="new_password"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="New Password" :disabled="!isEditing" />
-                        <span class="absolute inset-y-0 right-4 pr-6 flex items-center cursor-pointer"
+                        <span class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
                           @click="togglePassword('new')">
                           <img
                             :src="showNewPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
@@ -128,9 +128,9 @@
                         <input v-model="form.new_password_confirmation"
                           :type="showConfirmPassword ? 'text' : 'password'" id="new_password_confirmation"
                           name="new_password_confirmation"
-                          class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
+                          class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto placeholder:text-xs"
                           placeholder="Confirm Password" :required="form.new_password !== ''" :disabled="!isEditing" />
-                        <span class="absolute inset-y-0 right-4 -top-1/4 pr-6 flex items-center cursor-pointer"
+                        <span class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 -top-1/4 flex items-center cursor-pointer"
                           @click="togglePassword('confirm')">
                           <img
                             :src="showConfirmPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
@@ -144,7 +144,7 @@
                     <!-- Phone Number -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="phone" class="flex items-center mb-2 text-lg font-medium text-[#898383]">Phone
+                        <label for="phone" class="flex items-center mb-2 text-[12px] lg:ext-lg font-medium text-[#898383]">Phone
                           Number</label>
                       </th>
                       <td class="py-4">
@@ -158,7 +158,7 @@
                     <tr class="bg-white">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
                         <label for="address"
-                          class="flex items-center mb-2 text-lg font-medium text-[#898383]">Address</label>
+                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Address</label>
                       </th>
                       <td class="py-4">
                         <div class= "w-full md:w-2/3 lg:w-full flex ml-auto">
@@ -197,11 +197,11 @@
                       <th scope="row"></th>
                       <td class="py-4 flex space-x-4">
                         <button type="submit"
-                          class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-5 py-2.5 text-xl">
+                          class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg lg:rounded-lg px-2 py-1 lg:px-5 lg:py-2.5 text-xl">
                           Save
                         </button>
                         <button type="button" @click="cancel"
-                          class="bg-gray-400 hover:bg-gray-500 text-white rounded-lg px-5 py-2.5 text-xl">
+                          class="bg-gray-400 hover:bg-gray-500 text-white rounded-lg lg:rounded-lg px-2 py-1 lg:px-5 lg:py-2.5 text-xl">
                           Cancel
                         </button>
                       </td>
@@ -210,7 +210,7 @@
                       <th scope="row"></th>
                       <td class="py-4 w-full md:w-2/3 lg:w-full flex ml-auto">
                         <button type="button" @click="edit"
-                          class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg px-5 py-2.5 text-xl">
+                          class="bg-orange-400 hover:bg-orange-500 text-white rounded-lg lg:rounded-lg px-2 py-1 lg:px-5 lg:py-2.5 text-xl">
                           Edit
                         </button>
                       </td>
