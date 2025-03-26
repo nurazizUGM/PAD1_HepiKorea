@@ -120,7 +120,7 @@ export default {
         // Modal States
         const shipmentModalVisible = ref(false);
         const reviewModalVisible = ref(false);
-        const successReviewModalVisible = ref(true);
+        const successReviewModalVisible = ref(false);
         const selectedOrder = ref(null);
 
         // Review Form
@@ -475,33 +475,33 @@ export default {
             <div v-if="shipmentModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click.self="shipmentModalVisible = false">
-                <div class="bg-white w-[41vw] h-auto rounded-[30px] shadow p-4">
+                <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[41vw] h-auto rounded-[20px] lg:rounded-[30px] shadow p-4 relative">
                     <button
-                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-1 -right-1"
+                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
                         @click="shipmentModalVisible = false">
                         <p class="text-white text-md">X</p>
                     </button>
-                    <div class="w-full h-full flex flex-col px-10 pt-10 pb-5">
-                        <h1 class="text-black font-bold text-2xl">Detail Shipment</h1>
+                    <div class="w-full h-full flex flex-col px-2.5 pt-3 pb-2.5 lg:px-10 lg:pt-10 lg:pb-5">
+                        <h1 class="text-black font-bold text-[10px] md:text-base lg:text-2xl">Detail Shipment</h1>
                         <div class="w-full h-full flex flex-col gap-y-6 mt-6">
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-sm text-[#898383] font-bold">Expedition Name</div>
-                                <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">{{ selectedOrder?.shipmentService
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Expedition Name</div>
+                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{ selectedOrder?.shipmentService
                                     }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-sm text-[#898383] font-bold">Total Expedition Payment</div>
-                                <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">Rp {{
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total Expedition Payment</div>
+                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">Rp {{
                                     formatPrice(selectedOrder?.shipmentPrice) }},-</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-sm text-[#898383] font-bold">Estimated Arrival Time</div>
-                                <div class="w-[33%] text-sm text-[#3E6E7A] font-bold">{{
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Estimated Arrival Time</div>
+                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     selectedOrder?.shipmentArrivalEstimation }}</div>
                             </div>
                         </div>
                         <button
-                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl py-2 px-16 ml-auto mt-6"
+                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-lg font-semibold rounded-lg lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-6 md:px-8 lg:px-16 ml-auto mt-6"
                             @click="payShipment(selectedOrder.id)">
                             Pay
                         </button>
@@ -559,7 +559,7 @@ export default {
                 @click="successReviewModalVisible = false">
                 <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
                     <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">Your Review Has Been Added!</h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-10 h-10 8md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
                 </div>
             </div>
         </div>
