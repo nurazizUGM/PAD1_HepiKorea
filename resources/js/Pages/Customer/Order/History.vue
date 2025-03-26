@@ -223,6 +223,7 @@ export default {
             formatPrice,
             pay,
             showShipmentDetail,
+            showReviewModal,
             payShipment,
             shipmentModalVisible,
             selectedOrder,
@@ -451,6 +452,11 @@ export default {
                                 </div>
                                 <div v-if="!order.hasReview" class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
                                     <div class="w-full flex flex-row justify-end md:items-end">
+                                        <!-- <button
+                                            class="w-[20%] h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
+                                            @click=console.log(order.id)>
+                                            Review
+                                        </button> -->
                                         <button
                                             class="w-[20%] h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
                                             @click="showReviewModal(order.id)">
