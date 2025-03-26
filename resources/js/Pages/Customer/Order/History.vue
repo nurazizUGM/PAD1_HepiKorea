@@ -120,7 +120,7 @@ export default {
         // Modal States
         const shipmentModalVisible = ref(false);
         const reviewModalVisible = ref(false);
-        const successReviewModalVisible = ref(false);
+        const successReviewModalVisible = ref(true);
         const selectedOrder = ref(null);
 
         // Review Form
@@ -509,45 +509,45 @@ export default {
                 </div>
             </div>
 
-            <!-- Review Modal -->
+            <!-- review Modal -->
             <div v-if="reviewModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click.self="reviewModalVisible = false">
-                <div class="bg-white w-[30vw] h-auto rounded-[30px] shadow p-4">
+                <div class="bg-white w-[60vw] md:w-[38vw] lg:w-[30vw] h-auto rounded-[10px] lg:rounded-[30px] shadow p-2 lg:p-4 relative">
                     <button
-                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-1 -right-1"
+                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
                         @click="reviewModalVisible = false">
                         <p class="text-white text-md">X</p>
                     </button>
-                    <div class="w-full h-full flex flex-col px-10 pt-10 pb-5">
-                        <h1 class="text-black font-bold text-sm">Rating</h1>
+                    <div class="w-full h-full flex flex-col px-4 lg:px-10 pt-4 lg:pt-10 pb-4 lg:pb-5">
+                        <h1 class="text-black font-bold text-[10px] md:text-sm lg:text-sm">Rating</h1>
                         <form @submit.prevent="submitReview" class="w-full h-full flex flex-col">
                             <input type="hidden" v-model="reviewForm.orderId">
                             <input type="hidden" v-model="reviewForm.rating">
-                            <div class="flex flex-row gap-x-4 my-6">
+                            <div class="flex flex-row gap-x-1 md:gap-x-2.5 lg:gap-x-4 my-3 lg:my-6">
                                 <img v-for="n in 5" :key="n" src="/img/assets/icon/icon_review_star.svg" alt="star"
-                                    class="w-[29px] h-7 cursor-pointer" :class="{ 'grayscale': n > reviewForm.rating }"
+                                    class="w-[17px] h-[16px]  lg:w-[29px] lg:h-7 cursor-pointer" :class="{ 'grayscale': n > reviewForm.rating }"
                                     @click="setRating(n)">
                             </div>
                             <textarea v-model="reviewForm.content"
-                                class="rounded-2xl bg-gray-200 resize-none border-none text-sm font-semibold focus:border-0 focus:ring-0 placeholder:text-black placeholder:font-semibold placeholder:text-sm"
+                                class="rounded-[10px] lg:rounded-2xl bg-gray-200 resize-none border-none text-[10px] lg:text-sm font-semibold focus:border-0 focus:ring-0 placeholder:text-black placeholder:font-semibold placeholder:text-[10px] lg:placeholder:text-sm h-[64px] md:h-[71px] lg:h-[106px]"
                                 placeholder="Add Comment..." rows="5"></textarea>
-                            <div class="relative w-full h-56 bg-gray-200 rounded-2xl mt-6 bg-cover bg-center"
+                            <div class="relative w-full h-40 md:h-44 lg:h-56 bg-gray-200 rounded-[10px] lg:rounded-2xl mt-3 lg:mt-6 bg-cover bg-center"
                                 :style="{ backgroundImage: `url(${reviewForm.photoPreview})` }">
                                 <input id="add-review-media" type="file" accept="image/*" class="hidden"
                                     @change="changeReviewPhoto">
                                 <label for="add-review-media"
                                     class="absolute inset-0 flex justify-center items-center cursor-pointer">
-                                    <div v-if="!reviewForm.photoPreview" class="text-gray-500">Upload file</div>
+                                    <div v-if="!reviewForm.photoPreview" class="text-gray-500 text-xs md:text-sm lg:text-base">Upload file</div>
                                 </label>
                                 <label for="add-review-media"
-                                    class="absolute bottom-3 right-3 bg-white p-2 rounded-lg cursor-pointer">
+                                    class="absolute bottom-1.5 right-1.5 lg:bottom-3 lg:right-3 bg-white p-0.5 lg:p-2 rounded lg:rounded-lg cursor-pointer">
                                     <img src="/img/assets/icon/icon_admin_category_upload.svg" alt="Upload Icon"
-                                        class="h-6 w-6">
+                                        class="w-3 h-3 md:w-4 md:h-4 lg:h-6 lg:w-6">
                                 </label>
                             </div>
                             <button type="submit"
-                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl py-2 px-16 ml-auto mt-6">Save</button>
+                                class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-lg font-semibold rounded-md lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-7 md:px-8 lg:px-16 mx-auto mt-2.5 lg:mt-6">Save</button>
                         </form>
                     </div>
                 </div>
@@ -557,9 +557,9 @@ export default {
             <div v-if="successReviewModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click="successReviewModalVisible = false">
-                <div class="bg-white w-[28vw] h-auto rounded-[30px] shadow p-14">
-                    <h1 class="text-black text-xl font-medium mx-auto">Your Review Has Been Added!</h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-24 h-24 mx-auto mt-6">
+                <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
+                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">Your Review Has Been Added!</h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-10 h-10 8md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
                 </div>
             </div>
         </div>
