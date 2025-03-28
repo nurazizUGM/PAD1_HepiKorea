@@ -104,8 +104,12 @@ class OrderController extends Controller
 
     public function calculateItems(Request $request)
     {
-        $data = $request->all();
-        $result = $this->calculate($data);
+        $data = $request->validate([
+            'items' => 'required|array',
+            'items.*.productId' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+        $result = $this->calculate($data['items']);
 
         foreach ($result['items'] as $item) {
             $item->product->load('images');
