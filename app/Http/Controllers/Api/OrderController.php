@@ -248,11 +248,7 @@ class OrderController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Payment status checked',
-            'payment' => $payment,
-        ]);
+        return response()->json($payment);
     }
 
     public function cancel(string $id)
