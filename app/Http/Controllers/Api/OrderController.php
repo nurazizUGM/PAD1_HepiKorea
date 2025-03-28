@@ -129,10 +129,11 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.productId' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'addressId' => 'required|exists:addresses,id',
         ]);
 
         $user = User::find(Auth::id());
-        $total = $this->calculateTotal($data['items']);
+        $total = $this->calculate($data['items']);
 
         DB::beginTransaction();
         $order = Order::create([
@@ -150,6 +151,18 @@ class OrderController extends Controller
                 'price' => $product->price,
             ]);
         }
+
+        $address = $user->addresses()->find($data['addressId']);
+
+        $order->orderDetail()->create([
+            'customer_name' => $address->name ?? $user->fullname,
+            'customer_email' => $address->email ?? $user->email,
+            'customer_phone' => $address->phone ?? $user->phone,
+            'customer_address' => $address->address,
+            'province' => $address->province,
+            'city' => $address->city,
+            'postal_code' => $address->postal_code,
+        ]);
 
         $orderPayment = new OrderPayment([
             'order_id' => $order->id,
