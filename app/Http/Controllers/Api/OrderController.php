@@ -55,27 +55,28 @@ class OrderController extends Controller
     }
 
     // transaction history
-    public function history($status = 'unpaid')
+    public function history(Request $request)
     {
+        $status = $request->query('status', 'unpaid');
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
 
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
         if ($status == 'unpaid') {
-            $orders->where('status', 'unpaid')->with('orderPayment')->get();
+            $orders->where('status', 'unpaid')->with('orderPayment');
         } else if ($status == 'processed') {
-            $processed = $orders->whereIn('status', ['paid', 'processing'])->get();
+            $orders = $orders->whereIn('status', ['paid', 'processing']);
         } else if ($status == 'sent') {
-            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment')->get();
+            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment');
         } else if ($status == 'finished') {
             $orders = Order::where('user_id', Auth::id())
                 ->whereIn('status', ['finished', 'cancelled'])
                 ->with('reviews')
                 ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
-                ->orderBy('created_at', 'desc')
-                ->get();
+                ->orderBy('created_at', 'desc');
         }
 
-        return response()->json($orders);
+
+        return response()->json($orders->get());
     }
 
     // calculate total price of the order
