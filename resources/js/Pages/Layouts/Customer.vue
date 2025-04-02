@@ -180,7 +180,7 @@ onMounted(() => {
             </div>
         </nav>
 
-        <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-20 overflow-hidden no-scrollbar">
+        <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-5 md: lg:mb-20 overflow-hidden no-scrollbar">
             <slot></slot>
         </div>
 
