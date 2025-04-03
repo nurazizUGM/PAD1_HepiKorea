@@ -220,15 +220,18 @@ export default {
                         <p class="text-[#898383] font-semibold text-xs lg:text-lg">{{ address.phone }}</p>
                     </div>
                     <div class="w-full md:w-4/6 md:max-w-4/6 h-full lg:pr-36 mb-auto relative">
-                        <p class="text-black text-opacity-50 font-semibold text-[10px] lg:text-lg">{{ address.fullAddress }}</p>
-                        <a href="#" @click.prevent="toggleAddressList" class="md:hidden flex my-auto ml-auto cursor-pointer absolute -right-3 -top-3 scale-50 md:scale-100">
+                        <p class="text-black text-opacity-50 font-semibold text-[10px] lg:text-lg">{{
+                            address.fullAddress }}</p>
+                        <a href="#" @click.prevent="toggleAddressList"
+                            class="md:hidden flex my-auto ml-auto cursor-pointer absolute -right-3 -top-3 scale-50 md:scale-100">
                             <img src="/img/assets/icon/icon_checkout_arrow_down.svg" alt=""
                                 class="w-6 h-6 transition-transform duration-300"
                                 :class="{ 'rotate-180': showAddressList }">
                         </a>
                     </div>
                     <div class="w-full md:w-1/6 h-full flex mb-auto">
-                        <a href="#" @click.prevent="toggleAddressList" class="hidden md:flex my-auto ml-auto cursor-pointer md:scale-75 lg:scale-100">
+                        <a href="#" @click.prevent="toggleAddressList"
+                            class="hidden md:flex my-auto ml-auto cursor-pointer md:scale-75 lg:scale-100">
                             <img src="/img/assets/icon/icon_checkout_arrow_down.svg" alt=""
                                 class="w-6 h-6 transition-transform duration-300"
                                 :class="{ 'rotate-180': showAddressList }">
@@ -238,7 +241,8 @@ export default {
             </div>
 
             <!-- List of Product Ordered Container -->
-            <div class="w-full h-full rounded-xl lg:rounded-3xl bg-white flex flex-col py-2.5 lg:py-3 px-2.5 lg:px-10 mt-2 lg:mt-6">
+            <div
+                class="w-full h-full rounded-xl lg:rounded-3xl bg-white flex flex-col py-2.5 lg:py-3 px-2.5 lg:px-10 mt-2 lg:mt-6">
                 <h1 class="text-black font-semibold text-xs lg:text-2xl">Product Ordered</h1>
                 <div class="w-full h-full flex flex-col gap-y-5">
                     <div v-for="item in items" :key="item.product.id" class="w-full h-full flex flex-col">
@@ -247,28 +251,54 @@ export default {
                                 <img :src="getImageUrl(item.product.image)" alt="img_product"
                                     class="w-36 md:w-20 lg:w-36 object-contain">
                             </div>
-                            <div class="w-[35%] md:w-[20%] mt-1 md:mt-2 pl-0.5 lg:pl-0">
-                                <p class="mb-auto text-[#3E6E7A] text-[10px] md:text-sm lg:text-base font-semibold">{{ item.product.name }}</p>
-                                <p class="mb-auto md:hidden flex text-[#898383] font-semibold text-[8px] lg:text-xl">Rp {{
-                                    formatPrice(item.product.price) }},-</p>
+                            <div class="w-[80%] md:w-[20%] mt-1 md:mt-2 pl-1 lg:pl-0">
+                                <p class="mb-auto text-[#3E6E7A] text-[10px] md:text-sm lg:text-base font-semibold">{{
+                                    item.product.name }}</p>
+                                <p class="mb-auto md:hidden flex text-[#898383] font-semibold text-[8px] lg:text-xl">Rp
+                                    {{
+                                        formatPrice(item.product.price) }},-</p>
+                                <div class="flex flex-row items-center mt-2.5">
+                                    <div
+                                        class="w-fit h-fit md:hidden flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center md:mt-0 md:mb-auto lg:my-0">
+                                        <div @click="reduceQty(item)"
+                                            class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            -</div>
+                                        <p
+                                            class="item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
+                                            {{ item.quantity }}</p>
+                                        <div @click="addQty(item)"
+                                            class="border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            +</div>
+                                    </div>
+                                    <p class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-xl ml-3">Rp
+                                        {{
+                                            formatPrice(item.total)
+                                        }},-</p>
+                                </div>
                             </div>
                             <div class="w-[0%] md:w-[20%] mt-2">
-                                <p class="mb-auto hidden md:flex text-[#898383] font-semibold text-[10px] md:text-sm lg:text-xl">Rp {{
-                                    formatPrice(item.product.price) }},-</p>
+                                <p
+                                    class="mb-auto hidden md:flex text-[#898383] font-semibold text-[10px] md:text-sm lg:text-xl">
+                                    Rp {{
+                                        formatPrice(item.product.price) }},-</p>
                             </div>
-                            <div class="w-[30%] md:w-[20%] flex flex-row pt-1">
-                                <div class="w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
+                            <div class="hidden md:flex md:w-[20%] flex-row pt-1">
+                                <div
+                                    class="w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
                                     <div @click="reduceQty(item)"
                                         class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
                                         -</div>
-                                    <p class="item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">{{ item.quantity }}</p>
+                                    <p
+                                        class="item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
+                                        {{ item.quantity }}</p>
                                     <div @click="addQty(item)"
                                         class="border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
                                         +</div>
                                 </div>
                             </div>
-                            <div class="w-[25%] md:w-[20%] flex justify-end mt-2">
-                                <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{ formatPrice(item.total)
+                            <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
+                                <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
+                                    formatPrice(item.total)
                                     }},-</p>
                             </div>
                         </div>
@@ -283,28 +313,40 @@ export default {
             </div>
 
             <!-- Checkout Container -->
-            <div class="w-full h-full rounded-xl lg:rounded-3xl bg-white flex flex-col py-1.5 lg:py-5 px-2.5 lg:px-10 mt-2 lg:mt-6">
+            <div
+                class="w-full h-full rounded-xl lg:rounded-3xl bg-white flex flex-col py-1.5 lg:py-5 px-2.5 lg:px-10 mt-2 lg:mt-6">
                 <h1 class="text-black font-semibold text-xs md:text-base lg:text-2xl">Checkout</h1>
-                <div class="w-full h-full flex flex-row mt-1.5 lg:mt-4">
-                    <div class="w-[40%] flex flex-row">
-                        <p class="text-black text-opacity-50 text-[8px] md:text-sm lg:text-base font-semibold">Note:</p>
+                <div class="w-full h-full flex flex-col md:flex-row mt-1.5 lg:mt-4">
+                    <div class="w-full md:w-[40%] flex flex-row">
+                        <p class="text-black text-opacity-50 text-[10px] md:text-sm lg:text-base font-semibold">Note:
+                        </p>
                         <textarea v-model="orderNote"
-                            class="bg-white hover:bg-slate-50 focus:bg-slate-50 w-full h-[50px] md:h-[61px] lg:h-[79px] border-2 border-[#3E6E7A] rounded-xl lg:rounded-2xl resize-none ml-1.5 lg:ml-3 text-[#3E6E7A] text-[6px] md:text-xs lg:text-sm focus:border-2 focus:border-[#3E6E7A] focus:ring-0 placeholder:text-[#3E6E7A] placeholder:text-[6px] md:placeholder:text-xs lg:placeholder:text-sm p-2 py-0.5 md:py-1"
+                            class="bg-white hover:bg-slate-50 focus:bg-slate-50 w-full h-[50px] md:h-[61px] lg:h-[79px] border-2 border-[#3E6E7A] rounded-xl lg:rounded-2xl resize-none ml-1.5 lg:ml-3 text-[#3E6E7A] text-[8px] md:text-xs lg:text-sm focus:border-2 focus:border-[#3E6E7A] focus:ring-0 placeholder:text-[#3E6E7A] placeholder:text-[8px] md:placeholder:text-xs lg:placeholder:text-sm p-2 py-0.5 md:py-1"
                             placeholder="Order Note..."></textarea>
                     </div>
-                    <div class="w-[40%] flex flex-col items-center md:px-[54px] lg:px-[98px]">
-                        <p class="text-black text-opacity-50 text-[8px] md:text-xs lg:text-base font-semibold">Total ({{ items.length }}) Product</p>
-                        <p class="hidden md:flex text-[8px] md:text-[10px] text-red-500 lg:text-sm font-medium md:mt-1.5 lg:mt-3">This price is not Including delivery cost.
+                    <div
+                        class="w-full md:w-[40%] flex flex-row md:flex-col items-center md:pl-[44px] lg:px-[98px] justify-between  mt-1 md:mt-0">
+                        <p class="text-black text-opacity-50 text-[8px] md:text-xs lg:text-base font-semibold">Total ({{
+                            items.length }}) Product</p>
+                        <h1 class="text-orange-400 md:hidden flex font-semibold text-[10px] md:text-xs lg:text-2xl">Rp
+                            {{
+                                formatPrice(total) }},-</h1>
+                        <p
+                            class="hidden md:flex text-[8px] md:text-[10px] text-red-500 lg:text-sm font-medium md:mt-1.5 lg:mt-3 text-center">
+                            This price is not Including delivery cost.
                             The cost for delivery will be invoiced after the product arrived at our warehouse</p>
                     </div>
-                    <div class="w-[20%] h-16 md:h-auto flex flex-col items-end relative">
-                        <h1 class="text-orange-400 font-semibold text-[7px] md:text-xs lg:text-2xl">Rp {{ formatPrice(total) }},-</h1>
-                        <p class="md:hidden w-[130px] flex text-[5.5px] lg:text-sm text-red-600 font-medium bottom-6 right-0 absolute text-right">This price is not Including delivery cost.
-                            The cost for delivery will be invoiced after the product arrived at our warehouse</p>
+                    <div class="w-full md:w-[20%] md:h-auto flex flex-col items-end relative mt-1 md:mt-0">
+                        <h1 class="text-orange-400 hidden md:flex font-semibold text-[7px] md:text-xs lg:text-2xl">Rp {{
+                            formatPrice(total) }},-</h1>
                         <button @click="showChoosePaymentModal = true"
-                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-xl lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-3 md:px-6 lg:px-9 mt-auto lg:mt-2">
+                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-xl lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-3 md:px-6 lg:px-9 md:mt-3 lg:mt-2 ml-auto">
                             Checkout
                         </button>
+                        <p
+                            class="md:hidden flex text-[8px] md:text-[10px] text-red-500 lg:text-sm font-medium md:mt-1.5 lg:mt-3 text-right pl-28 mt-1 ">
+                            This price is not Including delivery cost.
+                            The cost for delivery will be invoiced after the product arrived at our warehouse</p>
                     </div>
                 </div>
             </div>

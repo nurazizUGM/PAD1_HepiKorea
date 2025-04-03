@@ -1,6 +1,6 @@
 <template>
   <Layout title="Product Confirmed">
-    <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-2 px-2 md:px-6 lg:px-[50px] relative">
+    <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-2 px-2 md:px-4 lg:px-[50px] relative">
       <h1 class="text-black font-semibold md:text-sm lg:text-2xl text-left">Product Confirmed</h1>
 
       <div class="overflow-y-scroll no-scrollbar h-[51vh] lg:h-[50vh] mt-2 mb-52">
@@ -27,9 +27,9 @@
               </div>
               <!-- Name, Variant, Price -->
               <div class="w-[65%] h-full flex flex-col pl-5">
-                <h1 class="text-[#3E6E7A] font-semibold text-base">{{ item.name }}</h1>
+                <h1 class="text-[#3E6E7A] font-semibold text-[13px] lg:text-base">{{ item.name }}</h1>
                 <h2 class="text-black text-opacity-50 font-semibold text-xs mt-1">{{ item.variant }}</h2>
-                <h2 class="text-orange-400 font-semibold text-xl mt-auto">Rp {{ formatPrice(item.price) }}</h2>
+                <h2 class="text-orange-400 font-semibold md:text-xl lg:text-xl mt-auto">Rp {{ formatPrice(item.price) }}</h2>
               </div>
             </div>
 
@@ -38,7 +38,7 @@
               <div class="w-fit h-fit flex flex-row items-center my-auto ml-7">
                 <input type="checkbox" v-model="item.selected"
                   class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
-                <p class="text-[#3E6E7A] font-semibold ml-6">Add Product</p>
+                <p class="text-[#3E6E7A] md:text-sm lg:text-base font-semibold ml-6">Add Product</p>
               </div>
             </div>
           </div>
