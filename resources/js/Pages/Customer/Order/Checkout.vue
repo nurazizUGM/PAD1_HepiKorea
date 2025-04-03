@@ -34,7 +34,7 @@ export default {
         const showChoosePaymentModal = ref(false);
         const showVaPaymentModal = ref(false);
         const showQrPaymentModal = ref(false);
-        const showPaymentSuccessModal = ref(false);
+        const showPaymentSuccessModal = ref(true);
         const paymentMethod = ref('bri');
         const paymentDetails = ref({
             amount: 'Rp 0,-',
@@ -299,7 +299,7 @@ export default {
                             <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
                                 <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
                                     formatPrice(item.total)
-                                    }},-</p>
+                                }},-</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-0.5 lg:mt-6">
@@ -355,38 +355,47 @@ export default {
         <!-- Choose Payment Modal -->
         <div v-if="showChoosePaymentModal"
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow p-4">
-                <div class="w-full h-full flex flex-col px-10 py-10">
+            <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow p-4">
+                <div class="w-full h-full flex flex-col py-1 px-2 md:p-2 lg:px-10 lg:py-10">
                     <form @submit.prevent="handlePayment" class="w-full h-full flex flex-col">
-                        <h1 class="text-[#898383] text-opacity-60 font-bold text-xl">Bank</h1>
+                        <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl">Bank</h1>
                         <div class="w-full h-fit flex flex-row mt-2">
-                            <img src="/img/assets/icon/icon_checkout_bri.svg" alt="" class="w-24 h-10 object-contain">
-                            <label for="bri" class="my-auto text-black font-bold text-base ml-8">Bank BRI</label>
+                            <img src="/img/assets/icon/icon_checkout_bri.svg" alt=""
+                                class="w-[40px] h-[12px] md:-24 md:h-10 object-contain">
+                            <label for="bri"
+                                class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8">Bank
+                                BRI</label>
                             <input type="radio" v-model="paymentMethod" value="bri" id="bri"
-                                class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                                class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
                             <img src="/img/assets/icon/logo_checkout_mandiri.png" alt=""
-                                class="w-28 h-12 object-contain">
-                            <label for="mandiri" class="my-auto text-black font-bold text-base ml-4">Mandiri</label>
+                                class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">
+                            <label for="mandiri"
+                                class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">Mandiri</label>
                             <input type="radio" v-model="paymentMethod" value="mandiri" id="mandiri" disabled
-                                class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                                class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
-                            <img src="/img/assets/icon/icon_checkout_bca.svg" alt="" class="w-28 h-12 object-contain">
-                            <label for="bca" class="my-auto text-black font-bold text-base ml-4">BCA</label>
+                            <img src="/img/assets/icon/icon_checkout_bca.svg" alt=""
+                                class="w-[40px] h-[14px] md:w-28 md:h-12 object-contain">
+                            <label for="bca"
+                                class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">BCA</label>
                             <input type="radio" v-model="paymentMethod" value="bca" id="bca"
-                                class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                                class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
-                        <h1 class="text-[#898383] text-opacity-60 font-bold text-xl mt-6">E-wallet</h1>
+                        <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl mt-6">
+                            E-wallet</h1>
                         <div class="w-full h-fit flex flex-row mt-2">
-                            <img src="/img/assets/icon/icon_checkout_gopay.svg" alt="" class="w-28 h-12 object-contain">
-                            <label for="qris" class="my-auto text-black font-bold text-base ml-4">QRIS</label>
+                            <img src="/img/assets/icon/icon_checkout_gopay.svg" alt=""
+                                class="w-[42px] h-[11px] md:w-28 md:h-12 object-contain">
+                            <label for="qris"
+                                class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">QRIS</label>
                             <input type="radio" v-model="paymentMethod" value="qris" id="qris"
-                                class="ml-auto my-auto w-7 h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                                class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
                         <button type="submit"
-                            class="w-fit bg-[#4b6166] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-16 mx-auto mt-10">
+                            class="w-fit bg-[#4b6166] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-2xl font-semibold rounded-2xl py-0.5 md:py-2 px-5 md:px-10 lg:px-16 mx-auto mt-2 md:mt-4 lg:mt-10">
                             Pay
                         </button>
                     </form>
@@ -397,30 +406,37 @@ export default {
         <!-- Payment Modal (VA) -->
         <div v-if="showVaPaymentModal"
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-white w-[50vw] h-auto rounded-[30px] shadow p-4">
+            <div class="bg-white w-[70vw] md:w-[60vw] lg:w-[50vw] h-auto rounded-[30px] shadow p-4">
                 <div class="relative w-full h-full flex flex-row">
                     <button @click="showVaPaymentModal = false"
-                        class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1">
+                        class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-5 -right-4 lg:-top-5 lg:-right-5">
                         <p class="m-auto text-white text-base">X</p>
                     </button>
-                    <div class="w-full h-full flex flex-col px-14 pt-10 pb-2">
-                        <h1 class="text-black font-bold text-2xl">Payment</h1>
+                    <div class="w-full h-full flex flex-col md:px-10 md:pt-5 md:pb-5 lg:px-14 lg:pt-10 lg:pb-2">
+                        <h1 class="text-black font-bold text-xs lg:text-2xl">Payment</h1>
                         <div class="w-full h-fit flex flex-row mt-3">
                             <div class="w-[70%]">
-                                <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Total Payment</p>
+                                <p
+                                    class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                    Total Payment</p>
                             </div>
                             <div class="w-[30%]">
-                                <p class="text-[#3E6E7A] text-sm font-bold mr-auto">{{ paymentDetails.amount }}</p>
+                                <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto">{{
+                                    paymentDetails.amount }}</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
                             <div class="w-[70%]">
-                                <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Pay In</p>
+                                <p
+                                    class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                    Pay In</p>
                             </div>
                             <div class="w-[30%] h-fit flex flex-col">
-                                <p class="text-[#3E6E7A] text-sm font-bold">{{ paymentDetails.timeRemaining }}</p>
-                                <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>{{
-                                    paymentDetails.expiration }}</p>
+                                <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
+                                    paymentDetails.timeRemaining }}</p>
+                                <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
+                                    <br>{{
+                                        paymentDetails.expiration }}</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row">
@@ -428,37 +444,47 @@ export default {
                                 <img :src="paymentDetails.bankLogo" alt="" class="w-3/5 object-contain mb-auto">
                             </div>
                             <div class="w-[90%] flex flex-col">
-                                <p class="text-[#898383] font-bold text-sm">{{ paymentDetails.paymentMethod }}</p>
-                                <p class="text-[#898383] font-bold text-sm mt-6">No. Virtual Account:</p>
+                                <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm">{{
+                                    paymentDetails.paymentMethod }}</p>
+                                <p
+                                    class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
+                                    No. Virtual Account:</p>
                                 <div class="w-full h-fit flex flex-row items-center mt-1">
                                     <div class="w-[67%]">
-                                        <h1 class="text-[#3E6E7A] font-bold text-2xl">{{ paymentDetails.paymentCode }}
+                                        <h1 class="text-[#3E6E7A] font-bold text-xs md:text-sm lg:text-2xl">{{
+                                            paymentDetails.paymentCode }}
                                         </h1>
                                     </div>
                                     <div class="w-[33%]">
                                         <p @click="copyPaymentCode"
-                                            class="text-orange-400 font-bold text-sm cursor-pointer">COPY</p>
+                                            class="text-orange-400 font-bold text-[8px] md:text-[10px] lg:text-sm cursor-pointer">
+                                            COPY</p>
                                     </div>
                                 </div>
-                                <p class="text-[#898383] font-bold text-sm mt-6">
+                                <p
+                                    class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
                                     Proses verifikasi kurang dari 10 menit setelah pembayaran berhasil <br>
                                     Bayar pesanan ke Virtual Account di atas sebelum membuat pesanan <br>
                                     kembali dengan Virtual Account agar nomor tetap sama.
                                 </p>
-                                <p class="text-[#898383] font-bold text-sm mt-6">Hanya menerima dari {{
-                                    paymentDetails.paymentMethod }}</p>
+                                <p
+                                    class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
+                                    Hanya menerima dari {{
+                                        paymentDetails.paymentMethod }}</p>
                             </div>
                         </div>
-                        <h2 class="text-black font-bold text-base mt-6">mBanking Transfer Instructions</h2>
-                        <p class="text-[#898383] font-bold text-sm mt-6">
+                        <h2 class="text-black font-bold text-[8px] md:-[10px] lg:text-base mt-2 md:mt-3 lg:mt-6">
+                            mBanking Transfer Instructions</h2>
+                        <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
                             1. Masuk ke menu Mobile Banking BRI. Kemudian, pilih Pembayaran > BRIVA. <br>
                             2. Masukkan Nomor BRIVA {{ paymentDetails.paymentCode }}. <br>
                             3. Masukkan PIN Anda kemudian pilih Send. Apabila pesan konfirmasi untuk <br>
                             4. transaksi menggunakan SMS muncul, pilih OK. Status transaksi akan <br>
                             5. dikirimkan melalui SMS dan dapat digunakan sebagai bukti pembayaran.
                         </p>
-                        <h2 class="text-black font-bold text-base mt-4">ATM Transfer Instructions</h2>
-                        <p class="text-[#898383] font-bold text-sm mt-6">
+                        <h2 class="text-black font-bold text-[8px] md:text-[10px] lg:text-base mt-2 md:mt-3 lg:mt-4">ATM
+                            Transfer Instructions</h2>
+                        <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
                             1. Pilih Transaksi Lain > Pembayaran > Lainnya > BRIVA. <br>
                             2. Masukkan Nomor BRIVA {{ paymentDetails.paymentCode }} kemudian pilih Benar. <br>
                             3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
@@ -472,44 +498,58 @@ export default {
         <!-- QR Payment Modal -->
         <div v-if="showQrPaymentModal"
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-white w-[50vw] h-auto rounded-[30px] shadow p-4">
+            <div class="bg-white w-[70vw] md:w-[60vw] lg:w-[50vw] h-auto rounded-[30px] shadow p-4">
                 <div class="relative w-full h-full flex flex-row">
                     <button @click="showQrPaymentModal = false"
-                        class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-1 -right-1">
+                        class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-5 -right-4 lg:-top-5 lg:-right-5">
                         <p class="m-auto text-white text-base">X</p>
                     </button>
-                    <div class="w-full h-full flex flex-col px-14 pt-10 pb-2">
-                        <h1 class="text-black font-bold text-2xl">Payment</h1>
+                    <div class="w-full h-full flex flex-col md:px-10 md:pt-5 md:pb-5 lg:px-14 lg:pt-10 lg:pb-2">
+                        <h1 class="text-black font-bold text-xs md:text-sm lg:text-2xl">Payment</h1>
                         <div class="w-full h-fit flex flex-row mt-3">
                             <div class="w-[70%]">
-                                <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Total Payment</p>
+                                <p
+                                    class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                    Total Payment</p>
                             </div>
                             <div class="w-[30%]">
-                                <p class="text-[#3E6E7A] text-sm font-bold mr-auto">{{ paymentDetails.amount }}</p>
+                                <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto">{{
+                                    paymentDetails.amount }}</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
                             <div class="w-[70%]">
-                                <p class="text-[#898383] text-sm font-bold mr-auto mb-auto">Pay In</p>
+                                <p
+                                    class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                    Pay In</p>
                             </div>
                             <div class="w-[30%] h-fit flex flex-col">
-                                <p class="text-[#3E6E7A] text-sm font-bold">{{ paymentDetails.timeRemaining }}</p>
-                                <p class="text-[#B7B7B7] text-sm font-medium">Pay Before: <br>{{
-                                    paymentDetails.expiration }}</p>
+                                <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
+                                    paymentDetails.timeRemaining }}</p>
+                                <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
+                                    <br>{{
+                                        paymentDetails.expiration }}</p>
                             </div>
                         </div>
-                        <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
-                            class="mx-auto w-52 object-contain">
-                        <h2 class="text-black font-bold text-base mt-6">mBanking Transfer Instructions</h2>
-                        <p class="text-[#898383] font-bold text-sm mt-6">
+                        <!-- !!! QR CODE NYA MASI STATIS !!!! -->
+                        <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                            class="mx-auto w-[156px] lg:w-52 object-contain">
+                        <!-- <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
+                        class="mx-auto w-52 object-contain"> -->
+                        <!-- !!! QR CODE NYA MASI STATIS !!!! -->
+
+                        <h2 class="text-black font-bold text-[8px] md:text-xs lg:text-base mt-2 md:mt-3 lg:mt-6">
+                            mBanking Transfer Instructions</h2>
+                        <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
                             1. Masuk ke menu Mobile Banking BRI. Kemudian, pilih Pembayaran > BRIVA. <br>
                             2. Masukkan Nomor BRIVA 128 081215559315. <br>
                             3. Masukkan PIN Anda kemudian pilih Send. Apabila pesan konfirmasi untuk <br>
                             4. transaksi menggunakan SMS muncul, pilih OK. Status transaksi akan <br>
                             5. dikirimkan melalui SMS dan dapat digunakan sebagai bukti pembayaran.
                         </p>
-                        <h2 class="text-black font-bold text-base mt-4">ATM Transfer Instructions</h2>
-                        <p class="text-[#898383] font-bold text-sm mt-6">
+                        <h2 class="text-black font-bold text-[8px] md:text-xs lg:text-base mt-2 md:mt-3 lg:mt-4">ATM
+                            Transfer Instructions</h2>
+                        <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
                             1. Pilih Transaksi Lain > Pembayaran > Lainnya > BRIVA. <br>
                             2. Masukkan Nomor BRIVA 128 081215559315 kemudian pilih Benar. <br>
                             3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
@@ -521,11 +561,12 @@ export default {
         </div>
 
         <!-- Success Payment Modal -->
-        <div v-if="showPaymentSuccessModal"
-            class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-white w-[28vw] h-auto rounded-[30px] shadow p-14">
-                <h1 class="text-black text-xl font-bold mx-auto">Payment Successful!</h1>
-                <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-24 h-24 mx-auto mt-6">
+        <div v-if="showPaymentSuccessModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <div
+                class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
+                <h1 class="text-black text-[10px] md:text-xl font-medium mx-auto">Payment Successful!</h1>
+                <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+                    class="w-11 h-11 md:w-24 md:h-24 mx-auto mt-4 md:mt-6">
             </div>
         </div>
     </Layout>
