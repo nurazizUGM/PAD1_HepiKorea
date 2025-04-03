@@ -210,7 +210,7 @@ export default {
       },
     ]);
 
-    const showDeleteModal = ref(true);
+    const showDeleteModal = ref(false);
     const showSuccessModal = ref(false);
     const selectAll = ref(false);
 
