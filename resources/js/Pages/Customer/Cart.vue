@@ -42,6 +42,50 @@ export default {
                 quantity: 3,
                 selected: false,
             },
+            {
+                id: 4,
+                product: {
+                    id: 1,
+                    name: 'Samsung S24 Ultra',
+                    price: 24000000,
+                    image: null,
+                },
+                quantity: 2,
+                selected: false,
+            },
+            {
+                id: 5,
+                product: {
+                    id: 2,
+                    name: 'iPhone 14 Pro',
+                    price: 20000000,
+                    image: 'http://example.com/iphone.jpg',
+                },
+                quantity: 1,
+                selected: false,
+            },
+            {
+                id: 6,
+                product: {
+                    id: 3,
+                    name: 'Google Pixel 8',
+                    price: 15000000,
+                    image: '/img/example/admin_order_img_phone.png',
+                },
+                quantity: 3,
+                selected: false,
+            },
+            {
+                id: 7,
+                product: {
+                    id: 3,
+                    name: 'Google Pixel 8',
+                    price: 15000000,
+                    image: '/img/example/admin_order_img_phone.png',
+                },
+                quantity: 3,
+                selected: false,
+            },
         ]);
 
         const showDeleteModal = ref(false);
@@ -132,76 +176,96 @@ export default {
 
 <template>
     <Layout title="Cart">
-        <div class="w-full max-w-full h-[80vh] rounded-3xl bg-[#EFEFEF] pt-2 md:pt-6 pb-8 px-2 md:px-10 flex flex-col">
+        <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-2 px-2 md:px-4 lg:px-[50px] relative">
             <h1 class="text-black font-semibold text-lg md:text-2xl text-left">Cart</h1>
 
-            <!-- Product Card Container -->
             <div
-                class="relative w-full h-full grid grid-cols-2 md:grid-cols-3 gap-x-auto gap-y-2 md:gap-y-5 mt-2 mb-4 overflow-y-scroll no-scrollbar">
-                <div v-for="cart in carts" :key="cart.id"
-                    class="w-[180px] md:w-[420px] h-[130px] md:h-[279px] bg-white rounded-2xl flex flex-col p-2 md:p-5">
-                    <!-- Photo, Name, Price of Product -->
-                    <div class="w-full h-[65%] flex flex-row">
-                        <!-- Image Container -->
-                        <div class="w-[40%] md:w-[35%] h-full">
-                            <img :src="getImageUrl(cart.product.image)" alt="" class="w-full h-full object-contain">
-                        </div>
-                        <!-- Name, Variant, Price -->
-                        <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-2 md:pl-5">
-                            <h1 class="text-[#3E6E7A] font-semibold text-xs md:text-base truncate">{{ cart.product.name
+                class="overflow-y-scroll no-scrollbar h-[60vh] md:h-[53vh] lg:h-[50vh] mt-1 md:mt-2 mb-12 md:mb-44 lg:mb-52">
+                <!-- Product Card Container -->
+                <div
+                    class="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-5 gap-y-2 md:gap-y-5 mt-1 md:mt-2 mb-12 relative">
+                    <div v-for="cart in carts" :key="cart.id"
+                        class="w-full lg:w-[420px] h-full lg:h-[279px] bg-white rounded-2xl flex flex-col p-5 relative mx-auto">
+                        <!-- Photo, Name, Price of Product -->
+                        <div class="w-full h-[65%] flex flex-row">
+                            <!-- Image Container -->
+                            <div class="w-[20%] md:w-[35%] h-full">
+                                <img :src="getImageUrl(cart.product.image)" alt=""
+                                    class="w-14 md:w-full md:h-full object-contain">
+                            </div>
+                            <!-- Name, Variant, Price -->
+                            <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-5">
+                                <h1 class="text-[#3E6E7A] font-semibold text-[11px] md:text-base">{{
+                                    cart.product.name
                                 }}</h1>
-                            <h2 class="text-orange-400 font-semibold text-[10px] md:text-xl mt-auto">Rp {{
-                                formatPrice(cart.product.price) }}</h2>
-                            <h3 class="text-gray-600 font-semibold text-[8px] md:text-lg">x{{ cart.quantity }}</h3>
+                                <h2 class="text-orange-400 font-semibold text-xs md:text-xl lg:text-xl mt-auto">Rp {{
+                                    formatPrice(cart.product.price) }}</h2>
+                                <h3 class="text-gray-600 text-opacity-50 font-semibold text-[10px] md:text-xs mt-1">x{{
+                                    cart.quantity }}</h3>
+                                <div class="w-fit h-fit  md:hidden flex flex-row items-center absolute top-1/2 right-2">
+                                    <input type="checkbox" v-model="cart.selected"
+                                        class="w-3 h-3 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                                    <p class="text-[#3E6E7A] text-[8px] font-semibold ml-2">Add Product</p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Checkbox -->
-                    <div class="w-full h-[45%] flex">
-                        <div class="w-fit h-fit flex flex-row items-center my-auto ml-7">
-                            <input type="checkbox" v-model="cart.selected"
-                                class="w-3 md:w-6 h-3 md:h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
-                            <p class="text-[#3E6E7A] text-xs md:text-base font-semibold ml-6">Add Product</p>
+                        <!-- Checkbox -->
+                        <div class="w-full h-[45%] hidden md:flex">
+                            <div class="w-fit h-fit flex flex-row items-center my-auto ml-7">
+                                <input type="checkbox" v-model="cart.selected"
+                                    class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                                <p class="text-[#3E6E7A] md:text-sm lg:text-base font-semibold ml-6">Add Product</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Checkout Container -->
-            <div class="mx-0 h-[16rem] bg-white rounded-2xl flex flex-col py-2 md:py-5 px-4 md:px-10">
-                <h1 class="text-black font-semibold text-lg md:text-2xl">Checkout</h1>
-                <div class="w-full h-fit flex flex-row my-auto">
-                    <!-- Select All and Checkbox Container -->
-                    <div class="w-fit h-full flex flex-row">
-                        <input type="checkbox" v-model="selectAll" @change="toggleSelectAll"
-                            class="w-3 md:w-6 h-3 md:h-6 hover:bg-slate-100 rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+                <!-- Checkout Container -->
+                <div
+                    class="absolute w-[95%] md:w-[87vw] lg:w-[84.5vw] h-[75px] md:h-[20vh] lg:h-[25vh] bg-white rounded-2xl bottom-4 md:bottom-5 lg:bottom-5 z-10 flex flex-col md:py-5 md:px-10 py-2 px-2">
+                    <h1 class="text-black font-semibold text-[8px] md:text-sm lg:text-2xl">Checkout</h1>
+                    <div class="w-full h-fit flex flex-row my-auto relative">
+                        <!-- Select All and Checkbox Container -->
+                        <div class="w-fit h-full flex flex-row">
+                            <input type="checkbox" v-model="selectAll" @change="toggleSelectAll"
+                                class="w-3 h-3 md:w-6 md:h-6 hover:bg-slate-100 rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+                            <p
+                                class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base ml-2 md:ml-6 my-auto">
+                                Select All ({{ selectedCount }})
+                            </p>
+                            <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
+                            <p
+                                class="text-black text-opacity-50 font-semibold text-[8px] md:hidden flex absolute top-4 left-5">
+                                <!-- Total ({{  }}) -->
+                                Total ({{ selectedCount }}) Product
+                                <!-- Total
+                                Product -->
+                            </p>
+                            <button @click="showDeleteModal = true"
+                                class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-md md:rounded-2xl inline-flex my-auto ml-10 px-2 py-0.5 md:py-1.5 lg:py-2 md:px-8 lg:px-12">
+                                <img src="/img/assets/icon/icon_customer_trashcan.svg" alt=""
+                                    class="w-[7px] h-[8px] md:w-[14px] md:h-[16px] lg:w-6 lg:h-7 mr-0.5 md:mr-2 my-auto">
+                                <p class="text-[#3E6E7A] font-semibold text-[8px] md:text-xs lg:text-xl">Delete</p>
+                            </button>
+                        </div>
+                        <!-- Text Count Total Product -->
                         <p
-                            class="text-black text-opacity-50 font-semibold text-[8px] md:text-base ml-3 md:ml-6 my-auto">
-                            Select All ({{ selectedCount }})
+                        class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base mx-auto lg:ml-auto lg:mr-2 my-auto hidden md:flex">
+                            Total ({{ selectedCount }}) Product
                         </p>
-                        <button @click="showDeleteModal = true"
-                            class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-5 md:ml-10 py-1 md:py-2 px-4 md:px-12">
-                            <img src="/img/assets/icon/icon_customer_trashcan.svg" alt=""
-                                class="w-3 md:w-6 h-3.5 md:h-7 mr-1 md:mr-2 my-auto">
-                            <p class="text-[#3E6E7A] font-semibold text-sm md:text-xl">Delete</p>
-                        </button>
+                        <!-- Total Price -->
+                        <h1 class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-2xl ml-12 md:ml-16 my-auto">
+                            Rp {{ formatPrice(totalPrice) }},-
+                        </h1>
                     </div>
-                    <!-- Text Count Total Product -->
-                    <p
-                        class="text-black text-opacity-50 font-semibold text-center md:text-end text-xs md:text-base mx-auto md:mr-0 md:ml-auto my-auto">
-                        Total ({{ selectedCount }}) Product
-                    </p>
-                    <!-- Total Price -->
-                    <h1 class="text-orange-400 font-semibold text-sm md:text-2xl ml-8 md:ml-16 my-auto">
-                        Rp {{ formatPrice(totalPrice) }},-
-                    </h1>
+                    <form @submit.prevent="checkout" class="ml-auto">
+                        <button type="submit"
+                        class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
+                            Checkout
+                        </button>
+                    </form>
                 </div>
-                <form @submit.prevent="checkout" class="ml-auto">
-                    <button type="submit"
-                        class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg md:text-2xl font-semibold rounded-2xl py-1 md:py-2 px-5 md:px-10">
-                        Checkout
-                    </button>
-                </form>
             </div>
         </div>
 

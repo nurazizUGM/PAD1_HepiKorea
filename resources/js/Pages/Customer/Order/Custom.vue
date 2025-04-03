@@ -67,11 +67,10 @@
                 Select All ({{ selectedCount
                 }})</p>
 
-                <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
-                <p
-              class="text-black text-opacity-50 font-semibold text-[8px] md:hidden flex absolute top-4 left-5">
-              Total ({{ items.length }})
-              Product</p>
+              <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
+              <p class="text-black text-opacity-50 font-semibold text-[8px] md:hidden flex absolute top-4 left-5">
+                Total ({{ items.length }})
+                Product</p>
               <button @click="showDeleteModal = true"
                 class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-md md:rounded-2xl inline-flex my-auto ml-10 px-2 py-0.5 md:py-1.5 lg:py-2 md:px-8 lg:px-12">
                 <img src="/img/assets/icon/icon_customer_trashcan.svg" alt=""
@@ -102,7 +101,8 @@
         <div class="flex flex-col md:px-10 md:py-10 p-5">
           <img src="/img/assets/icon/icon_warning.svg" alt="icon_warning" class="w-10 md:w-16 h-10 md:h-16 mx-auto">
           <p class="text-[#376F7E] font-medium text-[10px] md:text-xl mx-auto mt-2">Are you sure?</p>
-          <p class="text-[#B7B7B7] font-medium text-[8px] md:text-xs mx-auto mt-1 md:mt-6">You won’t be able to revert this!</p>
+          <p class="text-[#B7B7B7] font-medium text-[8px] md:text-xs mx-auto mt-1 md:mt-6">You won’t be able to revert
+            this!</p>
           <div class="w-full h-full mt-3 md:mt-6 flex flex-row justify-center">
             <button @click="confirmDelete"
               class="w-44 h-8 md:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[8px] md:text-lg font-semibold">
@@ -119,9 +119,11 @@
 
     <!-- Success Delete Modal -->
     <div v-if="showSuccessModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-      <div class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
+      <div
+        class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
         <h1 class="text-black text-[10px] md:text-xl font-medium mx-auto">Successfully Deleted!</h1>
-        <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-11 h-11 md:w-24 md:h-24 mx-auto mt-4 md:mt-6">
+        <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+          class="w-11 h-11 md:w-24 md:h-24 mx-auto mt-4 md:mt-6">
       </div>
     </div>
   </Layout>
