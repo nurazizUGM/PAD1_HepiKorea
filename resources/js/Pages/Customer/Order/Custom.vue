@@ -98,18 +98,18 @@
 
     <!-- Delete Confirmation Modal -->
     <div v-if="showDeleteModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-      <div class="bg-white w-[33vw] h-auto rounded-[30px] shadow p-4">
-        <div class="flex flex-col px-10 py-10">
-          <img src="/img/assets/icon/icon_warning.svg" alt="icon_warning" class="w-16 h-16 mx-auto">
-          <p class="text-[#376F7E] font-medium text-xl mx-auto mt-2">Are you sure?</p>
-          <p class="text-[#B7B7B7] font-medium text-xs mx-auto mt-6">You won’t be able to revert this!</p>
-          <div class="w-full h-full mt-6 flex flex-row justify-center">
+      <div class="bg-white w-[65vw] md:w-[50vw] lg:w-[33vw] h-auto rounded-[30px] shadow p-1 md:p-4">
+        <div class="flex flex-col md:px-10 md:py-10 p-5">
+          <img src="/img/assets/icon/icon_warning.svg" alt="icon_warning" class="w-10 md:w-16 h-10 md:h-16 mx-auto">
+          <p class="text-[#376F7E] font-medium text-[10px] md:text-xl mx-auto mt-2">Are you sure?</p>
+          <p class="text-[#B7B7B7] font-medium text-[8px] md:text-xs mx-auto mt-1 md:mt-6">You won’t be able to revert this!</p>
+          <div class="w-full h-full mt-3 md:mt-6 flex flex-row justify-center">
             <button @click="confirmDelete"
-              class="w-44 h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-lg font-semibold">
+              class="w-44 h-8 md:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[8px] md:text-lg font-semibold">
               Yes, Delete it!
             </button>
             <button @click="showDeleteModal = false"
-              class="w-44 h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-lg font-semibold ml-2">
+              class="w-44 h-8 md:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[8px] md:text-lg font-semibold ml-2">
               Cancel
             </button>
           </div>
@@ -119,9 +119,9 @@
 
     <!-- Success Delete Modal -->
     <div v-if="showSuccessModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-      <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow p-14">
-        <h1 class="text-black text-xl font-medium mx-auto">Successfully Deleted!</h1>
-        <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-24 h-24 mx-auto mt-6">
+      <div class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
+        <h1 class="text-black text-[10px] md:text-xl font-medium mx-auto">Successfully Deleted!</h1>
+        <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-11 h-11 md:w-24 md:h-24 mx-auto mt-4 md:mt-6">
       </div>
     </div>
   </Layout>
@@ -210,7 +210,7 @@ export default {
       },
     ]);
 
-    const showDeleteModal = ref(false);
+    const showDeleteModal = ref(true);
     const showSuccessModal = ref(false);
     const selectAll = ref(false);
 
