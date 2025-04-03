@@ -1,11 +1,12 @@
 <template>
   <Layout title="Product Confirmed">
     <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-2 px-2 md:px-4 lg:px-[50px] relative">
-      <h1 class="text-black font-semibold md:text-sm lg:text-2xl text-left">Product Confirmed</h1>
+      <h1 class="text-black font-semibold text-[10px] md:text-sm lg:text-2xl text-left">Product Confirmed</h1>
 
-      <div class="overflow-y-scroll no-scrollbar h-[51vh] lg:h-[50vh] mt-2 mb-52">
+      <div class="overflow-y-scroll no-scrollbar h-[60vh] md:h-[53vh] lg:h-[50vh] mt-1 md:mt-2 mb-12 md:mb-44 lg:mb-52">
         <!-- Product Card Container -->
-        <div class="relative w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-5 mt-2 mb-12">
+        <div
+          class="w-full h-fit grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 md:gap-x-5 gap-y-2 md:gap-y-5 mt-1 md:mt-2 mb-12 relative">
           <!-- Product Cards -->
           <div v-for="item in items" :key="item.id"
             class="w-full lg:w-[420px] h-full lg:h-[279px] bg-white rounded-2xl flex flex-col p-5 relative mx-auto">
@@ -22,19 +23,27 @@
             <!-- Photo, Name, Price of Product -->
             <div class="w-full h-[65%] flex flex-row">
               <!-- Image Container -->
-              <div class="w-[35%] h-full">
-                <img :src="getImageUrl(item.image)" alt="" class="w-full h-full object-contain">
+              <div class="w-[20%] md:w-[35%] h-full">
+                <img :src="getImageUrl(item.image)" alt="" class="w-14 md:w-full md:h-full object-contain">
               </div>
               <!-- Name, Variant, Price -->
-              <div class="w-[65%] h-full flex flex-col pl-5">
-                <h1 class="text-[#3E6E7A] font-semibold text-[13px] lg:text-base">{{ item.name }}</h1>
-                <h2 class="text-black text-opacity-50 font-semibold text-xs mt-1">{{ item.variant }}</h2>
-                <h2 class="text-orange-400 font-semibold md:text-xl lg:text-xl mt-auto">Rp {{ formatPrice(item.price) }}</h2>
+              <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-5">
+                <h1 class="text-[#3E6E7A] font-semibold text-[11px] md:text-base">{{ item.name }}</h1>
+                <h2 class="text-black text-opacity-50 font-semibold text-[10px] md:text-xs mt-1">{{ item.variant }}</h2>
+                <h2 class="text-orange-400 font-semibold text-xs md:text-xl lg:text-xl mt-auto">Rp {{
+                  formatPrice(item.price) }}
+                </h2>
+                <!-- checkbox (cuma pas mobile munculnya) -->
+                <div class="w-fit h-fit  md:hidden flex flex-row items-center absolute top-1/2 right-2">
+                  <input type="checkbox" v-model="item.selected"
+                    class="w-3 h-3 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
+                  <p class="text-[#3E6E7A] text-[8px] font-semibold ml-2">Add Product</p>
+                </div>
               </div>
             </div>
 
             <!-- Checkbox -->
-            <div class="w-full h-[45%] flex">
+            <div class="w-full h-[45%] hidden md:flex">
               <div class="w-fit h-fit flex flex-row items-center my-auto ml-7">
                 <input type="checkbox" v-model="item.selected"
                   class="w-6 h-6 rounded-sm outline outline-[#3E6E7A] bg-transparent hover:bg-slate-100 checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A]">
@@ -45,29 +54,42 @@
         </div>
 
         <!-- Checkout Container -->
-        <div class="absolute md:w-[125vh] lg:w-[156vh] h-[25vh] bg-white rounded-2xl bottom-10 z-10 flex flex-col py-5 px-10">
-          <h1 class="text-black font-semibold text-2xl">Checkout</h1>
-          <div class="w-full h-fit flex flex-row my-auto">
+        <div
+          class="absolute w-[95%] md:w-[87vw] lg:w-[84.5vw] h-[75px] md:h-[20vh] lg:h-[25vh] bg-white rounded-2xl bottom-4 md:bottom-5 lg:bottom-5 z-10 flex flex-col md:py-5 md:px-10 py-2 px-2">
+          <h1 class="text-black font-semibold text-[8px] md:text-sm lg:text-2xl">Checkout</h1>
+          <div class="w-full h-fit flex flex-row my-auto relative">
             <!-- Select All and Checkbox Container -->
             <div class="w-fit h-full flex flex-row">
               <input type="checkbox" v-model="selectAll" @change="toggleSelectAll"
-                class="w-6 h-6 hover:bg-slate-100 rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
-              <p class="text-black text-opacity-50 font-semibold text-base ml-6 my-auto">Select All ({{ selectedCount
+                class="w-3 h-3 md:w-6 md:h-6 hover:bg-slate-100 rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto">
+              <p
+                class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base ml-2 md:ml-6 my-auto">
+                Select All ({{ selectedCount
                 }})</p>
+
+                <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
+                <p
+              class="text-black text-opacity-50 font-semibold text-[8px] md:hidden flex absolute top-4 left-5">
+              Total ({{ items.length }})
+              Product</p>
               <button @click="showDeleteModal = true"
-                class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-2xl inline-flex my-auto ml-10 py-2 px-12">
-                <img src="/img/assets/icon/icon_customer_trashcan.svg" alt="" class="w-6 h-7 mr-2">
-                <p class="text-[#3E6E7A] font-semibold text-xl">Delete</p>
+                class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-md md:rounded-2xl inline-flex my-auto ml-10 px-2 py-0.5 md:py-1.5 lg:py-2 md:px-8 lg:px-12">
+                <img src="/img/assets/icon/icon_customer_trashcan.svg" alt=""
+                  class="w-[7px] h-[8px] md:w-[14px] md:h-[16px] lg:w-6 lg:h-7 mr-0.5 md:mr-2 my-auto">
+                <p class="text-[#3E6E7A] font-semibold text-[8px] md:text-xs lg:text-xl">Delete</p>
               </button>
             </div>
             <!-- Text Count Total Product -->
-            <p class="text-black text-opacity-50 font-semibold text-base ml-auto my-auto">Total ({{ items.length }})
+            <p
+              class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base mx-auto lg:ml-auto lg:mr-2 my-auto hidden md:flex">
+              Total ({{ items.length }})
               Product</p>
             <!-- Total Price -->
-            <h1 class="text-orange-400 font-semibold text-2xl ml-16 my-auto">Rp {{ formatPrice(totalPrice) }}</h1>
+            <h1 class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-2xl ml-12 md:ml-16 my-auto">Rp {{
+              formatPrice(totalPrice) }}</h1>
           </div>
           <button
-            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-2xl font-semibold rounded-2xl py-2 px-10 ml-auto">
+            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
             Checkout
           </button>
         </div>
