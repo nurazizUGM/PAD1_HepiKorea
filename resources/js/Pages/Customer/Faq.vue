@@ -27,6 +27,12 @@ export default {
                 answer: 'Yes, we ship to most countries worldwide. Shipping costs may vary.',
                 isOpen: false,
             },
+            {
+                id: 4,
+                question: 'Do you offer jklasdnaokdbwdbio shipping?',
+                answer: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dignissimos voluptatem quod quas, vero repellendus numquam eius assumenda doloribus, veniam iste, eum ea in cum fuga nihil sit? Magni, rerum!',
+                isOpen: false,
+            },
         ]);
 
         // Fungsi untuk mengambil data dari API (placeholder)
@@ -63,23 +69,23 @@ export default {
 
 <template>
     <Layout title="FAQ">
-        <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-8 px-10">
+        <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-2 px-2 md:py-5 md:px-5 lg:py-8 lg:px-10">
             <!-- Content Container -->
-            <div class="w-full h-fit min-h-[680px] overflow-hidden rounded-3xl bg-white flex flex-col py-8 px-14">
+            <div class="w-full h-fit min-h-[680px] overflow-hidden rounded-3xl bg-white flex flex-col py-3 px-4 md:py-6 md:px-8 lg:py-8 lg:px-14">
                 <div class="flex flex-row">
-                    <h1 class="text-[#3E6E7A] font-bold text-3xl">FAQ</h1>
-                    <h1 class="text-orange-400 font-bold text-3xl ml-8">(Frequently Asked Questions)</h1>
+                    <h1 class="text-[#3E6E7A] font-bold text-xs md:text-sm lg:text-3xl">FAQ</h1>
+                    <h1 class="text-orange-400 font-bold text-[10px] md:text-sm lg:text-3xl ml-2 md:ml-4 lg:ml-8">(Frequently Asked Questions)</h1>
                 </div>
 
                 <!-- Accordion -->
-                <div class="my-10 shadow-md bg-none">
+                <div class="my-3 md:my-5 lg:my-10 shadow-md bg-none">
                     <div v-for="(faq, index) in faqs" :key="faq.id">
                         <h2 :id="`accordion-open-heading-${index + 1}`">
                             <button type="button"
-                                class="flex items-center justify-between w-full px-5 py-12 font-medium bg-[#F1EDED] rounded-t-xl focus:ring-0 gap-3"
+                                class="flex items-center justify-between w-full px-5 py-4 md:py-6 lg:py-12 font-medium bg-[#F1EDED] rounded-t-xl focus:ring-0 gap-3"
                                 :class="{ 'rounded-b-xl': !faq.isOpen, 'border-b-0': faq.isOpen }"
                                 @click="toggleAccordion(index)">
-                                <span class="flex items-center text-[#3E6E7A] font-medium text-2xl">
+                                <span class="flex items-center text-[#3E6E7A] font-medium text-[10px] md:text-sm lg:text-2xl">
                                     {{ faq.question }}
                                 </span>
                                 <svg class="w-3 h-3 shrink-0 transition-transform duration-300"
@@ -93,8 +99,8 @@ export default {
                         <div :id="`accordion-open-body-${index + 1}`"
                             class="overflow-hidden transition-all duration-300"
                             :class="{ 'h-0': !faq.isOpen, 'h-auto': faq.isOpen }">
-                            <div class="p-5 border border-b-0 border-gray-200">
-                                <p class="mb-2 text-[#3E6E7A] font-medium text-2xl">{{ faq.answer }}</p>
+                            <div class="p-2 md:p-3 lg:p-5 border border-b-0 border-gray-200">
+                                <p class="mb-2 text-[#3E6E7A] font-medium text-[8px] md:text-xs lg:text-2xl">{{ faq.answer }}</p>
                             </div>
                         </div>
                     </div>
