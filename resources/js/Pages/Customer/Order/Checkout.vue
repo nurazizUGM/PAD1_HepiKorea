@@ -34,7 +34,7 @@ export default {
         const showChoosePaymentModal = ref(false);
         const showVaPaymentModal = ref(false);
         const showQrPaymentModal = ref(false);
-        const showPaymentSuccessModal = ref(true);
+        const showPaymentSuccessModal = ref(false);
         const paymentMethod = ref('bri');
         const paymentDetails = ref({
             amount: 'Rp 0,-',
