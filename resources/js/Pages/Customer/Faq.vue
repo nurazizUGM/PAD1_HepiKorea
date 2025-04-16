@@ -9,36 +9,36 @@ export default {
     setup() {
         // Dummy data sementara
         const faqs = ref([
-            {
-                id: 1,
-                question: 'What is the return policy?',
-                answer: 'You can return products within 30 days of purchase with a receipt.',
-                isOpen: true, // Pertama dibuka secara default
-            },
-            {
-                id: 2,
-                question: 'How long does shipping take?',
-                answer: 'Shipping usually takes 3-7 business days depending on your location.',
-                isOpen: false,
-            },
-            {
-                id: 3,
-                question: 'Do you offer international shipping?',
-                answer: 'Yes, we ship to most countries worldwide. Shipping costs may vary.',
-                isOpen: false,
-            },
-            {
-                id: 4,
-                question: 'Do you offer jklasdnaokdbwdbio shipping?',
-                answer: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dignissimos voluptatem quod quas, vero repellendus numquam eius assumenda doloribus, veniam iste, eum ea in cum fuga nihil sit? Magni, rerum!',
-                isOpen: false,
-            },
+            // {
+            //     id: 1,
+            //     question: 'What is the return policy?',
+            //     answer: 'You can return products within 30 days of purchase with a receipt.',
+            //     isOpen: true, // Pertama dibuka secara default
+            // },
+            // {
+            //     id: 2,
+            //     question: 'How long does shipping take?',
+            //     answer: 'Shipping usually takes 3-7 business days depending on your location.',
+            //     isOpen: false,
+            // },
+            // {
+            //     id: 3,
+            //     question: 'Do you offer international shipping?',
+            //     answer: 'Yes, we ship to most countries worldwide. Shipping costs may vary.',
+            //     isOpen: false,
+            // },
+            // {
+            //     id: 4,
+            //     question: 'Do you offer jklasdnaokdbwdbio shipping?',
+            //     answer: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Facere dignissimos voluptatem quod quas, vero repellendus numquam eius assumenda doloribus, veniam iste, eum ea in cum fuga nihil sit? Magni, rerum!',
+            //     isOpen: false,
+            // },
         ]);
 
         // Fungsi untuk mengambil data dari API (placeholder)
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/faqs'); // Ganti dengan endpoint API Anda
+                const response = await fetch('/api/faq'); // Ganti dengan endpoint API Anda
                 const data = await response.json();
                 faqs.value = data.map((faq, index) => ({
                     ...faq,
@@ -56,7 +56,7 @@ export default {
 
         // Inisialisasi data (gunakan fetchData saat API siap)
         onMounted(() => {
-            // fetchData(); // Uncomment saat API siap
+            fetchData(); // Uncomment saat API siap
         });
 
         return {
