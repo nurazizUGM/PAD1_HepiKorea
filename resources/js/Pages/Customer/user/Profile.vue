@@ -8,14 +8,15 @@
           <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
             <div class="rounded-xl bg-slate-300">
               <img class="min-h-[10rem] m-0 md:p-2 object-contain object-center" id="profile_picture"
-                :src="form.photo || defaultPhoto" alt="Profile Picture">
+                :src="form.photo || defaultPhoto" alt="Profile Picture" />
             </div>
             <button
               class="w-[50%] lg:w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
-              @click="$refs.photoInput.click()">
+              @click="$refs.photoInput.click()"
+              :disabled="!isEditing">
               <h1 class="text-xs lg:text-lg text-white font-semibold">Choose Photo</h1>
             </button>
-            <input type="file" ref="photoInput" class="hidden" @change="handlePhotoChange" accept="image/*">
+            <input type="file" ref="photoInput" class="hidden" @change="handlePhotoChange" accept="image/*" />
           </div>
 
           <!-- Profile Form Section -->
@@ -27,55 +28,53 @@
                     <!-- Full Name -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="fullname"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Name</label>
+                        <label for="fullname" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Name</label>
                       </th>
                       <td class="py-4">
                         <input v-model="form.fullname" type="text" id="fullname" name="fullname"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Your Name" required :disabled="!isEditing" />
+                        <p v-if="errors.fullname" class="error">{{ errors.fullname.join(', ') }}</p>
                       </td>
                     </tr>
 
                     <!-- Date of Birth -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="date_of_birth"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Date of Birth</label>
+                        <label for="date_of_birth" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Date of Birth</label>
                       </th>
                       <td class="py-4 relative">
                         <input v-model="form.date_of_birth" type="date" id="date_of_birth" name="date_of_birth"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Your Birth Date" required :disabled="!isEditing" />
+                        <p v-if="errors.date_of_birth" class="error">{{ errors.date_of_birth.join(', ') }}</p>
                       </td>
                     </tr>
 
                     <!-- Gender -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="gender"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Gender</label>
+                        <label for="gender" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Gender</label>
                       </th>
                       <td class="py-4 flex justify-end lg:justify-around" colspan="2">
                         <div class="flex items-center mr-5">
                           <input v-model="form.gender" id="genderMale" type="radio" name="gender" value="male"
-                            class="w-4 h-4 border-[#376F7E] focus:ring-0" :disabled="!isEditing">
+                            class="w-4 h-4 border-[#376F7E] focus:ring-0" :disabled="!isEditing" />
                           <label for="genderMale" class="block ms-2 text-base font-medium text-[#898383]">Male</label>
                         </div>
                         <div class="flex items-center">
                           <input v-model="form.gender" id="genderFemale" type="radio" name="gender" value="female"
-                            class="w-4 h-4 border-[#376F7E] focus:ring-0" :disabled="!isEditing">
-                          <label for="genderFemale"
-                            class="block ms-2 text-base font-medium text-[#898383]">Female</label>
+                            class="w-4 h-4 border-[#376F7E] focus:ring-0" :disabled="!isEditing" />
+                          <label for="genderFemale" class="block ms-2 text-base font-medium text-[#898383]">Female</label>
                         </div>
+                        <p v-if="errors.gender" class="error">{{ errors.gender.join(', ') }}</p>
                       </td>
                     </tr>
 
                     <!-- Email -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="email"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Email</label>
+                        <label for="email" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Email</label>
                       </th>
                       <td class="py-4">
                         <input v-model="form.email" type="email" id="email"
@@ -87,8 +86,7 @@
                     <!-- Old Password -->
                     <tr class="bg-white">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="old_password"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Password</label>
+                        <label for="old_password" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Password</label>
                       </th>
                       <td class="py-4 relative">
                         <input v-model="form.old_password" :type="showOldPassword ? 'text' : 'password'"
@@ -99,8 +97,9 @@
                           @click="togglePassword('old')">
                           <img
                             :src="showOldPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
-                            alt="eye icon" class="h-6 w-6">
+                            alt="eye icon" class="h-6 w-6" />
                         </span>
+                        <p v-if="errors.old_password" class="error">{{ errors.old_password.join(', ') }}</p>
                       </td>
                     </tr>
 
@@ -116,8 +115,9 @@
                           @click="togglePassword('new')">
                           <img
                             :src="showNewPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
-                            alt="eye icon" class="h-6 w-6">
+                            alt="eye icon" class="h-6 w-6" />
                         </span>
+                        <p v-if="errors.new_password" class="error">{{ errors.new_password.join(', ') }}</p>
                       </td>
                     </tr>
 
@@ -130,44 +130,49 @@
                           name="new_password_confirmation"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto placeholder:text-xs"
                           placeholder="Confirm Password" :required="form.new_password !== ''" :disabled="!isEditing" />
-                        <span class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 -top-1/4 flex items-center cursor-pointer"
+                        <span class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
                           @click="togglePassword('confirm')">
                           <img
                             :src="showConfirmPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
-                            alt="eye icon" class="h-6 w-6">
+                            alt="eye icon" class="h-6 w-6" />
                         </span>
-                        <a :href="route('auth.verify')" class="text-end block text-[#4F7AE8] mt-2 cursor-pointer">Verify
-                          email</a>
+                        <p v-if="errors.new_password_confirmation" class="error">{{ errors.new_password_confirmation.join(', ') }}</p>
+                        <Link :href="route('auth.verify')" class="text-end block text-[#4F7AE8] mt-2 cursor-pointer">Verify email</Link>
                       </td>
                     </tr>
 
                     <!-- Phone Number -->
                     <tr class="bg-white border-b">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="phone" class="flex items-center mb-2 text-[12px] lg:ext-lg font-medium text-[#898383]">Phone
-                          Number</label>
+                        <label for="phone" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Phone Number</label>
                       </th>
                       <td class="py-4">
                         <input v-model="form.phone" type="text" id="phone" name="phone"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Your Phone Number" :disabled="!isEditing" />
+                        <p v-if="errors.phone" class="error">{{ errors.phone.join(', ') }}</p>
                       </td>
                     </tr>
 
                     <!-- Address: Province and City -->
                     <tr class="bg-white">
                       <th scope="row" class="py-4 font-medium text-[#898383] whitespace-nowrap">
-                        <label for="address"
-                          class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Address</label>
+                        <label for="address" class="flex items-center mb-2 text-[12px] lg:text-lg font-medium text-[#898383]">Address</label>
                       </th>
                       <td class="py-4">
-                        <div class= "w-full md:w-2/3 lg:w-full flex ml-auto">
-                          <input v-model="form.address.province" type="text" id="province" name="province"
-                            class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5"
-                            placeholder="Your Province" :disabled="!isEditing" />
-                          <input v-model="form.address.city" type="text" id="city" name="city"
-                            class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-1"
-                            placeholder="Your City" :disabled="!isEditing" />
+                        <div class="w-full md:w-2/3 lg:w-full flex ml-auto">
+                          <div class="flex-1">
+                            <input v-model="form.address.province" type="text" id="province" name="province"
+                              class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5"
+                              placeholder="Your Province" :disabled="!isEditing" />
+                            <p v-if="errors.province" class="error">{{ errors.province.join(', ') }}</p>
+                          </div>
+                          <div class="flex-1 ml-1">
+                            <input v-model="form.address.city" type="text" id="city" name="city"
+                              class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full p-2.5"
+                              placeholder="Your City" :disabled="!isEditing" />
+                            <p v-if="errors.city" class="error">{{ errors.city.join(', ') }}</p>
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -179,6 +184,7 @@
                         <input v-model="form.address.postal_code" type="text" id="postal_code" name="postal_code"
                           class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Your Postal Code" :disabled="!isEditing" />
+                        <p v-if="errors.postal_code" class="error">{{ errors.postal_code.join(', ') }}</p>
                       </td>
                     </tr>
 
@@ -189,6 +195,15 @@
                         <textarea v-model="form.address.address" id="address" name="address" rows="5"
                           class="h-24 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                           placeholder="Your Address" :disabled="!isEditing"></textarea>
+                        <p v-if="errors.address" class="error">{{ errors.address.join(', ') }}</p>
+                      </td>
+                    </tr>
+
+                    <!-- General Error -->
+                    <tr v-if="errors.general" class="bg-white">
+                      <th scope="row"></th>
+                      <td class="py-4">
+                        <p class="error">{{ errors.general }}</p>
                       </td>
                     </tr>
 
@@ -228,43 +243,109 @@
 
 <script>
 import { ref, reactive, onMounted } from 'vue';
-// import { Inertia } from '@inertiajs/inertia';
+import { Link } from '@inertiajs/vue3';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
   components: {
     Layout,
+    Link,
   },
   setup() {
-    // Data dummy sementara
-    const dummyData = {
-      photo: '/img/default-profile.jpg', // Ganti dengan path gambar default
-      fullname: 'John Doe',
-      date_of_birth: '1990-01-01',
-      gender: 'male',
-      email: 'john.doe@example.com',
-      phone: '1234567890',
-      address: {
-        province: 'DKI Jakarta',
-        city: 'Jakarta Selatan',
-        postal_code: '12345',
-        address: 'Jalan Raya No. 123',
-      },
-    };
-
     // State reaktif untuk form
-    const form = reactive({ ...dummyData, old_password: '', new_password: '', new_password_confirmation: '' });
-    const originalData = { ...dummyData }; // Simpan data asli untuk cancel
+    const form = reactive({
+      photo: null,
+      fullname: '',
+      date_of_birth: '',
+      gender: '',
+      email: '',
+      phone: '',
+      address: {
+        province: '',
+        city: '',
+        postal_code: '',
+        address: '',
+      },
+      old_password: '',
+      new_password: '',
+      new_password_confirmation: '',
+    });
+
+    // Simpan data asli untuk cancel
+    const originalData = reactive({ ...form });
+
+    // State tambahan
     const isEditing = ref(false);
     const showOldPassword = ref(false);
     const showNewPassword = ref(false);
     const showConfirmPassword = ref(false);
-    const defaultPhoto = '/img/default-profile.jpg'; // Path gambar default
+    const defaultPhoto = '/img/example/admin_order_img_user.png';
+    const photoFile = ref(null); // Simpan file foto untuk upload
+    const errors = ref({}); // Simpan error dari API
+
+    // Fungsi untuk mengambil CSRF token
+    const getCsrfToken = async () => {
+      try {
+        const response = await fetch('/sanctum/csrf-cookie', {
+          method: 'GET',
+          credentials: 'include', // Sertakan cookie untuk autentikasi
+        });
+        if (!response.ok) throw new Error('Failed to fetch CSRF token');
+      } catch (error) {
+        console.error('Error fetching CSRF token:', error);
+      }
+    };
+
+    // Fungsi untuk mengambil data profil dari API
+    const fetchProfileData = async () => {
+      try {
+        const response = await fetch('/api/auth/profile', {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'X-XSRF-TOKEN': decodeURIComponent(getCookie('XSRF-TOKEN')), // Sertakan CSRF token
+          },
+          credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Failed to fetch profile');
+        const data = await response.json();
+        // Update form dan originalData
+        Object.assign(form, {
+          photo: data.photo ? `/storage/${data.photo}` : null,
+          fullname: data.fullname,
+          date_of_birth: data.date_of_birth,
+          gender: data.gender,
+          email: data.email,
+          phone: data.phone,
+          address: {
+            province: data.address?.province || '',
+            city: data.address?.city || '',
+            postal_code: data.address?.postal_code || '',
+            address: data.address?.address || '',
+          },
+          old_password: '',
+          new_password: '',
+          new_password_confirmation: '',
+        });
+        Object.assign(originalData, { ...form });
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    // Fungsi untuk mendapatkan cookie
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return '';
+    };
 
     // Fungsi untuk mengganti foto
     const handlePhotoChange = (event) => {
       const file = event.target.files[0];
       if (file) {
+        photoFile.value = file;
         const reader = new FileReader();
         reader.onload = (e) => {
           form.photo = e.target.result; // Preview gambar
@@ -280,67 +361,104 @@ export default {
       else if (field === 'confirm') showConfirmPassword.value = !showConfirmPassword.value;
     };
 
-    // Edit mode
+    // Aktifkan mode edit
     const edit = () => {
       isEditing.value = true;
     };
 
-    // Cancel edit
+    // Batalkan edit
     const cancel = () => {
       isEditing.value = false;
-      Object.assign(form, originalData); // Kembalikan ke data asli
+      Object.assign(form, { ...originalData }); // Kembalikan ke data asli
       form.old_password = '';
       form.new_password = '';
       form.new_password_confirmation = '';
+      photoFile.value = null; // Reset file foto
+      errors.value = {};
     };
 
-    // Submit form (contoh dengan Inertia, bisa diganti dengan fetch API)
-    const submitForm = () => {
+    // Submit form dengan fetch API (POST)
+    const submitForm = async () => {
+      // Ambil CSRF token terlebih dahulu
+      await getCsrfToken();
+
       const formData = new FormData();
-      Object.keys(form).forEach((key) => {
-        if (key === 'address') {
-          formData.append('province', form.address.province);
-          formData.append('city', form.address.city);
-          formData.append('postal_code', form.address.postal_code);
-          formData.append('address', form.address.address);
-        } else if (key === 'photo' && form.photo && form.photo !== originalData.photo) {
-          formData.append('photo', document.querySelector('input[type="file"]').files[0]);
-        } else {
-          formData.append(key, form[key]);
-        }
-      });
+      // Tambahkan data ke FormData
+      formData.append('fullname', form.fullname);
+      formData.append('date_of_birth', form.date_of_birth);
+      formData.append('gender', form.gender);
+      formData.append('phone', form.phone);
+      formData.append('province', form.address.province);
+      formData.append('city', form.address.city);
+      formData.append('postal_code', form.address.postal_code);
+      formData.append('address', form.address.address);
+      if (form.old_password) formData.append('old_password', form.old_password);
+      if (form.new_password) formData.append('new_password', form.new_password);
+      if (form.new_password_confirmation) formData.append('new_password_confirmation', form.new_password_confirmation);
+      if (photoFile.value) formData.append('photo', photoFile.value);
 
-      Inertia.patch(route('auth.profile'), formData, {
-        onSuccess: () => {
-          isEditing.value = false;
-          Object.assign(originalData, { ...form }); // Update data asli setelah sukses
-        },
-      });
-    };
-
-    // Contoh fetching API (uncomment dan sesuaikan endpoint)
-    const fetchProfileData = async () => {
       try {
-        const response = await fetch('/api/profile'); // Ganti dengan endpoint API Anda
-        const data = await response.json();
-        Object.assign(form, data);
-        Object.assign(originalData, data);
+        const response = await fetch('/api/auth/profile', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'X-XSRF-TOKEN': decodeURIComponent(getCookie('XSRF-TOKEN')), // Sertakan CSRF token
+          },
+          credentials: 'include', // Sertakan cookie untuk autentikasi
+          body: formData,
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          // Tangani error dari API
+          errors.value = result.errors || { general: result.message || 'Failed to update profile' };
+          throw new Error(result.message || 'Failed to update profile');
+        }
+
+        // Update form dan originalData setelah sukses
+        Object.assign(form, {
+          photo: result.data.photo ? `/storage/${result.data.photo}` : form.photo,
+          fullname: result.data.fullname,
+          date_of_birth: result.data.date_of_birth,
+          gender: result.data.gender,
+          email: result.data.email,
+          phone: result.data.phone,
+          address: {
+            province: result.data.address?.province || form.address.province,
+            city: result.data.address?.city || form.address.city,
+            postal_code: result.data.address?.postal_code || form.address.postal_code,
+            address: result.data.address?.address || form.address.address,
+          },
+          old_password: '',
+          new_password: '',
+          new_password_confirmation: '',
+        });
+        Object.assign(originalData, { ...form });
+        photoFile.value = null; // Reset file foto
+        isEditing.value = false; // Keluar dari mode edit
+        errors.value = {}; // Reset error
       } catch (error) {
-        console.error('Error fetching profile:', error);
+        console.error('Error updating profile:', error);
       }
     };
 
-    onMounted(() => {
-      // fetchProfileData(); // Uncomment untuk fetch data dari API
+    // Inisialisasi data
+    onMounted(async () => {
+      await getCsrfToken(); // Ambil CSRF token saat halaman dimuat
+      await fetchProfileData(); // Ambil data profil
     });
 
     return {
       form,
+      originalData,
       isEditing,
       showOldPassword,
       showNewPassword,
       showConfirmPassword,
       defaultPhoto,
+      photoFile,
+      errors,
       handlePhotoChange,
       togglePassword,
       edit,
@@ -353,5 +471,9 @@ export default {
 </script>
 
 <style scoped>
-/* Tambahkan gaya khusus jika diperlukan */
+.error {
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
 </style>
