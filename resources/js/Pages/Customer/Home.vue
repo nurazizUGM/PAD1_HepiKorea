@@ -230,10 +230,10 @@ export default {
         const fetchData = async () => {
             try {
                 const [carouselRes, categoryRes, newProductsRes, popularProductsRes] = await Promise.all([
-                    fetch('https://hepikorea.pad19.me/api/carousel'),
-                    fetch('https://hepikorea.pad19.me/api/category'),
-                    fetch('https://hepikorea.pad19.me/api/product/latest'),
-                    fetch('https://hepikorea.pad19.me/api/product/popular'),
+                    fetch('/api/carousel'),
+                    fetch('/api/category'),
+                    fetch('/api/product/latest'),
+                    fetch('/api/product/popular'),
                 ]);
 
                 carousels.value = await carouselRes.json();
