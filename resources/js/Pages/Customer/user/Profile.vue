@@ -296,6 +296,14 @@ export default {
       }
     };
 
+    // Fungsi untuk mendapatkan cookie
+    const getCookie = (name) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+      return '';
+    };
+
     // Fungsi untuk mengambil data profil dari API
     const fetchProfileData = async () => {
       try {
@@ -312,11 +320,11 @@ export default {
         // Update form dan originalData
         Object.assign(form, {
           photo: data.photo ? `/storage/${data.photo}` : null,
-          fullname: data.fullname,
-          date_of_birth: data.date_of_birth,
-          gender: data.gender,
-          email: data.email,
-          phone: data.phone,
+          fullname: data.fullname || '',
+          date_of_birth: data.date_of_birth || '',
+          gender: data.gender || '',
+          email: data.email || '',
+          phone: data.phone || '',
           address: {
             province: data.address?.province || '',
             city: data.address?.city || '',
@@ -331,14 +339,6 @@ export default {
       } catch (error) {
         console.error('Error fetching profile:', error);
       }
-    };
-
-    // Fungsi untuk mendapatkan cookie
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-      return '';
     };
 
     // Fungsi untuk mengganti foto
@@ -395,7 +395,7 @@ export default {
       if (form.old_password) formData.append('old_password', form.old_password);
       if (form.new_password) formData.append('new_password', form.new_password);
       if (form.new_password_confirmation) formData.append('new_password_confirmation', form.new_password_confirmation);
-      if (photoFile.value) formData.append('photo', photoFile.value);
+      if (photoFile.value) formData.append('photo', photoFile.value); // Foto opsional
 
       try {
         const response = await fetch('/api/auth/profile', {
@@ -418,17 +418,17 @@ export default {
 
         // Update form dan originalData setelah sukses
         Object.assign(form, {
-          photo: result.data.photo ? `/storage/${result.data.photo}` : form.photo,
-          fullname: result.data.fullname,
-          date_of_birth: result.data.date_of_birth,
-          gender: result.data.gender,
-          email: result.data.email,
-          phone: result.data.phone,
+          photo: result.photo ? `/storage/${result.photo}` : form.photo, // Tidak mengasumsikan result.data
+          fullname: result.fullname || form.fullname,
+          date_of_birth: result.date_of_birth || form.date_of_birth,
+          gender: result.gender || form.gender,
+          email: result.email || form.email,
+          phone: result.phone || form.phone,
           address: {
-            province: result.data.address?.province || form.address.province,
-            city: result.data.address?.city || form.address.city,
-            postal_code: result.data.address?.postal_code || form.address.postal_code,
-            address: result.data.address?.address || form.address.address,
+            province: result.address?.province || form.address.province,
+            city: result.address?.city || form.address.city,
+            postal_code: result.address?.postal_code || form.address.postal_code,
+            address: result.address?.address || form.address.address,
           },
           old_password: '',
           new_password: '',
