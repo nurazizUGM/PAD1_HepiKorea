@@ -9,6 +9,7 @@ export const content = [
     "./resources/**/*.js",
     "./resources/**/*.vue",
     "./node_modules/flowbite/**/*.js",
+    "./node_modules/flowbite/**/*.ts",
 ];
 export const theme = {
     extend: {

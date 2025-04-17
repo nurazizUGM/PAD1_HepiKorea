@@ -40,6 +40,26 @@ Route::get('/inertia/{folder}/{view}', function ($folder, $view) {
     return Inertia::render("{$folder}/{$view}");
 });
 
+Route::get('/inertia/{folder}/{subfolder}/{view}', function ($folder, $subfolder, $view) {
+    return Inertia::render("{$folder}/{$subfolder}/{$view}");
+});
+// Route::get('/inertia/{folder}/{subfolder}/{view}/{id}', function ($folder, $subfolder, $view, $id) {
+//     return Inertia::render("{$folder}/{$subfolder}/{$view}/{$id}");
+// });
+
+Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
+    return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
+});
+
+// Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}/{id}', function ($folder, $subfolder, $subsubfolder, $view, $id) {
+//     return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}/{$id}");
+// });
+
+
+Route::get('/Customer/Product/Show/{id}', function ($id) {
+    return Inertia::render('Customer/Product/Show', ['id' => $id]);
+});
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
