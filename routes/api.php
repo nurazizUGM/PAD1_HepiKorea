@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AdminOrderController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CarouselController;
 use App\Http\Controllers\Api\CartController;
@@ -117,6 +118,10 @@ Route::name('api.')->group(function () {
         Route::get('/', 'findAll');
         Route::get('/review', 'review');
         Route::get('/{id}', 'show');
+    });
+
+    Route::middleware([ApiAuth::class, Admin::class])->prefix('/admin/order')->group(function () {
+        Route::get('/', [AdminOrderController::class, 'orders']);
     });
 
     Route::middleware(ApiAuth::class)->prefix('order')->controller(OrderController::class)->group(function () {
