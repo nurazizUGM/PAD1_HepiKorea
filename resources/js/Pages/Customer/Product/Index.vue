@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed, watchEffect } from 'vue';
 import Layout from '../../Layouts/Customer.vue';
+import { Link, router } from '@inertiajs/vue3';
 
 const categories = ref([]);
 const products = ref([]);
@@ -107,10 +108,16 @@ const filteredProducts = computed(() => {
 const formatPrice = (price) => new Intl.NumberFormat('id-ID').format(price);
 
 // Navigasi ke produk tertentu
-const goToProduct = (id) => {
-  console.log(`Go to product: ${id}`);
-  // router.push(`/product/${id}`);
-};
+// const goToProduct = (id) => {
+//   console.log(`Go to product: ${id}`);
+//   router.visit(`show/${id}`, {
+//     method: 'post',
+//     data: {
+//       id: id,
+//     }
+//   });
+//   // router.push(`/product/${id}`);
+// };
 
 // Pantau perubahan kategori, harga, dan sorting agar data diperbarui otomatis
 watchEffect(() => {
@@ -151,7 +158,8 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
               <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">All</a>
             </li>
             <li v-for="category in categories" :key="category.id" @click="selectCategory(category.id)">
-              <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">{{ category.name }}</a>
+              <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">{{ category.name
+                }}</a>
             </li>
           </ul>
         </div>
@@ -195,13 +203,15 @@ fetchCategories(); // Memanggil fungsi untuk mengambil kategori saat komponen di
 
 
       <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
-        <div v-for="product in filteredProducts" :key="product.id" @click="goToProduct(product.id)"
+        <div v-for="product in filteredProducts" :key="product.id"
           class="bg-white rounded-xl px-2 pb-1 cursor-pointer flex flex-col">
+          <Link :href="'/Customer/Product/Show/' + product.id">
           <div class="w-full h-40 bg-cover bg-top" :style="{ backgroundImage: `url(${product.image})` }"></div>
           <h1 class="text-[#3E6E7A] text-sm font-semibold">{{ product.name }}</h1>
           <h2 class="text-xs font-semibold text-black text-opacity-50">{{ product.category }}</h2>
           <h3 class="text-xs text-orange-400 font-semibold ml-auto">Rp {{ formatPrice(product.price) }}</h3>
           <button class="bg-[#3E6E7A] text-white rounded-xl px-4 py-1 text-xs ml-auto">Buy</button>
+          </Link>
         </div>
       </div>
     </div>

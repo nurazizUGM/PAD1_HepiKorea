@@ -92,12 +92,12 @@ onMounted(() => {
   <div class="font-poppins w-screen h-screen overflow-y-auto overflow-x-hidden no-scrollbar">
     <!-- Navbar -->
     <nav class="fixed top-0 z-40 w-full h-fit bg-white border-b border-gray-200 shadow-lg">
-      <div class="px-5 py-3 lg:px-5 lg:pl-3">
+      <div class="px-5 py-3 md:px-1 md:py-1 lg:px-5 lg:pl-3 lg:py-3">
         <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
           <!-- Logo dan Burger Menu -->
-          <div class="w-full md:w-fit flex justify-between">
-            <Link :href="route('home')" class="flex ms-6 md:me-24">
-              <span class="self-center text-xl text-orange-400 font-semibold sm:text-2xl whitespace-nowrap">
+          <div class="w-full md:w-fit flex justify-between md:justify-start">
+            <Link :href="route('home')" class="flex ms-6 me-24 md:me-2">
+              <span class="self-center text-xl md:text-sm lg:text-2xl text-orange-400 font-semibold">
                 <span class="text-[#3E6E7A]">Hepi</span>Korea
               </span>
             </Link>
@@ -117,18 +117,18 @@ onMounted(() => {
           </div>
 
           <!-- Search Bar -->
-          <div class="mx-auto md:mr-auto" :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="searchbar-container">
-            <form @submit.prevent="submitSearch" class="flex items-center my-auto w-full">
+          <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex" :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="searchbar-container">
+            <form @submit.prevent="submitSearch" class="flex items-center my-auto">
               <div class="relative flex items-center w-full">
                 <img
                   src="/img/assets/icon/icon_admin_search_searchbar.svg"
                   alt="search icon"
-                  class="absolute left-3 w-5 h-5 text-gray-500"
+                  class="absolute left-3 md:h-4 md:w-4 lg:w-5 lg:h-5 text-gray-500"
                 />
                 <input
                   type="text"
                   v-model="search"
-                  class="block w-[60vw] md:w-[30vw] pl-10 py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383]"
+                  class="block w-[60vw] md:w-[140px] md: lg:w-[30vw] pl-0 md:pl-8 lg:pl-10 py-2 md:py-1 lg:py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383] md:placeholder:text-xs lg:placeholder:text-base"
                   placeholder="Search..."
                 />
               </div>
@@ -137,20 +137,20 @@ onMounted(() => {
 
           <!-- Navigation Links -->
           <div
-            class="flex-col md:flex-row items-center gap-y-6 md:gap-y-0 gap-x-14 justify-around mx-auto"
+            class="hidden md:flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 md:gap-x-8 gap-x-14 justify-around mx-auto"
             :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }"
             id="navlink-container"
           >
-            <Link :href="route('product.index')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">
+            <Link :href="route('product.index')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
               Product
             </Link>
-            <Link :href="route('request-order')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">
+            <Link :href="route('request-order')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
               Request Order
             </Link>
-            <Link :href="route('confirmed')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg">
+            <Link :href="route('confirmed')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
               Confirmed
             </Link>
-            <Link :href="route('faq')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg"> FAQ </Link>
+            <Link :href="route('faq')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg"> FAQ </Link>
           </div>
 
           <!-- Cart, Notification, and User Profile -->
@@ -298,7 +298,7 @@ onMounted(() => {
     </nav>
 
     <!-- Container -->
-    <div class="w-[92%] max-w-[92%] h-fit mx-auto mt-20 md:mt-32 mb-20 overflow-hidden no-scrollbar">
+    <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-5 md: lg:mb-20 overflow-hidden no-scrollbar">
       <slot></slot>
     </div>
 
@@ -350,7 +350,7 @@ onMounted(() => {
     </div>
 
     <!-- Footer -->
-    <Footer />
+    <Footer></Footer> />
   </div>
 </template>
 
