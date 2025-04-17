@@ -55,27 +55,28 @@ class OrderController extends Controller
     }
 
     // transaction history
-    public function history($status = 'unpaid')
+    public function history(Request $request)
     {
+        $status = $request->query('status', 'unpaid');
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
 
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
         if ($status == 'unpaid') {
-            $orders->where('status', 'unpaid')->with('orderPayment')->get();
+            $orders->where('status', 'unpaid')->with('orderPayment');
         } else if ($status == 'processed') {
-            $processed = $orders->whereIn('status', ['paid', 'processing'])->get();
+            $orders = $orders->whereIn('status', ['paid', 'processing']);
         } else if ($status == 'sent') {
-            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment')->get();
+            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment');
         } else if ($status == 'finished') {
             $orders = Order::where('user_id', Auth::id())
                 ->whereIn('status', ['finished', 'cancelled'])
                 ->with('reviews')
                 ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
-                ->orderBy('created_at', 'desc')
-                ->get();
+                ->orderBy('created_at', 'desc');
         }
 
-        return response()->json($orders);
+
+        return response()->json($orders->get());
     }
 
     // calculate total price of the order
@@ -103,8 +104,12 @@ class OrderController extends Controller
 
     public function calculateItems(Request $request)
     {
-        $data = $request->all();
-        $result = $this->calculate($data);
+        $data = $request->validate([
+            'items' => 'required|array',
+            'items.*.productId' => 'required|exists:products,id',
+            'items.*.quantity' => 'required|integer|min:1',
+        ]);
+        $result = $this->calculate($data['items']);
 
         foreach ($result['items'] as $item) {
             $item->product->load('images');
@@ -124,10 +129,11 @@ class OrderController extends Controller
             'items' => 'required|array',
             'items.*.productId' => 'required|exists:products,id',
             'items.*.quantity' => 'required|integer|min:1',
+            'addressId' => 'required|exists:addresses,id',
         ]);
 
         $user = User::find(Auth::id());
-        $total = $this->calculateTotal($data['items']);
+        $total = $this->calculate($data['items']);
 
         DB::beginTransaction();
         $order = Order::create([
@@ -145,6 +151,18 @@ class OrderController extends Controller
                 'price' => $product->price,
             ]);
         }
+
+        $address = $user->addresses()->find($data['addressId']);
+
+        $order->orderDetail()->create([
+            'customer_name' => $address->name ?? $user->fullname,
+            'customer_email' => $address->email ?? $user->email,
+            'customer_phone' => $address->phone ?? $user->phone,
+            'customer_address' => $address->address,
+            'province' => $address->province,
+            'city' => $address->city,
+            'postal_code' => $address->postal_code,
+        ]);
 
         $orderPayment = new OrderPayment([
             'order_id' => $order->id,
@@ -230,11 +248,7 @@ class OrderController extends Controller
             }
         }
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Payment status checked',
-            'payment' => $payment,
-        ]);
+        return response()->json($payment);
     }
 
     public function cancel(string $id)

@@ -15,17 +15,19 @@ class AdminOrderController extends Controller
         // filter order by type
         $orders = Order::whereNotIn('status', ['unconfirmed', 'confirmed']);
 
+        // first order
+        $firstOrder = $orders->clone()->orderBy('created_at', 'asc')->first();
+
         // filter order by year
         $year = $request->query('year');
         if ($year) {
             $orders = $orders->whereYear('created_at', $year);
-        }
 
-        // filter order by month
-        $month = $request->query('month');
-        if ($month) {
-            $m = Carbon::parse($month)->format('m');
-            $orders = $orders->whereMonth('created_at', $m);
+            // filter order by month
+            $month = $request->query('month');
+            if ($month) {
+                $orders = $orders->whereMonth('created_at', $month);
+            }
         }
 
         $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])
@@ -33,7 +35,13 @@ class AdminOrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json($orders);
+        return response()->json([
+            'orders' => $orders,
+            'firstOrder' => [
+                'year' => $firstOrder->created_at->format('Y'),
+                'month' => $firstOrder->created_at->format('m'),
+            ],
+        ]);
     }
 
     public function unconfirmedOrders(Request $request)
