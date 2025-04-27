@@ -92,7 +92,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 });
 
 Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
+    Route::inertia('/', 'Customer/Product/Index')->name('index');
     Route::get('/{product}', 'show')->name('show');
 });
 
