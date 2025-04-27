@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue';
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { computed, onMounted, ref } from 'vue';
+import { route } from 'ziggy-js';
 import Footer from './Footer.vue';
 
 // State
@@ -12,10 +13,9 @@ const showUserProfile = ref(false);
 // Ambil data dari usePage (Inertia.js)
 const page = usePage();
 
-// !!! ini gatau kenapa error jadi aku comment aja 
-// const isAuthenticated = computed(() => !!page.props.auth.user);
+const isAuthenticated = computed(() => !!page.props.auth?.user);
+const isAdmin = computed(() => page.props.auth?.user?.role === 'admin');
 
-const isAdmin = computed(() => page.props.auth.user?.role === 'admin');
 const userPhoto = computed(() =>
   page.props.auth.user?.photo
     ? `/storage/${page.props.auth.user.photo}`

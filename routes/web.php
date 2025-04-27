@@ -60,7 +60,7 @@ Route::get('/Customer/Product/Show/{id}', function ($id) {
     return Inertia::render('Customer/Product/Show', ['id' => $id]);
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::inertia('/', 'Customer/Home')->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {
