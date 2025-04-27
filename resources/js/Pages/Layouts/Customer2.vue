@@ -2,11 +2,10 @@
 import { ref, computed, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Footer from './Footer.vue';
-// import { useRoute, useRouter } from 'vue-router';
 
-// const route = useRoute();
-// const router = useRouter();
-const search = ref('');
+const params = new URLSearchParams(window.location.search);
+const search = ref(params.get('search') || '');
+
 const isAuthenticated = ref(false); // Replace with actual authentication check
 const isAdmin = ref(false); // Replace with actual role check
 const notifications = ref([]); // Fetch notifications from API
@@ -15,15 +14,12 @@ const showNotifications = ref(false);
 const showUserProfile = ref(false);
 const userPhoto = ref(''); // Fetch user photo from API
 
-// const category = computed(() => route.query.category || '');
-// const sortBy = computed(() => route.query.sort_by || '');
-
 const toggleNavbar = () => {
     // Logic to toggle navbar visibility
 };
 
 const submitSearch = () => {
-    router.push({ path: '/products', query: { search: search.value, category: category.value, sort_by: sortBy.value } });
+    router.push({ path: '/products', query: { search: search.value } });
 };
 
 const toggleNotifications = () => {
@@ -73,8 +69,6 @@ onMounted(() => {
                     </div>
                     <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex" id="searchbar-container">
                         <form @submit.prevent="submitSearch" class="flex items-center my-auto">
-                            <input type="hidden" name="category" :value="category">
-                            <input type="hidden" name="sort_by" :value="sortBy">
                             <div class="relative flex items-center w-full">
                                 <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
                                     class="absolute left-3 md:h-4 md:w-4 lg:w-5 lg:h-5 text-gray-500">
@@ -180,7 +174,8 @@ onMounted(() => {
             </div>
         </nav>
 
-        <div class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-5 md: lg:mb-20 overflow-hidden no-scrollbar">
+        <div
+            class="w-[92%] w-max[92%] h-fit mx-auto mt-20 md:mt-20 lg:mt-28 mb-5 md: lg:mb-20 overflow-hidden no-scrollbar">
             <slot></slot>
         </div>
 

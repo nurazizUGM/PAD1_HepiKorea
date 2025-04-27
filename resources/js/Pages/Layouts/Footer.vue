@@ -6,7 +6,8 @@
             <p class="text-sm md:text-base font-medium mt-1">Get us more on</p>
             <div class="flex flex-row mt-2 md:mt-8 md:align-middle gap-x-4">
                 <a v-if="settings.instagram" :href="`https://instagram.com/${settings.instagram}`" target="_blank">
-                    <img src="/img/assets/icon/icon_footer_insta.svg" alt="Instagram Icon" class="w-7 h-7 md:w-11 md:h-11">
+                    <img src="/img/assets/icon/icon_footer_insta.svg" alt="Instagram Icon"
+                        class="w-7 h-7 md:w-11 md:h-11">
                 </a>
                 <a v-if="settings.email" :href="`mailto:${settings.email}`" target="_blank">
                     <img src="/img/assets/icon/icon_footer_gmail.svg" alt="Gmail Icon" class="w-7 h-7 md:w-11 md:h-11">
@@ -34,8 +35,8 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
 import { usePage } from '@inertiajs/vue3';
+import { onMounted, ref } from 'vue';
 
 const settings = ref({
     instagram: '',
@@ -49,6 +50,8 @@ const settings = ref({
 
 onMounted(() => {
     const page = usePage();
-    settings.value = page.props.settings;
+    if (page.props.settings) {
+        settings.value = page.props.settings;
+    }
 });
 </script>
