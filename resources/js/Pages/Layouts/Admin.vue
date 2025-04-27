@@ -81,9 +81,9 @@ const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.pho
 
     <!-- start of sidebar -->
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-[38] w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-[38] md:w-36 lg:w-64 h-screen transition-transform  -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
-        <div class="h-full flex flex-col pl-7 pr-2 py-4 overflow-y-auto bg-white dark:bg-gray-800">
+        <div class="h-fit md:h-full flex flex-col md:pl-3 lg:pl-7 pr-2 py-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
                 <!-- Dashboard -->
                 <li class="mt-12">
@@ -147,7 +147,7 @@ const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.pho
                 </li>
             </ul>
             <!-- Logout -->
-            <ul class="space-y-2 font-medium mt-auto">
+            <ul class="space-y-2 font-medium md:mt-auto">
                 <li>
                     <a href="/auth/logout"
                         class="flex items-center p-2 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -163,7 +163,7 @@ const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.pho
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 ml-0 sm:ml-64 mt-14 mr-0 mb-0 relative">
+    <div class="p-4 ml-0 md:ml-48 lg:ml-64 mt-14 mr-0 mb-0 relative">
         <slot />
 
         <!-- <div id="alert-2"
