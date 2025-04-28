@@ -13,11 +13,9 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -93,7 +91,9 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
     Route::inertia('/', 'Customer/Product/Index')->name('index');
-    Route::get('/{product}', 'show')->name('show');
+    Route::get('/{product}', function ($id) {
+        return Inertia::render('Customer/Product/Show', ['id' => $id]);
+    })->name('show');
 });
 
 Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
@@ -128,7 +128,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::controller(AdminProfileController::class)->group(function () {
         Route::inertia('profile', 'Admin/Profile')->name('profile');
-        
+
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
     });
