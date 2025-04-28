@@ -88,7 +88,7 @@ class ProductController extends Controller
 
     public function findOne(string $id)
     {
-        $product = Product::with(['category', 'images', 'reviews'])->findOrFail($id);
+        $product = Product::with(['category', 'images', 'reviews', 'reviews.user'])->findOrFail($id);
         return response()->json($product);
     }
 

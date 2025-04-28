@@ -184,7 +184,7 @@ watch(params, () => {
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
                 <div v-for="product in products" :key="product.id"
                     class="bg-white rounded-xl px-2 pb-1 cursor-pointer flex flex-col">
-                    <Link :href="'/Customer/Product/Show/' + product.id">
+                    <Link :href="route('product.show', product.id)">
                     <div class="w-full h-40 bg-cover bg-top" :style="{ backgroundImage: `url(${product.image})` }">
                     </div>
                     <h1 class="text-[#3E6E7A] text-sm font-semibold">{{ product.name }}</h1>
