@@ -82,7 +82,8 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
 
     Route::middleware('auth')->group(function () {
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+        Route::inertia('profile', 'Customer/User/Profile')->name('profile');
+        // Route::get('profile', [ProfileController::class, 'index'])->name('profile');
         Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
         Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
         Route::get('address', [ProfileController::class, 'address'])->name('address');
@@ -96,14 +97,16 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
     })->name('show');
 });
 
-Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('add', 'add')->name('add');
-    Route::delete('delete', 'destroy')->name('delete');
-    Route::post('update', 'update')->name('update');
-});
+Route::inertia('cart', 'Customer/Cart')->name('cart.index')->middleware('auth');
+// Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+//     Route::get('/', 'index')->name('index');
+//     Route::post('add', 'add')->name('add');
+//     Route::delete('delete', 'destroy')->name('delete');
+//     Route::post('update', 'update')->name('update');
+// });
 
-Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
+Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middleware('auth');
+// Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
 Route::prefix('request-order')->group(function () {
     Route::view('/', 'customer.order.request')->name('request-order');
