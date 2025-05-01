@@ -1,4 +1,5 @@
 <script>
+import { router } from '@inertiajs/vue3';
 import axios from 'axios';
 import Layout from '../Layouts/Customer.vue';
 
@@ -62,12 +63,10 @@ export default {
                 quantity: cart.quantity,
             }));
             console.log('Checkout data:', selectedProducts);
-            // Uncomment dan sesuaikan dengan API Anda
-            // fetch('/api/checkout', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify({ products: selectedProducts }),
-            // }).then(response => response.json()).then(data => console.log(data));
+
+            router.get('/checkout', {
+                products: JSON.stringify(selectedProducts),
+            });
         },
     },
     mounted() {
@@ -99,7 +98,7 @@ export default {
                             <div class="w-[60%] md:w-[65%] h-full flex flex-col pl-5">
                                 <h1 class="text-[#3E6E7A] font-semibold text-[11px] md:text-base">{{
                                     cart.product.name
-                                    }}</h1>
+                                }}</h1>
                                 <h2 class="text-orange-400 font-semibold text-xs md:text-xl lg:text-xl mt-auto">Rp {{
                                     formatPrice(cart.product.price) }}</h2>
                                 <h3 class="text-gray-600 text-opacity-50 font-semibold text-[10px] md:text-xs mt-1">x{{

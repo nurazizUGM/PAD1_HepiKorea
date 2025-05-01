@@ -104,7 +104,8 @@ Route::inertia('cart', 'Customer/Cart')->name('cart.index')->middleware('auth');
 //     Route::post('update', 'update')->name('update');
 // });
 
-Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
+Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middleware('auth');
+// Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
 Route::prefix('request-order')->group(function () {
     Route::view('/', 'customer.order.request')->name('request-order');
