@@ -82,7 +82,8 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
 
     Route::middleware('auth')->group(function () {
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+        Route::inertia('profile', 'Customer/User/Profile')->name('profile');
+        // Route::get('profile', [ProfileController::class, 'index'])->name('profile');
         Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
         Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
         Route::get('address', [ProfileController::class, 'address'])->name('address');
