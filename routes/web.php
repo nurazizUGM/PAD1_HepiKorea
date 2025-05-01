@@ -96,12 +96,13 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
     })->name('show');
 });
 
-Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('add', 'add')->name('add');
-    Route::delete('delete', 'destroy')->name('delete');
-    Route::post('update', 'update')->name('update');
-});
+Route::inertia('cart', 'Customer/Cart')->name('cart.index')->middleware('auth');
+// Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+//     Route::get('/', 'index')->name('index');
+//     Route::post('add', 'add')->name('add');
+//     Route::delete('delete', 'destroy')->name('delete');
+//     Route::post('update', 'update')->name('update');
+// });
 
 Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
