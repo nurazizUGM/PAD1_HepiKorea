@@ -34,19 +34,19 @@
                 <!-- Add Product Button -->
                 <Link :href="route('admin.product.create')" class="flex gap-1 ms-3 cursor-pointer order-2 lg:order-1">
                 <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
-                <h2 class="text-black text-md my-auto font-semibold">Add Product</h2>
+                <h2 class="text-black text-md my-auto font-semibold hidden lg:flex">Add Product</h2>
                 </Link>
             </div>
 
             <!-- Search Bar -->
-            <div class="mr-auto lg:mr-0 lg:ml-auto order-1 lg:order-2">
+            <div class="mr-auto lg:mr-0 lg:ml-auto order-1 lg:order-2 mb-3 lg:mb-0">
                 <form @submit.prevent="filterProducts" class="flex items-center">
                     <input type="hidden" name="category" :value="selectedCategory?.id || ''">
                     <div class="relative flex items-center w-full">
                         <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
                             class="absolute left-3 w-5 h-5 text-gray-500">
                         <input v-model="searchQuery" type="text" name="search"
-                            class="block w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
+                            class="block lg:w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
                             placeholder="Search..." />
                     </div>
                     <button type="submit"
@@ -64,7 +64,7 @@
             class="w-full h-full mx-auto content-center mt-5 mb-8 grid grid-cols-2 gap-x-1 gap-y-3 md:grid-cols-4 md:gap-x-0 lg:grid-rows-[auto_1fr_auto] lg:grid-cols-7 lg:gap-x-2 lg:gap-y-3">
             <div v-for="product in products" :key="product.id"
                 class="bg-white w-[135px] h-[175px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
-                <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top"
+                <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto"
                     :style="{ backgroundImage: `url(${product.image || 'https://placehold.co/200'})` }" />
                 <div class="p-2">
                     <p class="text-sm font-bold truncate">{{ product.name }}</p>
@@ -83,18 +83,18 @@
 
         <!-- Delete Confirmation Modal -->
         <Modal :show="showDeleteModal" @close="showDeleteModal = false">
-            <div class="bg-white w-[33vw] h-auto rounded-[30px] shadow p-4">
-                <div class="flex flex-col px-10 py-10">
-                    <img src="/img/assets/icon/icon_warning.svg" alt="warning" class="w-16 h-16 mx-auto" />
-                    <p class="text-[#376F7E] font-medium text-xl mx-auto mt-2">Are you sure?</p>
-                    <p class="text-[#B7B7B7] font-medium text-xs mx-auto mt-6">You won’t be able to revert this!</p>
-                    <div class="w-full mt-6 flex flex-row justify-center">
+            <div class="bg-white w-[225px] md:w-[325px] lg:w-[33vw] h-auto rounded-[30px] shadow p-4">
+                <div class="flex flex-col md:py-2 lg:p-10">
+                    <img src="/img/assets/icon/icon_warning.svg" alt="warning" class="w-10 h-10 md:w-[51px] md:h-[51px] lg:w-16 lg:h-16 mx-auto" />
+                    <p class="text-[#376F7E] font-medium text-sm lg:text-xl mx-auto mt-2">Are you sure?</p>
+                    <p class="text-[#B7B7B7] font-medium text-[10px] lg:text-xs mx-auto mt-2 lg:mt-6">You won’t be able to revert this!</p>
+                    <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                         <button @click="confirmDelete"
-                            class="w-44 h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-lg font-semibold">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
                             Yes, Delete it!
                         </button>
                         <button @click="showDeleteModal = false"
-                            class="w-44 h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-lg font-semibold ml-2">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2">
                             Cancel
                         </button>
                     </div>
@@ -104,10 +104,10 @@
 
         <!-- Success Delete Modal -->
         <Modal :show="showSuccessModal" @close="showSuccessModal = false">
-            <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow p-4">
-                <div class="flex flex-col p-14">
-                    <h1 class="text-black text-xl font-medium mx-auto">Successfully Deleted!</h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="success" class="w-24 h-24 mx-auto mt-6" />
+            <div class="bg-white w-[172px] md:w-[400px] lg:w-[25vw] h-auto rounded-[30px] shadow py-7 md:py-14 lg:p-4">
+                <div class="flex flex-col lg:p-14">
+                    <h1 class="text-black text-[10px] md:text-xl lg:text-xl font-medium mx-auto">Successfully Deleted!</h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="success" class="w-11 h-11 md:h-24 md:w-24 lg:w-24 lg:h-24 mx-auto mt-3 lg:mt-6" />
                 </div>
             </div>
         </Modal>
