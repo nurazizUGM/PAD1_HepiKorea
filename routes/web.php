@@ -125,7 +125,8 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     Route::post('review', 'review')->name('review');
 })->middleware('auth');
 
-Route::get('faq', [FaqController::class, 'faq'])->name('faq');
+Route::inertia('/faq', 'Customer/Faq')->name('faq');
+// Route::get('faq', [FaqController::class, 'faq'])->name('faq');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
