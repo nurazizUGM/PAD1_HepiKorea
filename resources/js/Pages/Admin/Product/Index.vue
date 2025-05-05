@@ -17,7 +17,7 @@
               </button>
             </li>
             <!-- Category Tab -->
-            <li class="md:mx-52 lg:mx-64" role="presentation">
+            <li class="md:mx-40 lg:mx-64" role="presentation">
               <button @click="setActiveTab('category')"
                 :class="[
                   'inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg',
@@ -41,7 +41,7 @@
   
         <!-- Tab Content -->
         <div id="default-tab-content">
-          <div class="px-3 lg:px-10 rounded-lg min-h-[650px] lg:h-[80vh] w-full" role="tabpanel">
+          <div class="px-3 lg:px-10 pb-2 rounded-lg min-h-[650px] lg:h-[80vh] w-full" role="tabpanel">
             <List v-if="activeTab === 'product'" @edit-product="editProduct" @create-product="createProduct" />
             <Create v-else-if="activeTab === 'create'" @back="setActiveTab('product')" />
             <Edit v-else-if="activeTab === 'edit'" :product-id="selectedProductId" @back="setActiveTab('product')" />

@@ -1,5 +1,5 @@
 <template>
-    <AdminLayout title="Product">
+    <Layout title="Product edit">
       <div class="bg-[#EFEFEF] border-gray-200 rounded-lg">
         <!-- Tabs -->
         <div class="mb-3">
@@ -10,7 +10,7 @@
                 Product
               </Link>
             </li>
-            <li class="md:mx-52 lg:mx-64" role="presentation">
+            <li class="md:mx-40 lg:mx-64" role="presentation">
               <Link :href="route('admin.category.index')"
                 class="inline-block px-4 pt-4 pb-1 rounded-t-lg text-black hover:text-orange-400">
                 Category
@@ -26,12 +26,12 @@
         </div>
   
         <!-- Product Content -->
-        <div class="px-10 pt-2 rounded-lg h-[80vh]">
-          <div class="w-full h-full flex flex-row">
+        <div class="px-2 lg:px-10 pt-2 pb-2 lg:pb-0 rounded-lg h-fit lg:h-[80vh]">
+          <div class="w-full h-full flex flex-col lg:flex-row">
             <!-- Image Column -->
-            <div class="w-3/12 h-[97%]">
+            <div class="w-full lg:w-3/12 h-[97%]">
               <div class="h-full flex flex-col space-y-4">
-                <div class="w-full h-[20rem] mr-auto bg-white rounded-2xl p-3">
+                <div class="w-11/12 md:w-1/2 lg:w-full h-[20rem] mx-auto lg:mr-auto bg-white rounded-2xl p-3">
                   <img :src="mainImage" class="w-full h-full object-contain rounded-lg" alt="Main Image" />
                 </div>
                 <div class="flex space-x-2 mx-auto overflow-x-auto" id="product-images">
@@ -45,14 +45,14 @@
                   </div>
                 </div>
                 <button @click="triggerFileInput"
-                  class="w-[99%] flex items-center justify-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-10 rounded-2xl mb-5 text-lg font-bold text-white mx-auto">
+                  class="w-[99%] md:w-1/2 lg:w-[99%] flex items-center justify-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-10 rounded-2xl mb-5 text-lg font-bold text-white mx-auto">
                   <img src="/img/assets/icon/icon_admin_product_upload.svg" alt="Upload Icon" class="h-6 w-6 mr-3" />
-                  Upload Photo
+                  Edit Photo
                 </button>
                 <input ref="fileInput" type="file" accept="image/*" multiple class="hidden" @change="handleFileUpload" />
                 <div class="flex-grow"></div>
                 <Link :href="route('admin.product.index')"
-                  class="flex flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold justify-center items-center w-2/5 h-10 rounded-2xl mb-6 mr-auto">
+                  class="hidden lg:flex flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold justify-center items-center w-2/5 h-10 rounded-2xl mb-6 mr-auto">
                   <img src="/img/assets/icon/icon_arrow_back.svg" alt="" class="w-10 h-8" />
                   <p class="my-auto">Back</p>
                 </Link>
@@ -60,56 +60,56 @@
             </div>
   
             <!-- Form Column -->
-            <div class="w-9/12 h-[95%] pl-[115px] pr-10 justify-end">
-              <div class="w-full h-full bg-[#FFFCFC] rounded-2xl ml-5 p-5">
-                <h1 class="text-2xl font-semibold">Edit Product</h1>
-                <form @submit.prevent="updateProduct" class="w-full h-full flex flex-col mt-8 pb-12">
-                  <div class="flex items-center mb-7">
-                    <div class="w-4/12">
-                      <label for="nama-produk" class="text-[#898383] text-lg font-normal">Product Name</label>
+            <div class="w-full lg:w-9/12 h-[95%] lg:pl-[115px] lg:pr-10 lg:justify-end mx-auto">
+              <div class="w-full h-full bg-[#FFFCFC] rounded-2xl lg:ml-5 px-4 pt-3 lg:p-5">
+                <h1 class="text-sm md:text-2xl font-semibold">Edit Product</h1>
+                <form @submit.prevent="updateProduct" class="w-full h-full flex flex-col mt-3 lg:mt-8 pb-2 lg:pb-12">
+                  <div class="flex flex-col lg:flex-row items-start lg:items-center mb-2 lg:mb-7">
+                    <div class="w-full lg:w-4/12">
+                      <label for="nama-produk" class="text-[#376F7E] text-xs md:text-lg font-normal">Product Name</label>
                     </div>
-                    <div class="w-7/12">
+                    <div class="w-full lg:w-7/12">
                       <input v-model="form.name" type="text" id="nama-produk" required
                         placeholder="Write the product name"
-                        class="w-full h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0" />
+                        class="w-full h-10 lg:h-12 rounded-lg px-1.5 lg:px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 placeholder:text-xs placeholder:lg:text-base" />
                     </div>
                   </div>
-                  <div class="flex items-center mb-7">
-                    <div class="w-4/12">
-                      <label for="harga-produk" class="text-[#898383] text-lg font-normal">Price</label>
+                  <div class="flex flex-col lg:flex-row items-start lg:items-center mb-2 lg:mb-7">
+                    <div class="w-full lg:w-4/12">
+                      <label for="harga-produk" class="text-[#376F7E] text-xs md:text-lg font-normal">Price</label>
                     </div>
-                    <div class="w-7/12">
+                    <div class="w-full lg:w-7/12">
                       <input v-model.number="form.price" type="number" id="harga-produk" required
-                        class="w-full h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0" />
+                        class="w-full h-10 lg:h-12 rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0" />
                     </div>
                   </div>
-                  <div class="flex items-center mb-7">
-                    <div class="w-4/12">
-                      <label for="category" class="text-[#898383] text-lg font-normal">Product Category</label>
+                  <div class="flex flex-col lg:flex-row items-start lg:items-center mb-2 lg:mb-7">
+                    <div class="w-full lg:w-4/12">
+                      <label for="category" class="text-[#376F7E] text-xs md:text-lg font-normal">Product Category</label>
                     </div>
-                    <div class="w-7/12">
+                    <div class="w-full lg:w-7/12">
                       <select v-model="form.category" id="dropdown_add_category"
-                        class="w-full h-12 rounded-lg px-4 text-xs border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
+                        class="w-full h-10 lg:h-12 rounded-lg px-4 text-xs border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0">
                         <option v-for="category in categories" :key="category.id" :value="category.id">
                           {{ category.name }}
                         </option>
                       </select>
                     </div>
                   </div>
-                  <div class="flex items-center">
-                    <div class="w-4/12 my-auto">
-                      <label for="product-description" class="text-[#898383] text-lg font-normal">Product
+                  <div class="flex flex-col lg:flex-row items-start lg:items-center">
+                    <div class="w-full lg:w-4/12 my-auto">
+                      <label for="product-description" class="text-[#376F7E] text-xs md:text-lg font-normal">Product
                         Description</label>
                     </div>
-                    <div class="w-7/12">
+                    <div class="w-full lg:w-7/12">
                       <textarea v-model="form.description" id="product-description" rows="5" required
                         placeholder="Product Description"
-                        class="w-full rounded-lg px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 text-md resize-none"></textarea>
+                        class="w-full h-[91px] lg:h-[192px] rounded-lg px-1.5 lg:px-4 border border-[#376F7E] focus:border-[#376F7E] focus:outline-none focus:ring-0 text-md resize-none placeholder:text-xs placeholder:lg:text-base"></textarea>
                     </div>
                   </div>
                   <div class="flex w-full mt-auto">
                     <button type="submit"
-                      class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-1/5 h-10 rounded-2xl ml-auto mb-4 mr-16">
+                      class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold w-2/5 md:w-1/5 lg:w-1/5 h-8 lg:h-10 rounded-2xl ml-auto lg:mb-4 lg:mr-16">
                       Save
                     </button>
                   </div>
@@ -129,7 +129,7 @@
           </div>
         </Modal>
       </div>
-    </AdminLayout>
+    </Layout>
   </template>
   
   <script>
