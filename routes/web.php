@@ -109,9 +109,11 @@ Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middlew
 // Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
 Route::prefix('request-order')->group(function () {
-    Route::view('/', 'customer.order.request')->name('request-order');
-    Route::post('/', [OrderController::class, 'requestOrder'])->name('request-order');
-    Route::get('confirmed', [RequestOrderController::class, 'show'])->name('confirmed');
+    Route::inertia('/', 'Customer/Order/Request')->name('request-order');
+    Route::inertia('confirmed', 'Customer/Order/Confirmed')->name('confirmed');
+    // Route::view('/', 'customer.order.request')->name('request-order');
+    // Route::post('/', [OrderController::class, 'requestOrder'])->name('request-order');
+    // Route::get('confirmed', [RequestOrderController::class, 'show'])->name('confirmed');
 });
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
