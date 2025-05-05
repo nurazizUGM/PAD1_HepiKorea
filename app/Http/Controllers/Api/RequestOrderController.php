@@ -25,7 +25,6 @@ class RequestOrderController extends Controller
     // custom request order
     public function requestOrder(Request $request)
     {
-        DB::beginTransaction();
         $data = $request->validate([
             'fullname' => 'required|string',
             'email' => 'required|email',
@@ -43,7 +42,8 @@ class RequestOrderController extends Controller
         } else {
             $user = User::where('email', User::$guestEmail)->first();
         }
-
+        
+        DB::beginTransaction();
         $order = Order::create([
             'user_id' => $user->id,
             'type' => 'custom',
@@ -84,6 +84,7 @@ class RequestOrderController extends Controller
         return response()->json([
             'status' => 'success',
             'message' => 'Order created successfully',
+            'order' => $order,
         ]);
     }
 

@@ -151,6 +151,7 @@ Route::name('api.')->group(function () {
     Route::prefix('request-order')->controller(RequestOrderController::class)->group(function () {
         Route::get('/', 'show');
         Route::post('/calculate', 'calculateItems');
-        Route::post('/', 'checkout');
+        Route::post('/', 'requestOrder');
+        Route::post('/checkout', 'checkout');
     });
 });

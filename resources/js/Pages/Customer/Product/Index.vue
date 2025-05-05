@@ -33,7 +33,6 @@ const fetchProducts = async () => {
     try {
         const url = new URL(window.location.href);
         for (const k in params) { url.searchParams.set(k, params[k]); }
-        window.history.pushState({}, '', url);
 
         const res = await fetch(`/api/product?${url.searchParams.toString()}`);
         const data = await res.json();
@@ -42,6 +41,7 @@ const fetchProducts = async () => {
             category: product.category.name,
             image: product.images.length > 0 ? `/storage/${product.images[0].path}` : '/img/default_product.jpg',
         }));
+        window.history.pushState({}, '', url);
     } catch (error) {
         console.error('Failed to fetch products', error);
     }
