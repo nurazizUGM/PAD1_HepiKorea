@@ -68,15 +68,18 @@ class OrderController extends Controller
         } else if ($status == 'sent') {
             $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment');
         } else if ($status == 'finished') {
-            $orders = Order::where('user_id', Auth::id())
-                ->whereIn('status', ['finished', 'cancelled'])
-                ->with('reviews')
+            $orders->with('reviews')
                 ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
                 ->orderBy('created_at', 'desc');
         }
 
+        $orders = $orders->get()->each(function ($order) {
+            $order->title = $order->orderItems->first()->product->name;
+            $order->image = $order->orderItems->first()?->product?->images?->first()?->path;
+            unset($order->orderItems);
+        });
 
-        return response()->json($orders->get());
+        return response()->json($orders);
     }
 
     // calculate total price of the order
