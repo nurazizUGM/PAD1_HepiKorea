@@ -123,10 +123,10 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
     // Route::get('cancel/{id}', 'cancel')->name('cancel');
     // Route::post('review', 'review')->name('review');
 
-    Route::redirect('/', '/order/pending')->name('index');
+    Route::redirect('/', '/order/unpaid')->name('index');
     Route::get('{status}', function ($status) {
-        if (!in_array($status, ['pending', 'shipped', 'delivered', 'canceled'])) {
-            return Inertia::location('/order/pending');
+        if (!in_array($status, ['unpaid', 'processed', 'sent', 'finished', 'canceled'])) {
+            return Inertia::location('/order/unpaid');
         }
         return Inertia::render('Customer/Order/History', ['status' => $status]);
     })->name('history');
