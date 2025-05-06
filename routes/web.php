@@ -129,7 +129,7 @@ Route::prefix('order')->name('order.')->controller(OrderController::class)->grou
             return Inertia::location('/order/pending');
         }
         return Inertia::render('Customer/Order/History', ['status' => $status]);
-    })->name('order.history');
+    })->name('history');
 })->middleware('auth');
 
 Route::inertia('/faq', 'Customer/Faq')->name('faq');

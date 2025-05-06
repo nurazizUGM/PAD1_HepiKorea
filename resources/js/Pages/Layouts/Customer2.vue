@@ -2,6 +2,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { Head } from '@inertiajs/vue3';
 import Footer from './Footer.vue';
+import { route } from 'ziggy-js';
 
 const params = new URLSearchParams(window.location.search);
 const search = ref(params.get('search') || '');
@@ -149,7 +150,7 @@ onMounted(() => {
                                                     class="w-5 h-5 grayscale group-hover:grayscale-0">
                                                 <p class="ml-2 group-hover:text-orange-400">Address</p>
                                             </router-link>
-                                            <router-link v-else to="/order/history"
+                                            <router-link v-else :to="route('order.index')"
                                                 class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                                                 <img src="/img/assets/icon/icon_history.svg" alt=""
                                                     class="w-5 h-5 grayscale group-hover:grayscale-0">
