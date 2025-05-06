@@ -110,21 +110,26 @@ Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middlew
 
 Route::prefix('request-order')->group(function () {
     Route::inertia('/', 'Customer/Order/Request')->name('request-order');
-    Route::inertia('confirmed', 'Customer/Order/Confirmed')->name('confirmed');
-    // Route::view('/', 'customer.order.request')->name('request-order');
-    // Route::post('/', [OrderController::class, 'requestOrder'])->name('request-order');
-    // Route::get('confirmed', [RequestOrderController::class, 'show'])->name('confirmed');
+    Route::inertia('confirmed', 'Customer/Order/Custom')->name('confirmed');
 });
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
-    Route::get('show/{id}', 'show')->name('show');
-    Route::get('history', 'history')->name('history');
     Route::post('/', 'store')->name('store');
-    Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
-    Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
-    Route::get('arrived/{id}', 'arrived')->name('arrived');
-    Route::get('cancel/{id}', 'cancel')->name('cancel');
-    Route::post('review', 'review')->name('review');
+    Route::get('show/{id}', 'show')->name('show');
+
+    // Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
+    // Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
+    // Route::get('arrived/{id}', 'arrived')->name('arrived');
+    // Route::get('cancel/{id}', 'cancel')->name('cancel');
+    // Route::post('review', 'review')->name('review');
+
+    Route::redirect('/', '/order/pending')->name('index');
+    Route::get('{status}', function ($status) {
+        if (!in_array($status, ['pending', 'shipped', 'delivered', 'canceled'])) {
+            return Inertia::location('/order/pending');
+        }
+        return Inertia::render('Customer/Order/History', ['status' => $status]);
+    })->name('order.history');
 })->middleware('auth');
 
 Route::inertia('/faq', 'Customer/Faq')->name('faq');
