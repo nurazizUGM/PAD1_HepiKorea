@@ -244,6 +244,8 @@
 
 <script lang="ts">
 //   import { Inertia } from '@inertiajs/inertia';
+import { router } from '@inertiajs/vue3';
+import { route } from 'ziggy-js';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
@@ -353,7 +355,7 @@ export default {
                 .then(data => {
                     if (data.status === 'success') {
                         this.showSuccessSubmit = true;
-                        setTimeout(() => (this.showSuccessSubmit = false), 2000); // Auto-close after 2 seconds
+                        router.get(route('confirmed', { orderId: data.order.id }))
                     } else {
                         alert('Failed to submit request order');
                     }

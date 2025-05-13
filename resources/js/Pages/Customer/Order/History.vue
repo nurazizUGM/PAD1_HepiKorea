@@ -1,121 +1,29 @@
 <script>
-import { ref, onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
+import { route } from 'ziggy-js';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
     components: { Layout },
+    props: {
+        status: String
+    },
+    mounted() {
+        this.activeTab = this.status || 'unpaid';
+    },
     setup() {
         const activeTab = ref('unpaid');
         const tabs = [
             { id: 'unpaid', label: 'Unpaid' },
             { id: 'processed', label: 'Processed' },
             { id: 'sent', label: 'Sent' },
-            { id: 'finish', label: 'Finish' },
+            { id: 'finished', label: 'Finished' },
         ];
 
-        // Dummy Data
-        const unpaidOrders = ref([
-            {
-                id: 1,
-                type: 'custom',
-                productName: 'Custom Item 1',
-                totalPrice: 500000,
-                image: 'https://placehold.co/400x400',
-                count: 2,
-                lastPayment: { status: 'pending', expiredTime: '25-Dec-2023 14:00', paymentMethod: 'Bank BRI', amount: 500000, payment_code: '123456789', id: 1 },
-            },
-            {
-                id: 4,
-                type: 'custom',
-                productName: 'Custom Item 1',
-                totalPrice: 500000,
-                image: 'https://placehold.co/400x400',
-                count: 2,
-                lastPayment: { status: 'pending', expiredTime: '25-Dec-2023 14:00', paymentMethod: 'Bank Mandiri', amount: 500000, payment_code: '123456789', id: 1 },
-            },
-            {
-                id: 2,
-                type: 'product',
-                productName: 'Product A',
-                totalPrice: 300000,
-                image: 'https://placehold.co/400x400',
-                count: 1,
-                lastPayment: null,
-            },
-            {
-                id: 3,
-                type: 'product',
-                productName: 'Product AB',
-                totalPrice: 500000,
-                image: 'https://placehold.co/400x400',
-                count: 3,
-                lastPayment: null,
-            },
-        ]);
-
-        const processedOrders = ref([
-            {
-                id: 3,
-                type: 'custom',
-                productName: 'Custom Item 2',
-                totalPrice: 750000,
-                image: 'https://placehold.co/400x400',
-                count: 1,
-                arrivalTime: '10-Jan-2024',
-                status: 'processing',
-            },
-            {
-                id: 4,
-                type: 'custom',
-                productName: 'Custom Item 3',
-                totalPrice: 750000,
-                image: 'https://placehold.co/400x400',
-                count: 1,
-                arrivalTime: '10-Jan-2024',
-                status: 'processing',
-            },
-        ]);
-
-        const sentOrders = ref([
-            {
-                id: 4,
-                type: 'product',
-                productName: 'Product B',
-                totalPrice: 400000,
-                image: 'https://placehold.co/400x400',
-                count: 3,
-                status: 'shipment_unpaid',
-                shipmentService: 'JNE',
-                shipmentPrice: 50000,
-                shipmentArrivalEstimation: '15-Jan-2024',
-                shipmentPayment: null,
-            },
-            {
-                id: 9,
-                type: 'product99',
-                productName: 'Product B',
-                totalPrice: 400000,
-                image: 'https://placehold.co/400x400',
-                count: 3,
-                status: 'shipment_unpaid',
-                shipmentService: 'JNE',
-                shipmentPrice: 50000,
-                shipmentArrivalEstimation: '15-Jan-2024',
-                shipmentPayment: 1,
-            },
-        ]);
-
-        const finishedOrders = ref([
-            {
-                id: 5,
-                type: 'product',
-                productName: 'Product C',
-                totalPrice: 600000,
-                image: 'https://placehold.co/400x400',
-                count: 1,
-                hasReview: false,
-            },
-        ]);
+        const unpaidOrders = ref([]);
+        const processedOrders = ref([]);
+        const sentOrders = ref([]);
+        const finishedOrders = ref([]);
 
         // Modal States
         const shipmentModalVisible = ref(false);
@@ -135,12 +43,12 @@ export default {
         // Methods
         const setActiveTab = (tab) => {
             activeTab.value = tab;
-            window.history.pushState(null, null, `?tab=${tab}`);
+            window.history.pushState({}, '', route('order.history', { status: tab }));
+            fetchData();
         };
 
         const getImageUrl = (image) => {
-            // return image ? `/storage/${image}` : '/img/example/example_phone.png';
-            return image ? `${image}` : '/img/example/example_phone.png';
+            return image ? `/storage/${image}` : '/img/example/example_phone.png';
         };
 
         const formatPrice = (price) => {
@@ -157,7 +65,7 @@ export default {
         };
 
         const payShipment = (orderId) => {
-            console.log('Pay Shipment for Order ID:', orderId); // Gantikan dengan logika API
+            console.log('Pay Shipment for Order ID:', orderId);
             shipmentModalVisible.value = false;
         };
 
@@ -187,29 +95,40 @@ export default {
             }, 2000);
         };
 
+        const orderStatus = (status) => {
+            return status.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
+        }
+
         // Fetch Data (Uncomment dan sesuaikan saat menggunakan API)
-        /*
         const fetchData = async () => {
-          try {
-            const [unpaidRes, processedRes, sentRes, finishedRes] = await Promise.all([
-              fetch('/api/orders?status=unpaid'),
-              fetch('/api/orders?status=processed'),
-              fetch('/api/orders?status=sent'),
-              fetch('/api/orders?status=finished'),
-            ]);
-            unpaidOrders.value = await unpaidRes.json();
-            processedOrders.value = await processedRes.json();
-            sentOrders.value = await sentRes.json();
-            finishedOrders.value = await finishedRes.json();
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          }
+            try {
+                fetch(`/api/order?status=${activeTab.value}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        switch (activeTab.value) {
+                            case 'unpaid':
+                                unpaidOrders.value = data;
+                                break;
+                            case 'processed':
+                                processedOrders.value = data;
+                                break;
+                            case 'sent':
+                                sentOrders.value = data;
+                                break;
+                            case 'finished':
+                                finishedOrders.value = data;
+                                console.log('Finished Orders:', finishedOrders.value);
+                                break;
+                        }
+                    });
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
         };
-    
+
         onMounted(() => {
-          fetchData();
+            fetchData();
         });
-        */
 
         return {
             activeTab,
@@ -233,6 +152,7 @@ export default {
             setRating,
             changeReviewPhoto,
             submitReview,
+            orderStatus
         };
     },
 };
@@ -245,7 +165,8 @@ export default {
             <div class="mb-2 md:mb-3 lg:mb-4 border-b border-gray-200">
                 <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-styled-tab">
                     <li v-for="tab in tabs" :key="tab.id" class="mx-auto" role="presentation">
-                        <button class="inline-block p-4 border-b-4 rounded-t-lg text-xs md:text-sm lg:text-xl font-semibold"
+                        <button
+                            class="inline-block p-4 border-b-4 rounded-t-lg text-xs md:text-sm lg:text-xl font-semibold"
                             :class="{ 'text-black border-orange-400': activeTab === tab.id, 'text-black border-none': activeTab !== tab.id }"
                             @click="setActiveTab(tab.id)">
                             {{ tab.label }}
@@ -271,7 +192,7 @@ export default {
                                     <!-- ini nanti muncul pas mobile -->
                                     <div class="md:w-[20%] md:hidden flex mr-1 lg:mr-0">
                                         <img :src="getImageUrl(order.image)" alt="unpaid_image_product"
-                                                class="h-14 lg:h-48 object-contain mx-auto">
+                                            class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
@@ -284,8 +205,10 @@ export default {
                                         </p>
                                     </div>
                                     <div class="md:w-[22%] ms-auto h-full flex">
-                                        <p class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">Rp {{
-                                            formatPrice(order.totalPrice) }}</p>
+                                        <p
+                                            class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
+                                            Rp {{
+                                                formatPrice(order.totalPrice) }}</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -296,7 +219,8 @@ export default {
                                                 order.lastPayment.paymentMethod }}</p>
                                         </div>
                                     </div>
-                                    <div class="w-1/2 ml-auto flex flex-row justify-end items-center md:mt-auto md:mb-1.5 lg:my-0">
+                                    <div
+                                        class="w-1/2 ml-auto flex flex-row justify-end items-center md:mt-auto md:mb-1.5 lg:my-0">
                                         <button v-if="order.lastPayment"
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
                                             @click="pay(order.lastPayment)">
@@ -328,7 +252,7 @@ export default {
                                     <!-- ini nanti muncul pas mobile -->
                                     <div class="md:w-[20%] md:hidden flex mr-1 lg:mr-0">
                                         <img :src="getImageUrl(order.image)" alt="processed_image_product"
-                                                class="h-14 lg:h-48 object-contain mx-auto">
+                                            class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
@@ -341,8 +265,10 @@ export default {
                                         </p>
                                     </div>
                                     <div class="w-[22%] ms-auto h-full flex">
-                                        <p class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">Rp {{
-                                            formatPrice(order.totalPrice) }}</p>
+                                        <p
+                                            class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
+                                            Rp {{
+                                                formatPrice(order.totalPrice) }}</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -353,7 +279,11 @@ export default {
                                                 <span v-if="order.arrivalTime">Estimated Arrival in Indonesia: {{
                                                     order.arrivalTime }}</span>
                                                 <br>
-                                                {{ order.status === 'processing' ? 'The order is on its way to Indonesia' : 'The order is currently awaiting administrator confirmation' }}
+                                                {{
+                                                    order.status === 'processing' ?
+                                                        'The order is on its way to Indonesia' :
+                                                        'The order is currently awaiting administrator confirmation'
+                                                }}
                                             </p>
                                         </div>
                                     </div>
@@ -376,18 +306,21 @@ export default {
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row justify-center mt-1">
                                     <div class="md:w-[20%] md:hidden flex mr-1 lg:mr-0">
                                         <img :src="getImageUrl(order.image)" alt="sent_image_product"
-                                                class="h-14 lg:h-48 object-contain mx-auto">
+                                            class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl">{{ order.productName }}</h1>
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl">{{
+                                            order.productName }}</h1>
                                         <p v-if="order.count > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
                                             and {{ order.count - 1 }} other items
                                         </p>
                                     </div>
                                     <div class="w-[22%] ms-auto h-full flex">
-                                        <p class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">Rp {{
-                                            formatPrice(order.totalPrice) }},-</p>
+                                        <p
+                                            class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
+                                            Rp {{
+                                                formatPrice(order.totalPrice) }},-</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -395,7 +328,13 @@ export default {
                                         <div
                                             class="w-full h-fit lg:h-full bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-3 lg:p-4">
                                             <p class="my-auto">
-                                                {{ order.status === 'shipment_unpaid' ? 'Waiting for payment of the shipment' : order.status === 'shipment_paid' ? 'Waiting for the shipment to be sent' : 'The order is on its way to Destination Address' }}
+                                                {{
+                                                    order.status === 'shipment_unpaid' ?
+                                                        'Waiting for payment of the shipment' :
+                                                        order.status === 'shipment_paid' ?
+                                                            'Waiting for the shipment to be sent' :
+                                                            'The order is on its way to Destination Address'
+                                                }}
                                             </p>
                                         </div>
                                     </div>
@@ -423,7 +362,7 @@ export default {
                 </div>
 
                 <!-- Finish Tab -->
-                <div v-if="activeTab === 'finish'" class="p-1 lg:p-4 rounded-lg">
+                <div v-if="activeTab === 'finished'" class="p-1 lg:p-4 rounded-lg">
                     <div class="w-full h-full flex flex-col gap-y-2 md:gap-y-4 lg:gap-y-6">
                         <div v-for="order in finishedOrders" :key="order.id"
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
@@ -436,27 +375,35 @@ export default {
                                     <!-- ini nanti muncul pas mobile -->
                                     <div class="md:w-[20%] md:hidden flex mr-1 lg:mr-0">
                                         <img :src="getImageUrl(order.image)" alt="finish_image_product"
-                                                class="h-14 lg:h-48 object-contain mx-auto">
+                                            class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer">{{ order.productName }}</h1>
+                                        <h1
+                                            class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer">
+                                            {{ order.title }}</h1>
                                         <p v-if="order.count > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
                                             and {{ order.count - 1 }} other items
                                         </p>
+
                                     </div>
                                     <div class="md:w-[22%] ms-auto h-full flex">
-                                        <p class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">Rp {{
-                                            formatPrice(order.totalPrice) }},-</p>
+                                        <p
+                                            class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
+                                            Rp {{
+                                                formatPrice(order.total_items_price)
+                                            }},-</p>
                                     </div>
                                 </div>
-                                <div v-if="!order.hasReview" class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
-                                    <div class="w-full flex flex-row justify-end md:items-end">
-                                        <!-- <button
-                                            class="w-[20%] h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
-                                            @click=console.log(order.id)>
-                                            Review
-                                        </button> -->
+                                <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
+                                    <div class="w-1/2 mt-auto lg:my-0 mr-1 lg:mr-0">
+                                        <div
+                                            class="w-fit bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:py-2 md:px-3">
+                                            <p>Status: {{ orderStatus(order.status) }}</p>
+                                        </div>
+                                    </div>
+                                    <div v-if="!order.reviews?.length && order.status === 'finished'"
+                                        class="w-1/2 flex flex-row justify-end md:items-end">
                                         <button
                                             class="w-[20%] h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
                                             @click="showReviewModal(order.id)">
@@ -475,7 +422,8 @@ export default {
             <div v-if="shipmentModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click.self="shipmentModalVisible = false">
-                <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[41vw] h-auto rounded-[20px] lg:rounded-[30px] shadow p-4 relative">
+                <div
+                    class="bg-white w-[60vw] md:w-[40vw] lg:w-[41vw] h-auto rounded-[20px] lg:rounded-[30px] shadow p-4 relative">
                     <button
                         class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
                         @click="shipmentModalVisible = false">
@@ -485,17 +433,21 @@ export default {
                         <h1 class="text-black font-bold text-[10px] md:text-base lg:text-2xl">Detail Shipment</h1>
                         <div class="w-full h-full flex flex-col gap-y-6 mt-6">
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Expedition Name</div>
-                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{ selectedOrder?.shipmentService
-                                    }}</div>
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">
+                                    Expedition Name</div>
+                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
+                                    selectedOrder?.shipmentService
+                                }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total Expedition Payment</div>
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total
+                                    Expedition Payment</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">Rp {{
                                     formatPrice(selectedOrder?.shipmentPrice) }},-</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
-                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Estimated Arrival Time</div>
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Estimated
+                                    Arrival Time</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     selectedOrder?.shipmentArrivalEstimation }}</div>
                             </div>
@@ -513,7 +465,8 @@ export default {
             <div v-if="reviewModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click.self="reviewModalVisible = false">
-                <div class="bg-white w-[60vw] md:w-[38vw] lg:w-[30vw] h-auto rounded-[10px] lg:rounded-[30px] shadow p-2 lg:p-4 relative">
+                <div
+                    class="bg-white w-[60vw] md:w-[38vw] lg:w-[30vw] h-auto rounded-[10px] lg:rounded-[30px] shadow p-2 lg:p-4 relative">
                     <button
                         class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
                         @click="reviewModalVisible = false">
@@ -526,8 +479,8 @@ export default {
                             <input type="hidden" v-model="reviewForm.rating">
                             <div class="flex flex-row gap-x-1 md:gap-x-2.5 lg:gap-x-4 my-3 lg:my-6">
                                 <img v-for="n in 5" :key="n" src="/img/assets/icon/icon_review_star.svg" alt="star"
-                                    class="w-[17px] h-[16px]  lg:w-[29px] lg:h-7 cursor-pointer" :class="{ 'grayscale': n > reviewForm.rating }"
-                                    @click="setRating(n)">
+                                    class="w-[17px] h-[16px]  lg:w-[29px] lg:h-7 cursor-pointer"
+                                    :class="{ 'grayscale': n > reviewForm.rating }" @click="setRating(n)">
                             </div>
                             <textarea v-model="reviewForm.content"
                                 class="rounded-[10px] lg:rounded-2xl bg-gray-200 resize-none border-none text-[10px] lg:text-sm font-semibold focus:border-0 focus:ring-0 placeholder:text-black placeholder:font-semibold placeholder:text-[10px] lg:placeholder:text-sm h-[64px] md:h-[71px] lg:h-[106px]"
@@ -538,7 +491,8 @@ export default {
                                     @change="changeReviewPhoto">
                                 <label for="add-review-media"
                                     class="absolute inset-0 flex justify-center items-center cursor-pointer">
-                                    <div v-if="!reviewForm.photoPreview" class="text-gray-500 text-xs md:text-sm lg:text-base">Upload file</div>
+                                    <div v-if="!reviewForm.photoPreview"
+                                        class="text-gray-500 text-xs md:text-sm lg:text-base">Upload file</div>
                                 </label>
                                 <label for="add-review-media"
                                     class="absolute bottom-1.5 right-1.5 lg:bottom-3 lg:right-3 bg-white p-0.5 lg:p-2 rounded lg:rounded-lg cursor-pointer">
@@ -558,8 +512,10 @@ export default {
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
                 @click="successReviewModalVisible = false">
                 <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
-                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">Your Review Has Been Added!</h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
+                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">Your Review Has
+                        Been Added!</h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+                        class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
                 </div>
             </div>
         </div>

@@ -60,7 +60,7 @@ class OrderController extends Controller
         $status = $request->query('status', 'unpaid');
         $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
 
-        $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images']);
+        $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images', 'customOrderItems']);
         if ($status == 'unpaid') {
             $orders->where('status', 'unpaid')->with('orderPayment');
         } else if ($status == 'processed') {
@@ -68,15 +68,26 @@ class OrderController extends Controller
         } else if ($status == 'sent') {
             $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment');
         } else if ($status == 'finished') {
-            $orders = Order::where('user_id', Auth::id())
-                ->whereIn('status', ['finished', 'cancelled'])
+            $orders->whereIn('status', ['finished', 'cancelled'])
                 ->with('reviews')
                 ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
                 ->orderBy('created_at', 'desc');
         }
 
+        $orders = $orders->get()->each(function ($order) {
+            if ($order->type == 'custom') {
+                $order->title = $order->customOrderItems->first()?->name;
+                $order->image = $order->customOrderItems->first()?->image;
+                unset($order->customOrderItems);
+                return;
+            } else {
+                $order->title = $order->orderItems->first()?->product?->name;
+                $order->image = $order->orderItems->first()?->product?->images?->first()?->path;
+                unset($order->orderItems);
+            }
+        });
 
-        return response()->json($orders->get());
+        return response()->json($orders);
     }
 
     // calculate total price of the order

@@ -95,7 +95,10 @@ class RequestOrderController extends Controller
         ]);
 
         if (!Auth::check() && !isset($data['orderId'])) {
-            return redirect()->route('auth.login')->withErrors('You must login to view your orders');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must be logged in to view the order',
+            ]);
         }
 
         $items = CustomOrderItem::whereHas('order', function ($query) {

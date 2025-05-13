@@ -1,5 +1,5 @@
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
@@ -8,26 +8,13 @@ export default {
     },
     setup() {
         // Dummy data sementara
+        const products = ref([])
+        const items = ref([]);
         const address = ref({
             name: 'Aisyah',
             phone: '813-9230-8107',
             fullAddress: 'Bulaksumur, Caturtunggal, Kapanewon Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281',
         });
-
-        const items = ref([
-            {
-                product: { id: 1, name: 'Samsung S24 Ultra', price: 24000000, image: null },
-                quantity: 1,
-                total: 24000000,
-                note: '',
-            },
-            {
-                product: { id: 2, name: 'iPhone 14 Pro', price: 20000000, image: 'http://example.com/iphone.jpg' },
-                quantity: 2,
-                total: 40000000,
-                note: '',
-            },
-        ]);
 
         const orderNote = ref('');
         const showAddressList = ref(false);
@@ -48,14 +35,40 @@ export default {
         // Fungsi untuk mengambil data dari API (placeholder)
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/checkout'); // Ganti dengan endpoint API Anda
-                const data = await response.json();
-                items.value = data.items;
-                address.value = data.address;
+                if (products.value.length > 0) {
+                    items.value = await Promise.all(products.value.map(async (product) => {
+                        const response = await fetch(`/api/product/${product.product_id}`);
+                        const data = await response.json();
+                        return {
+                            product: { ...data, image: firstImage(data.images) },
+                            quantity: product.quantity,
+                            total: data.price * product.quantity,
+                            note: '',
+                        };
+                    }));
+                    console.log('Items:', items.value);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
+        function updateUrl() {
+            const url = new URL(window.location.href);
+            const p = items.value.map(item => ({
+                product_id: item.product.id,
+                quantity: item.quantity,
+            }));
+            url.searchParams.set('products', JSON.stringify(p));
+            window.history.replaceState({}, '', url);
+        }
+
+        function firstImage(images) {
+            if (images && images.length > 0) {
+                return images[0].path;
+            }
+            return null;
+        }
 
         // Handler untuk gambar
         const getImageUrl = (image) => {
@@ -78,6 +91,7 @@ export default {
         const addQty = (item) => {
             item.quantity += 1;
             item.total = item.product.price * item.quantity;
+            updateUrl();
         };
 
         // Kurangi kuantitas
@@ -85,6 +99,7 @@ export default {
             if (item.quantity > 1) {
                 item.quantity -= 1;
                 item.total = item.product.price * item.quantity;
+                updateUrl();
             }
         };
 
@@ -176,8 +191,10 @@ export default {
         };
 
         // Inisialisasi data (gunakan fetchData saat API siap)
-        onMounted(() => {
-            // fetchData(); // Uncomment saat API siap
+        onMounted(async () => {
+            const params = new URLSearchParams(window.location.search);
+            products.value = JSON.parse(params.get('products')) || [];
+            fetchData();
         });
 
         return {
@@ -270,10 +287,6 @@ export default {
                                             class="border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
                                             +</div>
                                     </div>
-                                    <p class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-xl ml-3">Rp
-                                        {{
-                                            formatPrice(item.total)
-                                        }},-</p>
                                 </div>
                             </div>
                             <div class="w-[0%] md:w-[20%] mt-2">
@@ -436,7 +449,8 @@ export default {
                                     paymentDetails.timeRemaining }}</p>
                                 <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
                                     <br>{{
-                                        paymentDetails.expiration }}</p>
+                                        paymentDetails.expiration }}
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row">
@@ -528,7 +542,8 @@ export default {
                                     paymentDetails.timeRemaining }}</p>
                                 <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
                                     <br>{{
-                                        paymentDetails.expiration }}</p>
+                                        paymentDetails.expiration }}
+                                </p>
                             </div>
                         </div>
                         <!-- !!! QR CODE NYA MASI STATIS !!!! -->
@@ -561,7 +576,8 @@ export default {
         </div>
 
         <!-- Success Payment Modal -->
-        <div v-if="showPaymentSuccessModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div v-if="showPaymentSuccessModal"
+            class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div
                 class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
                 <h1 class="text-black text-[10px] md:text-xl font-medium mx-auto">Payment Successful!</h1>
