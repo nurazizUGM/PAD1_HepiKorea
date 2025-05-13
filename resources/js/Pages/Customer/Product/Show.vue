@@ -1,7 +1,9 @@
 <script setup>
+import { router } from "@inertiajs/vue3";
 import axios from "axios";
 import { Modal } from "flowbite";
 import { computed, defineProps, onMounted, ref } from "vue";
+import { route } from "ziggy-js";
 import Layout from "../../Layouts/Customer.vue";
 
 const props = defineProps(["id"]);
@@ -11,6 +13,7 @@ const quantity = ref(1);
 const modalImage = ref("");
 const productImage = ref("");
 let modal = null;
+let successModal = null;
 
 const averageRating = computed(() => {
     const reviews = product.value.reviews?.map(r => r.rating) || [];
@@ -34,11 +37,35 @@ const closeModal = () => {
 };
 
 const buyNow = () => {
-    console.log("Buying product:", product.value.id);
+    const products = [{
+        product_id: product.value.id,
+        quantity: quantity.value
+    }];
+    const url = new URL(route('checkout'));
+    url.searchParams.set('products', JSON.stringify(products));
+    router.get(url.toString());
 };
 
 const addToCart = () => {
-    console.log("Adding to cart:", product.value.id);
+    fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            product_id: product.value.id,
+            quantity: quantity.value
+        })
+    }).then(response => {
+        if(response.ok){
+            successModal.show();
+            setTimeout(() => {
+                successModal.hide();
+            }, 2000);
+        } else {
+            console.error("Error adding product to cart");
+        }
+    })
 };
 
 const addQuantity = () => {
@@ -71,6 +98,7 @@ onMounted(async () => {
     try {
         // Initialize modal
         modal = new Modal(document.getElementById("image-review-view-modal"));
+        successModal = new Modal(document.getElementById("success-modal"));
 
         // Fetch product data
         const response = await axios.get(`/api/product/${props.id}`);
@@ -268,6 +296,23 @@ onMounted(async () => {
                         </button>
                         <div class="w-full h-full flex flex-col p-5">
                             <img :src="getImage(modalImage)" class="w-full h-full object-contain" alt="Main Image" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- success add to cart modal -->
+        <div id="success-modal" tabindex="-1" aria-hidden="true"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-fit max-w-5xl max-h-full mt-20">
+                <!-- Modal content -->
+                <div class="bg-white w-[25vw] h-auto rounded-[30px] shadow">
+                    <div class="relative w-full h-full flex flex-row">
+                        <div class="w-full h-full flex flex-col p-14">
+                            <h1 class="text-black text-xl font-medium mx-auto">Successfully Added!</h1>
+                            <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+                                class="w-24 h-24 mx-auto mt-6">
                         </div>
                     </div>
                 </div>
