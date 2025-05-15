@@ -6,11 +6,11 @@
                 <div class="grid gap-x-8 lg:gap-x-16 grid-flow-row lg:grid-cols-[2fr_4fr] mt-0 md:mt-4 lg:mt-6">
                     <!-- Profile Picture Section -->
                     <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
-                        <div class="rounded-xl bg-slate-300">
+                        <div class="rounded-xl bg-slate-300 flex justify-center items-center">
                             <img class="min-h-[10rem] m-0 md:p-2 object-contain object-center" id="profile_picture"
                                 :src="form.photo || defaultPhoto" alt="Profile Picture" />
                         </div>
-                        <button
+                        <button v-if="isEditing"
                             class="w-[50%] lg:w-[98%] h-12 mt-4 rounded-3xl bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] mx-auto p-2"
                             @click="$refs.photoInput.click()" :disabled="!isEditing">
                             <h1 class="text-xs lg:text-lg text-white font-semibold">Choose Photo</h1>
@@ -218,7 +218,7 @@
                                                     placeholder="Your Postal Code" :disabled="!isEditing" />
                                                 <p v-if="errors.postal_code" class="error">{{
                                                     errors.postal_code.join(',')
-                                                    }}</p>
+                                                }}</p>
                                             </td>
                                         </tr>
 
@@ -274,6 +274,13 @@
                 </div>
             </div>
         </div>
+        <div v-if="success"
+            class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+            <div class="bg-white md:w-[30vw] h-auto rounded-[30px] shadow p-14">
+                <h1 class="text-black text-xl font-medium mx-auto">Profile updated successfully!</h1>
+                <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-24 h-24 mx-auto mt-6">
+            </div>
+        </div>
     </Layout>
 </template>
 
@@ -307,6 +314,7 @@ export default {
             },
             originalData: {},
             isEditing: false,
+            success: false,
             showOldPassword: false,
             showNewPassword: false,
             showConfirmPassword: false,
@@ -392,7 +400,6 @@ export default {
                 const response = await fetch('/api/auth/profile', {
                     method: 'POST',
                     headers: {
-                        "content-type": "multipart/form-data",
                         Accept: 'application/json',
                     },
                     body: formData,
@@ -423,6 +430,10 @@ export default {
                 this.photoFile = null;
                 this.isEditing = false;
                 this.errors = {};
+                this.success = true;
+                setTimeout(() => {
+                    this.success = false;
+                }, 3000);
             } catch (error) {
                 console.error('Error updating profile:', error);
             }
