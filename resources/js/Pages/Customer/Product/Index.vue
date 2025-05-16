@@ -96,7 +96,8 @@ onMounted(() => {
 
 function getImage(media) {
     if (!media) return "https://placehold.co/200";
-    if (/^(http)|(\/?storage)/.test(media)) return media;
+    if (/^http/.test(media)) return media;
+    media.replace(/\/?storage\//g, "");
     return `/api/file?path=${media}`;
 }
 
@@ -138,7 +139,7 @@ watch(params, () => {
                         <li v-for="category in categories" :key="category.id" @click="selectCategory(category.id)">
                             <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">{{
                                 category.name
-                            }}</a>
+                                }}</a>
                         </li>
                     </ul>
                 </div>
