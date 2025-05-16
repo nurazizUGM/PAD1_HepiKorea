@@ -52,7 +52,7 @@ export default {
         };
 
         const formatPrice = (price) => {
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            return price?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         };
 
         const pay = (payment) => {
@@ -197,7 +197,7 @@ export default {
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
                                             @click="$inertia.get(route('order.show', order.id))">
-                                            {{ order.productName }}
+                                            {{ order.title }}
                                         </h1>
                                         <p v-if="order.count > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
@@ -208,7 +208,7 @@ export default {
                                         <p
                                             class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
                                             Rp {{
-                                                formatPrice(order.totalPrice) }}</p>
+                                                formatPrice(order.total_items_price) }}</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -257,7 +257,7 @@ export default {
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
                                             @click="$inertia.get(route('order.show', order.id))">
-                                            {{ order.productName }}
+                                            {{ order.title }}
                                         </h1>
                                         <p v-if="order.count > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
@@ -268,7 +268,7 @@ export default {
                                         <p
                                             class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
                                             Rp {{
-                                                formatPrice(order.totalPrice) }}</p>
+                                                formatPrice(order.total_items_price) }}</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -437,7 +437,7 @@ export default {
                                     Expedition Name</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     selectedOrder?.shipmentService
-                                }}</div>
+                                    }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total
