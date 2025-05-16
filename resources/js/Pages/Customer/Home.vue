@@ -307,7 +307,7 @@ export default {
             if (!product?.image) return "https://placehold.co/200";
             let image = product.image;
             if (/^http/.test(image)) return image;
-            product.replace(/\/?storage\//g, "");
+            image.replace(/\/?storage\//g, "");
             return `/api/file?path=${image}`;
         },
         formatPrice(price) {
