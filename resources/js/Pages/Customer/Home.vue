@@ -294,21 +294,18 @@ export default {
         getMediaUrl(media) {
             if (!media) return "https://placehold.co/200";
             if (/^http/.test(media)) return media;
-            media.replace(/\/?storage\//g, "");
-            return `/api/file?path=${media}`;
+            return `/api/file?path=${media.replace(/\/?storage\//g, "")}`;
         },
         getCategoryIcon(icon) {
             if (!icon) return "https://placehold.co/200";
             if (/^http/.test(icon)) return icon;
-            icon.replace(/\/?storage\//g, "");
-            return `/api/file?path=${icon}`
+            return `/api/file?path=${icon.replace(/\/?storage\//g, "")}`
         },
         getProductImage(product) {
             if (!product?.image) return "https://placehold.co/200";
             let image = product.image;
             if (/^http/.test(image)) return image;
-            image.replace(/\/?storage\//g, "");
-            return `/api/file?path=${image}`;
+            return `/api/file?path=${image.replace(/\/?storage\//g, "")}`;
         },
         formatPrice(price) {
             // Price formatting
