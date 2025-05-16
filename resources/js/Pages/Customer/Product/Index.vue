@@ -94,6 +94,12 @@ onMounted(() => {
     fetchProducts();
 });
 
+function getImage(media) {
+    if (!media) return "https://placehold.co/200";
+    if (/^(http)|(\/?storage)/.test(media)) return media;
+    return `/api/file?path=${media}`;
+}
+
 watch(params, () => {
     fetchProducts(); // Memanggil fungsi untuk mengambil produk saat parameter berubah
 });
@@ -132,7 +138,7 @@ watch(params, () => {
                         <li v-for="category in categories" :key="category.id" @click="selectCategory(category.id)">
                             <a href="#" class="block px-4 py-2 text-[10px] md:text-xs lg:text-lg hover:bg-gray-100">{{
                                 category.name
-                                }}</a>
+                            }}</a>
                         </li>
                     </ul>
                 </div>
@@ -185,7 +191,8 @@ watch(params, () => {
                 <div v-for="product in products" :key="product.id"
                     class="bg-white rounded-xl px-2 pb-1 cursor-pointer flex flex-col">
                     <Link :href="route('product.show', product.id)">
-                    <div class="w-full h-40 bg-cover bg-top" :style="{ backgroundImage: `url(${product.image})` }">
+                    <div class="w-full h-40 bg-cover bg-top"
+                        :style="{ backgroundImage: `url(${getImage(product.image)})` }">
                     </div>
                     <h1 class="text-[#3E6E7A] text-sm font-semibold">{{ product.name }}</h1>
                     <h2 class="text-xs font-semibold text-black text-opacity-50">{{ product.category }}</h2>

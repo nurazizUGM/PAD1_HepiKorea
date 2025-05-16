@@ -1,4 +1,5 @@
 <script>
+import { router } from '@inertiajs/vue3';
 import { computed, onMounted, ref } from 'vue';
 import Layout from '../../Layouts/Customer.vue';
 
@@ -25,10 +26,10 @@ export default {
         const paymentMethod = ref('bri');
         const paymentDetails = ref({
             amount: 'Rp 0,-',
-            timeRemaining: '15 Minutes',
+            timeRemaining: '0 Minutes',
             expiration: '00:00',
-            paymentMethod: 'Bank BRI',
-            paymentCode: '128 081215559315',
+            paymentMethod: '',
+            paymentCode: '',
             bankLogo: '/img/assets/icon/logo_bri_small.svg',
         });
 
@@ -116,34 +117,32 @@ export default {
         // Handler pembayaran
         const handlePayment = () => {
             const orderData = {
-                paymentMethod: paymentMethod.value,
+                payment_method: paymentMethod.value,
+                addressId: 2,
                 items: items.value.map(item => ({
                     productId: item.product.id,
                     quantity: item.quantity,
                 })),
             };
 
-            // Simulasi respons sukses untuk dummy
-            const dummyPayment = {
-                order_id: '12345',
-                amount: total.value,
-                expired_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-                payment_method: paymentMethod.value,
-                payment_code: paymentMethod.value === 'qris' ? '/img/example/qr_code.png' : '128 081215559315',
-            };
-            onOrderSuccess(dummyPayment);
-
-            // Uncomment untuk integrasi API
-            // fetch('/api/order/store', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(orderData),
-            // }).then(response => response.json()).then(onOrderSuccess);
+            fetch('/api/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData),
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 'success') {
+                        onOrderSuccess(response.payment);
+                    } else {
+                        console.error('Error:', response.message);
+                    }
+                });
         };
 
         // Fungsi saat order sukses
         const onOrderSuccess = (payment) => {
-            const expiration = new Date(payment.expired_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const expiration = new Date(payment.expired_at).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
             const diff = new Date(payment.expired_at) - new Date();
             const hoursRemaining = Math.floor(diff / (1000 * 60 * 60));
             const minutesRemaining = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -151,6 +150,7 @@ export default {
             const amount = `Rp ${formatPrice(payment.amount)},-`;
 
             paymentDetails.value = {
+                paymentId: payment.id,
                 amount,
                 timeRemaining,
                 expiration,
@@ -167,9 +167,9 @@ export default {
             }
 
             // Simulasi pembayaran sukses untuk dummy
-            setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
+            // setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
             // Uncomment untuk check status pembayaran
-            // checkPaymentStatus(payment.id);
+            checkPaymentStatus(payment.id);
         };
 
         // Fungsi saat pembayaran sukses
@@ -178,16 +178,22 @@ export default {
             showVaPaymentModal.value = false;
             showPaymentSuccessModal.value = true;
             setTimeout(() => {
-                showPaymentSuccessModal.value = false;
-                // Redirect ke halaman order (sesuaikan dengan rute Anda)
-                console.log(`Redirect to order/${orderId}`);
+                router.get('/order/processed')
             }, 1000);
         };
 
         // Check status pembayaran (placeholder untuk API)
         const checkPaymentStatus = (paymentId) => {
-            // Implementasi AJAX untuk cek status pembayaran
-            console.log(`Checking payment status for ID: ${paymentId}`);
+            const cpInterval = setInterval(() => {
+                fetch(`/api/order/payment/${paymentId}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.status == 'success') {
+                            clearInterval(cpInterval);
+                            onPaymentSuccess(res.order_id)
+                        }
+                    })
+            }, 2000);
         };
 
         // Inisialisasi data (gunakan fetchData saat API siap)
@@ -278,13 +284,13 @@ export default {
                                     <div
                                         class="w-fit h-fit md:hidden flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center md:mt-0 md:mb-auto lg:my-0">
                                         <div @click="reduceQty(item)"
-                                            class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            class="select-none border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
                                             -</div>
                                         <p
-                                            class="item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
+                                            class="select-none item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
                                             {{ item.quantity }}</p>
                                         <div @click="addQty(item)"
-                                            class="border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            class="select-none border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
                                             +</div>
                                     </div>
                                 </div>
@@ -297,7 +303,7 @@ export default {
                             </div>
                             <div class="hidden md:flex md:w-[20%] flex-row pt-1">
                                 <div
-                                    class="w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
+                                    class="select-none w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
                                     <div @click="reduceQty(item)"
                                         class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
                                         -</div>
@@ -312,7 +318,7 @@ export default {
                             <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
                                 <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
                                     formatPrice(item.total)
-                                }},-</p>
+                                    }},-</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-0.5 lg:mt-6">
@@ -386,7 +392,7 @@ export default {
                                 class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">
                             <label for="mandiri"
                                 class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">Mandiri</label>
-                            <input type="radio" v-model="paymentMethod" value="mandiri" id="mandiri" disabled
+                            <input type="radio" v-model="paymentMethod" value="mandiri" id="mandiri"
                                 class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
@@ -547,10 +553,10 @@ export default {
                             </div>
                         </div>
                         <!-- !!! QR CODE NYA MASI STATIS !!!! -->
-                        <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                        <!-- <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                            class="mx-auto w-[156px] lg:w-52 object-contain"> -->
+                        <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
                             class="mx-auto w-[156px] lg:w-52 object-contain">
-                        <!-- <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
-                        class="mx-auto w-52 object-contain"> -->
                         <!-- !!! QR CODE NYA MASI STATIS !!!! -->
 
                         <h2 class="text-black font-bold text-[8px] md:text-xs lg:text-base mt-2 md:mt-3 lg:mt-6">
