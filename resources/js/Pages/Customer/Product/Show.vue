@@ -80,15 +80,15 @@ const reduceQuantity = () => {
 
 function getImage(media) {
     if (!media) return "https://placehold.co/512";
-    if (/^(http)|(\/?storage)/.test(media)) return media;
+    if (/^http/.test(media)) return media;
+    media.replace(/\/?storage\//g, "");
     return `/api/file?path=${media}`;
 }
 
 function getUserImage(path) {
     if (!path) return '/img/assets/icon/icon_user2.png';
-    if (/^(http)|(\/?storage)/.test(path)) {
-        return path;
-    }
+    if (/^http/.test(path)) return path;
+    path.replace(/\/?storage\//g, "");
     return `/api/file?path=${path}`;
 }
 
