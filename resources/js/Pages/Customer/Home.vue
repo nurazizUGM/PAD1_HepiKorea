@@ -292,25 +292,23 @@ export default {
             }
         },
         getMediaUrl(media) {
-            if (/^http/.test(media)) return media;
-            return `/storage/${media}` || "/img/assets/bg/background_auth.svg";
+            if (!media) return "https://placehold.co/200";
+            if (/^(http)|(\/?storage)/.test(media)) return media;
+            return `/api/file?path=${media}`;
         },
         getCategoryIcon(icon) {
-            if (/^http/.test(icon)) return icon;
-            return (
-                `/storage/${icon}` ||
-                "/img/assets/icon/icon_homepage_category_fashion.png"
-            );
+            if (/^(http)|(\/?storage)/.test(icon)) return icon;
+            return `/api/file?path=${icon}`
         },
         getProductImage(product) {
-            // Product image handler
+            if (!product?.image) return "https://placehold.co/200";
             const image = product.image;
-            if (/^http/.test(image)) return image;
-            return `/storage/${image}` || "https://placehold.co/200";
+            if (/^(http)|(\/?storage)/.test(image)) return image;
+            return `/api/file?path=${image}`;
         },
         formatPrice(price) {
             // Price formatting
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return price?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         },
         scrollRight(containerRef) {
             // Scroll functions

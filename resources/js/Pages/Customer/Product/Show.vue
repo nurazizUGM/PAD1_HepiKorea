@@ -57,7 +57,7 @@ const addToCart = () => {
             quantity: quantity.value
         })
     }).then(response => {
-        if(response.ok){
+        if (response.ok) {
             successModal.show();
             setTimeout(() => {
                 successModal.hide();
@@ -78,20 +78,18 @@ const reduceQuantity = () => {
     }
 };
 
-function getImage(path) {
-    if (path.includes('http')) {
-        return path
-    }
-    return '/storage/' + path;
+function getImage(media) {
+    if (!media) return "https://placehold.co/512";
+    if (/^(http)|(\/?storage)/.test(media)) return media;
+    return `/api/file?path=${media}`;
 }
 
 function getUserImage(path) {
-    if (!path) {
-        return '/img/assets/icon/icon_user2.png'
-    } else if (path.includes('http')) {
-        return path
+    if (!path) return '/img/assets/icon/icon_user2.png';
+    if (/^(http)|(\/?storage)/.test(path)) {
+        return path;
     }
-    return '/storage/' + path;
+    return `/api/file?path=${path}`;
 }
 
 onMounted(async () => {
