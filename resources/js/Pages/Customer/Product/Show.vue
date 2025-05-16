@@ -81,15 +81,13 @@ const reduceQuantity = () => {
 function getImage(media) {
     if (!media) return "https://placehold.co/512";
     if (/^http/.test(media)) return media;
-    media.replace(/\/?storage\//g, "");
-    return `/api/file?path=${media}`;
+    return `/api/file?path=${media.replace(/\/?storage\//g, "")}`;
 }
 
 function getUserImage(path) {
     if (!path) return '/img/assets/icon/icon_user2.png';
     if (/^http/.test(path)) return path;
-    path.replace(/\/?storage\//g, "");
-    return `/api/file?path=${path}`;
+    return `/api/file?path=${path.replace(/\/?storage\//g, "")}`;
 }
 
 onMounted(async () => {
