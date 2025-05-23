@@ -30,8 +30,8 @@ class AdminOrderController extends Controller
             }
         }
 
-        $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])
-            ->orderByRaw("FIELD(status, 'paid', 'shipment_paid', 'processing', 'unpaid', 'shipment_unpaid', 'sent', 'finished', 'cancelled')")
+        $orders = $orders->with(['user', 'orderItems', 'orderItems.product'])
+            ->orderByRaw("FIELD(status, 'paid', 'shipment_paid', 'processing', 'shipment_unpaid', 'sent', 'finished', 'unpaid', 'cancelled')")
             ->orderBy('created_at', 'desc')
             ->get();
 

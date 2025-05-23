@@ -15,7 +15,7 @@ const showUserProfile = ref(false);
 const page = usePage();
 
 const isAuthenticated = computed(() => !!page.props.auth?.user);
-const isAdmin = computed(() => page.props.auth?.user?.role === 'admin');
+const isAdmin = computed(() => page.props?.user?.role === 'ADMIN');
 
 const userPhoto = computed(() =>
     page.props.auth.user?.photo
@@ -312,12 +312,14 @@ onMounted(() => {
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                                         <img src="/img/assets/icon/icon_dashboard_admin.svg" alt=""
                                             class="w-5 h-5 grayscale group-hover:grayscale-0" />
-                                        <p class="ml-2 group-hover:text-orange-400">Admin Dashboard</p>
+                                        <p class="ml-2 mr-6 whitespace-nowrap group-hover:text-orange-400">
+                                            Admin Dashboard
+                                        </p>
                                         </Link>
                                     </li>
                                     <li v-else>
                                         <Link :href="route('auth.profile')"
-                                            class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
+                                            class="flex flex-row items-center px-4 py-2 w-fit text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                                         <img src="/img/assets/icon/icon_dashboard_customer.svg" alt=""
                                             class="w-5 h-5 grayscale group-hover:grayscale-0" />
                                         <p class="ml-2 group-hover:text-orange-400">Profile</p>
@@ -326,7 +328,7 @@ onMounted(() => {
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                                         <img src="/img/assets/icon/icon_address.svg" alt=""
                                             class="w-5 h-5 grayscale group-hover:grayscale-0" />
-                                        <p class="ml-2 group-hover:text-orange-400">Address</p>
+                                        <p class="ml-2 mr-4 group-hover:text-orange-400">Address</p>
                                         </Link>
                                         <Link :href="route('order.index')"
                                             class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">

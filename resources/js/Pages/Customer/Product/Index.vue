@@ -97,7 +97,6 @@ onMounted(() => {
 function getImage(media) {
     if (!media) return "https://placehold.co/200";
     if (/^http/.test(media)) return media;
-    console.log(media);
     return `/api/file?path=${media.replace(/\/?storage\//g, "")}`;
 }
 
