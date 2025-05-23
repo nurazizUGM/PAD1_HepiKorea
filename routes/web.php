@@ -16,7 +16,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -136,7 +138,9 @@ Route::inertia('/faq', 'Customer/Faq')->name('faq');
 // Route::get('faq', [FaqController::class, 'faq'])->name('faq');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    // Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
+    
     Route::controller(AdminProfileController::class)->group(function () {
         Route::inertia('profile', 'Admin/Profile')->name('profile');
 
@@ -198,3 +202,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 Route::get('/view/{view}', function ($view) {
     return view($view);
 });
+
+// Route::get('/storage/{path}', function ($path) {
+//     if (Storage::exists($path)) {
+//         return Response::file(Storage::path($path));
+//     } else if (file_exists(public_path($path))) {
+//         return Response::file(public_path($path));
+//     }
+// })->with('path', '.*')->name('storage');
