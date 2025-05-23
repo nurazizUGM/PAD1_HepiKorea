@@ -138,6 +138,9 @@ Route::name('api.')->group(function () {
         Route::get('statistics', [AdminDashboardController::class, 'index']);
         Route::prefix('order')->controller(AdminOrderController::class)->group(function () {
             Route::get('/', 'orders');
+            Route::post('/{id}/process', 'process');
+            Route::post('/{id}/shipment-invoice', 'createShipmentInvoice');
+            Route::post('/{id}/shipment', 'send');
         });
     });
 
