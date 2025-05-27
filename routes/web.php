@@ -140,9 +140,9 @@ Route::inertia('/faq', 'Customer/Faq')->name('faq');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
+    Route::inertia('profile', 'Admin/Profile')->name('profile');
     
     Route::controller(AdminProfileController::class)->group(function () {
-        Route::inertia('profile', 'Admin/Profile')->name('profile');
 
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
@@ -177,12 +177,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('review', 'review')->name('review');
     });
 
-    Route::prefix('faq')->name('faq.')->controller(FaqController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::patch('update/{faq}', 'update')->name('update');
-        Route::delete('delete/{faq}', 'delete')->name('delete');
-    });
+    Route::inertia('faq', 'Admin/Faq')->name('faq');
+    // Route::prefix('faq')->name('faq.')->controller(FaqController::class)->group(function () {
+    //     Route::get('/', 'index')->name('index');
+    //     Route::post('store', 'store')->name('store');
+    //     Route::patch('update/{faq}', 'update')->name('update');
+    //     Route::delete('delete/{faq}', 'delete')->name('delete');
+    // });
 
     Route::prefix('analytic')->name('analytic.')->controller(AdminAnalyticController::class)->group(function () {
         Route::get('/', 'index')->name('index');

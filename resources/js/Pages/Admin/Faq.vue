@@ -5,7 +5,8 @@
             <div class="bg-white rounded-xl w-full max-w-full h-full px-4 overflow-hidden">
                 <div class="flex rounded-lg items-center w-full md:mb-2 mt-2 md:mx-4 lg:mx-6 md:mt-4 lg:mt-8">
                     <!-- Text FAQ -->
-                    <h1 class="text-black font-bold text-sm md:text-2xl lg:text-5xl mb-8 mr-4 md:mr-0 md:w-16 lg:mr-6">FAQ</h1>
+                    <h1 class="text-black font-bold text-sm md:text-2xl lg:text-5xl mb-8 mr-4 md:mr-0 md:w-16 lg:mr-6">
+                        FAQ</h1>
                     <!-- Button Add FAQ -->
                     <button @click="openAddModal"
                         class="rounded-full mb-8 md:ml-6 lg:ml-10 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] p-1 md:p-2">
@@ -21,7 +22,9 @@
                         <div
                             class="flex flex-col lg:flex-row items-start lg:items-center justify-between md:mb-2 lg:mb-4">
                             <!-- Title FAQ -->
-                            <h2 class="text-black font-medium md:font-bold text-xs md:text-[15px] lg:text-2xl mb-2 lg:mb-0">{{ faq.question }}
+                            <h2
+                                class="text-black font-medium md:font-bold text-xs md:text-[15px] lg:text-2xl mb-2 lg:mb-0">
+                                {{ faq.question }}
                             </h2>
                             <!-- Buttons Edit/Delete -->
                             <div class="w-fit h-fit flex flex-row">
@@ -63,16 +66,16 @@
                                 <form @submit.prevent="addFaq" class="flex flex-col h-full text-center lg:py-2 px-5">
                                     <input v-model="addForm.question" type="text" placeholder="FAQ Title"
                                         class="rounded-2xl w-full bg-white shadow-md h-14 pl-5 pr-4 lg:mt-5 placeholder:text-black placeholder:text-opacity-30 border-0 focus:outline-none focus:ring-0" />
-                                    <p v-if="errors.new_question"
+                                    <p v-if="errors.question"
                                         class="mt-1 text-sm text-start text-red-600 dark:text-red-500">
-                                        {{ errors.new_question }}
+                                        {{ errors.question[0] }}
                                     </p>
 
                                     <textarea v-model="addForm.answer" placeholder="FAQ Content" rows="12"
                                         class="rounded-2xl w-full h-96 bg-white shadow-md pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 placeholder:font-semi border-0 focus:outline-none focus:ring-0 resize-none"></textarea>
-                                    <p v-if="errors.new_answer"
+                                    <p v-if="errors.answer"
                                         class="mt-1 text-sm text-start text-red-600 dark:text-red-500">
-                                        {{ errors.new_answer }}
+                                        {{ errors.answer[0] }}
                                     </p>
 
                                     <button type="submit"
@@ -100,14 +103,14 @@
                                         class="rounded-2xl w-full bg-white shadow-md h-14 pl-5 pr-4 lg:mt-5 placeholder:text-black placeholder:text-opacity-30 border-0 focus:outline-none focus:ring-0" />
                                     <p v-if="errors.question"
                                         class="mt-1 text-sm text-start text-red-600 dark:text-red-500">
-                                        {{ errors.question }}
+                                        {{ errors.question[0] }}
                                     </p>
 
                                     <textarea v-model="editForm.answer" placeholder="FAQ Content" rows="12"
                                         class="rounded-2xl w-full h-96 bg-white shadow-md pl-5 pr-4 mt-5 placeholder:text-black placeholder:text-opacity-30 placeholder:font-semi border-0 focus:outline-none focus:ring-0 resize-none"></textarea>
                                     <p v-if="errors.answer"
                                         class="mt-1 text-sm text-start text-red-600 dark:text-red-500">
-                                        {{ errors.answer }}
+                                        {{ errors.answer[0] }}
                                     </p>
 
                                     <button type="submit"
@@ -187,22 +190,16 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import AdminLayout from '../Layouts/Admin.vue';
 import Modal from './/Modal.vue';
-import axios from 'axios';
 
 export default {
-    components: { AdminLayout, Modal },
+    components: { Layout: AdminLayout, Modal },
     setup() {
         // Dummy data
-        const faqs = ref([
-            { id: 1, question: 'What is the return policy?', answer: 'You can return products within 30 days.' },
-            { id: 5, question: 'FAQ eCommerce Tip #1: Create Uncomplicated FAQ page', answer: 'Keep things simple. This doesn’t mean you should give one-worded answers for your FAQ. Rather you should try to keep your FAQ page from seeming cluttered. A seamless and easy to navigate FAQ page assures customers that they can find what they need without going straight to chat. Keep your FAQ layout or design with easy to use tabs, colors, text, or navigation. Don’t go overboard with the design, remember it’s all about informing customers not keeping them entertained.' },
-            { id: 2, question: 'How to contact support?', answer: 'Email us at support@example.com.' },
-            { id: 3, question: 'How to contact support?', answer: 'Email us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.' },
-            { id: 4, question: 'How to contact support?', answer: 'Email us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.mail us at support@example.com.' },
-        ]);
+        const faqs = ref([]);
 
         // Modal states
         const showAddModal = ref(false);
@@ -223,10 +220,8 @@ export default {
         // Fetch FAQs
         const fetchFaqs = async () => {
             try {
-                /*
-                const response = await axios.get('/api/admin/faqs');
+                const response = await axios.get('/api/faq');
                 faqs.value = response.data;
-                */
             } catch (error) {
                 console.error('Error fetching FAQs:', error);
             }
@@ -253,21 +248,13 @@ export default {
         // Add FAQ
         const addFaq = async () => {
             try {
-                /*
-                const response = await axios.post('/api/admin/faqs', addForm.value);
-                faqs.value.push(response.data);
-                */
-                // Simulate adding FAQ
-                faqs.value.push({
-                    id: Date.now(),
-                    question: addForm.value.question,
-                    answer: addForm.value.answer,
-                });
+                await axios.post('/api/faq', addForm.value);
+                fetchFaqs();
+                addForm.value = { question: '', answer: '' };
                 showAddModal.value = false;
                 showSuccessAddedModal.value = true;
-                setTimeout(() => (showSuccessAddedModal.value = false), 2000);
-                addForm.value = { question: '', answer: '' };
                 errors.value = {};
+                setTimeout(() => (showSuccessAddedModal.value = false), 2000);
             } catch (error) {
                 if (error.response?.status === 422) {
                     errors.value = error.response.data.errors;
@@ -280,21 +267,15 @@ export default {
         // Update FAQ
         const updateFaq = async () => {
             try {
-                /*
-                const response = await axios.patch(`/api/admin/faqs/${editForm.value.id}`, {
-                  question: editForm.value.question,
-                  answer: editForm.value.answer,
+                await axios.post(`/api/faq/${editForm.value.id}`, {
+                    question: editForm.value.question,
+                    answer: editForm.value.answer,
                 });
-                const index = faqs.value.findIndex(f => f.id === editForm.value.id);
-                faqs.value[index] = response.data;
-                */
-                // Simulate updating FAQ
-                const index = faqs.value.findIndex(f => f.id === editForm.value.id);
-                faqs.value[index] = { ...editForm.value };
+                fetchFaqs();
                 showEditModal.value = false;
                 showSuccessUpdatedModal.value = true;
-                setTimeout(() => (showSuccessUpdatedModal.value = false), 2000);
                 errors.value = {};
+                setTimeout(() => (showSuccessUpdatedModal.value = false), 2000);
             } catch (error) {
                 if (error.response?.status === 422) {
                     errors.value = error.response.data.errors;
@@ -307,12 +288,10 @@ export default {
         // Delete FAQ
         const confirmDelete = async () => {
             try {
-                /*
-                await axios.delete(`/api/admin/faqs/${faqToDelete.value}`);
-                faqs.value = faqs.value.filter(f => f.id !== faqToDelete.value);
-                */
+
+                await axios.delete(`/api/faq/${faqToDelete.value}`);
                 // Simulate deleting FAQ
-                faqs.value = faqs.value.filter(f => f.id !== faqToDelete.value);
+                fetchFaqs();
                 showDeleteModal.value = false;
                 showSuccessDeleteModal.value = true;
                 setTimeout(() => (showSuccessDeleteModal.value = false), 2000);
@@ -322,7 +301,7 @@ export default {
         };
 
         onMounted(() => {
-            // fetchFaqs();
+            fetchFaqs();
         });
 
         return {
