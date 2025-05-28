@@ -3,10 +3,8 @@
     <div class="bg-white rounded-xl shadow max-w-md w-full">
       <div class="relative p-5 flex flex-row">
         <!-- Close Button -->
-        <button
-          class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full -top-2 -right-2"
-          @click="$emit('close')"
-        >
+        <button class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full -top-2 -right-2"
+          @click="$emit('close')">
           <p class="text-white text-sm">X</p>
         </button>
         <!-- Content -->
@@ -19,13 +17,13 @@
             class="mt-1 w-full h-10 border rounded-lg focus:ring-0 focus:border-orange-400"
             :min="today"
           >
+          <!-- <div id="datepicker-{{ $id }}" inline-datepicker data-date="{{ date('Y-m-d') }}"
+            datepicker-format="yyyy-mm-dd" class="mt-1 w-full h-full mx-auto"></div> -->
           <!-- Form -->
           <form @submit.prevent="save">
             <input type="hidden" v-model="estimatedArrival">
-            <button
-              type="submit"
-              class="rounded-lg bg-orange-400 hover:bg-orange-500 text-white ml-auto mt-2 h-9 w-1/4"
-            >
+            <button type="submit"
+              class="rounded-lg bg-orange-400 hover:bg-orange-500 text-white ml-auto mt-2 h-9 w-1/4">
               Save
             </button>
           </form>
