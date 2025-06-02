@@ -140,21 +140,20 @@ Route::inertia('/faq', 'Customer/Faq')->name('faq');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     // Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
-    
+    Route::inertia('profile', 'Admin/Profile')->name('profile');
+
     Route::controller(AdminProfileController::class)->group(function () {
-        Route::inertia('profile', 'Admin/Profile')->name('profile');
 
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
     });
 
     Route::prefix('product')->name('product.')->controller(AdminProductController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::post('store', 'store')->name('store');
-        Route::get('edit/{product}', 'edit')->name('edit');
-        Route::patch('update/{product}', 'update')->name('update');
-        Route::delete('delete/{product}', 'destroy')->name('delete');
+        Route::inertia('/', 'Admin/Product/Index')->name('index');
+        // Route::inertia('create', 'Admin/Product/Create')->name('product.create');
+        // Route::get('edit/{product}', function ($id) {
+        //     return Inertia::render('Admin/Product/Edit', ['id' => $id]);
+        // })->name('product.edit');
     });
 
     Route::prefix('category')->name('category.')->controller(AdminCategoryController::class)->group(function () {
@@ -172,17 +171,22 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     });
 
     Route::prefix('customer')->name('customer.')->controller(AdminCustomerController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('show/{id}', 'show')->name('show');
-        Route::get('review', 'review')->name('review');
+        Route::inertia('/', 'Admin/Customer/Index')->name('index');
+        Route::get('/{id}', function ($id) {
+            return Inertia::render('Admin/Customer/Profile', ['id' => $id]);
+        })->name('show');
+        // Route::get('/', 'index')->name('index');
+        // Route::get('show/{id}', 'show')->name('show');
+        // Route::get('review', 'review')->name('review');
     });
 
-    Route::prefix('faq')->name('faq.')->controller(FaqController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::patch('update/{faq}', 'update')->name('update');
-        Route::delete('delete/{faq}', 'delete')->name('delete');
-    });
+    Route::inertia('faq', 'Admin/Faq')->name('faq');
+    // Route::prefix('faq')->name('faq.')->controller(FaqController::class)->group(function () {
+    //     Route::get('/', 'index')->name('index');
+    //     Route::post('store', 'store')->name('store');
+    //     Route::patch('update/{faq}', 'update')->name('update');
+    //     Route::delete('delete/{faq}', 'delete')->name('delete');
+    // });
 
     Route::prefix('analytic')->name('analytic.')->controller(AdminAnalyticController::class)->group(function () {
         Route::get('/', 'index')->name('index');

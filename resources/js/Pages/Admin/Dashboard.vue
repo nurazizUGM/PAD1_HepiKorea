@@ -150,7 +150,6 @@ export default {
                     categories: data.categories,
                 };
 
-                console.log("Dashboard data fetched successfully:", dashboardData.value);
                 initProductOrderedChart();
                 initMostOrderedChart();
             } catch (error) {

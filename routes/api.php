@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AddressController;
 use Illuminate\Http\Request;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\ApiAuth;
@@ -149,5 +150,13 @@ Route::name('api.')->group(function () {
         Route::post('/calculate', 'calculateItems');
         Route::post('/', 'requestOrder');
         Route::post('/checkout', 'checkout');
+    });
+
+    Route::middleware(ApiAuth::class)->prefix('address')->controller(AddressController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/', 'store');
+        Route::post('/{id}', 'update');
+        Route::post('/{id}/set-default', 'setDefault');
+        Route::delete('/{id}', 'destroy');
     });
 });

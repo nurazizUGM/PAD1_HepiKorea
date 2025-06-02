@@ -6,10 +6,9 @@
                 <!-- Profile Picture -->
                 <div class="bg-white h-full md:h-fit lg:h-full flex flex-col rounded-xl p-4">
                     <h1 class="text-black text-xs lg:text-2xl font-semibold">Profile Detail</h1>
-                    <img :src="customer?.photo || '/img/assets/icon/icon_user.svg'" alt="Profile Picture"
+                    <img :src="getImageUrl(customer?.photo)" alt="Profile Picture"
                         class="w-full min-h-20 md:min-h-20 md:max-h-60 lg:min-h-20 mt-4 p-2 rounded-3xl object-contain" />
-                    <!-- <button @click="$router.go(-1)" -->
-                    <button
+                    <button @click="back"
                         class="w-fit hidden lg:flex flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl justify-center items-center py-2 pl-10 pr-12 mx-auto mt-auto">
                         <img src="/img/assets/icon/icon_arrow_back.svg" alt="Back" class="w-10 h-8" />
                         <p class="my-auto ml-2">Back</p>
@@ -97,9 +96,9 @@
                                 </th>
                                 <td class="px-2 py-2 md:px-4 md:py-2 lg:px-6 lg:py-4">
                                     <div class="flex">
-                                        <input type="text" id="province" v-model="customer.province" disabled
+                                        <input type="text" id="province" v-model="address.province" disabled
                                             class="w-full h-[30px] lg:h-14 bg-slate-50 border border-[#376F7E] text-[#898383] text-[10px] lg:text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block mr-4 lg:mr-8 p-2.5" />
-                                        <input type="text" id="city" v-model="customer.city" disabled
+                                        <input type="text" id="city" v-model="address.city" disabled
                                             class="w-full h-[30px] lg:h-14 bg-slate-50 border border-[#376F7E] text-[#898383] text-[10px] lg:text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block p-2.5" />
                                     </div>
                                 </td>
@@ -107,23 +106,25 @@
                             <tr class="bg-white dark:bg-gray-800">
                                 <th scope="row"></th>
                                 <td class="px-2 py-2 md:px-4 md:py-2 lg:px-6 lg:py-4">
-                                    <input type="text" id="postal_code" v-model="customer.postal_code" disabled
+                                    <input type="text" id="postal_code" v-model="address.postal_code" disabled
                                         class="h-[30px] lg:h-14 bg-slate-50 border border-[#376F7E] text-[#898383] text-[10px] lg:text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full p-2.5" />
                                 </td>
                             </tr>
                             <tr class="bg-white dark:bg-gray-800">
                                 <th scope="row"></th>
                                 <td class="px-2 py-2 md:px-4 md:py-2 lg:px-6 lg:py-4">
-                                    <textarea id="address" v-model="customer.address" disabled rows="5"
+                                    <textarea id="address" v-model="address.address" disabled rows="5"
                                         class="h-20 lg:h-40 bg-slate-50 border border-[#376F7E] text-[#898383] text-[10px] lg:text-sm rounded-lg focus:ring-orange-400 focus:border-orange-400 block w-full px-2.5 py-1 lg:p-2.5 resize-none"></textarea>
                                 </td>
                             </tr>
                             <tr>
-                                <button
-                                    class="w-fit hidden md:flex lg:hidden flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl justify-center items-center py-0.5 pl-4 pr-6 mb-2 mx-auto mt-auto">
-                                    <img src="/img/assets/icon/icon_arrow_back.svg" alt="Back" class="w-8 h-6" />
-                                    <p class="my-auto ml-1.5">Back</p>
-                                </button>
+                                <td>
+                                    <button @click="back"
+                                        class="w-fit hidden md:flex lg:hidden flex-row bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-lg font-semibold rounded-2xl justify-center items-center py-0.5 pl-4 pr-6 mb-2 mx-auto mt-auto">
+                                        <img src="/img/assets/icon/icon_arrow_back.svg" alt="Back" class="w-8 h-6" />
+                                        <p class="my-auto ml-1.5">Backssss</p>
+                                    </button>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -134,66 +135,57 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-// import { useRoute } from 'vue-router';
-import AdminLayout from '../../Layouts/Admin.vue';
+import { router } from '@inertiajs/vue3';
 import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import AdminLayout from '../../Layouts/Admin.vue';
 
 export default {
-    components: { AdminLayout },
-    setup() {
-        // const route = useRoute();
-
-        // Dummy customer data
-        const customer = ref({
-            id: 1,
-            fullname: 'John Doe',
-            photo: null,
-            date_of_birth: '1990-01-01',
-            gender: 'male',
-            email: 'john.doe@example.com',
-            is_verified: true,
-            province: 'DKI Jakarta',
-            city: 'Jakarta Selatan',
-            postal_code: '12345',
-            address: 'Jl. Sudirman No. 123',
+    components: { Layout: AdminLayout },
+    props: {
+        id: {
+            type: String,
+            required: true,
+        }
+    },
+    setup(props) {
+        const customer = ref({});
+        const address = ref({
+            province: '',
+            city: '',
+            postal_code: '',
+            address: ''
         });
-
-        // Fetch customer:
 
         const fetchCustomer = async () => {
             try {
-                /*
-                const response = await axios.get(`/api/admin/customers/${route.params.id}`);
-                customer.value = response.data.customer;
-                */
+                const response = await axios.get(`/api/customer/${props.id}`);
+                customer.value = response.data;
+                address.value = response.data.address || {}
             } catch (error) {
                 console.error('Error fetching customer:', error);
             }
         };
 
         onMounted(() => {
-            // Simulate fetching customer based on route.params.id
-            if (route.params.id !== '1') {
-                customer.value = {
-                    id: 2,
-                    fullname: 'Jane Smith',
-                    photo: '/img/customer2.jpg',
-                    date_of_birth: '1992-02-02',
-                    gender: 'female',
-                    email: 'jane.smith@example.com',
-                    is_verified: false,
-                    province: 'Jawa Barat',
-                    city: 'Bandung',
-                    postal_code: '54321',
-                    address: 'Jl. Merdeka No. 456',
-                };
-            }
-            // fetchCustomer();
+            fetchCustomer();
         });
+
+        const getImageUrl = (image) => {
+            if (!image) return "/img/assets/icon/icon_user.svg";
+            if (/^http/.test(image)) return image;
+            return `/api/file?path=${image.replace(/\/?storage\//g, "")}`;
+        };
+
+        const back = () => {
+            router.visit(route('admin.customer.index'));
+        };
 
         return {
             customer,
+            address,
+            getImageUrl,
+            back
         };
     },
 };
