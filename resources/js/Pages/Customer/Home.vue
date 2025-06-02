@@ -249,7 +249,7 @@
 </template>
 
 <script>
-import { Carousel } from "flowbite"; // Impor Flowbite
+import { Carousel, initCarousels } from "flowbite"; // Impor Flowbite
 import Layout from "../Layouts/Customer.vue";
 
 export default {
@@ -273,7 +273,12 @@ export default {
                 await Promise.all([
                     fetch("/api/carousel").then(
                         async (res) => (this.carousels = await res.json())
-                    ),
+                    ).then(() => {
+                        // Pastikan carousels tidak kosong sebelum inisialisasi
+                        if (this.carousels.length > 0) {
+                            initCarousels();
+                        }
+                    }),
                     fetch("/api/category").then(
                         async (res) => (this.categories = await res.json())
                     ),
