@@ -171,9 +171,13 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     });
 
     Route::prefix('customer')->name('customer.')->controller(AdminCustomerController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('show/{id}', 'show')->name('show');
-        Route::get('review', 'review')->name('review');
+        Route::inertia('/', 'Admin/Customer/Index')->name('index');
+        Route::get('/{id}', function ($id) {
+            return Inertia::render('Admin/Customer/Profile', ['id' => $id]);
+        })->name('show');
+        // Route::get('/', 'index')->name('index');
+        // Route::get('show/{id}', 'show')->name('show');
+        // Route::get('review', 'review')->name('review');
     });
 
     Route::inertia('faq', 'Admin/Faq')->name('faq');
