@@ -32,10 +32,11 @@
                 </div>
 
                 <!-- Add Product Button -->
-                <Link :href="route('admin.product.create')" class="flex gap-1 ms-3 cursor-pointer order-2 lg:order-1">
-                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
-                <h2 class="text-black text-md my-auto font-semibold hidden lg:flex">Add Product</h2>
-                </Link>
+                <button @click="$emit('create-product')" type="button"
+                    class="flex gap-1 ms-3 cursor-pointer order-2 lg:order-1">
+                    <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
+                    <h2 class="text-black text-md my-auto font-semibold hidden lg:flex">Add Product</h2>
+                </button>
             </div>
 
             <!-- Search Bar -->
@@ -50,7 +51,7 @@
                             placeholder="Search..." />
                     </div>
                     <button type="submit"
-                        class="inline-flex items-center px-4 py-2 font-semibold text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-full -ml-20 z-10">
+                        class="inline-flex items-center px-4 py-2 pr-8 font-semibold text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-full -ml-20 z-10">
                         <img class="w-4 h-4 mr-2" style="filter: brightness(0) invert(1)"
                             src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="" />
                         Search
@@ -65,15 +66,15 @@
             <div v-for="product in products" :key="product.id"
                 class="bg-white w-[135px] h-[175px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
                 <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto"
-                    :style="{ backgroundImage: `url(${product.image || 'https://placehold.co/200'})` }" />
+                    :style="{ backgroundImage: `url(${getProductImage(product)})` }" />
                 <div class="p-2">
                     <p class="text-sm font-bold truncate">{{ product.name }}</p>
                     <p class="text-sm font-semi">Rp. {{ formatPrice(product.price) }}</p>
                 </div>
                 <div class="flex mt-auto mx-3 mb-3">
-                    <Link :href="route('admin.product.edit', product.id)" class="mr-auto">
-                    <img src="/img/assets/icon/icon_admin_product_edit.svg" alt="edit" />
-                    </Link>
+                    <button @click="$emit('edit-product', product.id)" class="mr-auto">
+                        <img src="/img/assets/icon/icon_admin_product_edit.svg" alt="edit" />
+                    </button>
                     <button @click="openDeleteModal(product.id)" class="ml-auto">
                         <img src="/img/assets/icon/icon_admin_product_trash.svg" alt="delete" />
                     </button>
@@ -85,9 +86,11 @@
         <Modal :show="showDeleteModal" @close="showDeleteModal = false">
             <div class="bg-white w-[225px] md:w-[325px] lg:w-[33vw] h-auto rounded-[30px] shadow p-4">
                 <div class="flex flex-col md:py-2 lg:p-10">
-                    <img src="/img/assets/icon/icon_warning.svg" alt="warning" class="w-10 h-10 md:w-[51px] md:h-[51px] lg:w-16 lg:h-16 mx-auto" />
+                    <img src="/img/assets/icon/icon_warning.svg" alt="warning"
+                        class="w-10 h-10 md:w-[51px] md:h-[51px] lg:w-16 lg:h-16 mx-auto" />
                     <p class="text-[#376F7E] font-medium text-sm lg:text-xl mx-auto mt-2">Are you sure?</p>
-                    <p class="text-[#B7B7B7] font-medium text-[10px] lg:text-xs mx-auto mt-2 lg:mt-6">You won’t be able to revert this!</p>
+                    <p class="text-[#B7B7B7] font-medium text-[10px] lg:text-xs mx-auto mt-2 lg:mt-6">You won’t be able
+                        to revert this!</p>
                     <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                         <button @click="confirmDelete"
                             class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
@@ -106,8 +109,10 @@
         <Modal :show="showSuccessModal" @close="showSuccessModal = false">
             <div class="bg-white w-[172px] md:w-[400px] lg:w-[25vw] h-auto rounded-[30px] shadow py-7 md:py-14 lg:p-4">
                 <div class="flex flex-col lg:p-14">
-                    <h1 class="text-black text-[10px] md:text-xl lg:text-xl font-medium mx-auto">Successfully Deleted!</h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="success" class="w-11 h-11 md:h-24 md:w-24 lg:w-24 lg:h-24 mx-auto mt-3 lg:mt-6" />
+                    <h1 class="text-black text-[10px] md:text-xl lg:text-xl font-medium mx-auto">Successfully Deleted!
+                    </h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="success"
+                        class="w-11 h-11 md:h-24 md:w-24 lg:w-24 lg:h-24 mx-auto mt-3 lg:mt-6" />
                 </div>
             </div>
         </Modal>
@@ -115,38 +120,17 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
-import Modal from './Modal.vue';
 import axios from 'axios';
+import { onMounted, ref } from 'vue';
+import Modal from './Modal.vue';
 
 export default {
     components: { Link, Modal },
     setup() {
         // Dummy data
-        const categories = ref([
-            { id: 1, name: 'Electronics' },
-            { id: 2, name: 'Clothing' },
-            { id: 3, name: 'Books' },
-        ]);
-        const products = ref([
-            { id: 1, name: 'Smartphone', price: 5000000, image: 'https://placehold.co/200' },
-            { id: 2, name: 'T-Shirt', price: 150000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-            { id: 3, name: 'Novel', price: 100000, image: 'https://placehold.co/200' },
-        ]);
+        const categories = ref([]);
+        const products = ref([]);
 
         const selectedCategory = ref(null);
         const searchQuery = ref('');
@@ -155,16 +139,22 @@ export default {
         const showSuccessModal = ref(false);
         const productToDelete = ref(null);
 
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get('/api/category');
+                categories.value = response.data;
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+
         // Fetch data (placeholder)
         const fetchData = async () => {
             try {
-                /*
-                const response = await axios.get('/api/admin/products', {
-                  params: { category: selectedCategory.value?.id, search: searchQuery.value },
+                const response = await axios.get('/api/product', {
+                    params: { category: selectedCategory.value?.id, search: searchQuery.value },
                 });
-                products.value = response.data.products;
-                categories.value = response.data.categories;
-                */
+                products.value = response.data.data;
             } catch (error) {
                 console.error('Error fetching products:', error);
             }
@@ -201,20 +191,30 @@ export default {
 
         const confirmDelete = async () => {
             try {
-                /*
-                await axios.delete(`/api/admin/products/${productToDelete.value}`);
+                await axios.delete(`/api/product/${productToDelete.value}`);
                 products.value = products.value.filter(p => p.id !== productToDelete.value);
-                */
                 showDeleteModal.value = false;
                 showSuccessModal.value = true;
+                fetchData();
                 setTimeout(() => (showSuccessModal.value = false), 2000);
             } catch (error) {
                 console.error('Error deleting product:', error);
             }
         };
 
+        const getImageUrl = (image) => {
+            if (!image) return "https://placehold.co/200";
+            if (/^http/.test(image)) return image;
+            return `/api/file?path=${image.replace(/\/?storage\//g, "")}`;
+        };
+
+        const getProductImage = (product) => {
+            return getImageUrl(product.images && product.images.length > 0 ? product.images[0].path : null);
+        };
+
         onMounted(() => {
-            // fetchData();
+            fetchCategories();
+            fetchData();
         });
 
         return {
@@ -231,6 +231,8 @@ export default {
             formatPrice,
             openDeleteModal,
             confirmDelete,
+            getImageUrl,
+            getProductImage,
         };
     },
 };

@@ -69,17 +69,17 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent, ref, watch } from 'vue';
 import AdminLayout from '../../Layouts/Admin.vue';
-import List from './Components/List.vue';
+import Carousel from './Components/Carousel.vue';
+import Category from './Components/Category.vue';
 import Create from './Components/Create.vue';
 import Edit from './Components/Edit.vue';
-import Category from './Components/Category.vue';
-import Carousel from './Components/Carousel.vue';
+import List from './Components/List.vue';
 
 export default defineComponent({
     components: {
-        AdminLayout,
+        Layout: AdminLayout,
         List,
         Create,
         Edit,
@@ -87,19 +87,31 @@ export default defineComponent({
         Carousel,
     },
     setup() {
-        const activeTab = ref('product'); // Default tab
-        const selectedProductId = ref(null); // Track product ID for edit
+        const urlParams = new URLSearchParams(window.location.search);
+        const activeTab = ref(urlParams.get('tab') || 'product'); // Default tab
+        const selectedProductId = ref(urlParams.get('id')); // Track product ID for edit
+
+        watch(activeTab, (newTab) => {
+            urlParams.set('tab', newTab);
+            window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+        });
 
         // Set active tab
         const setActiveTab = (tab) => {
             activeTab.value = tab;
             if (tab !== 'edit') {
                 selectedProductId.value = null; // Reset product ID when not in edit mode
+
+                urlParams.delete('id'); // Remove product ID from URL
+                window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
             }
         };
 
         // Handle edit product event from ProductList
         const editProduct = (productId) => {
+            urlParams.set('id', productId);
+            window.history.replaceState({}, '', `${window.location.pathname}?${urlParams.toString()}`);
+
             selectedProductId.value = productId;
             activeTab.value = 'edit';
         };

@@ -141,7 +141,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     // Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
     Route::inertia('profile', 'Admin/Profile')->name('profile');
-    
+
     Route::controller(AdminProfileController::class)->group(function () {
 
         Route::patch('profile', 'updateProfile')->name('profile.user');
@@ -149,12 +149,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     });
 
     Route::prefix('product')->name('product.')->controller(AdminProductController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::post('store', 'store')->name('store');
-        Route::get('edit/{product}', 'edit')->name('edit');
-        Route::patch('update/{product}', 'update')->name('update');
-        Route::delete('delete/{product}', 'destroy')->name('delete');
+        Route::inertia('/', 'Admin/Product/Index')->name('index');
+        // Route::inertia('create', 'Admin/Product/Create')->name('product.create');
+        // Route::get('edit/{product}', function ($id) {
+        //     return Inertia::render('Admin/Product/Edit', ['id' => $id]);
+        // })->name('product.edit');
     });
 
     Route::prefix('category')->name('category.')->controller(AdminCategoryController::class)->group(function () {
