@@ -100,8 +100,6 @@ onMounted(async () => {
         const response = await axios.get(`/api/product/${props.id}`);
         product.value = response.data;
         productImage.value = product.value.images[0]?.path || "";
-
-        console.log("Product Data:", product.value);
     } catch (error) {
         console.error("Error fetching product:", error);
     }
