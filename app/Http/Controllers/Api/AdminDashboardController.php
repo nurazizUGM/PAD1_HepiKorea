@@ -29,7 +29,7 @@ class AdminDashboardController extends Controller
             $category['total_order'] = $category->products
                 ->sum(function ($product) {
                     return $product->orders
-                        ->whereNotIn('status', ['unpaid', 'canceled', 'unconfirmed', 'confirmed'])
+                        ->whereIn('status', ['paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sent', 'finished'])
                         ->count();
                 });
             unset($category->products);

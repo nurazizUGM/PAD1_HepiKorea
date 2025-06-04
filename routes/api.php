@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\CustomerController;
 use App\Http\Controllers\Api\AdminOrderController;
 use App\Http\Controllers\Api\RequestOrderController;
 use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -142,6 +143,11 @@ Route::name('api.')->group(function () {
             Route::post('/{id}/process', 'process');
             Route::post('/{id}/shipment-invoice', 'createShipmentInvoice');
             Route::post('/{id}/shipment', 'send');
+        });
+
+        Route::prefix('analytics')->controller(AnalyticsController::class)->group(function () {
+            Route::get('/', 'overview');
+            Route::get('/export', 'export');
         });
     });
 
