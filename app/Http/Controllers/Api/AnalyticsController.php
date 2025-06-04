@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Role;
 use App\Models\Order;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\User;
 
 class AnalyticsController extends Controller
 {
     public function overview(Request $request)
     {
+        $users = User::where('role', Role::USER)->count();
+        $guests = Order::where('type', 'custom')
+            ->whereHas('user', function ($user) {
+                $user->where('email', 'guest@guest.com');
+            })
+            ->whereHas('orderDetail', function ($query) {
+                $query->whereNotNull('customer_email');
+            })
+            ->get()
+            ->pluck('orderDetail.customer_email')
+            ->unique()
+            ->count();
+
         $ongoingOrdersStatus = ['paid', 'processing', 'shipment_unpaid', 'shipment_paid', 'sent', 'finished'];
         $totalOrder = Order::whereNotIn('status', $ongoingOrdersStatus)->count();
         $completedOrder = Order::where('status', 'finished')->count();
@@ -35,7 +50,7 @@ class AnalyticsController extends Controller
         $orders = Order::with('orderItems', 'orderItems.product', 'customOrderItems', 'user')
             ->whereIn('status', $ongoingOrdersStatus)
             ->orderBy('created_at', 'desc');
-            
+
         $search = $request->query('search');
         if ($search) {
             $orders = $orders->where('status', 'like', "%$search%")
@@ -55,6 +70,11 @@ class AnalyticsController extends Controller
             'month' => $month,
             'monthlyOrders' => $monthlyOrders,
             'orders' => $orders,
+            'user' => [
+                'users' => $users,
+                'guests' => $guests,
+                'total' => $users + $guests
+            ]
         ]);
     }
 

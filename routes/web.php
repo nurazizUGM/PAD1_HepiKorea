@@ -169,11 +169,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     });
 
     Route::inertia('faq', 'Admin/Faq')->name('faq');
-
-    Route::prefix('analytic')->name('analytic.')->controller(AdminAnalyticController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('export', 'export')->name('export');
-    });
+    Route::inertia('analytics', 'Admin/Analytics')->name('analytics');
 
     Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
         Route::get('/', 'index')->name('index');
