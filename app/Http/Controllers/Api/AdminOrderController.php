@@ -72,7 +72,7 @@ class AdminOrderController extends Controller
 
     public function confirmationDetails(string $orderId)
     {
-        $order = Order::with(['user', 'customOrderItems'])->findOrFail($orderId);
+        $order = Order::with(['user', 'customOrderItems', 'orderDetail'])->findOrFail($orderId);
         return response()->json($order);
     }
 
