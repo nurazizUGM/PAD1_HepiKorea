@@ -15,8 +15,9 @@ const params = reactive({
     max_price: urlParams.get('max_price') || '',
     sort_by: urlParams.get('sort_by') || '',
     page: urlParams.get('page') || 1,
-    per_page: urlParams.get('per_page') || 12,
+    per_page: urlParams.get('per_page') || 20,
 });
+const lastPage = ref(1);
 
 // Ambil daftar kategori
 const fetchCategories = async () => {
@@ -38,9 +39,10 @@ const fetchProducts = async () => {
         const data = await res.json();
         products.value = data.data.map(product => ({
             ...product,
-            category: product.category.name,
+            category: product.category?.name,
             image: product.images.length > 0 ? `/storage/${product.images[0].path}` : '/img/default_product.jpg',
         }));
+        lastPage.value = data.last_page;
         window.history.pushState({}, '', url);
     } catch (error) {
         console.error('Failed to fetch products', error);
@@ -199,6 +201,27 @@ watch(params, () => {
                     <h3 class="text-xs text-orange-400 font-semibold ml-auto">Rp {{ formatPrice(product.price) }}</h3>
                     <button class="bg-[#3E6E7A] text-white rounded-xl px-4 py-1 text-xs ml-auto">Buy</button>
                     </Link>
+                </div>
+
+                <!-- Pagination Controls -->
+                <div class="col-span-full flex justify-center mt-6">
+                    <button
+                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50"
+                        :disabled="params.page <= 1"
+                        @click="params.page = Number(params.page) - 1"
+                    >
+                        Previous
+                    </button>
+                    <span class="px-4 py-2 mx-1 text-[#3E6E7A] font-semibold">
+                        Page {{ params.page }}
+                    </span>
+                    <button
+                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50"
+                        :disabled="params.page >= lastPage"
+                        @click="params.page = Number(params.page) + 1"
+                    >
+                        Next
+                    </button>
                 </div>
             </div>
         </div>

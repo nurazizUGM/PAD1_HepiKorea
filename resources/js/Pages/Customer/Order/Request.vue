@@ -298,6 +298,7 @@ export default {
         addOrderItem() {
             this.requestItems.push({
                 name: this.newItem.name,
+                image: this.newItem.image,
                 imagePreview: this.newItem.imagePreview || '/img/assets/icon/icon_admin_order_product.svg',
                 url: this.newItem.url,
                 price: Number(this.newItem.price),

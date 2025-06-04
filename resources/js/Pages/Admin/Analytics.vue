@@ -60,15 +60,19 @@
                             <div class="flex w-full justify-center overflow-hidden">
                                 <h2 class="font-semibold text-md">Profile View</h2>
                             </div>
-                            <h1 class="text-center my-auto text-5xl font-semibold text-black text-opacity-50">550</h1>
+                            <h1 class="text-center my-auto text-5xl font-semibold text-black text-opacity-50">{{
+                                profileView.total }}</h1>
                             <div class="flex flex-row">
                                 <div class="flex flex-col mr-auto text-center">
                                     <p class="text-[#376F7E] text-md font-semibold">By User</p>
-                                    <p class="text-3xl font-semibold text-black text-opacity-50">320</p>
+                                    <p class="text-3xl font-semibold text-black text-opacity-50">{{ profileView.users }}
+                                    </p>
                                 </div>
                                 <div class="flex flex-col ml-auto text-center">
                                     <p class="text-[#376F7E] text-md font-semibold">By Guest</p>
-                                    <p class="text-3xl font-semibold text-black text-opacity-50">230</p>
+                                    <p class="text-3xl font-semibold text-black text-opacity-50">{{ profileView.guests
+                                        }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -89,15 +93,19 @@
                             <div class="flex w-full justify-center overflow-hidden">
                                 <h2 class="md:font-semibold md:text-xl lg:text-base">Profile View</h2>
                             </div>
-                            <h1 class="text-center my-auto text-5xl font-semibold text-black text-opacity-50">550</h1>
+                            <h1 class="text-center my-auto text-5xl font-semibold text-black text-opacity-50">{{
+                                profileView.total }}</h1>
                             <div class="flex flex-row justify-around">
                                 <div class="flex flex-col text-center">
                                     <p class="text-[#376F7E] text-md font-semibold">By User</p>
-                                    <p class="text-3xl font-semibold text-black text-opacity-50">320</p>
+                                    <p class="text-3xl font-semibold text-black text-opacity-50">{{ profileView.users }}
+                                    </p>
                                 </div>
                                 <div class="flex flex-col text-center">
                                     <p class="text-[#376F7E] text-md font-semibold">By Guest</p>
-                                    <p class="text-3xl font-semibold text-black text-opacity-50">230</p>
+                                    <p class="text-3xl font-semibold text-black text-opacity-50">{{ profileView.guests
+                                        }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -118,7 +126,7 @@
                     <div class="flex justify-end lg:justify-between items-center mb-2">
                         <h1 class="text-black hidden lg:flex font-semibold text-xl ml-1">Orders</h1>
                         <div class="flex">
-                            <form @submit.prevent="filterOrders" class="flex">
+                            <form @submit.prevent="fetchData" class="flex">
                                 <div class="relative flex items-center w-full">
                                     <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
                                         class="absolute left-3 w-5 h-5 text-gray-500" />
@@ -150,29 +158,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <template v-for="(order, index) in filteredOrders" :key="order.id">
+                                <template v-for="(order, index) in orders" :key="order.id">
                                     <tr :class="{ 'bg-[#D9D9D9]': index % 2 === 0, 'bg-[#EFEFEF]': index % 2 !== 0 }">
-                                        <td :rowspan="order.items.length" class="px-6 py-3 border-white border">{{ index
+                                        <td :rowspan="order.order_items.length" class="px-6 py-3 border-white border">{{
+                                            index
                                             + 1 }}</td>
-                                        <td :rowspan="order.items.length" class="px-6 py-3 border-white border">
+                                        <td :rowspan="order.order_items.length" class="px-6 py-3 border-white border">
                                             {{ formatDate(order.created_at) }}
                                         </td>
-                                        <td :rowspan="order.items.length"
+                                        <td :rowspan="order.order_items.length"
                                             class="px-6 py-3 border-white border text-center">
                                             {{ order.type === 'order' ? 'Regular Order' : 'Custom Request' }}
                                         </td>
-                                        <td class="px-6 py-3 border-white border">{{ order.items[0].name }}</td>
-                                        <td class="px-6 py-3 border-white border text-right">
-                                            Rp {{ formatPrice(order.items[0].price) }}
+                                        <td class="px-6 py-3 border-white border">
+                                            {{ order.order_items[0]?.product?.name || order.order_items[0]?.name }}
                                         </td>
-                                        <td :rowspan="order.items.length" class="px-6 py-3 border-white border">
+                                        <td class="px-6 py-3 border-white border text-right">
+                                            Rp {{ formatPrice(order.order_items[0]?.price || order.order_items[0]?.total_price) }}
+                                        </td>
+                                        <td :rowspan="order.order_items.length" class="px-6 py-3 border-white border">
                                             {{ order.user.fullname }}
                                         </td>
                                     </tr>
-                                    <tr v-for="(item, itemIndex) in order.items.slice(1)"
+                                    <tr v-for="(item, itemIndex) in order.order_items.slice(1)"
                                         :key="`${order.id}-${itemIndex}`"
                                         :class="{ 'bg-[#D9D9D9]': index % 2 === 0, 'bg-[#EFEFEF]': index % 2 !== 0 }">
-                                        <td class="px-6 py-3 border-white border">{{ item.name }}</td>
+                                        <td class="px-6 py-3 border-white border">{{ item?.product?.name || item?.name
+                                        }}</td>
                                         <td class="px-6 py-3 border-white border text-right">
                                             Rp {{ formatPrice(item.price) }}
                                         </td>
@@ -207,317 +219,244 @@
 </template>
 
 <script>
-import AdminLayout from '../Layouts/Admin.vue';
-import Modal from './Modal.vue'
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
-import { ref, onMounted, watch, nextTick } from 'vue';
 import axios from 'axios';
+import { Chart, registerables } from 'chart.js';
+import { nextTick, onMounted, ref, watch } from 'vue';
+import AdminLayout from '../Layouts/Admin.vue';
+import Modal from './Modal.vue';
+Chart.register(...registerables);
 
 
 export default {
-  components: { AdminLayout, Modal },
-  setup() {
-    // Tab management
-    const activeTab = ref('chart');
-    const setActiveTab = (tab) => {
-      activeTab.value = tab;
-    };
+    components: { Layout: AdminLayout, Modal },
+    setup() {
+        // Tab management
+        const activeTab = ref('chart');
+        const setActiveTab = (tab) => {
+            activeTab.value = tab;
+        };
 
-    // Chart refs
-    const chartProductOrdered = ref(null);
-    const chartMostOrdered = ref(null);
-    const lineChart = ref(null);
+        // Chart refs
+        const chartProductOrdered = ref(null);
+        const chartMostOrdered = ref(null);
+        const lineChart = ref(null);
 
-    // Dummy data for charts
-    const totalOrder = ref(100);
-    const completedOrder = ref(75);
-    const categories = ref([
-      { name: 'Category A', total_order: 30 },
-      { name: 'Category B', total_order: 20 },
-      { name: 'Category C', total_order: 15 },
-    ]);
-    const month = ref(['Jan', 'Feb', 'Mar', 'Apr', 'May']);
-    const monthlyOrders = ref([10, 20, 15, 25, 30]);
-
-    // Dummy data for orders
-    const orders = ref([
-      {
-        id: 1,
-        type: 'order',
-        created_at: '2025-05-01',
-        user: { fullname: 'John Doe' },
-        items: [
-          { name: 'Product A', price: 100000 },
-          { name: 'Product B', price: 150000 },
-        ],
-      },
-      {
-        id: 2,
-        type: 'custom',
-        created_at: '2025-05-02',
-        user: { fullname: 'Jane Smith' },
-        items: [{ name: 'Custom Item', price: 200000 }],
-      },
-    ]);
-
-    // Search and filter
-    const searchQuery = ref('');
-    const filteredOrders = ref(orders.value);
-
-    // Modal
-    const showSuccessExportModal = ref(false);
-
-    // Chart instances
-    let productOrderedChartInstance = null;
-    let mostOrderedChartInstance = null;
-    let lineChartInstance = null;
-
-    // Initialize charts
-    const initCharts = async () => {
-      try {
-        // Wait for DOM to update
-        await nextTick();
-
-        // Destroy existing chart instances
-        if (productOrderedChartInstance) {
-          productOrderedChartInstance.destroy();
-          productOrderedChartInstance = null;
-        }
-        if (mostOrderedChartInstance) {
-          mostOrderedChartInstance.destroy();
-          mostOrderedChartInstance = null;
-        }
-        if (lineChartInstance) {
-          lineChartInstance.destroy();
-          lineChartInstance = null;
-        }
-
-        // Initialize Product Ordered Chart
-        if (chartProductOrdered.value) {
-          productOrderedChartInstance = new Chart(chartProductOrdered.value, {
-            type: 'doughnut',
-            data: {
-              labels: ['Uncompleted', 'Completed'],
-              datasets: [{
-                data: [totalOrder.value - completedOrder.value, completedOrder.value],
-                backgroundColor: ['rgb(217, 217, 217)', 'rgb(55, 111, 126)'],
-                hoverOffset: 4,
-              }],
-            },
-            options: {
-              cutout: '80%',
-              responsive: true,
-              plugins: { legend: { display: false } },
-            },
-          });
-        } else {
-          console.warn('Product Ordered canvas not found');
-        }
-
-        // Initialize Most Ordered Chart
-        if (chartMostOrdered.value) {
-          mostOrderedChartInstance = new Chart(chartMostOrdered.value, {
-            type: 'pie',
-            data: {
-              labels: categories.value.map(c => c.name),
-              datasets: [{
-                label: 'Orders',
-                data: categories.value.map(c => c.total_order),
-                backgroundColor: [
-                  'rgb(246, 223, 170)',
-                  'rgb(255, 255, 255)',
-                  'rgb(49, 89, 100)',
-                  'rgb(55, 111, 126)',
-                  'rgb(61, 122, 138)',
-                  'rgb(69, 143, 162)',
-                  'rgb(79, 162, 184)',
-                ],
-                hoverOffset: 4,
-              }],
-            },
-            options: {
-              cutout: '0%',
-              responsive: true,
-              plugins: {
-                legend: { display: false },
-                datalabels: {
-                  color: '#fff',
-                  anchor: 'end',
-                  align: 'end',
-                  formatter: (value, context) => {
-                    const label = context.chart.data.labels[context.dataIndex];
-                    const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
-                    const percentage = ((value / total) * 100).toFixed(0) + '%';
-                    return `${label}\n${percentage}`;
-                  },
-                },
-              },
-            },
-          });
-        } else {
-          console.warn('Most Ordered canvas not found');
-        }
-
-        // Initialize Line Chart
-        if (lineChart.value) {
-          lineChartInstance = new Chart(lineChart.value, {
-            type: 'line',
-            data: {
-              labels: month.value,
-              datasets: [{
-                label: 'Monthly Orders',
-                data: monthlyOrders.value,
-                fill: false,
-                borderColor: 'rgb(55, 111, 126)',
-                tension: 0.1,
-              }],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-            },
-          });
-        } else {
-          console.warn('Line Chart canvas not found');
-        }
-      } catch (error) {
-        console.error('Error initializing charts:', error);
-      }
-    };
-
-    // Fetch data
-    const fetchData = async () => {
-      try {
-        /*
-        const response = await axios.get('/api/admin/analytics', {
-          params: { search: searchQuery.value },
+        // Dummy data for charts
+        const totalOrder = ref(0);
+        const completedOrder = ref(0);
+        const categories = ref([]);
+        const month = ref([]);
+        const monthlyOrders = ref([]);
+        const profileView = ref({
+            users: 0,
+            guests: 0,
+            total: 0,
         });
-        orders.value = response.data.orders;
-        totalOrder.value = response.data.totalOrder;
-        completedOrder.value = response.data.completedOrder;
-        categories.value = response.data.categories;
-        month.value = response.data.month;
-        monthlyOrders.value = response.data.monthlyOrders;
-        */
-        filteredOrders.value = orders.value;
-      } catch (error) {
-        console.error('Error fetching analytics:', error);
-      }
-    };
 
-    // Filter orders
-    const filterOrders = () => {
-      filteredOrders.value = orders.value.filter(order =>
-        order.items.some(item => item.name.toLowerCase().includes(searchQuery.value.toLowerCase())) ||
-        order.user.fullname.toLowerCase().includes(searchQuery.value.toLowerCase())
-      );
-      /*
-      fetchData();
-      */
-    };
+        // Dummy data for orders
+        const orders = ref([]);
 
-    // Export orders
-    const exportOrders = async () => {
-      try {
-        /*
-        const response = await axios.get('/api/admin/analytics/export', { responseType: 'blob' });
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'orders.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        */
-        const csv = generateCsv(orders.value);
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', 'orders.csv');
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        // Search and filter
+        const searchQuery = ref('');
 
-        showSuccessExportModal.value = true;
-        setTimeout(() => (showSuccessExportModal.value = false), 2000);
-      } catch (error) {
-        console.error('Error exporting orders:', error);
-      }
-    };
+        // Modal
+        const showSuccessExportModal = ref(false);
 
-    // Generate CSV
-    const generateCsv = (orders) => {
-      const headers = ['No', 'Date', 'Type', 'Product Name', 'Selling Price', 'Customer Name'];
-      const rows = [];
+        // Chart instances
+        let productOrderedChartInstance = null;
+        let mostOrderedChartInstance = null;
+        let lineChartInstance = null;
 
-      orders.forEach((order, index) => {
-        order.items.forEach((item, itemIndex) => {
-          const row = [
-            itemIndex === 0 ? index + 1 : '',
-            itemIndex === 0 ? formatDate(order.created_at) : '',
-            itemIndex === 0 ? (order.type === 'order' ? 'Regular Order' : 'Custom Request') : '',
-            item.name,
-            `Rp ${formatPrice(item.price)}`,
-            itemIndex === 0 ? order.user.fullname : '',
-          ];
-          rows.push(row.map(cell => `"${cell}"`).join(','));
+        // Initialize charts
+        const initCharts = async () => {
+            try {
+                // Wait for DOM to update
+                await nextTick();
+
+                // Destroy existing chart instances
+                if (productOrderedChartInstance) {
+                    productOrderedChartInstance.destroy();
+                    productOrderedChartInstance = null;
+                }
+                if (mostOrderedChartInstance) {
+                    mostOrderedChartInstance.destroy();
+                    mostOrderedChartInstance = null;
+                }
+                if (lineChartInstance) {
+                    lineChartInstance.destroy();
+                    lineChartInstance = null;
+                }
+
+                // Initialize Product Ordered Chart
+                if (chartProductOrdered.value) {
+                    productOrderedChartInstance = new Chart(chartProductOrdered.value, {
+                        type: 'doughnut',
+                        data: {
+                            labels: ['Uncompleted', 'Completed'],
+                            datasets: [{
+                                data: [totalOrder.value - completedOrder.value, completedOrder.value],
+                                backgroundColor: ['rgb(217, 217, 217)', 'rgb(55, 111, 126)'],
+                                hoverOffset: 4,
+                            }],
+                        },
+                        options: {
+                            cutout: '80%',
+                            responsive: true,
+                            plugins: { legend: { display: false } },
+                        },
+                    });
+                } else {
+                    console.warn('Product Ordered canvas not found');
+                }
+
+                // Initialize Most Ordered Chart
+                if (chartMostOrdered.value) {
+                    mostOrderedChartInstance = new Chart(chartMostOrdered.value, {
+                        type: 'pie',
+                        data: {
+                            labels: categories.value.map(c => c.name),
+                            datasets: [{
+                                label: 'Orders',
+                                data: categories.value.map(c => c.total_order),
+                                backgroundColor: [
+                                    'rgb(246, 223, 170)',
+                                    'rgb(255, 255, 255)',
+                                    'rgb(49, 89, 100)',
+                                    'rgb(55, 111, 126)',
+                                    'rgb(61, 122, 138)',
+                                    'rgb(69, 143, 162)',
+                                    'rgb(79, 162, 184)',
+                                ],
+                                hoverOffset: 4,
+                            }],
+                        },
+                        options: {
+                            cutout: '0%',
+                            responsive: true,
+                            plugins: {
+                                legend: { display: false },
+                                datalabels: {
+                                    color: '#fff',
+                                    anchor: 'end',
+                                    align: 'end',
+                                    formatter: (value, context) => {
+                                        const label = context.chart.data.labels[context.dataIndex];
+                                        const total = context.chart.data.datasets[0].data.reduce((a, b) => a + b, 0);
+                                        const percentage = ((value / total) * 100).toFixed(0) + '%';
+                                        return `${label}\n${percentage}`;
+                                    },
+                                },
+                            },
+                        },
+                    });
+                } else {
+                    console.warn('Most Ordered canvas not found');
+                }
+
+                // Initialize Line Chart
+                if (lineChart.value) {
+                    lineChartInstance = new Chart(lineChart.value, {
+                        type: 'line',
+                        data: {
+                            labels: month.value,
+                            datasets: [{
+                                label: 'Monthly Orders',
+                                data: monthlyOrders.value,
+                                fill: false,
+                                borderColor: 'rgb(55, 111, 126)',
+                                tension: 0.1,
+                            }],
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                        },
+                    });
+                } else {
+                    console.warn('Line Chart canvas not found');
+                }
+            } catch (error) {
+                console.error('Error initializing charts:', error);
+            }
+        };
+
+        // Fetch data
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('/api/admin/analytics', {
+                    params: { search: searchQuery.value },
+                });
+                orders.value = response.data.orders.map(order => ({
+                    ...order,
+                    order_items: order.order_items.length > 0 ? order.order_items : order.custom_order_items,
+                }));
+                totalOrder.value = response.data.totalOrder;
+                completedOrder.value = response.data.completedOrder;
+                categories.value = response.data.categories;
+                month.value = response.data.month;
+                monthlyOrders.value = response.data.monthlyOrders;
+                profileView.value = response.data.user;
+            } catch (error) {
+                console.error('Error fetching analytics:', error);
+            }
+        };
+
+        // Export orders
+        const exportOrders = async () => {
+            // redirect to export endpoint in new tab
+            const url = '/api/admin/analytics/export';
+            window.open(url, '_blank');
+        };
+
+        // Format price
+        const formatPrice = (price) => {
+            return price ? price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : 'n/a';
+        };
+
+        // Format date
+        const formatDate = (date) => {
+            const d = new Date(date);
+            return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear() % 100}`;
+        };
+
+        // Watch tab changes
+        watch(activeTab, async (newTab) => {
+            if (newTab === 'chart') {
+                // Wait for DOM to update before initializing charts
+                await nextTick();
+                initCharts();
+            }
         });
-      });
 
-      return [headers.join(','), ...rows].join('\n');
-    };
+        onMounted(async () => {
+            await fetchData();
+            if (activeTab.value === 'chart') {
+                await nextTick();
+                initCharts();
+            }
+        });
 
-    // Format price
-    const formatPrice = (price) => {
-      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    };
-
-    // Format date
-    const formatDate = (date) => {
-      const d = new Date(date);
-      return `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear() % 100}`;
-    };
-
-    // Watch tab changes
-    watch(activeTab, async (newTab) => {
-      if (newTab === 'chart') {
-        // Wait for DOM to update before initializing charts
-        await nextTick();
-        initCharts();
-      }
-    });
-
-    onMounted(async () => {
-      if (activeTab.value === 'chart') {
-        await nextTick();
-        initCharts();
-      }
-      // fetchData();
-    });
-
-    return {
-      activeTab,
-      setActiveTab,
-      chartProductOrdered,
-      chartMostOrdered,
-      lineChart,
-      totalOrder,
-      completedOrder,
-      categories,
-      month,
-      monthlyOrders,
-      orders,
-      searchQuery,
-      filteredOrders,
-      showSuccessExportModal,
-      filterOrders,
-      exportOrders,
-      formatPrice,
-      formatDate,
-    };
-  },
+        return {
+            activeTab,
+            setActiveTab,
+            chartProductOrdered,
+            chartMostOrdered,
+            lineChart,
+            totalOrder,
+            completedOrder,
+            categories,
+            month,
+            monthlyOrders,
+            orders,
+            searchQuery,
+            showSuccessExportModal,
+            exportOrders,
+            formatPrice,
+            formatDate,
+            fetchData,
+            profileView
+        };
+    },
 };
 </script>
 

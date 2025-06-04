@@ -183,6 +183,7 @@ export default {
             try {
                 const response = await fetch("/api/request-order?" + params.toString());
                 items.value = await response.json();
+                console.log("Fetched items:", items.value);
             } catch (error) {
                 console.error("Error fetching data:", error);
             }

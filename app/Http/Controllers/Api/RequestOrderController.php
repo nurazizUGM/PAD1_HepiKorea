@@ -51,9 +51,9 @@ class RequestOrderController extends Controller
             'total_items_price' => 0,
         ]);
 
-        if ($user->role == Role::GUEST) {
+        if (!Auth::check()) {
             $order->orderDetail()->create([
-                'customer_fullname' => $data['fullname'],
+                'customer_name' => $data['fullname'],
                 'customer_email' => $data['email'],
             ]);
         }
