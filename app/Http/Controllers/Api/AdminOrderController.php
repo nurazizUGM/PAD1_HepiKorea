@@ -33,7 +33,20 @@ class AdminOrderController extends Controller
         $orders = $orders->with(['user', 'orderItems', 'orderItems.product'])
             ->orderByRaw("FIELD(status, 'paid', 'shipment_paid', 'processing', 'shipment_unpaid', 'sent', 'finished', 'unpaid', 'cancelled')")
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($order) {
+                if ($order->orderItems) {
+                    $product = $order->orderItems->first()->product;
+                    if ($product && $product->images->count() > 0) {
+                        $order->image = $product->images->first()->path;
+                    } else {
+                        $order->image = null;
+                    }
+                } else {
+                    $order->image = null;
+                }
+                return $order;
+            });
 
         return response()->json([
             'orders' => $orders,
