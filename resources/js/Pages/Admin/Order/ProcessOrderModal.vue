@@ -11,12 +11,12 @@
         <div class="flex flex-col w-full">
           <h1 class="text-black text-base font-semibold">Estimation Arrival</h1>
           <!-- Datepicker -->
-          <input
-            v-model="estimatedArrival"
-            type="date"
-            class="mt-1 w-full h-10 border rounded-lg focus:ring-0 focus:border-orange-400"
-            :min="today"
-          >
+          <input v-model="estimatedArrival" type="date"
+            class="mt-1 w-full h-10 border rounded-lg focus:ring-0 focus:border-orange-400" :min="today">
+          <!-- <div id="datepicker-{{ $id }}" inline-datepicker data-date="{{ date('Y-m-d') }}"
+            datepicker-format="yyyy-mm-dd" class="mt-1 w-full h-full mx-auto"></div> -->
+          <div id="datepicker" inline-datepicker data-date="date('Y-m-d')" datepicker-format="yyyy-mm-dd"
+            class="mt-1 w-full h-full mx-auto"></div>
           <!-- <div id="datepicker-{{ $id }}" inline-datepicker data-date="{{ date('Y-m-d') }}"
             datepicker-format="yyyy-mm-dd" class="mt-1 w-full h-full mx-auto"></div> -->
           <!-- Form -->
@@ -37,6 +37,8 @@
 import { ref, computed } from 'vue';
 import Modal from '../Modal.vue';
 import axios from 'axios';
+import { initDatepickers } from 'flowbite';
+
 
 export default {
   components: { Modal },
@@ -67,5 +69,11 @@ export default {
       save,
     };
   },
+  mounted() {
+    initFlowbite();
+    initDatepickers();
+  }
 };
+
+
 </script>

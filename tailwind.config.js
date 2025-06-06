@@ -8,6 +8,7 @@ export const content = [
     "./storage/framework/views/*.php",
     "./resources/**/*.js",
     "./resources/**/*.vue",
+    "./resources/**/**/*.vue",
     "./node_modules/flowbite/**/*.js",
     "./node_modules/flowbite/**/*.ts",
 ];
