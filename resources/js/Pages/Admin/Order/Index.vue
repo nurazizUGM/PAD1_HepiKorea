@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import AdminLayout from '../../Layouts/Admin.vue';
 import Confirmation from './Confirmation.vue';
 import Order from './Order.vue';
@@ -64,11 +64,17 @@ import Order from './Order.vue';
 export default {
     components: { Order, Confirmation, AdminLayout },
     setup() {
-        const activeTab = ref('order');
+        const queryParams = new URLSearchParams(window.location.search);
+        const activeTab = ref(queryParams.get('tab') || 'order');
 
         const setActiveTab = (tab) => {
             activeTab.value = tab;
         };
+
+        watch(activeTab, (newTab) => {
+            queryParams.set('tab', newTab);
+            window.history.replaceState({}, '', `${window.location.pathname}?${queryParams.toString()}`);
+        });
 
         return { activeTab, setActiveTab };
     },

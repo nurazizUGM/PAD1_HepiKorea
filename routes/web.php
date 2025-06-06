@@ -176,6 +176,9 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
         Route::get('{id}', function ($id) {
             return Inertia::render('Admin/Order/Order-detail', ['id' => $id]);
         })->name('show');
+        Route::get('confirmation/{id}', function ($id) {
+            return Inertia::render('Admin/Order/Confirmation-detail', ['orderId' => $id]);
+        })->name('confirmation');
     });
     // Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
     //     Route::get('/', 'index')->name('index');

@@ -57,10 +57,13 @@ class AdminOrderController extends Controller
         ]);
     }
 
-    public function unconfirmedOrders(Request $request)
+    public function confirmations(Request $request)
     {
         // filter order by type
         $orders = Order::whereIn('status', ['unconfirmed', 'confirmed']);
+
+        // first order
+        $firstOrder = $orders->clone()->orderBy('created_at', 'asc')->first();
 
         // filter order by year
         $year = $request->query('year');
@@ -80,12 +83,18 @@ class AdminOrderController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json($orders);
+        return response()->json([
+            'orders' => $orders,
+            'firstOrder' => [
+                'year' => $firstOrder->created_at->format('Y'),
+                'month' => $firstOrder->created_at->format('m'),
+            ],
+        ]);
     }
 
     public function confirmationDetails(string $orderId)
     {
-        $order = Order::with(['user', 'customOrderItems', 'orderDetail'])->findOrFail($orderId);
+        $order = Order::where('status', ['unconfirmed', 'confirmed'])->with(['user', 'customOrderItems', 'orderDetail'])->findOrFail($orderId);
         return response()->json($order);
     }
 
