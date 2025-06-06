@@ -171,14 +171,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::inertia('faq', 'Admin/Faq')->name('faq');
     Route::inertia('analytics', 'Admin/Analytics')->name('analytics');
 
-    Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('confirmation/{id}', 'showConfirmation')->name('confirmation.show');
-        Route::get('show/{id}', 'show')->name('show');
-        Route::post('process/{id}', 'process')->name('process');
-        Route::post('sent/{id}', 'sent')->name('sent');
-        Route::post('send/{id}', 'send')->name('send');
+    Route::prefix('order')->name('order.')->group(function () {
+        Route::inertia('/', 'Admin/Order/Index')->name('index');
+        Route::get('{id}', function ($id) {
+            return Inertia::render('Admin/Order/Order-detail', ['id' => $id]);
+        })->name('show');
+        Route::get('confirmation/{id}', function ($id) {
+            return Inertia::render('Admin/Order/Confirmation-detail', ['orderId' => $id]);
+        })->name('confirmation');
     });
+    // Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
+    //     Route::get('/', 'index')->name('index');
+    //     Route::get('confirmation/{id}', 'showConfirmation')->name('confirmation.show');
+    //     Route::get('show/{id}', 'show')->name('show');
+    //     Route::post('process/{id}', 'process')->name('process');
+    //     Route::post('sent/{id}', 'sent')->name('sent');
+    //     Route::post('send/{id}', 'send')->name('send');
+    // });
 });
 
 Route::get('/view/{view}', function ($view) {

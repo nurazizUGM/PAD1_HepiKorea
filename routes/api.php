@@ -140,10 +140,15 @@ Route::name('api.')->group(function () {
         Route::get('statistics', [AdminDashboardController::class, 'index']);
         Route::prefix('order')->controller(AdminOrderController::class)->group(function () {
             Route::get('/', 'orders');
-            Route::get('/confirmation/{id}', 'confirmationDetails');
             Route::post('/{id}/process', 'process');
             Route::post('/{id}/shipment-invoice', 'createShipmentInvoice');
             Route::post('/{id}/shipment', 'send');
+        });
+
+        Route::prefix('request-order')->controller(AdminOrderController::class)->group(function () {
+            Route::get('/', 'confirmations');
+            Route::get('/{id}', 'confirmationDetails');
+            Route::post('/{id}/confirm', 'confirm');
         });
 
         Route::prefix('analytics')->controller(AnalyticsController::class)->group(function () {
