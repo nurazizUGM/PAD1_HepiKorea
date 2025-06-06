@@ -47,7 +47,7 @@
             class="w-[65%] md:w-[70%] lg:w-[80%] h-fit ml-3 md:ml-6 lg:ml-6 grid grid-cols-1 lg:grid-cols-2 gap-4 justify-start items-start align-content-start">
             <!-- if orders.length == 0 -->
             <div v-if="orders.length === 0"
-                class="bg-white col-span-2 h-32 md:h-[150px] lg:h-52 rounded-lg flex items-center justify-center">
+                class="bg-white col-span-2 h-32 min-h-[70vh] lg:h-[78vh] rounded-lg flex items-center justify-center">
                 <p class="text-gray-500 text-lg font-semibold">No orders found</p>
             </div>
             <div v-for="order in orders" :key="order.id"
@@ -135,10 +135,9 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue';
-// import { useRouter } from 'vue-router';
 import { router } from '@inertiajs/vue3';
 import axios from 'axios';
+import { onMounted, ref } from 'vue';
 import Modal from '../Modal.vue';
 import ProcessOrderModal from './ProcessOrderModal.vue';
 import SendOrderModal from './SendOrderModal.vue';
@@ -147,9 +146,6 @@ import SentOrderModal from './SentOrderModal.vue';
 export default {
     components: { Modal, ProcessOrderModal, SentOrderModal, SendOrderModal },
     setup() {
-        // const router = useRouter();
-
-        // Dummy data
         const orders = ref([]);
 
         const years = ref([]);
@@ -177,6 +173,7 @@ export default {
         const selectAllOrders = () => {
             selectedYear.value = null;
             selectedMonth.value = null;
+            fetchOrders();
         };
 
         // Modals
@@ -206,16 +203,12 @@ export default {
         };
 
         const handleSave = () => {
+            fetchOrders();
             showProcessModal.value = false;
             showSentModal.value = false;
             showSuccessModal.value = true;
             setTimeout(() => (showSuccessModal.value = false), 2000);
         };
-
-        // Navigation
-        // const navigateToOrder = (orderId) => {
-        //   // router.push({ name: 'admin.order.show', params: { id: orderId } });
-        // };
 
         // Formatting
         const formatDate = (date) => {
@@ -292,7 +285,6 @@ export default {
             openSentModal,
             openSendModal,
             handleSave,
-            // navigateToOrder,
             router,
             formatDate,
             formatPrice,

@@ -41,9 +41,9 @@
                                                     d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 1 0 0-2H5a1 1 0 0 0 0 2Z" />
                                             </svg>
                                         </div>
-                                        <input v-model="formData.arrival_estimation" type="date"
+                                        <input datepicker id="sent-arrival-estimation" type="text"
                                             class="w-full rounded-lg bg-white shadow-md border-none focus:ring-0 ps-10"
-                                            :min="today" required>
+                                            placeholder="Select date">
                                     </div>
                                 </td>
                             </tr>
@@ -63,10 +63,12 @@
     </Modal>
 </template>
 
-<script>
-import { ref } from 'vue';
-import Modal from '../Modal.vue';
+<script lang="ts">
 import axios from 'axios';
+import { Datepicker } from 'flowbite';
+import moment from 'moment';
+import { onUpdated, reactive } from 'vue';
+import Modal from '../Modal.vue';
 
 export default {
     components: { Modal },
@@ -75,41 +77,55 @@ export default {
         orderId: Number,
     },
     setup(props, { emit }) {
-        const today = new Date().toISOString().split('T')[0];
-        const orders = ref({
-            formData: {
-                shipment_service: '',
-                id: '',
-                price: '',
-                arrival_estimation: today,
-            },
-        });
-
-        const formData = ref({
+        const today = moment().format('YYYY-MM-DD');
+        let datepicker: Datepicker;
+        const formData = reactive({
             shipment_service: '', // Example data
             price: 0, // Example data
             tracking_code: '',
-            arrival_estimation: today,
         });
 
         const save = async () => {
             try {
-                /*
-                 await axios.post(`/api/orders/${props.orderId}/sent`, {
-                  shipment_service: formData.order.shipment_service,
-                  price: formData.order.price,
-                  arrival_estimation: formData.order.arrival_form,
+                await axios.post(`/api/admin/order/${props.orderId}/shipment-invoice`, {
+                    shipment_service: formData.shipment_service,
+                    price: formData.price,
+                    arrival_estimation: moment(datepicker.getDate()).format('YYYY-MM-DD'),
                 });
-                */
                 emit('save');
             } catch (error) {
                 console.error('Error sending order:', error);
             }
         }
 
+        const initializeDatepicker = () => {
+            const datepickerElement = document.getElementById('sent-arrival-estimation');
+            if (datepickerElement) {
+                // Initialize the datepicker with options
+                datepicker = new Datepicker(datepickerElement, {
+                    autohide: true,
+                    buttons: true,
+                    format: 'yyyy-mm-dd',
+                    minDate: today,
+                });
+                datepicker.init();
+                datepicker.setDate(today); // Set the initial date to today
+            }
+        };
+
+        onUpdated(() => {
+            if (props.show) {
+                Object.assign(formData, {
+                    shipment_service: '',
+                    price: 0,
+                    tracking_code: '',
+                });
+            }
+            initializeDatepicker();
+        });
+
         return {
             formData,
-            orders,
             today,
             save,
         };
