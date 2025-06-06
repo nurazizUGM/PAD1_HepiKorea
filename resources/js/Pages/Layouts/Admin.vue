@@ -117,12 +117,12 @@ const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.pho
                 </li>
                 <!-- Analytic -->
                 <li class="mt-12">
-                    <Link href="/admin/analytic"
-                        :class="`flex items-center p-2 rounded-lg font-semibold dark:text-white hover:bg-gray-100 active:bg-white dark:hover:bg-gray-700 group ${route().current('analytic.*') && 'bg-gray-100'}`">
+                    <Link :href="route('admin.analytics')"
+                        :class="`flex items-center p-2 rounded-lg font-semibold dark:text-white hover:bg-gray-100 active:bg-white dark:hover:bg-gray-700 group ${route().current('admin.analytics') && 'bg-gray-100'}`">
                     <img src="/img/assets/icon/icon_dashboard_analytic.svg" alt="Analytic Icon"
-                        :class="`h-7 w-7 ${!route().current('analytic.*') && 'grayscale'} group-hover:grayscale-0`">
+                        :class="`h-7 w-7 ${!route().current('admin.analytics') && 'grayscale'} group-hover:grayscale-0`">
                     <span
-                        :class="`ms-3 group-hover:text-[#376F7E] ${route().current('analytic.*') ? 'text-[#376F7E]' : 'text-[#B7B7B7]'}`">Analytic</span>
+                        :class="`ms-3 group-hover:text-[#376F7E] ${route().current('admin.analytics') ? 'text-[#376F7E]' : 'text-[#B7B7B7]'}`">Analytics</span>
                     </Link>
                 </li>
                 <!-- Customer -->

@@ -1,17 +1,23 @@
 <?php
 
-use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\Api\CarouselController;
-use App\Http\Controllers\Api\CartController;
-use App\Http\Controllers\Api\CategoryController;
-use App\Http\Controllers\Api\CustomerController;
-use App\Http\Controllers\Api\FaqController;
-use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\AddressController;
+use Illuminate\Http\Request;
 use App\Http\Middleware\Admin;
 use App\Http\Middleware\ApiAuth;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Controllers\Api\FaqController;
+use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CartController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\CarouselController;
+use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CustomerController;
+use App\Http\Controllers\Api\AdminOrderController;
+use App\Http\Controllers\Api\RequestOrderController;
+use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AnalyticsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -115,5 +121,49 @@ Route::name('api.')->group(function () {
         Route::get('/', 'findAll');
         Route::get('/review', 'review');
         Route::get('/{id}', 'show');
+    });
+
+    Route::middleware(ApiAuth::class)->prefix('order')->controller(OrderController::class)->group(function () {
+        Route::get('/', 'history');
+        Route::post('/calculate', 'calculateItems');
+        Route::post('/', 'checkout');
+
+        Route::get('/payment/{id}', 'paymentStatus');
+        Route::post('/{id}/cancel', 'cancel');
+        Route::post('/{id}/pay-shipment', 'payShipment');
+        Route::post('/{id}/arrived', 'arrived');
+        Route::post('/{id}/review', 'review');
+        Route::get('/{id}', 'show');
+    });
+
+    Route::middleware([ApiAuth::class, Admin::class])->prefix('/admin')->group(function () {
+        Route::get('statistics', [AdminDashboardController::class, 'index']);
+        Route::prefix('order')->controller(AdminOrderController::class)->group(function () {
+            Route::get('/', 'orders');
+            Route::get('/confirmation/{id}', 'confirmationDetails');
+            Route::post('/{id}/process', 'process');
+            Route::post('/{id}/shipment-invoice', 'createShipmentInvoice');
+            Route::post('/{id}/shipment', 'send');
+        });
+
+        Route::prefix('analytics')->controller(AnalyticsController::class)->group(function () {
+            Route::get('/', 'overview');
+            Route::get('/export', 'export');
+        });
+    });
+
+    Route::prefix('request-order')->controller(RequestOrderController::class)->group(function () {
+        Route::get('/', 'show');
+        Route::post('/calculate', 'calculateItems');
+        Route::post('/', 'requestOrder');
+        Route::post('/checkout', 'checkout');
+    });
+
+    Route::middleware(ApiAuth::class)->prefix('address')->controller(AddressController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/', 'store');
+        Route::post('/{id}', 'update');
+        Route::post('/{id}/set-default', 'setDefault');
+        Route::delete('/{id}', 'destroy');
     });
 });

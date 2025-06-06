@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Enums\Role;
+use App\Http\Controllers\Controller;
 use App\Models\CustomOrderItem;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\OrderPayment;
 use App\Models\User;
 use Carbon\Carbon;
@@ -25,7 +25,6 @@ class RequestOrderController extends Controller
     // custom request order
     public function requestOrder(Request $request)
     {
-        DB::beginTransaction();
         $data = $request->validate([
             'fullname' => 'required|string',
             'email' => 'required|email',
@@ -43,7 +42,8 @@ class RequestOrderController extends Controller
         } else {
             $user = User::where('email', User::$guestEmail)->first();
         }
-
+        
+        DB::beginTransaction();
         $order = Order::create([
             'user_id' => $user->id,
             'type' => 'custom',
@@ -53,7 +53,7 @@ class RequestOrderController extends Controller
 
         if (!Auth::check()) {
             $order->orderDetail()->create([
-                'customer_fullname' => $data['fullname'],
+                'customer_name' => $data['fullname'],
                 'customer_email' => $data['email'],
             ]);
         }
@@ -81,7 +81,11 @@ class RequestOrderController extends Controller
         $order->save();
 
         DB::commit();
-        return redirect()->route('order.show', $order->id)->with('success', 'Order has been requested');
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Order created successfully',
+            'order' => $order,
+        ]);
     }
 
     public function show(Request $request)
@@ -91,7 +95,10 @@ class RequestOrderController extends Controller
         ]);
 
         if (!Auth::check() && !isset($data['orderId'])) {
-            return redirect()->route('auth.login')->withErrors('You must login to view your orders');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'You must be logged in to view the order',
+            ]);
         }
 
         $items = CustomOrderItem::whereHas('order', function ($query) {
@@ -110,10 +117,11 @@ class RequestOrderController extends Controller
             ->sortBy(function ($item) {
                 return $item->order->status == 'unconfirmed' ? 1 : 0;
             });
-        return view('customer.order.custom', compact('items'));
+
+        return response()->json($items);
     }
 
-    public function checkout(Request $request)
+    public function calculateItems(Request $request)
     {
         $data = $request->validate([
             'itemsId' => 'required|array|exists:custom_order_items,id',
@@ -125,20 +133,23 @@ class RequestOrderController extends Controller
         })->count();
 
         if ($unconfirmed > 0) {
-            return back()->withErrors('Some orders is not confirmed');
+            return response()->json([
+                'status' => 'error',
+                'message' => 'There are unconfirmed items in the order',
+            ]);
         }
 
         $items = $items->with('order')->get();
-        return view('customer.order.checkout-custom', compact('items'));
+        return  response()->json($items);
     }
 
-    public function store(Request $request)
+    public function checkout(Request $request)
     {
         $data = $request->validate([
             'items' => 'required|array',
             'items.*.itemId' => 'required|exists:custom_order_items,id',
             'items.*.quantity' => 'required|integer|min:1',
-            'paymentMethod' => 'required|string'
+            'payment_method' => 'required|string|in:qris,bca,bni,bri,mandiri',
         ]);
 
         DB::beginTransaction();
@@ -154,9 +165,15 @@ class RequestOrderController extends Controller
         foreach ($data['items'] as $item) {
             $orderItem = CustomOrderItem::find($item['itemId']);
             if (!$orderItem) {
-                return back()->withErrors('Item not found');
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Item not found',
+                ]);
             } else if ($orderItem->order->status != 'confirmed') {
-                return back()->withErrors('Order is not confirmed');
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Item is not confirmed',
+                ]);
             }
             $orderItem->quantity -= $item['quantity'];
             $orderItem->order_id = $order->id;
@@ -176,42 +193,33 @@ class RequestOrderController extends Controller
             'payment_type' => 'items',
             'status' => 'pending',
             'amount' => $totalPrice,
-            'payment_method' => $data['paymentMethod'],
+            'payment_method' => $data['payment_method'],
         ]);
 
 
-        if ($data['paymentMethod'] == 'qris') {
-            $res = $this->paymentService->post('/v2/charge', [
-                "payment_type" => "qris",
-                "transaction_details" => [
-                    "gross_amount" => intval($totalPrice),
-                    "order_id" => "hk-" . Carbon::now()->timestamp,
-                ],
-                "custom_expiry" => [
-                    "expiry_duration" => 24,
-                    "unit" => "hour"
-                ],
-                'qris' => [
-                    'acquirer' => 'airpay shopee',
-                    // 'acquirer' => 'gopay',
-                ]
-            ]);
+        $paymentData = [
+            "payment_type" => "qris",
+            "transaction_details" => [
+                "gross_amount" => intval($totalPrice),
+                "order_id" => "hk-" . Carbon::now()->timestamp,
+            ],
+            "custom_expiry" => [
+                "expiry_duration" => 24,
+                "unit" => "hour"
+            ]
+        ];
+
+        if ($data['payment_method'] == 'qris') {
+            $paymentData['qris'] = [
+                "acquirer" => "gopay"
+            ];
+            $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['actions'][0]['url'];
         } else {
-            $res = $this->paymentService->post('/v2/charge', [
-                "payment_type" => "bank_transfer",
-                "transaction_details" => [
-                    "gross_amount" => intval($totalPrice),
-                    "order_id" => "hk-" . Carbon::now()->timestamp,
-                ],
-                "custom_expiry" => [
-                    "expiry_duration" => 24,
-                    "unit" => "hour"
-                ],
-                "bank_transfer" => [
-                    "bank" => $data['paymentMethod']
-                ]
-            ]);
+            $paymentData['bank_transfer'] = [
+                "bank" => $data['payment_method']
+            ];
+            $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['va_numbers'][0]['va_number'];
         }
 
@@ -225,7 +233,6 @@ class RequestOrderController extends Controller
             'status' => 'success',
             'message' => 'Order created successfully',
             'payment' => $orderPayment,
-            'response' => $res,
         ]);
     }
 }

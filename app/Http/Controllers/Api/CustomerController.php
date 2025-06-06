@@ -24,9 +24,8 @@ class CustomerController extends Controller
     // customer detail
     public function show(string $id)
     {
-        $customer = User::find($id)->with('addresses')->first();
-        $customer->address = $customer->addresses->first();
-        unset($customer->addresses);
+        $customer = User::find($id);
+        $customer->address = $customer->addresses()->orderBy('last_used', 'desc')->first();
 
         return response()->json($customer);
     }

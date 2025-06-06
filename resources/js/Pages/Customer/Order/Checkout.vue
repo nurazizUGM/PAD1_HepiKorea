@@ -1,5 +1,6 @@
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
+import { computed, onMounted, ref } from 'vue';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
@@ -8,26 +9,13 @@ export default {
     },
     setup() {
         // Dummy data sementara
+        const products = ref([])
+        const items = ref([]);
         const address = ref({
             name: 'Aisyah',
             phone: '813-9230-8107',
             fullAddress: 'Bulaksumur, Caturtunggal, Kapanewon Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281',
         });
-
-        const items = ref([
-            {
-                product: { id: 1, name: 'Samsung S24 Ultra', price: 24000000, image: null },
-                quantity: 1,
-                total: 24000000,
-                note: '',
-            },
-            {
-                product: { id: 2, name: 'iPhone 14 Pro', price: 20000000, image: 'http://example.com/iphone.jpg' },
-                quantity: 2,
-                total: 40000000,
-                note: '',
-            },
-        ]);
 
         const orderNote = ref('');
         const showAddressList = ref(false);
@@ -38,24 +26,50 @@ export default {
         const paymentMethod = ref('bri');
         const paymentDetails = ref({
             amount: 'Rp 0,-',
-            timeRemaining: '15 Minutes',
+            timeRemaining: '0 Minutes',
             expiration: '00:00',
-            paymentMethod: 'Bank BRI',
-            paymentCode: '128 081215559315',
+            paymentMethod: '',
+            paymentCode: '',
             bankLogo: '/img/assets/icon/logo_bri_small.svg',
         });
 
         // Fungsi untuk mengambil data dari API (placeholder)
         const fetchData = async () => {
             try {
-                const response = await fetch('/api/checkout'); // Ganti dengan endpoint API Anda
-                const data = await response.json();
-                items.value = data.items;
-                address.value = data.address;
+                if (products.value.length > 0) {
+                    items.value = await Promise.all(products.value.map(async (product) => {
+                        const response = await fetch(`/api/product/${product.product_id}`);
+                        const data = await response.json();
+                        return {
+                            product: { ...data, image: firstImage(data.images) },
+                            quantity: product.quantity,
+                            total: data.price * product.quantity,
+                            note: '',
+                        };
+                    }));
+                    console.log('Items:', items.value);
+                }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
+        function updateUrl() {
+            const url = new URL(window.location.href);
+            const p = items.value.map(item => ({
+                product_id: item.product.id,
+                quantity: item.quantity,
+            }));
+            url.searchParams.set('products', JSON.stringify(p));
+            window.history.replaceState({}, '', url);
+        }
+
+        function firstImage(images) {
+            if (images && images.length > 0) {
+                return images[0].path;
+            }
+            return null;
+        }
 
         // Handler untuk gambar
         const getImageUrl = (image) => {
@@ -78,6 +92,7 @@ export default {
         const addQty = (item) => {
             item.quantity += 1;
             item.total = item.product.price * item.quantity;
+            updateUrl();
         };
 
         // Kurangi kuantitas
@@ -85,6 +100,7 @@ export default {
             if (item.quantity > 1) {
                 item.quantity -= 1;
                 item.total = item.product.price * item.quantity;
+                updateUrl();
             }
         };
 
@@ -101,34 +117,32 @@ export default {
         // Handler pembayaran
         const handlePayment = () => {
             const orderData = {
-                paymentMethod: paymentMethod.value,
+                payment_method: paymentMethod.value,
+                addressId: 2,
                 items: items.value.map(item => ({
                     productId: item.product.id,
                     quantity: item.quantity,
                 })),
             };
 
-            // Simulasi respons sukses untuk dummy
-            const dummyPayment = {
-                order_id: '12345',
-                amount: total.value,
-                expired_at: new Date(Date.now() + 15 * 60 * 1000).toISOString(),
-                payment_method: paymentMethod.value,
-                payment_code: paymentMethod.value === 'qris' ? '/img/example/qr_code.png' : '128 081215559315',
-            };
-            onOrderSuccess(dummyPayment);
-
-            // Uncomment untuk integrasi API
-            // fetch('/api/order/store', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify(orderData),
-            // }).then(response => response.json()).then(onOrderSuccess);
+            fetch('/api/order', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(orderData),
+            })
+                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 'success') {
+                        onOrderSuccess(response.payment);
+                    } else {
+                        console.error('Error:', response.message);
+                    }
+                });
         };
 
         // Fungsi saat order sukses
         const onOrderSuccess = (payment) => {
-            const expiration = new Date(payment.expired_at).toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+            const expiration = new Date(payment.expired_at).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
             const diff = new Date(payment.expired_at) - new Date();
             const hoursRemaining = Math.floor(diff / (1000 * 60 * 60));
             const minutesRemaining = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
@@ -136,6 +150,7 @@ export default {
             const amount = `Rp ${formatPrice(payment.amount)},-`;
 
             paymentDetails.value = {
+                paymentId: payment.id,
                 amount,
                 timeRemaining,
                 expiration,
@@ -152,9 +167,9 @@ export default {
             }
 
             // Simulasi pembayaran sukses untuk dummy
-            setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
+            // setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
             // Uncomment untuk check status pembayaran
-            // checkPaymentStatus(payment.id);
+            checkPaymentStatus(payment.id);
         };
 
         // Fungsi saat pembayaran sukses
@@ -163,21 +178,29 @@ export default {
             showVaPaymentModal.value = false;
             showPaymentSuccessModal.value = true;
             setTimeout(() => {
-                showPaymentSuccessModal.value = false;
-                // Redirect ke halaman order (sesuaikan dengan rute Anda)
-                console.log(`Redirect to order/${orderId}`);
+                router.get('/order/processed')
             }, 1000);
         };
 
         // Check status pembayaran (placeholder untuk API)
         const checkPaymentStatus = (paymentId) => {
-            // Implementasi AJAX untuk cek status pembayaran
-            console.log(`Checking payment status for ID: ${paymentId}`);
+            const cpInterval = setInterval(() => {
+                fetch(`/api/order/payment/${paymentId}`)
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.status == 'success') {
+                            clearInterval(cpInterval);
+                            onPaymentSuccess(res.order_id)
+                        }
+                    })
+            }, 2000);
         };
 
         // Inisialisasi data (gunakan fetchData saat API siap)
-        onMounted(() => {
-            // fetchData(); // Uncomment saat API siap
+        onMounted(async () => {
+            const params = new URLSearchParams(window.location.search);
+            products.value = JSON.parse(params.get('products')) || [];
+            fetchData();
         });
 
         return {
@@ -261,19 +284,15 @@ export default {
                                     <div
                                         class="w-fit h-fit md:hidden flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center md:mt-0 md:mb-auto lg:my-0">
                                         <div @click="reduceQty(item)"
-                                            class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            class="select-none border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
                                             -</div>
                                         <p
-                                            class="item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
+                                            class="select-none item-quantity my-auto text-[10px] md:text-sm lg:text-2xl mx-2 md:mx-4 lg:mx-6">
                                             {{ item.quantity }}</p>
                                         <div @click="addQty(item)"
-                                            class="border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
+                                            class="select-none border border-black rounded-full py-0.5 md:py-[5px] lg:py-1 px-1.5 md:px-[8.5px] lg:px-3 text-[8px] lg:text-2xl cursor-pointer hover:bg-slate-100">
                                             +</div>
                                     </div>
-                                    <p class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-xl ml-3">Rp
-                                        {{
-                                            formatPrice(item.total)
-                                        }},-</p>
                                 </div>
                             </div>
                             <div class="w-[0%] md:w-[20%] mt-2">
@@ -284,7 +303,7 @@ export default {
                             </div>
                             <div class="hidden md:flex md:w-[20%] flex-row pt-1">
                                 <div
-                                    class="w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
+                                    class="select-none w-full h-fit flex flex-row lg:justify-center justify-start md:justify-center items-center lg:items-center my-auto md:mt-0 md:mb-auto lg:my-0">
                                     <div @click="reduceQty(item)"
                                         class="border border-black rounded-full py-[0.9px] lg:py-1 px-[7px] md:px-[8px] lg:px-3.5 text-[10px] md:text-sm lg:text-2xl cursor-pointer hover:bg-slate-100">
                                         -</div>
@@ -299,7 +318,7 @@ export default {
                             <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
                                 <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
                                     formatPrice(item.total)
-                                }},-</p>
+                                    }},-</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-0.5 lg:mt-6">
@@ -373,7 +392,7 @@ export default {
                                 class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">
                             <label for="mandiri"
                                 class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">Mandiri</label>
-                            <input type="radio" v-model="paymentMethod" value="mandiri" id="mandiri" disabled
+                            <input type="radio" v-model="paymentMethod" value="mandiri" id="mandiri"
                                 class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
                         </div>
                         <div class="w-full h-fit flex flex-row mt-4">
@@ -436,7 +455,8 @@ export default {
                                     paymentDetails.timeRemaining }}</p>
                                 <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
                                     <br>{{
-                                        paymentDetails.expiration }}</p>
+                                        paymentDetails.expiration }}
+                                </p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-row">
@@ -528,14 +548,15 @@ export default {
                                     paymentDetails.timeRemaining }}</p>
                                 <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay Before:
                                     <br>{{
-                                        paymentDetails.expiration }}</p>
+                                        paymentDetails.expiration }}
+                                </p>
                             </div>
                         </div>
                         <!-- !!! QR CODE NYA MASI STATIS !!!! -->
-                        <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                        <!-- <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                            class="mx-auto w-[156px] lg:w-52 object-contain"> -->
+                        <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
                             class="mx-auto w-[156px] lg:w-52 object-contain">
-                        <!-- <img :src="paymentDetails.paymentCode" alt="" loading="lazy"
-                        class="mx-auto w-52 object-contain"> -->
                         <!-- !!! QR CODE NYA MASI STATIS !!!! -->
 
                         <h2 class="text-black font-bold text-[8px] md:text-xs lg:text-base mt-2 md:mt-3 lg:mt-6">
@@ -561,7 +582,8 @@ export default {
         </div>
 
         <!-- Success Payment Modal -->
-        <div v-if="showPaymentSuccessModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div v-if="showPaymentSuccessModal"
+            class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div
                 class="bg-white w-[65vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow px-3 py-7 md:p-14 flex flex-col">
                 <h1 class="text-black text-[10px] md:text-xl font-medium mx-auto">Payment Successful!</h1>

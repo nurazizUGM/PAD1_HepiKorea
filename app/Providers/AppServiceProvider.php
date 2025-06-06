@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
-use Inertia\Inertia;
 use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
@@ -22,12 +21,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
-        if (env('FORCE_HTTPS')) {
+        if (strpos(env('APP_URL', ''), 'https') === 0) {
             URL::forceScheme('https');
         }
 
-        if (env('DEBUGBAR_ENABLED', false)) {
+        if (env('APP_DEBUG', false)) {
             config()->push('app.providers', 'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider');
         }
     }

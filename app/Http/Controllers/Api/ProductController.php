@@ -12,11 +12,12 @@ class ProductController extends Controller
     public function latest()
     {
         // 10 latest products
-        $result = Product::where('is_deleted', false)->with(['images', 'category'])->orderBy('created_at', 'desc')->limit(10)->get()->map(function ($product) {
+        $products = Product::where('is_deleted', false)->with(['images', 'category'])->orderBy('created_at', 'desc')->limit(10)->get();
+        $result = $products->map(function ($product) {
             return (object)[
                 'id' => $product->id,
                 'name' => $product->name,
-                'category' => $product->category->name,
+                'category' => $product->category?->name,
                 'price' => $product->price,
                 'image' => $product->images->first()->path
             ];
@@ -88,7 +89,7 @@ class ProductController extends Controller
 
     public function findOne(string $id)
     {
-        $product = Product::with(['category', 'images', 'reviews'])->findOrFail($id);
+        $product = Product::with(['category', 'images', 'reviews', 'reviews.user'])->findOrFail($id);
         return response()->json($product);
     }
 

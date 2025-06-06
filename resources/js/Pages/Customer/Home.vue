@@ -4,7 +4,8 @@
             <!-- Chat Button -->
             <a :href="lineUrl" target="_blank"
                 class="fixed flex flex-row bottom-8 right-8 px-2 py-2 text-base md:text-2xl font-bold text-[#3E6E7A] bg-white rounded-3xl items-center shadow-md hover:shadow-lg z-30">
-                <img src="/img/assets/icon/icon_customer_chat.svg" alt="icon_Chat" class="w-5 h-5 md:w-10 md:h-10 mr-1">
+                <img src="/img/assets/icon/icon_customer_chat.svg" alt="icon_Chat"
+                    class="w-5 h-5 md:w-10 md:h-10 mr-1" />
                 <p>Chat</p>
             </a>
 
@@ -18,24 +19,34 @@
                             <div
                                 class="w-full h-full flex flex-row absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2">
                                 <div class="w-1/2 h-full flex flex-col bg-[#3E6E7A] p-6 md:p-16 lg:p-20 text-white">
-                                    <h1 class="text-md md:text-base lg:text-5xl font-semibold">{{ carousel.title }}</h1>
-                                    <h2 class="text-xs md:text-xs lg:text-2xl font-medium mt-1 md:mt-8">{{ carousel.description }}
+                                    <h1 class="text-md md:text-base lg:text-5xl font-semibold">
+                                        {{ carousel.title }}
+                                    </h1>
+                                    <h2 class="text-xs md:text-xs lg:text-2xl font-medium mt-1 md:mt-8">
+                                        {{ carousel.description }}
                                     </h2>
                                 </div>
                                 <div class="w-1/2 h-full flex bg-white">
                                     <template v-if="carousel.media_type === 'image'">
                                         <img :src="getMediaUrl(carousel.media)" alt=""
-                                            class="w-full h-full object-contain">
+                                            class="w-full h-full object-contain" />
                                     </template>
-                                    <template v-else-if="carousel.media_type === 'video'">
+                                    <template v-else-if="
+                                        carousel.media_type === 'video'
+                                    ">
                                         <video class="w-full h-full object-contain" controls autoplay muted loop>
-                                            <source :src="getMediaUrl(carousel.media)" type="video/mp4">
-                                            Your browser does not support the video tag.
+                                            <source :src="getMediaUrl(carousel.media)
+                                                " type="video/mp4" />
+                                            Your browser does not support the
+                                            video tag.
                                         </video>
                                     </template>
-                                    <template v-else-if="carousel.media_type === 'youtube'">
-                                        <iframe class="w-full h-full pointer-events-none" :src="`${carousel.media}&loop=1&controls=0&showinfo=0`" title="YouTube video player"
-                                            frameborder="0"
+                                    <template v-else-if="
+                                        carousel.media_type === 'youtube'
+                                    ">
+                                        <iframe class="w-full h-full pointer-events-none"
+                                            :src="`${carousel.media}&loop=1&controls=0&showinfo=0`"
+                                            title="YouTube video player" frameborder="0"
                                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                                             referrerpolicy="strict-origin-when-cross-origin"></iframe>
                                     </template>
@@ -81,26 +92,38 @@
                 <div class="w-full flex flex-col py-5 md:py-10 px-4 md:px-8 lg:px-12">
                     <!-- Categories -->
                     <div class="w-fit md:w-2/6 lg:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0">
-                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">Category</h1>
+                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">
+                            Category
+                        </h1>
                     </div>
                     <div class="grid grid-cols-4 gap-x-3 gap-y-3 lg:gap-x-32 lg:gap-y-20 mt-4 md:mt-8 lg:mt-14">
                         <div v-for="category in categories" :key="category.id"
                             class="bg-[#FFFCFC] h-24 md:h-44 lg:h-52 flex flex-col text-center justify-center rounded-xl cursor-pointer"
-                            @click="$inertia.get(route('product.index', { category: category.id }))">
+                            @click="
+                                $inertia.get(
+                                    route('product.index', {
+                                        category: category.id,
+                                    })
+                                )
+                                ">
                             <img :src="getCategoryIcon(category.icon)" alt="category"
-                                class="w-12 h-12 md:h-36 lg:w-40 lg:h-40 mx-auto">
-                            <h2 class="text-black text-[10px] md:text-xs lg:text-lg font-semibold text-ellipsis overflow-hidden">{{
-                                category.name
-                            }}</h2>
+                                class="w-12 h-12 md:h-36 lg:w-40 lg:h-40 mx-auto" />
+                            <h2
+                                class="text-black text-[10px] md:text-xs lg:text-lg font-semibold text-ellipsis overflow-hidden">
+                                {{ category.name }}
+                            </h2>
                         </div>
                     </div>
 
                     <!-- New Arrival -->
-                    <div class="w-fit md:w-2/6 lg:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0 mt-4 md:mt-14">
-                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">New Arrival</h1>
+                    <div
+                        class="w-fit md:w-2/6 lg:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0 mt-4 md:mt-14">
+                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">
+                            New Arrival
+                        </h1>
                     </div>
                     <div class="relative mt-5 md:mt-10">
-                        <div class="overflow-x-auto no-scrollbar" ref="newArrivalContainer">
+                        <div class="overflow-x-auto no-scrollbar" id="newArrivalContainer">
                             <button @click="scrollLeft('newArrivalContainer')"
                                 class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 bg-orange-400 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full p-2 shadow-lg">
                                 <svg class="h-6 w-6 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -117,12 +140,20 @@
                                         d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
-                            <div class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
+                            <div
+                                class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
                                 <div v-for="product in newProducts" :key="product.id"
                                     class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
-                                    @click="$inertia.get(route('product.show', product.id))">
-                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                        :style="{ backgroundImage: `url(${getProductImage(product)})` }"></div>
+                                    @click="
+                                        $inertia.get(
+                                            route('product.show', product.id)
+                                        )
+                                        ">
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center" :style="{
+                                        backgroundImage: `url(${getProductImage(
+                                            product
+                                        )})`,
+                                    }"></div>
                                     <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                         <h1
                                             class="text-xs md: lg:text-sm text-[#3E6E7A] font-semibold text-nowrap text-ellipsis truncate overflow-hidden">
@@ -149,11 +180,14 @@
                     </div>
 
                     <!-- Best Seller -->
-                    <div class="w-fit md:w-2/6 lg:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0 mt-4 md:mt-14">
-                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">Best Seller</h1>
+                    <div
+                        class="w-fit md:w-2/6 lg:w-1/5 bg-white rounded-xl text-center py-2 px-4 md:px-0 mt-4 md:mt-14">
+                        <h1 class="text-[#3E6E7A] text-sm md:text-lg font-semibold">
+                            Best Seller
+                        </h1>
                     </div>
                     <div class="relative mt-5 md:mt-10">
-                        <div class="overflow-x-auto no-scrollbar" ref="bestSellerContainer">
+                        <div class="overflow-x-auto no-scrollbar" id="bestSellerContainer">
                             <button @click="scrollLeft('bestSellerContainer')"
                                 class="absolute top-1/2 left-0 transform -translate-y-1/2 z-10 bg-orange-400 bg-opacity-50 hover:bg-opacity-80 text-white rounded-full p-2 shadow-lg">
                                 <svg class="h-6 w-6 rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -170,12 +204,20 @@
                                         d="M9 5l7 7-7 7" />
                                 </svg>
                             </button>
-                            <div class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
+                            <div
+                                class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
                                 <div v-for="product in popularProducts" :key="product.id"
                                     class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
-                                    @click="$inertia.get(route('product.show', product.id))">
-                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center"
-                                        :style="{ backgroundImage: `url(${getProductImage(product)})` }"></div>
+                                    @click="
+                                        $inertia.get(
+                                            route('product.show', product.id)
+                                        )
+                                        ">
+                                    <div class="w-full h-4/6 bg-cover bg-no-repeat bg-center" :style="{
+                                        backgroundImage: `url(${getProductImage(
+                                            product
+                                        )})`,
+                                    }"></div>
                                     <div class="w-full h-2/6 py-0.5 px-1.5 flex flex-col">
                                         <h1
                                             class="text-xs lg:text-sm text-[#3E6E7A] font-semibold text-nowrap text-ellipsis truncate overflow-hidden">
@@ -207,112 +249,101 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
-import Layout from '../Layouts/Customer.vue';
-import { Carousel, initFlowbite } from 'flowbite'; // Impor Flowbite
+import { Carousel, initCarousels } from "flowbite"; // Impor Flowbite
+import Layout from "../Layouts/Customer.vue";
 
 export default {
+    data() {
+        return {
+            carousels: [],
+            categories: [],
+            newProducts: [],
+            popularProducts: [],
+        };
+    },
     components: {
         Layout,
     },
     props: {
         lineUrl: String,
     },
-    setup() {
-        const carousels = ref([]);
-        const categories = ref([]);
-        const newProducts = ref([]);
-        const popularProducts = ref([]);
-        const newArrivalContainer = ref(null);
-        const bestSellerContainer = ref(null);
-
-        // Fetch data from API
-        const fetchData = async () => {
+    methods: {
+        async fetchData() {
             try {
-                const [carouselRes, categoryRes, newProductsRes, popularProductsRes] = await Promise.all([
-                    fetch('/api/carousel'),
-                    fetch('/api/category'),
-                    fetch('/api/product/latest'),
-                    fetch('/api/product/popular'),
+                await Promise.all([
+                    fetch("/api/carousel").then(
+                        async (res) => (this.carousels = await res.json())
+                    ).then(() => {
+                        // Pastikan carousels tidak kosong sebelum inisialisasi
+                        if (this.carousels.length > 0) {
+                            initCarousels();
+                        }
+                    }),
+                    fetch("/api/category").then(
+                        async (res) => (this.categories = await res.json())
+                    ),
+                    fetch("/api/product/latest").then(
+                        async (res) => (this.newProducts = await res.json())
+                    ),
+                    fetch("/api/product/popular").then(
+                        async (res) => (this.popularProducts = await res.json())
+                    ),
                 ]);
 
-                carousels.value = await carouselRes.json();
-                categories.value = await categoryRes.json();
-                newProducts.value = await newProductsRes.json();
-                popularProducts.value = await popularProductsRes.json();
-
                 // Inisialisasi carousel setelah data tersedia
-                initCarousel();
+                this.initCarousel();
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error("Error fetching data:", error);
             }
-        };
-
-        // Media URL handler
-        const getMediaUrl = (media) => {
+        },
+        getMediaUrl(media) {
+            if (!media) return "https://placehold.co/200";
             if (/^http/.test(media)) return media;
-            return `${media}` || '/img/assets/bg/background_auth.svg';
-        };
-
-        // Category icon handler
-        const getCategoryIcon = (icon) => {
+            return `/api/file?path=${media.replace(/\/?storage\//g, "")}`;
+        },
+        getCategoryIcon(icon) {
+            if (!icon) return "https://placehold.co/200";
             if (/^http/.test(icon)) return icon;
-            return `${icon}` || '/img/assets/icon/icon_homepage_category_fashion.png';
-        };
-
-        // Product image handler
-        const getProductImage = (product) => {
-            const image = product.image;
+            return `/api/file?path=${icon.replace(/\/?storage\//g, "")}`
+        },
+        getProductImage(product) {
+            if (!product?.image) return "https://placehold.co/200";
+            let image = product.image;
             if (/^http/.test(image)) return image;
-            return `${image}` || 'https://placehold.co/200';
-        };
-
-        // Price formatting
-        const formatPrice = (price) => {
-            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        };
-
-        // Scroll functions
-        const scrollRight = (containerRef) => {
-            const container = containerRef === 'newArrivalContainer' ? newArrivalContainer.value : bestSellerContainer.value;
-            container.scrollBy({ left: 400, behavior: 'smooth' });
-        };
-
-        const scrollLeft = (containerRef) => {
-            const container = containerRef === 'newArrivalContainer' ? newArrivalContainer.value : bestSellerContainer.value;
-            container.scrollBy({ left: -400, behavior: 'smooth' });
-        };
-
-        // Inisialisasi carousel
-        const initCarousel = () => {
-            const carouselElement = document.getElementById('default-carousel');
-            if (carouselElement && carousels.value.length > 0) {
-                new Carousel(carouselElement, {
-                    interval: 5000, // Otomatis berganti setiap 5 detik (opsional)
-                });
+            return `/api/file?path=${image.replace(/\/?storage\//g, "")}`;
+        },
+        formatPrice(price) {
+            // Price formatting
+            return price?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        },
+        scrollRight(containerRef) {
+            // Scroll functions
+            const container = containerRef === "newArrivalContainer"
+                ? document.getElementById("newArrivalContainer")
+                : document.getElementById("bestSellerContainer");
+            container.scrollBy({ left: 400, behavior: "smooth" });
+        },
+        scrollLeft(containerRef) {
+            const container = containerRef === "newArrivalContainer"
+                ? document.getElementById("newArrivalContainer")
+                : document.getElementById("bestSellerContainer");
+            container.scrollBy({ left: -400, behavior: "smooth" });
+        },
+        initCarousel() {
+            // Inisialisasi carousel
+            const carouselElement = document.getElementById("default-carousel");
+            if (carouselElement && this.carousels.length > 0) {
+                // Otomatis berganti setiap 5 detik (opsional)
+                new Carousel(carouselElement, { interval: 5000 });
             }
-        };
+        },
+    },
+    mounted() {
+        // Ambil data saat komponen dimuat
+        this.fetchData();
 
-        onMounted(() => {
-            fetchData();
-            // Inisialisasi Flowbite (opsional, tergantung konfigurasi Anda)
-            initFlowbite();
-        });
-
-        return {
-            carousels,
-            categories,
-            newProducts,
-            popularProducts,
-            newArrivalContainer,
-            bestSellerContainer,
-            getMediaUrl,
-            getCategoryIcon,
-            getProductImage,
-            formatPrice,
-            scrollRight,
-            scrollLeft,
-        };
+        // Inisialisasi Flowbite (opsional, tergantung konfigurasi Anda)
+        // initFlowbite();
     },
 };
 </script>

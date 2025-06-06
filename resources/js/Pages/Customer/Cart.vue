@@ -1,175 +1,76 @@
 <script>
-import { ref, computed, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
+import axios from 'axios';
 import Layout from '../Layouts/Customer.vue';
 
 export default {
     components: {
         Layout,
     },
-    setup() {
-        // Dummy data sementara
-        const carts = ref([
-            {
-                id: 1,
-                product: {
-                    id: 1,
-                    name: 'Samsung S24 Ultra',
-                    price: 24000000,
-                    image: null,
-                },
-                quantity: 2,
-                selected: false,
-            },
-            {
-                id: 2,
-                product: {
-                    id: 2,
-                    name: 'iPhone 14 Pro',
-                    price: 20000000,
-                    image: 'http://example.com/iphone.jpg',
-                },
-                quantity: 1,
-                selected: false,
-            },
-            {
-                id: 3,
-                product: {
-                    id: 3,
-                    name: 'Google Pixel 8',
-                    price: 15000000,
-                    image: '/img/example/admin_order_img_phone.png',
-                },
-                quantity: 3,
-                selected: false,
-            },
-            {
-                id: 4,
-                product: {
-                    id: 1,
-                    name: 'Samsung S24 Ultra',
-                    price: 24000000,
-                    image: null,
-                },
-                quantity: 2,
-                selected: false,
-            },
-            {
-                id: 5,
-                product: {
-                    id: 2,
-                    name: 'iPhone 14 Pro',
-                    price: 20000000,
-                    image: 'http://example.com/iphone.jpg',
-                },
-                quantity: 1,
-                selected: false,
-            },
-            {
-                id: 6,
-                product: {
-                    id: 3,
-                    name: 'Google Pixel 8',
-                    price: 15000000,
-                    image: '/img/example/admin_order_img_phone.png',
-                },
-                quantity: 3,
-                selected: false,
-            },
-            {
-                id: 7,
-                product: {
-                    id: 3,
-                    name: 'Google Pixel 8',
-                    price: 15000000,
-                    image: '/img/example/admin_order_img_phone.png',
-                },
-                quantity: 3,
-                selected: false,
-            },
-        ]);
-
-        const showDeleteModal = ref(false);
-        const showSuccessModal = ref(false);
-        const selectAll = ref(false);
-
-        // Fungsi untuk mengambil data dari API (placeholder)
-        const fetchData = async () => {
+    data() {
+        return {
+            carts: [],
+            showDeleteModal: false,
+            showSuccessModal: false,
+            selectAll: false,
+        }
+    },
+    computed: {
+        totalPrice() {
+            return this.carts.reduce((sum, cart) => sum + (cart.selected ? cart.product.price * cart.quantity : 0), 0)
+        },
+        selectedCount() {
+            return this.carts.filter(cart => cart.selected).length;
+        }
+    },
+    methods: {
+        async fetchData() {
             try {
                 const response = await fetch('/api/cart'); // Ganti dengan endpoint API Anda
-                carts.value = await response.json();
+                this.carts = await response.json();
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
-        };
-
-        // Handler untuk gambar
-        const getImageUrl = (image) => {
+        },
+        getImageUrl(image) {
             if (image && /^http/.test(image)) return image;
             if (image) return `/storage/${image}`;
             return '/img/example/admin_order_img_phone.png';
-        };
-
-        // Format harga
-        const formatPrice = (price) => {
+        },
+        formatPrice(price) {
             return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        };
-
-        // Hitung total harga
-        const totalPrice = computed(() => {
-            return carts.value.reduce((sum, cart) => sum + (cart.selected ? cart.product.price * cart.quantity : 0), 0);
-        });
-
-        // Hitung jumlah item yang dipilih
-        const selectedCount = computed(() => {
-            return carts.value.filter(cart => cart.selected).length;
-        });
-
-        // Toggle select all
-        const toggleSelectAll = () => {
-            carts.value.forEach(cart => (cart.selected = selectAll.value));
-        };
-
-        // Konfirmasi penghapusan
-        const confirmDelete = () => {
-            carts.value = carts.value.filter(cart => !cart.selected);
-            showDeleteModal.value = false;
-            showSuccessModal.value = true;
-            setTimeout(() => (showSuccessModal.value = false), 2000); // Tutup otomatis setelah 2 detik
-        };
-
-        // Fungsi checkout (placeholder untuk API)
-        const checkout = () => {
-            const selectedProducts = carts.value.filter(cart => cart.selected).map(cart => ({
+        },
+        toggleSelectAll() {
+            this.carts.forEach(cart => (cart.selected = this.selectAll));
+        },
+        async confirmDelete() {
+            await axios.delete('/api/cart', {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                data: {
+                    id: this.carts.filter(cart => cart.selected).map(cart => cart.id),
+                },
+            })
+            await this.fetchData();
+            this.showDeleteModal = false;
+            this.showSuccessModal = true;
+            setTimeout(() => (this.showSuccessModal = false), 2000); // Tutup otomatis setelah 2 detik
+        },
+        checkout() {
+            const selectedProducts = this.carts.filter(cart => cart.selected).map(cart => ({
                 product_id: cart.product.id,
                 quantity: cart.quantity,
             }));
             console.log('Checkout data:', selectedProducts);
-            // Uncomment dan sesuaikan dengan API Anda
-            // fetch('/api/checkout', {
-            //   method: 'POST',
-            //   headers: { 'Content-Type': 'application/json' },
-            //   body: JSON.stringify({ products: selectedProducts }),
-            // }).then(response => response.json()).then(data => console.log(data));
-        };
 
-        // Inisialisasi data (gunakan fetchData saat API siap)
-        onMounted(() => {
-            // fetchData(); // Uncomment saat API siap
-        });
-
-        return {
-            carts,
-            showDeleteModal,
-            showSuccessModal,
-            selectAll,
-            getImageUrl,
-            formatPrice,
-            totalPrice,
-            selectedCount,
-            toggleSelectAll,
-            confirmDelete,
-            checkout,
-        };
+            router.get('/checkout', {
+                products: JSON.stringify(selectedProducts),
+            });
+        },
+    },
+    mounted() {
+        this.fetchData();
     },
 };
 </script>
@@ -251,17 +152,18 @@ export default {
                         </div>
                         <!-- Text Count Total Product -->
                         <p
-                        class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base mx-auto lg:ml-auto lg:mr-2 my-auto hidden md:flex">
+                            class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base mx-auto lg:ml-auto lg:mr-2 my-auto hidden md:flex">
                             Total ({{ selectedCount }}) Product
                         </p>
                         <!-- Total Price -->
-                        <h1 class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-2xl ml-12 md:ml-16 my-auto">
+                        <h1
+                            class="text-orange-400 font-semibold text-[10px] md:text-sm lg:text-2xl ml-12 md:ml-16 my-auto">
                             Rp {{ formatPrice(totalPrice) }},-
                         </h1>
                     </div>
                     <form @submit.prevent="checkout" class="ml-auto">
                         <button type="submit"
-                        class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
+                            class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
                             Checkout
                         </button>
                     </form>

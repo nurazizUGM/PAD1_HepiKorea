@@ -13,12 +13,12 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\HomeController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\RequestOrderController;
 use App\Http\Middleware\GuestMiddleware;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 /*
@@ -60,7 +60,7 @@ Route::get('/Customer/Product/Show/{id}', function ($id) {
     return Inertia::render('Customer/Product/Show', ['id' => $id]);
 });
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::inertia('/', 'Customer/Home')->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {
@@ -84,7 +84,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::post('reset_password', [AuthController::class, 'setPassword'])->name('set_password');
 
     Route::middleware('auth')->group(function () {
-        Route::get('profile', [ProfileController::class, 'index'])->name('profile');
+        Route::inertia('profile', 'Customer/User/Profile')->name('profile');
         Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
         Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
         Route::get('address', [ProfileController::class, 'address'])->name('address');
@@ -92,55 +92,60 @@ Route::prefix('auth')->name('auth.')->group(function () {
 });
 
 Route::prefix('product')->name('product.')->controller(ProductController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::get('/{product}', 'show')->name('show');
+    Route::inertia('/', 'Customer/Product/Index')->name('index');
+    Route::get('/{product}', function ($id) {
+        return Inertia::render('Customer/Product/Show', ['id' => $id]);
+    })->name('show');
 });
 
-Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
-    Route::get('/', 'index')->name('index');
-    Route::post('add', 'add')->name('add');
-    Route::delete('delete', 'destroy')->name('delete');
-    Route::post('update', 'update')->name('update');
-});
+Route::inertia('cart', 'Customer/Cart')->name('cart.index')->middleware('auth');
+// Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
+//     Route::get('/', 'index')->name('index');
+//     Route::post('add', 'add')->name('add');
+//     Route::delete('delete', 'destroy')->name('delete');
+//     Route::post('update', 'update')->name('update');
+// });
 
-Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
+Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middleware('auth');
+// Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
 Route::prefix('request-order')->group(function () {
-    Route::view('/', 'customer.order.request')->name('request-order');
-    Route::post('/', [OrderController::class, 'requestOrder'])->name('request-order');
-    Route::get('confirmed', [RequestOrderController::class, 'show'])->name('confirmed');
+    Route::inertia('/', 'Customer/Order/Request')->name('request-order');
+    Route::inertia('confirmed', 'Customer/Order/Custom')->name('confirmed');
 });
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
-    Route::get('show/{id}', 'show')->name('show');
-    Route::get('history', 'history')->name('history');
     Route::post('/', 'store')->name('store');
-    Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
-    Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
-    Route::get('arrived/{id}', 'arrived')->name('arrived');
-    Route::get('cancel/{id}', 'cancel')->name('cancel');
-    Route::post('review', 'review')->name('review');
+    Route::get('show/{id}', 'show')->name('show');
+
+    // Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
+    // Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
+    // Route::get('arrived/{id}', 'arrived')->name('arrived');
+    // Route::get('cancel/{id}', 'cancel')->name('cancel');
+    // Route::post('review', 'review')->name('review');
+
+    Route::redirect('/', '/order/unpaid')->name('index');
+    Route::get('{status}', function ($status) {
+        if (!in_array($status, ['unpaid', 'processed', 'sent', 'finished', 'canceled'])) {
+            return Inertia::location('/order/unpaid');
+        }
+        return Inertia::render('Customer/Order/History', ['status' => $status]);
+    })->name('history');
 })->middleware('auth');
 
-Route::get('faq', [FaqController::class, 'faq'])->name('faq');
+Route::inertia('/faq', 'Customer/Faq')->name('faq');
 
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
+    Route::inertia('profile', 'Admin/Profile')->name('profile');
+
     Route::controller(AdminProfileController::class)->group(function () {
-        Route::inertia('profile', 'Admin/Profile')->name('profile');
-        
+
         Route::patch('profile', 'updateProfile')->name('profile.user');
         Route::get('setting', 'setting')->name('profile.setting');
     });
 
-    Route::prefix('product')->name('product.')->controller(AdminProductController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('create', 'create')->name('create');
-        Route::post('store', 'store')->name('store');
-        Route::get('edit/{product}', 'edit')->name('edit');
-        Route::patch('update/{product}', 'update')->name('update');
-        Route::delete('delete/{product}', 'destroy')->name('delete');
-    });
+    Route::inertia('product', 'Admin/Product/Index')->name('product.index');
 
     Route::prefix('category')->name('category.')->controller(AdminCategoryController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -157,22 +162,14 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     });
 
     Route::prefix('customer')->name('customer.')->controller(AdminCustomerController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('show/{id}', 'show')->name('show');
-        Route::get('review', 'review')->name('review');
+        Route::inertia('/', 'Admin/Customer/Index')->name('index');
+        Route::get('/{id}', function ($id) {
+            return Inertia::render('Admin/Customer/Profile', ['id' => $id]);
+        })->name('show');
     });
 
-    Route::prefix('faq')->name('faq.')->controller(FaqController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::patch('update/{faq}', 'update')->name('update');
-        Route::delete('delete/{faq}', 'delete')->name('delete');
-    });
-
-    Route::prefix('analytic')->name('analytic.')->controller(AdminAnalyticController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::get('export', 'export')->name('export');
-    });
+    Route::inertia('faq', 'Admin/Faq')->name('faq');
+    Route::inertia('analytics', 'Admin/Analytics')->name('analytics');
 
     Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
         Route::get('/', 'index')->name('index');
@@ -187,3 +184,11 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 Route::get('/view/{view}', function ($view) {
     return view($view);
 });
+
+// Route::get('/storage/{path}', function ($path) {
+//     if (Storage::exists($path)) {
+//         return Response::file(Storage::path($path));
+//     } else if (file_exists(public_path($path))) {
+//         return Response::file(public_path($path));
+//     }
+// })->with('path', '.*')->name('storage');

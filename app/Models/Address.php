@@ -17,5 +17,6 @@ class Address extends Model
         'city',
         'province',
         'postal_code',
+        'last_used',
     ];
 }
