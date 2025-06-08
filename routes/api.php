@@ -50,6 +50,7 @@ Route::name('api.')->group(function () {
     Route::prefix('auth')->controller(AuthController::class)->group(function () {
         Route::post('register', 'register');
         Route::post('login', 'login');
+        Route::post('google', 'google');
 
         Route::prefix('forgot-password')->group(function () {
             Route::post('/', 'verify');
