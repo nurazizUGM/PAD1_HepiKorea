@@ -66,9 +66,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::inertia('profile', 'Customer/User/Profile')->name('profile');
-        Route::patch('profile', [ProfileController::class, 'update'])->name('profile');
-        Route::get('notification', [ProfileController::class, 'notification'])->name('notification');
-        Route::get('address', [ProfileController::class, 'address'])->name('address');
+        Route::inertia('address', 'Customer/User/Address')->name('address');
     });
 });
 
