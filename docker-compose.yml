@@ -1,0 +1,40 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.franken
+    ports:
+      - "8000:80"
+    env_file:
+      - ./.env.docker
+    environment:
+      - SERVER_NAME=:80
+      - CADDY_GLOBAL_OPTIONS=auto_https off
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_DATABASE=hepikorea
+      - DB_USERNAME=user
+      - DB_PASSWORD=password
+    volumes:
+      - app_storage:/app/storage
+
+  db:
+    image: mariadb:latest
+    environment:
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_DATABASE=hepikorea
+      - MARIADB_USER=user
+      - MARIADB_PASSWORD=password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+    ports:
+      - "8001:8080"
+
+volumes:
+  db_data:
+    driver: local
+  app_storage:
+    driver: local
