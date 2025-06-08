@@ -4,4 +4,4 @@ build:
     web: Dockerfile.franken
 run:
   # web: php artisan serve --host=0.0.0.0 --port=$PORT
-  web: frankenphp php-server -l '0.0.0.0:$PORT' -r public/
+  web: frankenphp php-server -l "0.0.0.0:$PORT" -r public/
