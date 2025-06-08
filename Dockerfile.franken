@@ -4,10 +4,10 @@ FROM dunglas/frankenphp:php8.2-alpine
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Git
-RUN apk add --no-cache git  nodejs npm
+RUN apk add --no-cache git nodejs npm
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_mysql
+RUN docker-php-ext-install -j$(nproc) pdo_mysql
 
 # Increase max file size in php.ini
 RUN echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/max-fileupload.ini && \
