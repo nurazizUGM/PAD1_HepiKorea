@@ -36,29 +36,10 @@ use Inertia\Inertia;
  * Testing Inertia
  * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
  */
-Route::get('/inertia/{folder}/{view}', function ($folder, $view) {
-    return Inertia::render("{$folder}/{$view}");
-});
-
-Route::get('/inertia/{folder}/{subfolder}/{view}', function ($folder, $subfolder, $view) {
-    return Inertia::render("{$folder}/{$subfolder}/{$view}");
-});
-// Route::get('/inertia/{folder}/{subfolder}/{view}/{id}', function ($folder, $subfolder, $view, $id) {
-//     return Inertia::render("{$folder}/{$subfolder}/{$view}/{$id}");
-// });
-
-Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
-    return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
-});
-
-// Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}/{id}', function ($folder, $subfolder, $subsubfolder, $view, $id) {
-//     return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}/{$id}");
-// });
-
-
-Route::get('/Customer/Product/Show/{id}', function ($id) {
-    return Inertia::render('Customer/Product/Show', ['id' => $id]);
-});
+Route::get('/inertia/{path}', function ($path) {
+    return dd($path);
+    return Inertia::render("{$path}");
+})->where('path', '.*');
 
 Route::inertia('/', 'Customer/Home')->name('home');
 
@@ -99,15 +80,7 @@ Route::prefix('product')->name('product.')->controller(ProductController::class)
 });
 
 Route::inertia('cart', 'Customer/Cart')->name('cart.index')->middleware('auth');
-// Route::prefix('cart')->name('cart.')->controller(CartController::class)->group(function () {
-//     Route::get('/', 'index')->name('index');
-//     Route::post('add', 'add')->name('add');
-//     Route::delete('delete', 'destroy')->name('delete');
-//     Route::post('update', 'update')->name('update');
-// });
-
 Route::inertia('checkout', 'Customer/Order/Checkout')->name('checkout')->middleware('auth');
-// Route::post('checkout', [OrderController::class, 'checkout'])->name('checkout')->middleware('auth');
 
 Route::prefix('request-order')->group(function () {
     Route::inertia('/', 'Customer/Order/Request')->name('request-order');
@@ -180,14 +153,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
             return Inertia::render('Admin/Order/Confirmation-detail', ['orderId' => $id]);
         })->name('confirmation');
     });
-    // Route::prefix('order')->name('order.')->controller(AdminOrderController::class)->group(function () {
-    //     Route::get('/', 'index')->name('index');
-    //     Route::get('confirmation/{id}', 'showConfirmation')->name('confirmation.show');
-    //     Route::get('show/{id}', 'show')->name('show');
-    //     Route::post('process/{id}', 'process')->name('process');
-    //     Route::post('sent/{id}', 'sent')->name('sent');
-    //     Route::post('send/{id}', 'send')->name('send');
-    // });
 });
 
 Route::get('/view/{view}', function ($view) {
