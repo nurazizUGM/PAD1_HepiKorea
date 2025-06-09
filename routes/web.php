@@ -60,6 +60,8 @@ Route::get('/Customer/Product/Show/{id}', function ($id) {
     return Inertia::render('Customer/Product/Show', ['id' => $id]);
 });
 
+Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
+
 Route::inertia('/', 'Customer/Home')->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
