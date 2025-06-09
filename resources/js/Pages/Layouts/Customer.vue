@@ -142,9 +142,9 @@ onMounted(() => {
                                                 notificationCount }}</span>
                                     </button>
                                     <div v-if="showNotifications"
-                                        class="w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute right-0">
+                                        class="w-[13rem] md:w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute -right-8 md:right-0">
                                         <div class="px-4 py-3">
-                                            <p class="text-sm font-medium text-gray-900">Notifications</p>
+                                            <p class="text-[11px] md:text-sm font-medium text-gray-900">Notifications</p>
                                         </div>
                                         <ul class="py-1">
                                             <li v-for="notification in notifications" :key="notification.id">
@@ -154,7 +154,7 @@ onMounted(() => {
                                                     notification.title }}</Link>
                                             </li>
                                             <Link :href="route('auth.notification')"
-                                                class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
+                                                class="block text-center px-4 py-2 text-[11px] md:text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                             View all</Link>
                                         </ul>
                                     </div>
