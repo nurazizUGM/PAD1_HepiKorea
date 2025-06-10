@@ -1,5 +1,7 @@
 <script>
-import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import moment from 'moment';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { route } from 'ziggy-js';
 import Layout from '../../Layouts/Customer.vue';
 
@@ -48,16 +50,94 @@ export default {
         };
 
         const getImageUrl = (image) => {
-            return image ? `/storage/${image}` : '/img/example/example_phone.png';
+            if (image && /^http/.test(image)) return image;
+            if (image) return `/storage/${image}`;
+            return '/img/example/admin_order_img_phone.png';
         };
 
         const formatPrice = (price) => {
             return price?.toString()?.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
         };
 
+        const paymentCheck = ref(null);
+        const paymentModal = ref(false);
+        const remainingTime = computed(() => {
+            if (paymentDetails.value?.expired_at) {
+                const now = moment();
+                const end = moment(paymentDetails.value.expired_at);
+                const duration = moment.duration(end.diff(now));
+                return `${duration.days()} days, ${duration.hours()} hours, ${duration.minutes()} minutes`;
+            }
+            return 'N/A';
+        });
+        const paymentDetails = ref({
+            id: null,
+            expired_at: null,
+            amount: 0,
+            payment_method: '',
+            payment_code: '',
+            transaction_id: '',
+        });
+
         const pay = (payment) => {
-            console.log('Pay:', payment); // Gantikan dengan logika pembayaran API
+            paymentDetails.value = payment
+            paymentModal.value = true;
+            if (paymentCheck.value) {
+                clearInterval(paymentCheck.value);
+            }
+
+            paymentCheck.value = setInterval(() => {
+                axios.get(`/api/order/payment/${paymentDetails.value.id}`)
+                    .then(({ data }) => {
+                        if (data.status == 'success') {
+                            clearInterval(paymentCheck.value);
+                            setActiveTab('processed');
+                        }
+                    })
+            }, 2000);
         };
+
+        const getBankLogo = (paymentMethod) => {
+            switch (paymentMethod) {
+                case 'bri':
+                    return '/img/assets/icon/icon_checkout_bri.svg';
+                case 'bni':
+                    return '/img/assets/icon/icon_checkout_bni.svg';
+                case 'mandiri':
+                    return '/img/assets/icon/icon_checkout_mandiri.svg';
+                case 'bca':
+                    return '/img/assets/icon/icon_checkout_bca.svg';
+                default:
+                    return '/img/assets/icon/icon_checkout_gopay.svg';
+            }
+        };
+
+        const cancelOrderId = ref(null);
+        const cancelOrder = (orderId, confirmed = false) => {
+            if (confirmed) {
+                axios.post(`/api/order/${orderId}/cancel`)
+                    .then(() => {
+                        cancelOrderId.value = null;
+                        setActiveTab('finished');
+                    })
+                    .catch(err => {
+                        console.error('Error cancelling payment:', err);
+                    });
+            } else {
+                console.log('Cancel Order Confirmation:', orderId);
+                cancelOrderId.value = orderId;
+            }
+        };
+
+        function copyPaymentCode() {
+            navigator.clipboard.writeText(paymentDetails.value.payment_code)
+                .then(() => {
+                    console.log('Payment code copied to clipboard');
+                })
+                .catch(err => {
+                    console.error('Failed to copy payment code:', err);
+                });
+        }
 
         const showShipmentDetail = (order) => {
             selectedOrder.value = order;
@@ -99,6 +179,15 @@ export default {
             return status.replace(/_/g, ' ').replace(/\b\w/g, char => char.toUpperCase());
         }
 
+        const orderPayment = (order) => {
+            if (!order.order_payment || order.order_payment.length == 0) return null;
+            return order.order_payment.find(payment => payment.status === 'pending' && moment(payment.expired_at).isAfter(moment()));
+        }
+
+        const formatTime = (date) => {
+            return moment(date).locale('id').format('DD MMMM YYYY HH:mm');
+        };
+
         // Fetch Data (Uncomment dan sesuaikan saat menggunakan API)
         const fetchData = async () => {
             try {
@@ -107,7 +196,10 @@ export default {
                     .then(data => {
                         switch (activeTab.value) {
                             case 'unpaid':
-                                unpaidOrders.value = data;
+                                unpaidOrders.value = data.map(order => ({
+                                    ...order,
+                                    payment: orderPayment(order),
+                                }));
                                 break;
                             case 'processed':
                                 processedOrders.value = data;
@@ -130,6 +222,22 @@ export default {
             fetchData();
         });
 
+        onBeforeUnmount(() => {
+            if (paymentCheck.value) {
+                clearInterval(paymentCheck.value);
+            }
+        });
+
+        watch(paymentModal, (newValue) => {
+            if (!newValue) {
+                if (paymentCheck.value) {
+                    clearInterval(paymentCheck.value);
+                }
+                paymentCheck.value = null;
+                paymentDetails.value = {};
+            }
+        });
+
         return {
             activeTab,
             tabs,
@@ -140,7 +248,6 @@ export default {
             setActiveTab,
             getImageUrl,
             formatPrice,
-            pay,
             showShipmentDetail,
             showReviewModal,
             payShipment,
@@ -152,7 +259,16 @@ export default {
             setRating,
             changeReviewPhoto,
             submitReview,
-            orderStatus
+            orderStatus,
+            formatTime,
+            remainingTime,
+            pay,
+            paymentModal,
+            paymentDetails,
+            getBankLogo,
+            copyPaymentCode,
+            cancelOrder,
+            cancelOrderId
         };
     },
 };
@@ -212,23 +328,23 @@ export default {
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
-                                    <div v-if="order.lastPayment" class="w-1/2 mt-auto lg:my-0 mr-1 lg:mr-0">
+                                    <div v-if="order.payment" class="w-1/2 mt-auto lg:my-0 mr-1 lg:mr-0">
                                         <div
                                             class="w-full h-fit lg:h-full bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-3 lg:p-4">
-                                            <p>Bayar sebelum {{ order.lastPayment.expiredTime }} dengan {{
-                                                order.lastPayment.paymentMethod }}</p>
+                                            <p>Bayar sebelum {{ formatTime(order.payment.expired_at)
+                                                }} dengan {{ order.payment.payment_method?.toUpperCase() }}</p>
                                         </div>
                                     </div>
                                     <div
                                         class="w-1/2 ml-auto flex flex-row justify-end items-center md:mt-auto md:mb-1.5 lg:my-0">
-                                        <button v-if="order.lastPayment"
+                                        <button v-if="order.payment"
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
-                                            @click="pay(order.lastPayment)">
+                                            @click="pay(order.payment)">
                                             Pay Product
                                         </button>
                                         <button
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3 ml-1 lg:ml-4"
-                                            @click="$inertia.get(route('order.cancel', order.id))">
+                                            @click="cancelOrder(order.id)">
                                             Cancel
                                         </button>
                                     </div>
@@ -418,6 +534,184 @@ export default {
             </div>
 
             <!-- Modals -->
+            <!-- Payment Modal -->
+            <div v-if="paymentModal" class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                <div class="bg-white w-[70vw] md:w-[60vw] lg:w-[50vw] h-auto rounded-[30px] shadow p-4">
+                    <div class="relative w-full h-full flex flex-row">
+                        <button @click="paymentModal = false"
+                            class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-5 -right-4 lg:-top-5 lg:-right-5">
+                            <p class="m-auto text-white text-base">X</p>
+                        </button>
+
+                        <!-- pembayaran qris -->
+                        <div v-if="paymentDetails.payment_method == 'qris'"
+                            class="w-full h-full flex flex-col md:px-10 md:pt-5 md:pb-5 lg:px-14 lg:pt-10 lg:pb-2">
+                            <h1 class="text-black font-bold text-xs md:text-sm lg:text-2xl">Payment</h1>
+                            <div class="w-full h-fit flex flex-row mt-3">
+                                <div class="w-[70%]">
+                                    <p
+                                        class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                        Total Payment</p>
+                                </div>
+                                <div class="w-[30%]">
+                                    <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto">Rp
+                                        {{
+                                            formatPrice(paymentDetails.amount)
+                                        }}</p>
+                                </div>
+                            </div>
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <div class="w-[70%]">
+                                    <p
+                                        class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                        Pay In</p>
+                                </div>
+                                <div class="w-[30%] h-fit flex flex-col">
+                                    <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
+                                        remainingTime
+                                        }}</p>
+                                    <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay
+                                        Before:
+                                        <br>
+                                        {{ formatTime(paymentDetails.expired_at) }}
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- !!! QR CODE NYA MASI STATIS !!!! -->
+                            <!-- <img src="/img/example/example_qrscan.svg" alt="" loading="lazy"
+                                class="mx-auto w-[156px] lg:w-52 object-contain"> -->
+                            <img :src="paymentDetails.payment_code" alt="" loading="lazy"
+                                class="mx-auto w-[156px] lg:w-52 object-contain">
+                            <!-- !!! QR CODE NYA MASI STATIS !!!! -->
+
+                            <h2 class="text-black font-bold text-[8px] md:text-xs lg:text-base mt-2 md:mt-3 lg:mt-6">
+                                eWallet Transfer Instructions
+                            </h2>
+                            <p
+                                class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
+                                1. Buka aplikasi eWallet Anda. <br>
+                                2. Pilih menu Scan QR Code. <br>
+                                3. Arahkan kamera ke QR Code di atas. <br>
+                                4. Pastikan jumlah pembayaran sesuai dengan yang tertera di atas. <br>
+                                5. Masukkan PIN eWallet Anda untuk menyelesaikan pembayaran. <br>
+                                6. Pembayaran akan terverifikasi secara otomatis
+                            </p>
+                        </div>
+
+                        <!-- Pembayaran VA -->
+                        <div v-else
+                            class="w-full h-full flex flex-col md:px-10 md:pt-5 md:pb-5 lg:px-14 lg:pt-10 lg:pb-2">
+                            <h1 class="text-black font-bold text-xs lg:text-2xl">Payment</h1>
+                            <div class="w-full h-fit flex flex-row mt-3">
+                                <div class="w-[70%]">
+                                    <p
+                                        class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                        Total Payment</p>
+                                </div>
+                                <div class="w-[30%]">
+                                    <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto">{{
+                                        formatPrice(paymentDetails.amount)
+                                        }}</p>
+                                </div>
+                            </div>
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <div class="w-[70%]">
+                                    <p
+                                        class="text-[#898383] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto mb-auto">
+                                        Pay In</p>
+                                </div>
+                                <div class="w-[30%] h-fit flex flex-col">
+                                    <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
+                                        remainingTime
+                                        }}</p>
+                                    <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay
+                                        Before:
+                                        <br>
+                                        {{ formatTime(paymentDetails.expired_at) }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="w-full h-fit flex flex-row">
+                                <div class="w-[10%] flex">
+                                    <img :src="getBankLogo(paymentDetails.payment_method)" alt=""
+                                        class="w-3/5 object-contain mb-auto">
+                                </div>
+                                <div class="w-[90%] flex flex-col">
+                                    <p class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm">{{
+                                        paymentDetails.payment_method }}</p>
+                                    <p
+                                        class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
+                                        No. Virtual Account:</p>
+                                    <div class="w-full h-fit flex flex-row items-center mt-1">
+                                        <div class="w-[67%]">
+                                            <h1 class="text-[#3E6E7A] font-bold text-xs md:text-sm lg:text-2xl">{{
+                                                paymentDetails.payment_code }}
+                                            </h1>
+                                        </div>
+                                        <div class="w-[33%]">
+                                            <p @click="copyPaymentCode"
+                                                class="text-orange-400 font-bold text-[8px] md:text-[10px] lg:text-sm cursor-pointer">
+                                                COPY</p>
+                                        </div>
+                                    </div>
+                                    <p
+                                        class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
+                                        Proses verifikasi kurang dari 10 menit setelah pembayaran berhasil <br>
+                                        Bayar pesanan ke Virtual Account di atas sebelum membuat pesanan <br>
+                                        kembali dengan Virtual Account agar nomor tetap sama.
+                                    </p>
+                                    <p
+                                        class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-2 md:mt-3 lg:mt-6">
+                                        Hanya menerima dari {{
+                                            paymentDetails.paymentMethod }}</p>
+                                </div>
+                            </div>
+                            <h2 class="text-black font-bold text-[8px] md:-[10px] lg:text-base mt-2 md:mt-3 lg:mt-6">
+                                mBanking Transfer Instructions</h2>
+                            <p
+                                class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
+                                1. Masuk ke menu Mobile Banking. Kemudian, pilih Pembayaran / Virtual account. <br>
+                                2. Masukkan {{ paymentDetails.payment_code }}. <br>
+                                3. Masukkan PIN Anda kemudian pilih bayar. Apabila pesan konfirmasi untuk <br>
+                                4. transaksi menggunakan SMS muncul, pilih OK. Status transaksi akan <br>
+                                5. dikirimkan melalui SMS dan dapat digunakan sebagai bukti pembayaran.
+                            </p>
+                            <h2
+                                class="text-black font-bold text-[8px] md:text-[10px] lg:text-base mt-2 md:mt-3 lg:mt-4">
+                                ATM
+                                Transfer Instructions</h2>
+                            <p
+                                class="text-[#898383] font-bold text-[8px] md:text-[10px] lg:text-sm mt-1 md:mt-3 lg:mt-6">
+                                1. Pilih Transaksi Lain > Pembayaran > Lainnya > BRIVA. <br>
+                                2. Masukkan Nomor BRIVA {{ paymentDetails.payment_code }} kemudian pilih Benar. <br>
+                                3. Periksa informasi yang tertera di layar. Pastikan Merchant adalah *nama*, <br>
+                                4. Total tagihan sudah benar dan username kamu azkialbab. Jika benar, pilih Ya.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cancel Modal -->
+            <div v-if="cancelOrderId"
+                class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+                <div class="bg-white md:w-[50vw] lg:w-[33vw] h-auto rounded-[30px] shadow p-4">
+                    <div class="flex flex-col px-10 py-10">
+                        <img src="/img/assets/icon/icon_warning.svg" alt="icon_warning" class="w-16 h-16 mx-auto">
+                        <p class="text-[#376F7E] font-medium text-xl mx-auto mt-2">Are you sure?</p>
+                        <p class="text-[#B7B7B7] font-medium text-xs mx-auto mt-6">You won’t be able to revert this!</p>
+                        <div class="w-full mt-6 flex flex-row justify-center">
+                            <button @click="cancelOrder(cancelOrderId, true)"
+                                class="w-44 h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-lg font-semibold">Yes,
+                                Delete it!</button>
+                            <button @click="cancelOrderId = null"
+                                class="w-44 h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-lg font-semibold ml-2">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <!-- Detail Shipment Modal -->
             <div v-if="shipmentModalVisible"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
@@ -437,7 +731,7 @@ export default {
                                     Expedition Name</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     selectedOrder?.shipmentService
-                                    }}</div>
+                                }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total

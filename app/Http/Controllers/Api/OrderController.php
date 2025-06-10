@@ -184,7 +184,6 @@ class OrderController extends Controller
         ]);
 
         $paymentData = [
-            "payment_type" => "qris",
             "transaction_details" => [
                 "gross_amount" => intval($total['total']),
                 "order_id" => "hk-" . Carbon::now()->timestamp,
@@ -196,13 +195,25 @@ class OrderController extends Controller
         ];
 
         if ($data['payment_method'] == 'qris') {
+            $paymentData['payment_type'] = 'qris';
             $paymentData['qris'] = [
                 'acquirer' => 'airpay shopee',
                 // 'acquirer' => 'gopay',
             ];
+
             $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['actions'][0]['url'];
+        } else if ($data['payment_method'] == 'mandiri') {
+            $paymentData['payment_type'] = 'echannel';
+            $paymentData["echannel"] = [
+                "bill_info1" => "Payment for hepikorea order",
+                "bill_info2" => "Thank you for your purchase!"
+            ];
+
+            $res = $this->paymentService->post('/v2/charge', $paymentData);
+            $orderPayment->payment_code = $res['biller_code'] . '-' . $res['bill_key'];
         } else {
+            $paymentData['payment_type'] = 'bank_transfer';
             $paymentData["bank_transfer"] = [
                 "bank" => $data['payment_method']
             ];
