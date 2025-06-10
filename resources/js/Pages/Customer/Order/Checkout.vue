@@ -27,7 +27,7 @@ export default {
             expiration: '00:00',
             paymentMethod: '',
             paymentCode: '',
-            bankLogo: '/img/assets/icon/logo_bri_small.svg',
+            bankLogo: ''
         });
 
         // Fungsi untuk mengambil data dari API (placeholder)
@@ -154,7 +154,6 @@ export default {
         };
 
         // Fungsi saat order sukses
-        const orderId = ref(null);
         const onOrderSuccess = (payment) => {
             const expiration = new Date(payment.expired_at).toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
             const diff = new Date(payment.expired_at) - new Date();
@@ -170,7 +169,7 @@ export default {
                 expiration,
                 paymentMethod: payment.payment_method.toUpperCase(),
                 paymentCode: payment.payment_code,
-                bankLogo: payment.payment_method === 'bri' ? '/img/assets/icon/logo_bri_small.svg' : '/img/assets/icon/icon_checkout_bca.svg',
+                bankLogo: getBankLogo(payment.payment_method),
             };
 
             showChoosePaymentModal.value = false;
@@ -180,9 +179,6 @@ export default {
                 showVaPaymentModal.value = true;
             }
 
-            // Simulasi pembayaran sukses untuk dummy
-            // setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
-            // Uncomment untuk check status pembayaran
             checkPaymentStatus(payment.id);
         };
 
@@ -192,7 +188,7 @@ export default {
             showChoosePaymentModal.value = false;
             router.get('/order/unpaid');
         };
-        
+
         // Fungsi saat pembayaran sukses
         const onPaymentSuccess = () => {
             showQrPaymentModal.value = false;
@@ -206,7 +202,7 @@ export default {
         // Check status pembayaran (placeholder untuk API)
         const cpInterval = ref(null);
         const checkPaymentStatus = (paymentId) => {
-            if(cpInterval.value) {
+            if (cpInterval.value) {
                 clearInterval(cpInterval.value);
             }
             cpInterval.value = setInterval(() => {
@@ -220,6 +216,21 @@ export default {
                     })
             }, 2000);
         };
+
+        const getBankLogo = (paymentMethod) => {
+            switch (paymentMethod) {
+                case 'bri':
+                    return '/img/assets/icon/icon_checkout_bri.svg';
+                case 'bni':
+                    return '/img/assets/icon/icon_checkout_bni.svg';
+                case 'mandiri':
+                    return '/img/assets/icon/icon_checkout_mandiri.svg';
+                case 'bca':
+                    return '/img/assets/icon/icon_checkout_bca.svg';
+                default:
+                    return '/img/assets/icon/icon_checkout_gopay.svg';
+            }
+        }
 
         // Inisialisasi data (gunakan fetchData saat API siap)
         onMounted(async () => {
@@ -257,6 +268,7 @@ export default {
             handlePayment,
             getFullAddress,
             closePaymentModal,
+            getBankLogo
         };
     },
 };
