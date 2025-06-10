@@ -41,6 +41,8 @@ Route::get('/inertia/{path}', function ($path) {
     return Inertia::render("{$path}");
 })->where('path', '.*');
 
+Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
+
 Route::inertia('/', 'Customer/Home')->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {

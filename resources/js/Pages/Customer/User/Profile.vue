@@ -276,9 +276,9 @@
         </div>
         <div v-if="success"
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="bg-white md:w-[30vw] h-auto rounded-[30px] shadow p-14">
-                <h1 class="text-black text-xl font-medium mx-auto">Profile updated successfully!</h1>
-                <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-24 h-24 mx-auto mt-6">
+            <div class="bg-white flex flex-col w-[172px] md:w-[400px] lg:w-[25vw] h-auto rounded-[30px] shadow py-7 md:py-14 lg:p-4">
+                <h1 class="text-black text-[10px] md:text-xl lg:text-xl font-medium mx-auto">Profile updated <br> successfully!</h1>
+                <img src="/img/assets/icon/icon_green_check.svg" alt="green_check" class="w-11 h-11 md:h-24 md:w-24 lg:w-24 lg:h-24 mx-auto mt-3 lg:mt-6">
             </div>
         </div>
     </Layout>
