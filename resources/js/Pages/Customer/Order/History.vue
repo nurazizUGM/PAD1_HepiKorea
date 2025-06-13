@@ -166,7 +166,13 @@ export default {
         }
 
         const showReviewModal = (orderId) => {
-            reviewForm.value.orderId = orderId;
+            reviewForm.value = {
+                orderId: orderId,
+                rating: 0,
+                content: '',
+                photo: null,
+                photoPreview: null,
+            }
             reviewModalVisible.value = true;
         };
 
@@ -182,11 +188,24 @@ export default {
             }
         };
 
-        const submitReview = () => {
-            console.log('Review Submitted:', reviewForm.value); // Gantikan dengan logika API
+        const submitReview = async () => {
+            const formData = new FormData();
+            formData.append('rating', reviewForm.value.rating);
+            formData.append('content', reviewForm.value.content);
+            if (reviewForm.value.photo) {
+                formData.append('photo', reviewForm.value.photo);
+            }
+            try {
+                await axios.post(`/api/order/${reviewForm.value.orderId}/review`, formData);
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                return;
+            }
+
             reviewModalVisible.value = false;
             successReviewModalVisible.value = true;
             setTimeout(() => {
+                fetchData();
                 successReviewModalVisible.value = false;
             }, 2000);
         };
@@ -354,7 +373,7 @@ export default {
                                         <div
                                             class="w-full h-fit lg:h-full bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-3 lg:p-4">
                                             <p>Bayar sebelum {{ formatTime(order.payment.expired_at)
-                                            }} dengan {{ order.payment.payment_method?.toUpperCase() }}</p>
+                                                }} dengan {{ order.payment.payment_method?.toUpperCase() }}</p>
                                         </div>
                                     </div>
                                     <div
@@ -463,7 +482,7 @@ export default {
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl">{{
                                             order.title
-                                        }}</h1>
+                                            }}</h1>
                                         <p v-if="order.order_items > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
                                             and {{ order.order_items - 1 }} other items
@@ -501,7 +520,8 @@ export default {
                                         <button v-else-if="order.order_shipment"
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
                                             @click="shipmentDetail = { ...order.order_shipment, status: order.status }">
-                                            {{ order.status === 'shipment_unpaid' ? 'Pay Shipment' : 'Shipment Detail' }}
+                                            {{ order.status === 'shipment_unpaid' ? 'Pay Shipment' : 'Shipment Detail'
+                                            }}
                                         </button>
                                     </div>
                                 </div>
@@ -618,7 +638,7 @@ export default {
                                 <div class="w-[30%] h-fit flex flex-col">
                                     <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
                                         remainingTime
-                                    }}</p>
+                                        }}</p>
                                     <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay
                                         Before:
                                         <br>
@@ -660,7 +680,7 @@ export default {
                                 <div class="w-[30%]">
                                     <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold mr-auto">{{
                                         formatPrice(paymentDetails.amount)
-                                    }}</p>
+                                        }}</p>
                                 </div>
                             </div>
                             <div class="w-full h-fit flex flex-row mt-4">
@@ -672,7 +692,7 @@ export default {
                                 <div class="w-[30%] h-fit flex flex-col">
                                     <p class="text-[#3E6E7A] text-[8px] md:text-[10px] lg:text-sm font-bold">{{
                                         remainingTime
-                                    }}</p>
+                                        }}</p>
                                     <p class="text-[#B7B7B7] text-[8px] md:text-[10px] lg:text-sm font-medium">Pay
                                         Before:
                                         <br>
@@ -760,7 +780,6 @@ export default {
                 </div>
             </div>
 
-
             <!-- Detail Shipment Modal -->
             <div v-if="shipmentDetail && !shipmentPaymentModal"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
@@ -780,7 +799,7 @@ export default {
                                     Expedition Name</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     shipmentDetail?.shipment_service
-                                    }}</div>
+                                }}</div>
                             </div>
                             <div v-if="shipmentDetail.tracking_code" class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">
@@ -788,7 +807,7 @@ export default {
                                 </div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     shipmentDetail?.tracking_code
-                                    }}</div>
+                                }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total
@@ -801,7 +820,7 @@ export default {
                                     Arrival Time</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
                                     moment(shipmentDetail?.arrival_estimation).format('DD MMM YYYY')
-                                }}</div>
+                                    }}</div>
                             </div>
                         </div>
                         <button v-if="shipmentDetail.status === 'shipment_unpaid'"
@@ -871,6 +890,18 @@ export default {
                 </div>
             </div>
 
+            <!-- Success Receive -->
+            <div v-if="successReceiveModal"
+                class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
+                @click="successReceiveModal = false">
+                <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
+                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">
+                        Your Order Has Been Received!
+                    </h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+                        class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
+                </div>
+            </div>
 
             <!-- review Modal -->
             <div v-if="reviewModalVisible"
@@ -915,19 +946,6 @@ export default {
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-lg font-semibold rounded-md lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-7 md:px-8 lg:px-16 mx-auto mt-2.5 lg:mt-6">Save</button>
                         </form>
                     </div>
-                </div>
-            </div>
-
-            <!-- Success Receive -->
-            <div v-if="successReceiveModal"
-                class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
-                @click="successReceiveModal = false">
-                <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
-                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">
-                        Your Order Has Been Received!
-                    </h1>
-                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
-                        class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
                 </div>
             </div>
 

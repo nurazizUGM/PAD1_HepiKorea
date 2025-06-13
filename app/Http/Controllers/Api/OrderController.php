@@ -417,17 +417,16 @@ class OrderController extends Controller
         ]);
     }
 
-    public function review(Request $request)
+    public function review(Request $request, string $orderId)
     {
         $userId = Auth::id();
         $data = $request->validate([
-            'orderId' => 'required|exists:orders,id',
             'rating' => 'required|integer|min:1|max:5',
             'content' => 'nullable|string',
             'photo' => 'nullable|image',
         ]);
 
-        $order = Order::findOrFail($data['orderId']);
+        $order = Order::findOrFail($orderId);
         $order->load('orderItems');
 
         if ($request->hasFile('photo')) {
