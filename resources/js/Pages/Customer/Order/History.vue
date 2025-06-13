@@ -10,11 +10,8 @@ export default {
     props: {
         status: String
     },
-    mounted() {
-        this.activeTab = this.status || 'unpaid';
-    },
-    setup() {
-        const activeTab = ref('unpaid');
+    setup(props) {
+        const activeTab = ref(props.status || 'unpaid');
         const tabs = [
             { id: 'unpaid', label: 'Unpaid' },
             { id: 'processed', label: 'Processed' },
@@ -28,10 +25,8 @@ export default {
         const finishedOrders = ref([]);
 
         // Modal States
-        const shipmentModalVisible = ref(false);
         const reviewModalVisible = ref(false);
         const successReviewModalVisible = ref(false);
-        const selectedOrder = ref(null);
 
         // Review Form
         const reviewForm = ref({
@@ -91,7 +86,12 @@ export default {
                     .then(({ data }) => {
                         if (data.status == 'success') {
                             clearInterval(paymentCheck.value);
-                            setActiveTab('processed');
+                            paymentModal.value = false
+                            if (data.order.status == 'shipment_paid') {
+                                fetchData()
+                            } else {
+                                setActiveTab('processed');
+                            }
                         }
                     })
             }, 2000);
@@ -124,7 +124,6 @@ export default {
                         console.error('Error cancelling payment:', err);
                     });
             } else {
-                console.log('Cancel Order Confirmation:', orderId);
                 cancelOrderId.value = orderId;
             }
         };
@@ -139,18 +138,41 @@ export default {
                 });
         }
 
-        const showShipmentDetail = (order) => {
-            selectedOrder.value = order;
-            shipmentModalVisible.value = true;
+        const shipmentDetail = ref(null)
+        const shipmentPaymentModal = ref(false);
+        const shipmentPaymentMethod = ref(null);
+        const payShipment = () => {
+            axios.post(`/api/order/${shipmentDetail.value.order_id}/pay-shipment`, {
+                payment_method: shipmentPaymentMethod.value
+            }).then(({ data }) => {
+                if (data?.status != 'success') {
+                    return console.error(data)
+                }
+                shipmentDetail.value = null;
+                shipmentPaymentModal.value = null
+                pay(data.payment)
+            })
         };
 
-        const payShipment = (orderId) => {
-            console.log('Pay Shipment for Order ID:', orderId);
-            shipmentModalVisible.value = false;
-        };
+        const successReceiveModal = ref(false);
+        const confirmArrival = (orderId) => {
+            axios.post(`/api/order/${orderId}/arrived`).then(({ data }) => {
+                successReceiveModal.value = true;
+                fetchData()
+                setTimeout(() => {
+                    successReceiveModal.value = false;
+                }, 2000);
+            })
+        }
 
         const showReviewModal = (orderId) => {
-            reviewForm.value.orderId = orderId;
+            reviewForm.value = {
+                orderId: orderId,
+                rating: 0,
+                content: '',
+                photo: null,
+                photoPreview: null,
+            }
             reviewModalVisible.value = true;
         };
 
@@ -166,11 +188,24 @@ export default {
             }
         };
 
-        const submitReview = () => {
-            console.log('Review Submitted:', reviewForm.value); // Gantikan dengan logika API
+        const submitReview = async () => {
+            const formData = new FormData();
+            formData.append('rating', reviewForm.value.rating);
+            formData.append('content', reviewForm.value.content);
+            if (reviewForm.value.photo) {
+                formData.append('photo', reviewForm.value.photo);
+            }
+            try {
+                await axios.post(`/api/order/${reviewForm.value.orderId}/review`, formData);
+            } catch (error) {
+                console.error('Error submitting review:', error);
+                return;
+            }
+
             reviewModalVisible.value = false;
             successReviewModalVisible.value = true;
             setTimeout(() => {
+                fetchData();
                 successReviewModalVisible.value = false;
             }, 2000);
         };
@@ -205,7 +240,10 @@ export default {
                                 processedOrders.value = data;
                                 break;
                             case 'sent':
-                                sentOrders.value = data;
+                                sentOrders.value = data.map(order => ({
+                                    ...order,
+                                    payment: orderPayment(order)
+                                }));
                                 break;
                             case 'finished':
                                 finishedOrders.value = data;
@@ -248,11 +286,13 @@ export default {
             setActiveTab,
             getImageUrl,
             formatPrice,
-            showShipmentDetail,
             showReviewModal,
+            shipmentDetail,
+            shipmentPaymentModal,
+            shipmentPaymentMethod,
             payShipment,
-            shipmentModalVisible,
-            selectedOrder,
+            successReceiveModal,
+            confirmArrival,
             reviewModalVisible,
             successReviewModalVisible,
             reviewForm,
@@ -268,7 +308,8 @@ export default {
             getBankLogo,
             copyPaymentCode,
             cancelOrder,
-            cancelOrderId
+            cancelOrderId,
+            moment
         };
     },
 };
@@ -351,6 +392,12 @@ export default {
                                 </div>
                             </div>
                         </div>
+                        <div v-if="unpaidOrders.length == 0"
+                            class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
+                            <div class="flex flex-col items-center justify-center w-full py-8">
+                                <p class="text-[#B7B7B7] text-base md:text-lg font-semibold">No unpaid orders found.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -406,6 +453,14 @@ export default {
                                 </div>
                             </div>
                         </div>
+                        <div v-if="processedOrders.length == 0"
+                            class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
+                            <div class="flex flex-col items-center justify-center w-full py-8">
+                                <p class="text-[#B7B7B7] text-base md:text-lg font-semibold">No processed orders found.
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -426,17 +481,19 @@ export default {
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
                                         <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl">{{
-                                            order.productName }}</h1>
-                                        <p v-if="order.count > 1"
+                                            order.title
+                                            }}</h1>
+                                        <p v-if="order.order_items > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
-                                            and {{ order.count - 1 }} other items
+                                            and {{ order.order_items - 1 }} other items
                                         </p>
                                     </div>
                                     <div class="w-[22%] ms-auto h-full flex">
                                         <p
                                             class="text-[#3E6E7A] text-[9px] md:text-sm lg:text-xl font-semibold ml-auto">
                                             Rp {{
-                                                formatPrice(order.totalPrice) }},-</p>
+                                                formatPrice(order.total_items_price)
+                                            }},-</p>
                                     </div>
                                 </div>
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
@@ -455,23 +512,27 @@ export default {
                                         </div>
                                     </div>
                                     <div class="w-[48%] ms-auto flex flex-row justify-end items-end">
-                                        <button v-if="order.status === 'shipment_unpaid' && !order.shipmentPayment"
+                                        <button v-if="order.status === 'sent'"
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
-                                            @click="showShipmentDetail(order)">
-                                            Shipment Detail
-                                        </button>
-                                        <button v-else-if="order.status === 'shipment_unpaid' && order.shipmentPayment"
-                                            class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
-                                            @click="pay(order.shipmentPayment)">
-                                            Pay Shipment
-                                        </button>
-                                        <button v-else-if="order.status === 'sent'"
-                                            class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
-                                            @click="$inertia.get(route('order.arrived', order.id))">
+                                            @click="confirmArrival(order.id)">
                                             Confirm Arrival
+                                        </button>
+                                        <button v-else-if="order.order_shipment"
+                                            class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
+                                            @click="shipmentDetail = { ...order.order_shipment, status: order.status }">
+                                            {{ order.status === 'shipment_unpaid' ? 'Pay Shipment' : 'Shipment Detail'
+                                            }}
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div v-if="sentOrders.length == 0"
+                            class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
+                            <div class="flex flex-col items-center justify-center w-full py-8">
+                                <p class="text-[#B7B7B7] text-base md:text-lg font-semibold">No sent orders found.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -527,6 +588,14 @@ export default {
                                         </button>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+
+                        <div v-if="finishedOrders.length == 0"
+                            class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
+                            <div class="flex flex-col items-center justify-center w-full py-8">
+                                <p class="text-[#B7B7B7] text-base md:text-lg font-semibold">No finished orders found.
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -711,16 +780,15 @@ export default {
                 </div>
             </div>
 
-
             <!-- Detail Shipment Modal -->
-            <div v-if="shipmentModalVisible"
+            <div v-if="shipmentDetail && !shipmentPaymentModal"
                 class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
-                @click.self="shipmentModalVisible = false">
+                @click.self="shipmentDetail = null">
                 <div
                     class="bg-white w-[60vw] md:w-[40vw] lg:w-[41vw] h-auto rounded-[20px] lg:rounded-[30px] shadow p-4 relative">
                     <button
                         class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
-                        @click="shipmentModalVisible = false">
+                        @click="shipmentDetail = null">
                         <p class="text-white text-md">X</p>
                     </button>
                     <div class="w-full h-full flex flex-col px-2.5 pt-3 pb-2.5 lg:px-10 lg:pt-10 lg:pb-5">
@@ -730,28 +798,108 @@ export default {
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">
                                     Expedition Name</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
-                                    selectedOrder?.shipmentService
+                                    shipmentDetail?.shipment_service
+                                }}</div>
+                            </div>
+                            <div v-if="shipmentDetail.tracking_code" class="w-full h-fit flex flex-row">
+                                <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">
+                                    Tracking Code
+                                </div>
+                                <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
+                                    shipmentDetail?.tracking_code
                                 }}</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Total
                                     Expedition Payment</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">Rp {{
-                                    formatPrice(selectedOrder?.shipmentPrice) }},-</div>
+                                    formatPrice(shipmentDetail?.price) }},-</div>
                             </div>
                             <div class="w-full h-fit flex flex-row">
                                 <div class="w-[67%] text-[8px] md:text-xs lg:text-sm text-[#898383] font-bold">Estimated
                                     Arrival Time</div>
                                 <div class="w-[33%] text-[8px] md:text-xs lg:text-sm text-[#3E6E7A] font-bold">{{
-                                    selectedOrder?.shipmentArrivalEstimation }}</div>
+                                    moment(shipmentDetail?.arrival_estimation).format('DD MMM YYYY')
+                                    }}</div>
                             </div>
                         </div>
-                        <button
+                        <button v-if="shipmentDetail.status === 'shipment_unpaid'"
                             class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-lg font-semibold rounded-lg lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-6 md:px-8 lg:px-16 ml-auto mt-6"
-                            @click="payShipment(selectedOrder.id)">
+                            @click="shipmentPaymentModal = true">
                             Pay
                         </button>
                     </div>
+                </div>
+            </div>
+
+            <!-- Choose Payment Modal -->
+            <div v-if="shipmentPaymentModal"
+                class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
+                @click.self="shipmentPaymentModal = false">
+                <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow p-4 relative">
+                    <button
+                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
+                        @click="shipmentPaymentModal = false">
+                        <p class="text-white text-md">X</p>
+                    </button>
+                    <div class="w-full h-full flex flex-col py-1 px-2 md:p-2 lg:px-10 lg:py-10">
+                        <form @submit.prevent="payShipment" class="w-full h-full flex flex-col">
+                            <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl">Bank
+                            </h1>
+                            <div class="w-full h-fit flex flex-row mt-2">
+                                <img src="/img/assets/icon/icon_checkout_bri.svg" alt=""
+                                    class="w-[40px] h-[12px] md:-24 md:h-10 object-contain">
+                                <label for="bri"
+                                    class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8">Bank
+                                    BRI</label>
+                                <input type="radio" v-model="shipmentPaymentMethod" value="bri" id="bri"
+                                    class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <img src="/img/assets/icon/logo_checkout_mandiri.png" alt=""
+                                    class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">
+                                <label for="mandiri"
+                                    class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">Mandiri</label>
+                                <input type="radio" v-model="shipmentPaymentMethod" value="mandiri" id="mandiri"
+                                    class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            <div class="w-full h-fit flex flex-row mt-4">
+                                <img src="/img/assets/icon/icon_checkout_bca.svg" alt=""
+                                    class="w-[40px] h-[14px] md:w-28 md:h-12 object-contain">
+                                <label for="bca"
+                                    class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">BCA</label>
+                                <input type="radio" v-model="shipmentPaymentMethod" value="bca" id="bca"
+                                    class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl mt-6">
+                                E-wallet</h1>
+                            <div class="w-full h-fit flex flex-row mt-2">
+                                <img src="/img/assets/icon/icon_checkout_gopay.svg" alt=""
+                                    class="w-[42px] h-[11px] md:w-28 md:h-12 object-contain">
+                                <label for="qris"
+                                    class="my-auto text-black font-bold text-[8px] md:text-xs lg:text-base ml-8 md:ml-4">QRIS</label>
+                                <input type="radio" v-model="shipmentPaymentMethod" value="qris" id="qris"
+                                    class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
+                            </div>
+                            <button type="submit"
+                                class="w-fit bg-[#4b6166] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-2xl font-semibold rounded-2xl py-0.5 md:py-2 px-5 md:px-10 lg:px-16 mx-auto mt-2 md:mt-4 lg:mt-10">
+                                Pay
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Receive -->
+            <div v-if="successReceiveModal"
+                class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50"
+                @click="successReceiveModal = false">
+                <div class="bg-white w-[45vw] md:w-[32vw] lg:w-[28vw] h-auto rounded-[30px] shadow p-3 md:p-7 lg:p-14">
+                    <h1 class="text-black text-sm md:text-lg lg:text-xl font-medium mx-auto text-center">
+                        Your Order Has Been Received!
+                    </h1>
+                    <img src="/img/assets/icon/icon_green_check.svg" alt="green_check"
+                        class="w-10 h-10 md:w-16 md:h-16 lg:w-24 lg:h-24 mx-auto mt-2 md:mt-4 lg:mt-6">
                 </div>
             </div>
 
