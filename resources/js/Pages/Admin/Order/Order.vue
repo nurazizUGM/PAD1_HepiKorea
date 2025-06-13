@@ -110,15 +110,15 @@
                             @click="openProcessModal(order)">
                             Process
                         </button>
-                        <button v-else-if="order.status === 'processing' || order.status === 'shipment_paid'"
+                        <button v-else-if="order.status === 'processing'"
                             class="w-2/3 h-6 lg:h-9 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-[10px] lg:text-base text-white font-semibold rounded-md ml-1"
                             @click="openSentModal(order)">
-                            Sent
+                            Add Shipment
                         </button>
                         <button v-else-if="order.status === 'shipment_paid'"
                             class="w-2/3 h-6 lg:h-9 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-[10px] lg:text-base text-white font-semibold rounded-md ml-1"
                             @click="openSendModal(order)">
-                            Sent
+                            Send
                         </button>
                     </div>
                 </div>
@@ -144,8 +144,8 @@
             @close="showSentModal = false" @save="handleSave" />
 
         <!-- Send Order Modal (for shipment_paid) -->
-        <SendOrderModal :show="showSentModal && selectedOrder?.status === 'shipment_paid'" :order-id="selectedOrderId"
-            @close="showSentModal = false" @save="handleSave" />
+        <SendOrderModal :show="showSendModal && selectedOrder?.status === 'shipment_paid'" :order-shipment="selectedOrder?.order_shipment"
+            @close="showSendModal = false" @save="handleSave" />
     </div>
 </template>
 
@@ -220,8 +220,11 @@ export default {
 
         const handleSave = () => {
             fetchOrders();
+            selectedOrderId.value = null;
+            selectedOrder.value = null;
             showProcessModal.value = false;
             showSentModal.value = false;
+            showSendModal.value = false;
             showSuccessModal.value = true;
             setTimeout(() => (showSuccessModal.value = false), 2000);
         };
@@ -310,7 +313,8 @@ export default {
             formatStatus,
             getImageUrl,
             getMonthName,
-            isLoading
+            isLoading,
+            showSendModal
         };
     },
 };

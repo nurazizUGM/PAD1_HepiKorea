@@ -16,14 +16,14 @@
                                 <tr>
                                     <td>
                                         <label class="text-base text-black text-opacity-50">Expedition Name</label>
-                                        <input :value="formData.shipment_service" type="text" readonly class="w-full rounded-lg bg-gray-100 shadow-md border-none focus:border-none focus:ring-0
-                  ">
+                                        <input :value="formData.shipment_service" type="text" disabled
+                                            class="w-full rounded-lg bg-gray-100 shadow-md border-none focus:border-none focus:ring-0">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
                                         <label class="text-base text-black text-opacity-50">Expedition Price</label>
-                                        <input :value="formattedPrice" type="text" readonly
+                                        <input :value="formattedPrice" type="text" disabled
                                             class="w-full rounded-lg bg-gray-100 shadow-md border-none focus:ring-none focus:ring-0">
                                     </td>
                                 </tr>
@@ -46,12 +46,12 @@
                                                     xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                                                     viewBox="0 0 20 20">
                                                     <path
-                                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1-3V1a1 0 0 0-2h0v1H6V1a1 1 0 0 0-2 0v1H2a2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 0 0 1 0-2Z" />
+                                                        d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 1 0 0-2H5a1 1 0 0 0 0 2Z" />
                                                 </svg>
                                             </div>
-                                            <input v-model="formData.arrival_estimation" type="date"
+                                            <input datepicker id="arrival-estimation" type="text"
                                                 class="w-full rounded-lg bg-white shadow-md border-none focus:ring-0 ps-10"
-                                                :min="today" required>
+                                                placeholder="Select date">
                                         </div>
                                     </td>
                                 </tr>
@@ -71,43 +71,67 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import axios from 'axios';
+import moment from 'moment';
+import { computed, onUpdated, ref } from 'vue';
 import Modal from '../Modal.vue';
 
 export default {
     components: { Modal },
     props: {
         show: Boolean,
-        orderId: Number,
+        orderShipment: Object,
     },
     setup(props, { emit }) {
-        const today = new Date().toISOString().split('T')[0];
+        const today = moment().format('YYYY-MM-DD');
         const formData = ref({
-            shipment_service: 'JNE', // Example data
-            price: 123000, // Example data
+            shipment_service: '',
+            price: 0,
             tracking_code: '',
-            arrival_estimation: today,
         });
 
         const formattedPrice = computed(() => {
             return `Rp ${formData.value.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')},-`;
         });
 
+        let datepicker = ref(null);
+        const initializeDatepicker = () => {
+            const datepickerElement = document.getElementById('arrival-estimation');
+            if (datepickerElement) {
+                datepicker = new Datepicker(datepickerElement, {
+                    autohide: true,
+                    buttons: true,
+                    format: 'yyyy-mm-dd',
+                    minDate: today,
+                });
+                datepicker.init();
+                datepicker.setDate(today);
+            }
+        };
+
         const save = async () => {
             try {
-                /*
-                await axios.post(`/api/admin/orders/${props.orderId}/send`, {
-                  shipment_service: formData.value.shipment_service,
-                  price: formData.value.price,
-                  tracking_code: formData.value.tracking_code,
-                  arrival_estimation: formData.value.arrival_estimation,
+                await axios.post(`/api/admin/order/${props.orderShipment.order_id}/shipment`, {
+                    tracking_code: formData.value.tracking_code,
+                    arrival_estimation: datepicker.getDate(),
                 });
-                */
                 emit('save');
             } catch (error) {
                 console.error('Error sending order:', error);
             }
         };
+
+        onUpdated(() => {
+            if (props.show) {
+                formData.value = {
+                    shipment_service: props.orderShipment.shipment_service || '',
+                    price: props.orderShipment.price || 0,
+                    tracking_code: '',
+                };
+
+                initializeDatepicker();
+            }
+        });
 
         return {
             formData,

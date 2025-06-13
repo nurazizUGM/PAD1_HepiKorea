@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class OrderController extends Controller
 {
@@ -58,7 +59,7 @@ class OrderController extends Controller
     public function history(Request $request)
     {
         $status = $request->query('status', 'unpaid');
-        $orders = Order::where('user_id', Auth::id())->orderBy('created_at', 'desc');
+        $orders = Order::where('user_id', Auth::id());
 
         $orders->with(['orderItems', 'orderItems.product', 'orderItems.product.images', 'customOrderItems']);
         if ($status == 'unpaid') {
@@ -66,26 +67,30 @@ class OrderController extends Controller
         } else if ($status == 'processed') {
             $orders = $orders->whereIn('status', ['paid', 'processing']);
         } else if ($status == 'sent') {
-            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])->with('orderShipment');
+            $orders->whereIn('status', ['shipment_unpaid', 'shipment_paid', 'sent'])
+                ->with('orderShipment')
+                ->orderByRaw("FIELD(status, 'shipment_unpaid', 'shipment_paid', 'sent')");
         } else if ($status == 'finished') {
             $orders->whereIn('status', ['finished', 'cancelled'])
                 ->with('reviews')
-                ->orderByRaw("FIELD(status, 'finished', 'cancelled')")
-                ->orderBy('created_at', 'desc');
+                ->orderByRaw("FIELD(status, 'finished', 'cancelled')");
         }
 
-        $orders = $orders->get()->each(function ($order) {
-            if ($order->type == 'custom') {
-                $order->title = $order->customOrderItems->first()?->name;
-                $order->image = $order->customOrderItems->first()?->image;
-                unset($order->customOrderItems);
-                return;
-            } else {
-                $order->title = $order->orderItems->first()?->product?->name;
-                $order->image = $order->orderItems->first()?->product?->images?->first()?->path;
-                unset($order->orderItems);
-            }
-        });
+        $orders = $orders
+            ->orderBy('created_at', 'desc')
+            ->get()
+            ->each(function ($order) {
+                if ($order->type == 'custom') {
+                    $order->title = $order->customOrderItems->first()?->name;
+                    $order->image = $order->customOrderItems->first()?->image;
+                    unset($order->customOrderItems);
+                    return;
+                } else {
+                    $order->title = $order->orderItems->first()?->product?->name;
+                    $order->image = $order->orderItems->first()?->product?->images?->first()?->path;
+                    unset($order->orderItems);
+                }
+            });
 
         return response()->json($orders);
     }
@@ -304,11 +309,28 @@ class OrderController extends Controller
             'payment_method' => 'required|string|in:qris,bca,bni,bri,mandiri',
         ]);
 
-        $order = Order::with(['orderShipment'])->findOrFail($data['orderId']);
+        $order = Order::where('status', 'shipment_unpaid')
+            ->with(['orderShipment'])
+            ->findOrFail($orderId);
         if ($order->status != 'shipment_unpaid') {
             return response()->json([
                 'status' => 'error',
                 'message' => 'Order cannot be paid',
+            ]);
+        }
+
+        $existingPayment = $order->orderPayment
+            ->where('payment_type', 'shipment')
+            ->where('payment_method', $data['payment_method'])
+            ->where('status', 'pending')
+            ->where('expired_at', '>', Carbon::now())
+            ->first();
+
+        if ($existingPayment) {
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Shipment payment already exists and is still valid',
+                'payment' => $existingPayment,
             ]);
         }
 
@@ -339,10 +361,21 @@ class OrderController extends Controller
             ];
             $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['actions'][0]['url'];
+        } else if ($data['payment_method'] == 'mandiri') {
+            $paymentData['payment_type'] = 'echannel';
+            $paymentData["echannel"] = [
+                "bill_info1" => "Payment for hepikorea order",
+                "bill_info2" => "Thank you for your purchase!"
+            ];
+
+            $res = $this->paymentService->post('/v2/charge', $paymentData);
+            $orderPayment->payment_code = $res['biller_code'] . '-' . $res['bill_key'];
         } else {
+            $paymentData['payment_type'] = 'bank_transfer';
             $paymentData["bank_transfer"] = [
                 "bank" => $data['payment_method']
             ];
+
             $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['va_numbers'][0]['va_number'];
         }

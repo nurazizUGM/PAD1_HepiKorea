@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderShipment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AdminOrderController extends Controller
 {
@@ -30,7 +31,7 @@ class AdminOrderController extends Controller
             }
         }
 
-        $orders = $orders->with(['user', 'orderItems', 'orderItems.product'])
+        $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems', 'orderDetail', 'orderShipment'])
             ->orderByRaw("FIELD(status, 'paid', 'shipment_paid', 'processing', 'shipment_unpaid', 'sent', 'finished', 'unpaid', 'cancelled')")
             ->orderBy('created_at', 'desc')
             ->get()
@@ -145,7 +146,7 @@ class AdminOrderController extends Controller
     {
         $data = $request->validate([
             'shipment_service' => 'required|string',
-            'price' => 'required|numeric',
+            'price' => 'required|numeric|min:1',
             'arrival_estimation' => 'required|date',
         ]);
 
@@ -170,14 +171,20 @@ class AdminOrderController extends Controller
             'arrival_estimation' => 'required|date',
         ]);
 
+        DB::beginTransaction();
         $order = Order::findOrFail($orderId);
         $order->status = 'sent';
-        $order->save();
-
+        
         $shipment = OrderShipment::where('order_id', $order->id)->first();
-        $shipment->tracking_code = $data['tracking_code'];
-        $shipment->arrival_estimation = $data['arrival_estimation'];
-        $shipment->save();
+        if (!$shipment) {
+            return response()->json(['message' => 'Shipment not found'], 404);
+        }
+        $shipment->update([
+            'tracking_code' => $data['tracking_code'],
+            'arrival_estimation' => $data['arrival_estimation'],
+        ]);
+        $order->save();
+        DB::commit();
 
         return response()->json(['message' => 'Order has been sent']);
     }
