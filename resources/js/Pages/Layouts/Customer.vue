@@ -120,7 +120,7 @@ onMounted(() => {
                                     <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
                                         class="absolute left-3 w-2 h-2 md:h-4 md:w-4 lg:w-5 lg:h-5 text-gray-500" />
                                     <input type="text" v-model="search"
-                                        class="block w-[20vw] md:w-[140px] md: lg:w-[30vw] pl-0 md:pl-8 lg:pl-10 py-2 md:py-1 lg:py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383] md:placeholder:text-xs lg:placeholder:text-base"
+                                        class="block w-[40vw] md:w-[140px] md: lg:w-[30vw] px-2 md:pl-8 lg:pl-10 py-2 md:py-1 lg:py-2 text-gray-900 text-xs bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-xs placeholder:text-start placeholder:text-[#898383] md:placeholder:text-xs lg:placeholder:text-base"
                                         placeholder="Search..." />
                                 </div>
                             </form>
@@ -134,17 +134,17 @@ onMounted(() => {
                             </Link>
                             <div v-if="isAuthenticated">
                                 <div class="relative">
-                                    <button @click="toggleNotifications" class="relative">
+                                    <button @click="toggleNotifications" class="relative ml-1 md:ml-0">
                                         <img src="/img/assets/icon/icon_customer_notification_green.svg" alt=""
-                                            class="w-4 h-5" />
+                                            class="w-4 h-5 mt-1.5" />
                                         <span v-if="notificationCount > 0"
                                             class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{
                                                 notificationCount }}</span>
                                     </button>
                                     <div v-if="showNotifications"
-                                        class="w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute right-0">
+                                        class="w-[13rem] md:w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute -right-8 md:right-0">
                                         <div class="px-4 py-3">
-                                            <p class="text-sm font-medium text-gray-900">Notifications</p>
+                                            <p class="text-[11px] md:text-sm font-medium text-gray-900">Notifications</p>
                                         </div>
                                         <ul class="py-1">
                                             <li v-for="notification in notifications" :key="notification.id">
@@ -154,15 +154,13 @@ onMounted(() => {
                                                     notification.title }}</Link>
                                             </li>
                                             <Link :href="route('auth.notification')"
-                                                class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
+                                                class="block text-center px-4 py-2 text-[11px] md:text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                             View all</Link>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
-                            <div v-if="isAuthenticated" class="items-center"
-                                :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }"
-                                id="user-profile-container">
+                            <div v-if="isAuthenticated" class="items-center" id="user-profile-container">
                                 <div class="flex items-center ms-3 relative">
                                     <button type="button"
                                         class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
@@ -171,7 +169,7 @@ onMounted(() => {
                                         <img class="w-8 h-8 rounded-full" :src="userPhoto" alt="user photo" />
                                     </button>
                                     <div v-if="showUserProfile"
-                                        class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute right-0 top-10">
+                                        class="hidden md:flex z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute right-0 top-10">
                                         <ul class="py-1">
                                             <li v-if="isAdmin">
                                                 <Link :href="route('admin.dashboard')"
@@ -214,7 +212,7 @@ onMounted(() => {
                                 </div>
                             </div>
                             <Link v-else :href="route('auth.login')"
-                                class="flex md:hidden cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-xs px-2 py-1.5 text-center me-2"
+                                class="flex md:hidden cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-[10px] md:text-xs px-2 py-1.5 text-center md:me-2"
                                 id="login-container">
                             Login
                             </Link>
@@ -224,8 +222,7 @@ onMounted(() => {
                     </div>
 
                     <!-- Search Bar (tablet n desktop) -->
-                    <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex"
-                        :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="searchbar-container">
+                    <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex" id="searchbar-container">
                         <form @submit.prevent="submitSearch" class="flex items-center my-auto">
                             <div class="relative flex items-center w-full">
                                 <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
@@ -239,7 +236,7 @@ onMounted(() => {
 
                     <!-- Navigation Links -->
                     <div class="hidden md:flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 md:gap-x-8 gap-x-14 justify-around mx-auto"
-                        :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="navlink-container">
+                        id="navlink-container">
                         <Link :href="route('product.index')"
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
                         Product
@@ -252,14 +249,78 @@ onMounted(() => {
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
                         Confirmed
                         </Link>
+                        <Link :href="route('tutorial')"
+                            class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
+                        Tutorial
+                        </Link>
                         <Link :href="route('faq')"
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
                         FAQ </Link>
                     </div>
 
+                    <!-- navlink container mobile -->
+                    <!-- Navigation Links mobile -->
+                    <div class="z-30 md:hidden flex-col w-[120px] h-fit items-start gap-y-4 absolute bg-white left-0.5 top-[100%] py-3 pl-2 transition-all shadow-md"
+                        :class="{ 'flex -translate-x-44': !showMobileNav, 'flex translate-x-0': showMobileNav }"
+                        id="navlink-container">
+                        <Link :href="route('product.index')"
+                            class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-xs">
+                        Product
+                        </Link>
+                        <Link :href="route('request-order')"
+                            class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-xs">
+                        Request Order
+                        </Link>
+                        <Link :href="route('confirmed')"
+                            class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-xs">
+                        Confirmed
+                        </Link>
+                        <Link :href="route('tutorial')"
+                            class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-xs">
+                        Tutorial
+                        </Link>
+                        <Link :href="route('faq')" class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-xs">
+                        FAQ </Link>
+                        <div v-if="isAdmin && isAuthenticated">
+                            <Link :href="route('admin.dashboard')"
+                                class="flex flex-row text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
+                            <img src="/img/assets/icon/icon_dashboard_admin.svg" alt=""
+                                class="w-4 h-4 grayscale group-hover:grayscale-0" />
+                            <p class="ml-2 mr-6 whitespace-nowrap group-hover:text-orange-400">
+                                Admin Dashboard
+                            </p>
+                            </Link>
+                        </div>
+                        <div v-else-if="isAuthenticated" class="text-xs justify-around gap-y-4 flex flex-col">
+                            <Link :href="route('auth.profile')"
+                                class="flex flex-row w-fit font-semibold text-[#B7B7B7] group">
+                            <img src="/img/assets/icon/icon_dashboard_customer.svg" alt=""
+                                class="w-4 h-4 grayscale group-hover:grayscale-0" />
+                            <p class="ml-1.5 group-hover:text-orange-400">Profile</p>
+                            </Link>
+                            <Link :href="route('auth.address')"
+                                class="flex flex-row font-semibold text-[#B7B7B7] group">
+                            <img src="/img/assets/icon/icon_address.svg" alt=""
+                                class="w-4 h-4 grayscale group-hover:grayscale-0" />
+                            <p class="ml-1.5 mr-4 group-hover:text-orange-400">Address</p>
+                            </Link>
+                            <Link :href="route('order.index')" class="flex flex-row font-semibold text-[#B7B7B7] group">
+                            <img src="/img/assets/icon/icon_history.svg" alt=""
+                                class="w-4 h-4 grayscale group-hover:grayscale-0" />
+                            <p class="ml-1.5 group-hover:text-orange-400">History</p>
+                            </Link>
+                        </div>
+                        <Link v-if="isAuthenticated" :href="route('auth.logout')"
+                            class="flex flex-row items-center text-lg font-semibold text-red-800 group">
+                        <img src="/img/assets/icon/icon_dashboard_logout.svg" alt=""
+                            class="w-4 h-4 grayscale group-hover:grayscale-0" />
+                        <p class="ml-1.5 text-xs group-hover:text-[#FF0000]">Logout</p>
+                        </Link>
+                    </div>
+
                     <!-- Cart, Notification, and User Profile -->
-                    <div class="gap-x-5 items-center justify-around mx-auto md:ml-auto md:mr-5 align-middle"
-                        :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="notif-cart-container">
+                    <div class="hidden md:flex gap-x-5 items-center justify-around mx-auto md:ml-auto md:mr-5 align-middle"
+                        id="notif-cart-container">
                         <Link :href="route('cart.index')">
                         <img src="/img/assets/icon/icon_dashboard_order.svg" alt="" class="w-5 h-5" />
                         </Link>
@@ -293,11 +354,10 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <!-- User Profile / Login -->
-                    <div v-if="isAuthenticated" class="items-center"
-                        :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }"
-                        id="user-profile-container">
-                        <div class="flex items-center ms-3 relative">
+                    <!-- muncul di desktop ama tablet -->
+                    <!-- User Profile / Login-->
+                    <div v-if="isAuthenticated" class="items-center hidden md:flex" id="user-profile-container">
+                        <div class="items-center ms-3 relative">
                             <button type="button"
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                                 @click="toggleUserProfile">
@@ -350,8 +410,8 @@ onMounted(() => {
                         </div>
                     </div>
                     <Link v-else :href="route('auth.login')"
-                        class="flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
-                        :class="{ 'hidden md:flex': !showMobileNav, 'flex': showMobileNav }" id="login-container">
+                        class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
+                         id="login-container">
                     Login
                     </Link>
                 </div>
