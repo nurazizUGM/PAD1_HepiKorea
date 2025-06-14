@@ -55,7 +55,8 @@ function google() {
             <form @submit.prevent="submit">
                 <div class="relative w-full">
                     <span class="absolute inset-y-0 left-0 pl-2 md:pl-2 lg:pl-3 flex items-center">
-                        <img src="/img/assets/icon/icon_user.svg" alt="User Icon" class="w-3 h-3 md:h-4 md:w-4 lg:h-6 lg:w-6">
+                        <img src="/img/assets/icon/icon_user.svg" alt="User Icon"
+                            class="w-3 h-3 md:h-4 md:w-4 lg:h-6 lg:w-6">
                     </span>
                     <input type="email" placeholder="Email" v-model="form.email" required
                         class="pl-7 md:pl-9 lg:pl-12 w-full rounded-xl bg-[#EFEFEF] shadow-md border-none h-8 md:h-8 lg:h-14 focus:outline-none focus:ring-0 placeholder:text-[#B7B7B7] placeholder:text-xs md:placeholder:text-xs lg:placeholder:text-lg">
@@ -63,7 +64,8 @@ function google() {
 
                 <div class="relative w-full mt-4 lg:mt-5">
                     <span class="absolute inset-y-0 left-0 pl-2 md:pl-2 lg:pl-3 flex items-center">
-                        <img src="/img/assets/icon/icon_lock.svg" alt="lock Icon" class="w-3 h-3 md:h-4 md:w-4 lg:h-6 lg:w-6">
+                        <img src="/img/assets/icon/icon_lock.svg" alt="lock Icon"
+                            class="w-3 h-3 md:h-4 md:w-4 lg:h-6 lg:w-6">
                     </span>
                     <input id="password" :type="showPassword ? 'text' : 'password'" placeholder="Password"
                         v-model="form.password" required
@@ -77,14 +79,17 @@ function google() {
                 </div>
 
                 <div class="text-right md:my-2 lg:my-3">
-                    <a href="/auth/forgot_password" class="text-[10px] md:text-[10px] lg:text-sm font-semibold text-blue-600 hover:opacity-80 active:opacity-60">Forgot
+                    <a href="/auth/forgot_password"
+                        class="text-[10px] md:text-[10px] lg:text-sm font-semibold text-blue-600 hover:opacity-80 active:opacity-60">Forgot
                         Password</a>
                 </div>
                 <!-- login button -->
                 <button type="submit"
                     class="w-full text-center bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] h-8 md:h-8 lg:h-12 rounded-[10px] md:rounded-md lg:rounded-xl mb-2 md:mb-3 lg:mb-5 text-[8px] md:text-xs lg:text-2xl font-normal text-white">Login</button>
             </form>
-            <p class="text-[8px] md:text-[10px] lg:text-sm md:font-normal lg:font-semibold text-center md:text-center lg:text-center text-black">Don't have an
+            <p
+                class="text-[8px] md:text-[10px] lg:text-sm md:font-normal lg:font-semibold text-center md:text-center lg:text-center text-black">
+                Don't have an
                 account?
                 <Link href="/auth/register" class="text-blue-600 hover:opacity-80 active:opacity-60">Register</Link>
             </p>
@@ -99,9 +104,15 @@ function google() {
             <!-- button login google -->
             <a @click.prevent="google"
                 class="w-full flex items-center justify-center bg-[#EFEFEF] h-8 md:h-8 lg:h-12 rounded-xl md:mb-2 lg:mb-5 text-[8px] md:text-xs lg:text-2xl font-bold text-black mt-8 md:mt-8 lg:mt-10 cursor-pointer hover:opacity-80 active:opacity-60">
-                <img src="/img/assets/icon/icon_google.png" alt="Google Icon" class="w-4 h-4 md:h-4 lg:h-6 md:w-4 lg:w-6 mr-3">
+                <img src="/img/assets/icon/icon_google.png" alt="Google Icon"
+                    class="w-4 h-4 md:h-4 lg:h-6 md:w-4 lg:w-6 mr-3">
                 Login With Google
             </a>
         </div>
     </Layout>
 </template>
+<style scoped>
+::-ms-reveal {
+    display: none;
+}
+</style>
