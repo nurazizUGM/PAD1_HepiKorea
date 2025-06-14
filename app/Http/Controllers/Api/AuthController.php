@@ -6,6 +6,7 @@ use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Jobs\MailJob;
 use App\Mail\Verification;
+use App\Models\Notification;
 use App\Models\Otp;
 use App\Models\User;
 use Google\Client;
@@ -335,6 +336,40 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Password reset successfully.',
+        ]);
+    }
+
+    // Notification page
+    public function notifications()
+    {
+        $status = request()->query('status', 'all');
+
+        $notifications = Notification::where('user_id', Auth::id())
+            ->when($status === 'unread', function ($query) {
+                return $query->where('is_read', false);
+            })
+            ->orderBy('is_read', 'asc')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        return response()->json($notifications);
+    }
+
+    // Mark notification as read
+    public function readNotification($id)
+    {
+        $notification = Notification::where('user_id', Auth::id())
+            ->where('id', $id)
+            ->first();
+
+        if (!$notification) {
+            return response()->json([
+                'message' => 'Notification not found.',
+            ], 404);
+        }
+
+        $notification->update(['is_read' => true]);
+        return response()->json([
+            'message' => 'Notification marked as read.',
         ]);
     }
 }
