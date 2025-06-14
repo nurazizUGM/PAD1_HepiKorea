@@ -1,22 +1,28 @@
 <script setup>
-import { Head, Link } from '@inertiajs/vue3';
-import { computed } from 'vue';
+import { Head, Link, usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 
-const props = defineProps({
-    title: String,
-    user: Object,
+defineProps({
+    title: {
+        type: String,
+        default: ''
+    }
 });
 
-const user = computed(() => props.user || {});
+const { props } = usePage();
+const { user, title } = props;
 
-const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.photo : `/${user?.photo}`);
+const getImageUrl = (image) => {
+    if (!image) return '/img/assets/icon/icon_user.svg';
+    if (image.startsWith('http')) return image;
+    return `/api/file?path=${image}`;
+};
 </script>
 
 <template>
 
     <Head>
-        <title>Admin{{ props.title ? ` - ${props.title}` : '' }}</title>
+        <title>Admin{{ title ? ` - ${title}` : '' }}</title>
         <meta name="description" content="This is the authentication page." />
     </Head>
     <nav
@@ -49,17 +55,17 @@ const profilePicture = computed(() => user?.photo?.startsWith('http') ? user.pho
                                 class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                                 aria-expanded="false" data-dropdown-toggle="dropdown-user">
                                 <span class="sr-only">Open user menu</span>
-                                <img class="w-8 h-8 rounded-full" :src="profilePicture" alt="user photo">
+                                <img class="w-8 h-8 rounded-full" alt="user photo" :src="getImageUrl(user?.photo)">
                             </button>
                         </div>
                         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
                             id="dropdown-user">
                             <div class="px-4 py-3" role="none">
                                 <p class="text-sm text-gray-900 dark:text-white" role="none">
-                                    {{ user.fullname }}
+                                    {{ user?.fullname }}
                                 </p>
                                 <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                    {{ user.email }}
+                                    {{ user?.email }}
                                 </p>
                             </div>
                             <ul class="py-1" role="none">

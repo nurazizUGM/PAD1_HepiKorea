@@ -1,6 +1,6 @@
 <script>
 import { router } from '@inertiajs/vue3';
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import Layout from '../../Layouts/Customer.vue';
 
 export default {
@@ -11,11 +11,8 @@ export default {
         // Dummy data sementara
         const products = ref([])
         const items = ref([]);
-        const address = ref({
-            name: 'Aisyah',
-            phone: '813-9230-8107',
-            fullAddress: 'Bulaksumur, Caturtunggal, Kapanewon Depok, Kabupaten Sleman, Daerah Istimewa Yogyakarta 55281',
-        });
+        const addresses = ref([])
+        const address = ref({});
 
         const orderNote = ref('');
         const showAddressList = ref(false);
@@ -30,7 +27,7 @@ export default {
             expiration: '00:00',
             paymentMethod: '',
             paymentCode: '',
-            bankLogo: '/img/assets/icon/logo_bri_small.svg',
+            bankLogo: ''
         });
 
         // Fungsi untuk mengambil data dari API (placeholder)
@@ -47,12 +44,27 @@ export default {
                             note: '',
                         };
                     }));
-                    console.log('Items:', items.value);
                 }
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
         };
+
+        const fetchAddresses = async () => {
+            try {
+                const response = await fetch('/api/address');
+                addresses.value = await response.json();
+                if (addresses.value.length > 0) {
+                    address.value = addresses.value[0];
+                }
+            } catch (error) {
+                console.error('Error fetching addresses:', error);
+            }
+        };
+
+        function getFullAddress(address) {
+            return !address ? '-' : `${address.address}, ${address.city}, ${address.province}, ${address.postal_code}`;
+        }
 
         function updateUrl() {
             const url = new URL(window.location.href);
@@ -106,6 +118,7 @@ export default {
 
         // Toggle daftar alamat
         const toggleAddressList = () => {
+            router.get('/auth/address')
             showAddressList.value = !showAddressList.value;
         };
 
@@ -118,7 +131,7 @@ export default {
         const handlePayment = () => {
             const orderData = {
                 payment_method: paymentMethod.value,
-                addressId: 2,
+                addressId: address.value.id,
                 items: items.value.map(item => ({
                     productId: item.product.id,
                     quantity: item.quantity,
@@ -156,7 +169,7 @@ export default {
                 expiration,
                 paymentMethod: payment.payment_method.toUpperCase(),
                 paymentCode: payment.payment_code,
-                bankLogo: payment.payment_method === 'bri' ? '/img/assets/icon/logo_bri_small.svg' : '/img/assets/icon/icon_checkout_bca.svg',
+                bankLogo: getBankLogo(payment.payment_method),
             };
 
             showChoosePaymentModal.value = false;
@@ -166,14 +179,18 @@ export default {
                 showVaPaymentModal.value = true;
             }
 
-            // Simulasi pembayaran sukses untuk dummy
-            // setTimeout(() => onPaymentSuccess(payment.order_id), 5000);
-            // Uncomment untuk check status pembayaran
             checkPaymentStatus(payment.id);
         };
 
+        const closePaymentModal = () => {
+            showQrPaymentModal.value = false;
+            showVaPaymentModal.value = false;
+            showChoosePaymentModal.value = false;
+            router.get('/order/unpaid');
+        };
+
         // Fungsi saat pembayaran sukses
-        const onPaymentSuccess = (orderId) => {
+        const onPaymentSuccess = () => {
             showQrPaymentModal.value = false;
             showVaPaymentModal.value = false;
             showPaymentSuccessModal.value = true;
@@ -183,24 +200,51 @@ export default {
         };
 
         // Check status pembayaran (placeholder untuk API)
+        const cpInterval = ref(null);
         const checkPaymentStatus = (paymentId) => {
-            const cpInterval = setInterval(() => {
+            if (cpInterval.value) {
+                clearInterval(cpInterval.value);
+            }
+            cpInterval.value = setInterval(() => {
                 fetch(`/api/order/payment/${paymentId}`)
                     .then(res => res.json())
                     .then(res => {
                         if (res.status == 'success') {
-                            clearInterval(cpInterval);
-                            onPaymentSuccess(res.order_id)
+                            clearInterval(cpInterval.value);
+                            onPaymentSuccess()
                         }
                     })
             }, 2000);
         };
+
+        const getBankLogo = (paymentMethod) => {
+            switch (paymentMethod) {
+                case 'bri':
+                    return '/img/assets/icon/icon_checkout_bri.svg';
+                case 'bni':
+                    return '/img/assets/icon/icon_checkout_bni.svg';
+                case 'mandiri':
+                    return '/img/assets/icon/icon_checkout_mandiri.svg';
+                case 'bca':
+                    return '/img/assets/icon/icon_checkout_bca.svg';
+                default:
+                    return '/img/assets/icon/icon_checkout_gopay.svg';
+            }
+        }
 
         // Inisialisasi data (gunakan fetchData saat API siap)
         onMounted(async () => {
             const params = new URLSearchParams(window.location.search);
             products.value = JSON.parse(params.get('products')) || [];
             fetchData();
+            fetchAddresses();
+        });
+
+        onUnmounted(() => {
+            console.log('Unmounted Checkout');
+            if (cpInterval.value) {
+                clearInterval(cpInterval.value);
+            }
         });
 
         return {
@@ -222,6 +266,9 @@ export default {
             toggleAddressList,
             copyPaymentCode,
             handlePayment,
+            getFullAddress,
+            closePaymentModal,
+            getBankLogo
         };
     },
 };
@@ -238,13 +285,16 @@ export default {
                     <div class="w-full md:w-1/6 h-full">
                         <div class="flex flex-row">
                             <p class="text-[#3E6E7A] font-semibold text-xs lg:text-lg">{{ address.name }}</p>
-                            <p class="text-orange-400 font-semibold text-xs lg:text-lg inline ml-2 lg:ml-5">(+62)</p>
                         </div>
-                        <p class="text-[#898383] font-semibold text-xs lg:text-lg">{{ address.phone }}</p>
+                        <p class="text-[#898383] font-semibold text-xs lg:text-lg">
+                            <span class="text-orange-400 font-semibold text-xs lg:text-lg inline">(+62)</span>
+                            {{ address.phone?.replace(/^(0|62)/g, '') }}
+                        </p>
                     </div>
                     <div class="w-full md:w-4/6 md:max-w-4/6 h-full lg:pr-36 mb-auto relative">
-                        <p class="text-black text-opacity-50 font-semibold text-[10px] lg:text-lg">{{
-                            address.fullAddress }}</p>
+                        <p class="text-black text-opacity-50 font-semibold text-[10px] lg:text-lg">
+                            {{ getFullAddress(address) }}
+                        </p>
                         <a href="#" @click.prevent="toggleAddressList"
                             class="md:hidden flex my-auto ml-auto cursor-pointer absolute -right-3 -top-3 scale-50 md:scale-100">
                             <img src="/img/assets/icon/icon_checkout_arrow_down.svg" alt=""
@@ -318,7 +368,7 @@ export default {
                             <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
                                 <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
                                     formatPrice(item.total)
-                                    }},-</p>
+                                }},-</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-0.5 lg:mt-6">
@@ -427,7 +477,7 @@ export default {
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div class="bg-white w-[70vw] md:w-[60vw] lg:w-[50vw] h-auto rounded-[30px] shadow p-4">
                 <div class="relative w-full h-full flex flex-row">
-                    <button @click="showVaPaymentModal = false"
+                    <button @click="closePaymentModal"
                         class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-5 -right-4 lg:-top-5 lg:-right-5">
                         <p class="m-auto text-white text-base">X</p>
                     </button>
@@ -520,7 +570,7 @@ export default {
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div class="bg-white w-[70vw] md:w-[60vw] lg:w-[50vw] h-auto rounded-[30px] shadow p-4">
                 <div class="relative w-full h-full flex flex-row">
-                    <button @click="showQrPaymentModal = false"
+                    <button @click="closePaymentModal"
                         class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-5 -right-4 lg:-top-5 lg:-right-5">
                         <p class="m-auto text-white text-base">X</p>
                     </button>

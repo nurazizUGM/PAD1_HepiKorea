@@ -19,7 +19,8 @@ onBeforeMount(() => {
         window.google.accounts.id.initialize({
             client_id: googleClientId.value,
             callback: handleCredentialResponse,
-            cancel_on_tap_outside: true
+            auto_select: false,
+            cancel_on_tap_outside: false,
         });
         window.google.accounts.id.prompt();
     };

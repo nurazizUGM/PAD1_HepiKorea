@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Enums\Role;
 use App\Http\Controllers\Controller;
 use App\Jobs\MailJob;
 use App\Mail\Verification;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Socialite\Facades\Socialite;
+use Ramsey\Uuid\Uuid;
 
 class AuthController extends Controller
 {
@@ -40,6 +41,95 @@ class AuthController extends Controller
         return response()->json([
             'token' => $token->plainTextToken,
         ]);
+    }
+
+    public function google(Request $request)
+    {
+        try {
+            $token = $request->get('token');
+            if (!$token) {
+                return response()->json([
+                    'message' => 'Google token is required.',
+                ], 401);
+            }
+
+            $client = new Client();
+            $googleUser = $client->verifyIdToken($token);
+            if (!$googleUser) {
+                return response()->json([
+                    'message' => 'Failed to login with Google',
+                ], 401);
+            }
+            $accountId = $googleUser['sub'];
+
+
+            // check if google account already registered
+            $user = User::where('google_id', $accountId)->first();
+
+            // check if email already registered
+            if (!$user) {
+                $user = User::where('email', $googleUser['email'])->first();
+            }
+
+            if (!$user) {
+                // create new user if not exist
+                $headers = get_headers($googleUser['picture'], 1);
+                $ext = explode('/', $headers['Content-Type'])[1];
+
+                try {
+                    $photo =  'profile/' . Uuid::uuid4() . '.' . $ext;
+                    Storage::put($photo, file_get_contents($googleUser['picture']));
+                } catch (\Throwable $th) {
+                    error_log("[Exception] " . $th->getMessage() .
+                        " in " . $th->getFile() .
+                        " on line " . $th->getLine());
+                    $photo = null;
+                }
+
+                $user = User::create([
+                    'fullname' => $googleUser['name'],
+                    'email' => $googleUser['email'],
+                    'photo' => $photo,
+                    'google_id' => $accountId,
+                    'is_verified' => true
+                ]);
+            } else if (empty($user->google_id)) {
+                // update existing user with google account
+                $user->update([
+                    'google_id' => $accountId,
+                    'is_verified' => true
+                ]);
+            } else if ($user->google_id != $accountId) {
+                // account already registered with different google account
+                return response()->json([
+                    'message' => 'Failed to login with Google',
+                ], 401);
+            }
+
+            if ($user->role == Role::GUEST) {
+                $user->update([
+                    'role' => Role::USER,
+                ]);
+            }
+
+            $user->update([
+                'is_verified' => true
+            ]);
+
+            $token = $user->createToken('auth_token');
+            return response()->json([
+                'token' => $token->plainTextToken,
+                'user' => $user,
+            ]);
+        } catch (\Exception $e) {
+            error_log("[Exception] " . $e->getMessage() .
+                " in " . $e->getFile() .
+                " on line " . $e->getLine());
+
+            return response()->json([
+                'message' => 'Failed to login with Google',
+            ], 401);
+        }
     }
 
     // register new user
@@ -78,12 +168,12 @@ class AuthController extends Controller
         $user = User::find(Auth::id());
         $data = $request->validate([
             'fullname' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'gender' => 'required|in:male,female|max:255',
-            'date_of_birth' => 'required|date',
-            'new_password' => 'nullable|string|min:8',
-            'old_password' => 'nullable|string|min:8',
-            'photo' => 'nullable|image',
+            'phone' => 'sometimes|nullable|string|max:15',
+            'gender' => 'sometimes|nullable|in:male,female',
+            'date_of_birth' => 'sometimes|nullable|date',
+            'new_password' => 'sometimes|nullable|string',
+            'old_password' => 'sometimes|nullable|string',
+            'photo' => 'sometimes|nullable|image',
         ]);
 
         // Check if photo is uploaded
