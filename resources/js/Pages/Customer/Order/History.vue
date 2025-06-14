@@ -324,7 +324,7 @@ export default {
                     <li v-for="tab in tabs" :key="tab.id" class="mx-auto" role="presentation">
                         <button
                             class="inline-block p-4 border-b-4 rounded-t-lg text-xs md:text-sm lg:text-xl font-semibold"
-                            :class="{ 'text-black border-orange-400': activeTab === tab.id, 'text-black border-none': activeTab !== tab.id }"
+                            :class="{ 'text-black border-orange-400 hover:opacity-70': activeTab === tab.id, 'text-black hover:border hover:border-b-orange-300 hover:border-b-4 hover:text-orange-400 border-transparent': activeTab !== tab.id }"
                             @click="setActiveTab(tab.id)">
                             {{ tab.label }}
                         </button>
