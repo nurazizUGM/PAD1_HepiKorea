@@ -168,12 +168,12 @@ class AuthController extends Controller
         $user = User::find(Auth::id());
         $data = $request->validate([
             'fullname' => 'required|string|max:255',
-            'phone' => 'required|string|max:255',
-            'gender' => 'required|in:male,female|max:255',
-            'date_of_birth' => 'required|date',
-            'new_password' => 'nullable|string|min:8',
-            'old_password' => 'nullable|string|min:8',
-            'photo' => 'nullable|image',
+            'phone' => 'sometimes|nullable|string|max:15',
+            'gender' => 'sometimes|nullable|in:male,female',
+            'date_of_birth' => 'sometimes|nullable|date',
+            'new_password' => 'sometimes|nullable|string',
+            'old_password' => 'sometimes|nullable|string',
+            'photo' => 'sometimes|nullable|image',
         ]);
 
         // Check if photo is uploaded
