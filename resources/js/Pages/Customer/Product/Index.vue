@@ -119,7 +119,7 @@ watch(params, () => {
             class="w-full md:w-max[100%] min-h-[600px] h-full flex flex-col rounded-3xl bg-[#EFEFEF] shadow-lg overflow-hidden py-5 lg:py-10 px-1 lg:px-14">
             <div class="w-auto md:w-full flex flex-row mb-5 mx-auto md:mx-0 gap-2 justify-around relative">
                 <button id="dropdownCategoryButton" @click="toggleDropdown('category')"
-                    class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-16 md:w-40 lg:w-44 lg:h-10 md:h-8 group"
+                    class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center ml-0 md:mx-0 md:my-auto w-16 md:w-40 lg:w-44 lg:h-10 md:h-8 group hover:invert-[3%]"
                     type="button">
                     <span class="text-left text-[10px] md:text-xs lg:text-lg">{{ selectedCategoryName }}</span>
                     <svg class="w-2.5 h-2.5 md:ml-10 text-black group-focus:rotate-180 transition duration-200"
@@ -152,7 +152,7 @@ watch(params, () => {
                     class="rounded-2xl bg-gray-300 border-none text-xs md:text-base placeholder:text-[8px] md:placeholder:text-base focus:border-0 focus:ring-0 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-16 md:w-40 lg:w-60 lg:h-10 md:h-7 my-auto ml-0 lg:ml-6" />
 
                 <button id="dropdownSortByButton" @click="toggleDropdown('sortBy')"
-                    class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-16 md:w-28 lg:w-48 md:h-8 lg:h-10"
+                    class="text-[#3E6E7A] bg-white focus:ring-0 focus:outline-none flex justify-between rounded-xl text-xs md:text-base px-2 lg:px-5 lg:py-2.5 text-center font-semibold items-center md:mx-0 md:my-auto md:ml-auto w-16 md:w-28 lg:w-48 md:h-8 lg:h-10 hover:invert-[3%]"
                     type="button">
                     <span class="text-left text-[10px] md:text-xs lg:text-lg">{{ sortByDisplay }}</span>
                     <svg class="w-2.5 h-2.5 ml-auto text-black" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -191,22 +191,22 @@ watch(params, () => {
 
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-2">
                 <div v-for="product in products" :key="product.id"
-                    class="bg-white rounded-xl px-2 pb-1 cursor-pointer flex flex-col">
-                    <Link :href="route('product.show', product.id)">
+                    class="bg-white rounded-xl px-2 pb-1 cursor-pointer flex flex-col hover:scale-[102%]">
+                    <Link :href="route('product.show', product.id)" class="flex flex-col h-full">
                     <div class="w-full h-40 bg-cover bg-top"
                         :style="{ backgroundImage: `url(${getImage(product.image)})` }">
                     </div>
                     <h1 class="text-[#3E6E7A] text-sm font-semibold">{{ product.name }}</h1>
                     <h2 class="text-xs font-semibold text-black text-opacity-50">{{ product.category }}</h2>
-                    <h3 class="text-xs text-orange-400 font-semibold ml-auto">Rp {{ formatPrice(product.price) }}</h3>
-                    <button class="bg-[#3E6E7A] text-white rounded-xl px-4 py-1 text-xs ml-auto">Buy</button>
+                    <h3 class="text-xs text-orange-400 font-semibold ml-auto mt-auto">Rp {{ formatPrice(product.price) }}</h3>
+                    <button class="bg-[#3E6E7A] text-white rounded-xl py-1 w-1/3 text-xs ml-auto mt-0.5 hover:opacity-90 active:opacity-85">Buy</button>
                     </Link>
                 </div>
 
                 <!-- Pagination Controls -->
                 <div class="col-span-full flex justify-center mt-6">
                     <button
-                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50"
+                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50 hover:invert-[5%] active:invert-[7%]"
                         :disabled="params.page <= 1"
                         @click="params.page = Number(params.page) - 1"
                     >
@@ -216,7 +216,7 @@ watch(params, () => {
                         Page {{ params.page }}
                     </span>
                     <button
-                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50"
+                        class="px-4 py-2 mx-1 rounded-lg bg-gray-300 text-[#3E6E7A] font-semibold disabled:opacity-50 hover:invert-[5%] active:invert-[7%]"
                         :disabled="params.page >= lastPage"
                         @click="params.page = Number(params.page) + 1"
                     >
