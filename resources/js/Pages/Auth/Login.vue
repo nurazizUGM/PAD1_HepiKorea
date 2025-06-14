@@ -77,7 +77,7 @@ function google() {
                 </div>
 
                 <div class="text-right md:my-2 lg:my-3">
-                    <a href="/auth/forgot_password" class="text-[10px] md:text-[10px] lg:text-sm font-semibold text-blue-600">Forgot
+                    <a href="/auth/forgot_password" class="text-[10px] md:text-[10px] lg:text-sm font-semibold text-blue-600 hover:opacity-80 active:opacity-60">Forgot
                         Password</a>
                 </div>
                 <!-- login button -->
@@ -86,19 +86,19 @@ function google() {
             </form>
             <p class="text-[8px] md:text-[10px] lg:text-sm md:font-normal lg:font-semibold text-center md:text-center lg:text-center text-black">Don't have an
                 account?
-                <Link href="/auth/register" class="text-blue-600">Register</Link>
+                <Link href="/auth/register" class="text-blue-600 hover:opacity-80 active:opacity-60">Register</Link>
             </p>
             <div class="w-full relative">
                 <hr class="border-t-2 border-slate-400 mt-6 md:mt-5 lg:mt-8 relative">
                 <div
-                    class="absolute -top-1.5 md:-top-3 lg:-top-5 left-[24%] md:left-[24%] lg:left-[25%] bg-[#FFFFFF] text-[8px] md:text-xs lg:text-base font-semibold text-[#B7B7B7] py-1 px-9 md:py-1 md:px-5 lg:py-2 lg:px-10">
+                    class="absolute -top-1.5 md:-top-3 lg:-top-5 left-[24%] md:left-[22%] lg:left-[25%] bg-[#FFFFFF] text-[8px] md:text-xs lg:text-base font-semibold text-[#B7B7B7] py-1 px-9 md:py-1 md:px-5 lg:py-2 lg:px-10">
                     or login
                     with
                 </div>
             </div>
             <!-- button login google -->
             <a @click.prevent="google"
-                class="w-full flex items-center justify-center bg-[#EFEFEF] h-8 md:h-8 lg:h-12 rounded-xl md:mb-2 lg:mb-5 text-[8px] md:text-xs lg:text-2xl font-bold text-black mt-8 md:mt-8 lg:mt-10 cursor-pointer">
+                class="w-full flex items-center justify-center bg-[#EFEFEF] h-8 md:h-8 lg:h-12 rounded-xl md:mb-2 lg:mb-5 text-[8px] md:text-xs lg:text-2xl font-bold text-black mt-8 md:mt-8 lg:mt-10 cursor-pointer hover:opacity-80 active:opacity-60">
                 <img src="/img/assets/icon/icon_google.png" alt="Google Icon" class="w-4 h-4 md:h-4 lg:h-6 md:w-4 lg:w-6 mr-3">
                 Login With Google
             </a>
