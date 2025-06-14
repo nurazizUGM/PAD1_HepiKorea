@@ -107,7 +107,8 @@ onMounted(() => {
                                 </path>
                             </svg>
                         </button>
-                        <Link :href="route('home')" class="flex md:ms-6 me-2 md:me-2">
+                        <Link :href="route('home')"
+                            class="flex md:ms-6 me-2 md:me-2 hover:opacity-80 active:opacity-60">
                         <span class="self-center text-xs md:text-sm lg:text-2xl text-orange-400 font-semibold">
                             <span class="text-[#3E6E7A]">Hepi</span>Korea
                         </span>
@@ -144,7 +145,8 @@ onMounted(() => {
                                     <div v-if="showNotifications"
                                         class="w-[13rem] md:w-[30rem] z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 shadow rounded-xl absolute -right-8 md:right-0">
                                         <div class="px-4 py-3">
-                                            <p class="text-[11px] md:text-sm font-medium text-gray-900">Notifications</p>
+                                            <p class="text-[11px] md:text-sm font-medium text-gray-900">Notifications
+                                            </p>
                                         </div>
                                         <ul class="py-1">
                                             <li v-for="notification in notifications" :key="notification.id">
@@ -235,7 +237,7 @@ onMounted(() => {
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden md:flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 md:gap-x-8 gap-x-14 justify-around mx-auto"
+                    <div class="hidden md:flex flex-col md:flex-row items-center gap-y-6 md:gap-y-0 md:gap-x-5 lg:gap-x-14 justify-around mx-auto"
                         id="navlink-container">
                         <Link :href="route('product.index')"
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
@@ -283,11 +285,11 @@ onMounted(() => {
                         FAQ </Link>
                         <div v-if="isAdmin && isAuthenticated">
                             <Link :href="route('admin.dashboard')"
-                                class="flex flex-row text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
+                                class="flex flex-row items-center text-xs font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                             <img src="/img/assets/icon/icon_dashboard_admin.svg" alt=""
                                 class="w-4 h-4 grayscale group-hover:grayscale-0" />
                             <p class="ml-2 mr-6 whitespace-nowrap group-hover:text-orange-400">
-                                Admin Dashboard
+                                Admin <br> Dashboard
                             </p>
                             </Link>
                         </div>
@@ -322,13 +324,14 @@ onMounted(() => {
                     <div class="hidden md:flex gap-x-5 items-center justify-around mx-auto md:ml-auto md:mr-5 align-middle"
                         id="notif-cart-container">
                         <Link :href="route('cart.index')">
-                        <img src="/img/assets/icon/icon_dashboard_order.svg" alt="" class="w-5 h-5" />
+                        <img src="/img/assets/icon/icon_dashboard_order.svg" alt=""
+                            class="w-5 h-5 hover:opacity-80 active:opacity-60" />
                         </Link>
                         <div v-if="isAuthenticated">
                             <div class="relative">
                                 <button @click="toggleNotifications" class="relative">
                                     <img src="/img/assets/icon/icon_customer_notification_green.svg" alt=""
-                                        class="w-4 h-5" />
+                                        class="w-4 h-5 mt-1.5 hover:opacity-80 active:opacity-60" />
                                     <span v-if="notificationCount > 0"
                                         class="absolute top-[-2px] right-[-2px] w-3 h-3 text-xs text-center font-bold leading-none text-white bg-[#FF2E00] rounded-full">{{
                                             notificationCount }}</span>
@@ -411,7 +414,7 @@ onMounted(() => {
                     </div>
                     <Link v-else :href="route('auth.login')"
                         class="hidden md:flex cursor-pointer text-white bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] focus:outline-none focus:ring-0 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2"
-                         id="login-container">
+                        id="login-container">
                     Login
                     </Link>
                 </div>
@@ -472,7 +475,7 @@ onMounted(() => {
         </div>
 
         <!-- Footer -->
-        <Footer></Footer> />
+        <Footer></Footer>
     </div>
 </template>
 

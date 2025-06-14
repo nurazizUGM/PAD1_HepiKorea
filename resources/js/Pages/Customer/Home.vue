@@ -98,7 +98,7 @@
                     </div>
                     <div class="grid grid-cols-4 gap-x-3 gap-y-3 lg:gap-x-32 lg:gap-y-20 mt-4 md:mt-8 lg:mt-14">
                         <div v-for="category in categories" :key="category.id"
-                            class="bg-[#FFFCFC] h-24 md:h-44 lg:h-52 flex flex-col text-center justify-center rounded-xl cursor-pointer"
+                            class="bg-[#FFFCFC] h-24 md:h-44 lg:h-52 flex flex-col text-center justify-center rounded-xl cursor-pointer hover:scale-105 transition-transform"
                             @click="
                                 $inertia.get(
                                     route('product.index', {
@@ -143,7 +143,7 @@
                             <div
                                 class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
                                 <div v-for="product in newProducts" :key="product.id"
-                                    class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                                    class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer hover:scale-[101%] transition-transform"
                                     @click="
                                         $inertia.get(
                                             route('product.show', product.id)
@@ -169,7 +169,7 @@
                                         </h3>
                                         <a href="#" class="ml-auto my-auto">
                                             <button
-                                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-2 md:px-4 md:py-0.5 text-[10px] md:text-xs">
+                                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-2 md:px-4 md:py-0.5 text-[10px] md:text-xs hover:opacity-80 active:opacity-60">
                                                 Buy
                                             </button>
                                         </a>
@@ -207,7 +207,7 @@
                             <div
                                 class="grid grid-flow-col auto-cols-[125px] md:auto-cols-[150px] lg:auto-cols-[175px] gap-x-5 md:gap-x7 lg:gap-x-14">
                                 <div v-for="product in popularProducts" :key="product.id"
-                                    class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer"
+                                    class="bg-white h-[200px] md:-[230px] lg:h-[250px] flex flex-col rounded-xl overflow-hidden cursor-pointer hover:scale-[101%] transition-transform"
                                     @click="
                                         $inertia.get(
                                             route('product.show', product.id)
@@ -233,7 +233,7 @@
                                         </h3>
                                         <a href="#" class="ml-auto my-auto">
                                             <button
-                                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-2 md:px-4 md:py-0.5 text-[10px] md:text-xs">
+                                                class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] rounded-xl text-white px-2 md:px-4 md:py-0.5 text-[10px] md:text-xs hover:opacity-80 active:opacity-60">
                                                 Buy
                                             </button>
                                         </a>
