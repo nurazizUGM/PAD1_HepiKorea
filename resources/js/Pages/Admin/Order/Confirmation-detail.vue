@@ -104,14 +104,14 @@
                                 <div class="w-[50%] lg:w-[60%] h-full flex flex-col ml-0 md:ml-auto lg:ml-0">
                                     <div class="w-fit h-fit ml-auto text-xs lg:text-base order-2 lg:order-1">
                                         <button :class="[
-                                            'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold mr-1 lg:mr-3',
+                                            'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold mr-1 lg:mr-3 hover:bg-[#365f6a] active:bg-[#30545e]',
                                             product.status === 'available' ? 'bg-[#3E6E7A]' : 'bg-[#3E6E7A] opacity-50'
                                         ]" @click="openAvailabilityModal(product, true)">
                                             Available
                                         </button>
                                         <button :class="[
-                                            'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold',
-                                            product.status === 'unavailable' ? 'bg-[#3E6E7A]' : 'bg-[#3E6E7A] opacity-50'
+                                            'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold hover:bg-[#365f6a] active:bg-[#30545e]',
+                                            product.status === 'unavailable' ? 'bg-[#3E6E7A] opacity-50' : 'bg-[#3E6E7A]'
                                         ]" @click="openAvailabilityModal(product, false)">
                                             Unavailable
                                         </button>
@@ -164,7 +164,7 @@
             <Modal :show="showAvailabilityModal" @close="closeAvailabilityModal">
                 <div class="bg-white w-[90vw] md:w-[60vw] lg:w-[42vw] lg:h-[64vh] rounded-xl shadow relative">
                     <button
-                        class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full text-white text-sm -top-2 -right-2"
+                        class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full text-white text-sm -top-2 -right-2 hover:invert-[20%] active:invert-[25%]"
                         @click="closeAvailabilityModal">
                         X
                     </button>
@@ -186,7 +186,7 @@
                                             <div
                                                 class="w-28 h-9 bg-gray-200 rounded-md p-0.5 flex items-center cursor-pointer relative">
                                                 <div :class="[
-                                                    'w-14 h-8 bg-white rounded-md transform transition-transform duration-300 ease-in-out',
+                                                    'w-14 h-8 bg-white rounded-md transform transition-transform duration-300 ease-in-out hover:invert-[3%]',
                                                     modalForm.isPm ? 'translate-x-[52px]' : 'translate-x-0'
                                                 ]"></div>
                                                 <span class="text-sm text-slate-500 absolute left-5">PM</span>
@@ -204,7 +204,7 @@
                                         class="block w-full lg:w-[18vw] py-2 text-gray-900 bg-white shadow-md border border-white rounded-lg focus:ring-0 focus:border-none"
                                         :placeholder="`Rp ${formatPrice(modalForm.price || 0)}`" />
                                     <button type="button"
-                                        class="inline-flex items-center px-4 py-2 font-semibold text-white bg-gray-500 hover:bg-gray-600 rounded-lg -ml-14 z-10">
+                                        class="inline-flex items-center px-4 py-2 font-semibold text-white bg-gray-500 rounded-lg -ml-14 z-10">
                                         IDR
                                     </button>
                                 </div>
@@ -294,7 +294,11 @@ export default {
                 status: isAvailable ? 'available' : 'unavailable',
                 productId: product.id,
             };
-            showAvailabilityModal.value = true;
+            if(isAvailable == true){
+                showAvailabilityModal.value = true;
+            } else {
+                showAvailabilityModal.value = false;
+            }
         };
 
         const closeAvailabilityModal = () => {
