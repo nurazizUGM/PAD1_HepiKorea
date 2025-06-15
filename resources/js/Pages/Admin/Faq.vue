@@ -59,7 +59,7 @@
                         <div class="w-full h-full flex flex-col">
                             <h1 class="text-black font-bold md:text-2xl lg:text-5xl p-5 pb-2">Add FAQ</h1>
                             <button @click="showAddModal = false"
-                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2">
+                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                                 <p class="m-auto text-white text-sm">X</p>
                             </button>
                             <div class="w-full h-full flex flex-col">
@@ -94,7 +94,7 @@
                         <div class="w-full h-full flex flex-col">
                             <h1 class="text-black font-bold md:text-2xl lg:text-5xl p-5 pb-2">Edit FAQ</h1>
                             <button @click="showEditModal = false"
-                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2">
+                                class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                                 <p class="m-auto text-white text-sm">X</p>
                             </button>
                             <div class="w-full h-full flex flex-col">
@@ -134,11 +134,11 @@
                             </p>
                             <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                                 <button @click="confirmDelete"
-                                    class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
+                                    class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold hover:opacity-90 active:opacity-80">
                                     Yes, Delete it!
                                 </button>
                                 <button @click="showDeleteModal = false"
-                                    class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2">
+                                    class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2 hover:opacity-90 active:opacity-80">
                                     Cancel
                                 </button>
                             </div>
