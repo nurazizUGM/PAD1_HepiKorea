@@ -20,11 +20,11 @@
                         <ul class="py-2 text-sm text-[#B7B7B7] dark:text-gray-200">
                             <li>
                                 <a href="#" @click.prevent="selectCategory(null)"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                                    class="block px-4 py-2 hover:bg-gray-100 text-black">All</a>
                             </li>
                             <li v-for="category in categories" :key="category.id">
                                 <a href="#" @click.prevent="selectCategory(category)"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{
+                                    class="block px-4 py-2 hover:bg-gray-100 text-black">{{
                                         category.name }}</a>
                             </li>
                         </ul>
@@ -34,7 +34,7 @@
                 <!-- Add Product Button -->
                 <button @click="$emit('create-product')" type="button"
                     class="flex gap-1 ms-3 cursor-pointer order-2 lg:order-1">
-                    <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
+                    <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
                     <h2 class="text-black text-md my-auto font-semibold hidden lg:flex">Add Product</h2>
                 </button>
             </div>
@@ -64,7 +64,7 @@
         <div
             class="w-full h-full mx-auto content-center mt-5 mb-8 grid grid-cols-2 gap-x-1 gap-y-3 md:grid-cols-4 md:gap-x-0 lg:grid-rows-[auto_1fr_auto] lg:grid-cols-7 lg:gap-x-2 lg:gap-y-3">
             <div v-for="product in products" :key="product.id"
-                class="bg-white w-[135px] h-[175px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto">
+                class="bg-white w-[135px] h-[175px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto hover:scale-[102%] transition-all">
                 <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto"
                     :style="{ backgroundImage: `url(${getProductImage(product)})` }" />
                 <div class="p-2">
@@ -72,10 +72,10 @@
                     <p class="text-sm font-semi">Rp. {{ formatPrice(product.price) }}</p>
                 </div>
                 <div class="flex mt-auto mx-3 mb-3">
-                    <button @click="$emit('edit-product', product.id)" class="mr-auto">
+                    <button @click="$emit('edit-product', product.id)" class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_product_edit.svg" alt="edit" />
                     </button>
-                    <button @click="openDeleteModal(product.id)" class="ml-auto">
+                    <button @click="openDeleteModal(product.id)" class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_product_trash.svg" alt="delete" />
                     </button>
                 </div>
@@ -93,11 +93,11 @@
                         to revert this!</p>
                     <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                         <button @click="confirmDelete"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold hover:opacity-90 active:opacity-80">
                             Yes, Delete it!
                         </button>
                         <button @click="showDeleteModal = false"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2 hover:opacity-90 active:opacity-80">
                             Cancel
                         </button>
                     </div>
