@@ -36,21 +36,10 @@ use Inertia\Inertia;
  * Testing Inertia
  * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
  */
-// Route::get('/inertia/{path}', function ($path) {
-//     return dd($path);
-//     return Inertia::render("{$path}");
-// })->where('path', '.*');
-
-Route::get('/inertia/{folder}/{view}', function ($folder, $view) {
-    return Inertia::render("{$folder}/{$view}");
-});
-
-Route::get('/inertia/{folder}/{subfolder}/{view}', function ($folder, $subfolder, $view) {
-    return Inertia::render("{$folder}/{$subfolder}/{$view}");
-});
-// Route::get('/inertia/{folder}/{subfolder}/{view}/{id}', function ($folder, $subfolder, $view, $id) {
-//     return Inertia::render("{$folder}/{$subfolder}/{$view}/{$id}");
-// });
+Route::get('/inertia/{path}', function ($path) {
+    return dd($path);
+    return Inertia::render("{$path}");
+})->where('path', '.*');
 
 Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
     return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
