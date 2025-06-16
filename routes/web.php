@@ -41,6 +41,10 @@ Route::get('/inertia/{path}', function ($path) {
     return Inertia::render("{$path}");
 })->where('path', '.*');
 
+Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
+    return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
+});
+
 Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
 
 Route::inertia('/notifications', 'Customer/Notifications')->name('notifications');
