@@ -219,11 +219,11 @@ onMounted(() => {
                     </div>
 
                     <!-- Search Bar (tablet n desktop) -->
-                    <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex" id="searchbar-container">
+                    <div class="mx-auto md:mr-1 lg:mr-auto hidden md:flex group" id="searchbar-container">
                         <form @submit.prevent="submitSearch" class="flex items-center my-auto">
                             <div class="relative flex items-center w-full">
                                 <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
-                                    class="absolute left-3 md:h-4 md:w-4 lg:w-5 lg:h-5 text-gray-500" />
+                                    class="absolute left-3 md:h-4 md:w-4 lg:w-5 lg:h-5 text-gray-500 group-hover:rotate-12 group-hover:-translate-y-[2px] transition" />
                                 <input type="text" v-model="search"
                                     class="block w-[60vw] md:w-[140px] md: lg:w-[30vw] pl-0 md:pl-8 lg:pl-10 py-2 md:py-1 lg:py-2 text-gray-900 bg-[#EFEFEF] border border-[#EFEFEF] rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start placeholder:text-[#898383] md:placeholder:text-xs lg:placeholder:text-base"
                                     placeholder="Search..." />
@@ -377,7 +377,7 @@ onMounted(() => {
                                     </li>
                                     <li v-else>
                                         <Link :href="route('auth.profile')"
-                                            class="flex flex-row items-center px-4 py-2 w-fit text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
+                                            class="flex flex-row items-center px-4 py-2 text-lg font-semibold text-[#B7B7B7] hover:bg-gray-100 group">
                                         <img src="/img/assets/icon/icon_dashboard_customer.svg" alt=""
                                             class="w-5 h-5 grayscale group-hover:grayscale-0" />
                                         <p class="ml-2 group-hover:text-orange-400">Profile</p>
