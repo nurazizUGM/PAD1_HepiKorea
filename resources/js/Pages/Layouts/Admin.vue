@@ -26,7 +26,7 @@ const getImageUrl = (image) => {
         <meta name="description" content="This is the authentication page." />
     </Head>
     <nav
-        class="fixed top-0 z-[39] w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
+        class="font-poppins fixed top-0 z-[39] w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700 shadow-sm">
         <div class="px-5 py-3 lg:px-5 lg:pl-3">
             <div class="flex items-center justify-between">
                 <div class="flex items-center justify-start rtl:justify-end">
@@ -87,7 +87,7 @@ const getImageUrl = (image) => {
 
     <!-- start of sidebar -->
     <aside id="default-sidebar"
-        class="fixed top-0 left-0 z-[38] md:w-36 lg:w-64 h-screen transition-transform  -translate-x-full sm:translate-x-0"
+        class="font-poppins fixed top-0 left-0 z-[38] md:w-36 lg:w-64 h-screen transition-transform  -translate-x-full sm:translate-x-0"
         aria-label="Sidebar">
         <div class="h-fit md:h-full flex flex-col md:pl-3 lg:pl-7 pr-2 py-4 overflow-y-auto bg-white dark:bg-gray-800">
             <ul class="space-y-2 font-medium">
@@ -169,7 +169,7 @@ const getImageUrl = (image) => {
 
 
     <!-- container (di sebelah aside dan dibawah navbar) -->
-    <div class="p-4 ml-0 md:ml-48 lg:ml-64 mt-14 mr-0 mb-0 relative">
+    <div class="p-4 ml-0 md:ml-48 lg:ml-64 mt-14 mr-0 mb-0 relative font-poppins">
         <slot />
 
         <!-- <div id="alert-2"
