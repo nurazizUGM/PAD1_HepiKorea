@@ -8,18 +8,43 @@ import axios from 'axios';
 const settings = ref([
   {
     id: 1,
-    name: 'Business',
-    value: 'My Awesome Store',
+    name: 'Email',
+    value: 'admin@hepikorea.pad19.me',
   },
   {
     id: 2,
     name: 'Address',
-    value: '123 Business Street, Jakarta, Indonesia',
+    value: 'Jl. Raya No. 1',
   },
   {
     id: 3,
-    name: 'Contact Email',
-    value: 'contact@myawesomestore.com',
+    name: 'Line',
+    value: 'https://line.me/ti/p/v4ZoqbIEQ1',
+  },
+  {
+    id: 4,
+    name: 'Instagram',
+    value: 'hepikorea',
+  },
+  {
+    id: 5,
+    name: 'Whatsapp',
+    value: '628123456890',
+  },
+  {
+    id: 6,
+    name: 'Phone',
+    value: 'https://line.me/ti/p/v4ZoqbIEQ1',
+  },
+  {
+    id: 7,
+    name: 'Phone',
+    value: '628123456890',
+  },
+  {
+    id: 8,
+    name: 'About',
+    value: 'Our company is a company that sells various kinds of Korean products. We have been established since 2010 and have served many customers. We are committed to providing the best service for our customers',
   },
 ]);
 
