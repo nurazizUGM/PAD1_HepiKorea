@@ -43,6 +43,8 @@ Route::get('/inertia/{path}', function ($path) {
 
 Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
 
+Route::inertia('/notifications', 'Customer/Notifications')->name('notifications');
+
 Route::inertia('/', 'Customer/Home')->name('home');
 
 Route::prefix('auth')->name('auth.')->group(function () {
@@ -111,6 +113,7 @@ Route::inertia('/faq', 'Customer/Faq')->name('faq');
 Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(function () {
     Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
     Route::inertia('profile', 'Admin/Profile')->name('profile');
+    Route::inertia('business', 'Admin/Business')->name('business');
 
     Route::controller(AdminProfileController::class)->group(function () {
 

@@ -30,6 +30,22 @@ const notifications = ref([
     action_url: null,
     image: '/img/example/admin_order_img_phone.png',
   },
+  {
+    id: 4,
+    title: 'New Promotion',
+    message: 'Enjoy 20% off your next purchase! Use code SUMMER20.',
+    created_at: new Date('2025-06-12T08:00:00'),
+    action_url: null,
+    image: '/img/example/admin_order_img_phone.png',
+  },
+  {
+    id: 5,
+    title: 'New Promotion',
+    message: 'Enjoy 20% off your next purchase! Use code SUMMER20.',
+    created_at: new Date('2025-06-12T08:00:00'),
+    action_url: null,
+    image: '/img/example/admin_order_img_phone.png',
+  },
 ]);
 
 // Format date to 'd-M-Y H:i'
@@ -63,31 +79,31 @@ const fetchNotifications = async () => {
 fetchNotifications();
 
 // const router = useRouter();
-// const handleNotificationClick = (actionUrl) => {
-//   if (actionUrl) {
-//     router.push(actionUrl);
-//   }
-// };
+const handleNotificationClick = (actionUrl) => {
+  if (actionUrl) {
+    router.push(actionUrl);
+  }
+};
 </script>
 
 <template>
   <Layout title="Notification">
-    <div class="w-full max-w-full h-full rounded-3xl bg-[#EFEFEF] py-8 px-10">
+    <div class="w-full max-w-full h-full rounded-xl lg:rounded-3xl bg-[#EFEFEF] px-3 py-4 lg:py-8 md:px-4 lg:px-10">
       <!-- Content Container -->
-      <div class="w-full min-h-[680px] overflow-hidden rounded-3xl bg-white flex flex-col py-4 px-10">
-        <h1 class="text-black font-semibold text-2xl">Notification</h1>
+      <div class="w-full min-h-[680px] overflow-hidden rounded-xl lg:rounded-3xl bg-white flex flex-col px-2 py-4 md:px-5 lg:px-10">
+        <h1 class="text-black font-semibold md:text-xl lg:text-2xl">Notification</h1>
         <!-- List of Notification Container -->
-        <div class="w-full h-full flex flex-col gap-y-4 mt-4">
+        <div class="w-full h-full flex flex-col gap-y-2 md:gap-y-3 lg:gap-y-4 mt-4">
           <!-- Notification -->
           <div
             v-for="notification in notifications"
             :key="notification.id"
-            class="w-full h-fit bg-white rounded-2xl shadow-lg p-4"
+            class="w-full h-fit bg-white rounded-2xl drop-shadow-md md:shadow-lg p-4"
             :class="{ 'cursor-pointer': notification.action_url, 'cursor-auto': !notification.action_url }"
-            
+            @click="handleNotificationClick(notification.action_url)"
           >
             <!-- Notification Date -->
-            <p class="text-[#B7B7B7] font-semibold text-sm cursor-text">
+            <p class="text-[#B7B7B7] font-semibold text-xs md:text-sm cursor-text">
               {{ formatDate(notification.created_at) }}
             </p>
             <div class="w-full h-full flex flex-row mt-3 cursor-auto">
@@ -96,9 +112,9 @@ fetchNotifications();
                 alt="img_product"
                 class="h-20 object-contain"
               >
-              <div class="flex flex-col ml-10">
-                <h1 class="text-[#3E6E7A] text-xl font-semibold">{{ notification.title }}</h1>
-                <p class="text-[#3E6E7A] my-auto">
+              <div class="flex flex-col ml-5 md:ml-10">
+                <h1 class="text-[#3E6E7A] text-base md:text-xl font-semibold">{{ notification.title }}</h1>
+                <p class="text-[#3E6E7A] text-xs md:text-base my-auto">
                   {{ notification.message }}
                 </p>
               </div>
