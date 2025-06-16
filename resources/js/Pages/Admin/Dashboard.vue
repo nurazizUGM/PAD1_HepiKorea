@@ -82,7 +82,7 @@ import { Head } from '@inertiajs/vue3';
                 </Link>
 
                 <!-- Most Ordered -->
-                <Link :href="route('admin.category.index')"
+                <Link :href="route('admin.product.index', { tab: 'category' })"
                     class="flex flex-col items-center justify-center bg-gray-50 h-[298px] md:h-[298px] lg:h-[420px] rounded-xl cursor-pointer hover:shadow-md transition-shadow">
                 <div class="w-full h-[15%] text-center mb-auto pt-3">
                     <h1 class="text-black font-bold text-xl lg:text-2xl">

@@ -247,7 +247,6 @@ export default {
                                 break;
                             case 'finished':
                                 finishedOrders.value = data;
-                                console.log('Finished Orders:', finishedOrders.value);
                                 break;
                         }
                     });
