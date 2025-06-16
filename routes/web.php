@@ -37,13 +37,9 @@ use Inertia\Inertia;
  * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
  */
 Route::get('/inertia/{path}', function ($path) {
-    return dd($path);
-    return Inertia::render("{$path}");
+    $path = str_replace('.vue', '', $path);
+    return Inertia::render($path);
 })->where('path', '.*');
-
-Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
-    return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
-});
 
 Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
 
