@@ -5,7 +5,7 @@
             class="w-[35%] md:w-[30%] lg:w-[20%] min-h-[70vh] lg:h-[78vh] bg-white rounded-lg overflow-y-scroll no-scrollbar">
             <div>
                 <button
-                    class="flex items-center w-full px-2 md:px-3 lg:px-5 pt-5 font-medium text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white"
+                    class="flex items-center w-full px-2 md:px-3 lg:px-5 pt-5 font-medium text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white hover:opacity-70"
                     @click="selectAllOrders">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 rotate-180 shrink-0" aria-hidden="true"
                         viewBox="0 0 16 16">
@@ -18,7 +18,7 @@
                 </button>
                 <div v-for="year in years" :key="year">
                     <button
-                        class="flex items-center w-full px-2 md:px-3 lg:px-5 pt-5 font-medium text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white"
+                        class="flex items-center w-full px-2 md:px-3 lg:px-5 pt-5 font-medium text-gray-500 border-b-0 rounded-xl focus:ring-0 focus:bg-white hover:opacity-70"
                         @click="toggleYear(year)">
                         <svg class="w-3 h-3 shrink-0" :class="{ 'rotate-180': expandedYears.includes(year) }"
                             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -32,7 +32,7 @@
                     <div v-if="expandedYears.includes(year)" class="px-2 md:px-3 lg:px-5">
                         <ul class="ml-5 text-lg">
                             <li v-for="month in months[year]" :key="month"
-                                class="my-0.5 md:my-1.5 lg:my-3 text-[10px] md:text-sm lg:text-base text-black text-opacity-50 font-semibold cursor-pointer"
+                                class="my-0.5 md:my-1.5 lg:my-3 text-[10px] md:text-sm lg:text-base text-black text-opacity-50 font-semibold cursor-pointer hover:invert-[30%]"
                                 @click="filterOrders(year, month)">
                                 {{ getMonthName(month) }}
                             </li>
@@ -67,7 +67,7 @@
             </div>
 
             <div v-else v-for="order in filteredOrders" :key="order.id"
-                class="bg-white w-[194px] md:w-full lg:w-[26rem] h-32 md:h-[150px] lg:h-52 rounded-xl p-1 md:p-2 lg:p-2 flex flex-row">
+                class="bg-white w-[194px] md:w-full lg:w-[26rem] h-32 md:h-[150px] lg:h-52 rounded-xl p-1 md:p-2 lg:p-2 flex flex-row hover:scale-[101%] transition-all">
                 <!-- Image -->
                 <div class="w-5/12 h-[90%] md:h-full bg-cover bg-center bg-no-repeat rounded-xl my-auto lg:my-0"
                     :style="{ backgroundImage: `url(${getImageUrl(order.custom_order_items[0].image)})` }"></div>

@@ -17,9 +17,9 @@
             </div>
             <!-- Customer Cards -->
             <div
-                class="w-full lg:min-h-[49vh] h-fit mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-2 gap-y-3 md:gap-y-6 lg:gap-8 overflow-y-auto no-scrollbar justify-start items-start content-start">
+                class="w-full lg:min-h-[49vh] h-fit mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-2 gap-y-3 md:gap-y-6 lg:gap-8 overflow-y-auto no-scrollbar justify-start items-start content-start py-1">
                 <div v-for="customer in customers" :key="customer.id"
-                    class="bg-white w-full h-[190px] md:w-[150px] md:h-[194px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col cursor-pointer mx-auto">
+                    class="bg-white w-full h-[190px] md:w-[150px] md:h-[194px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col cursor-pointer mx-auto hover:scale-[102%] transition">
                     <!-- @click="$router.push(`/customer/${customer.id}`)"> -->
                     <!-- Customer Image -->
                     <div class="w-full h-4/6">
@@ -30,10 +30,10 @@
                     <div class="p-2 h-1/6">
                         <p class="text-[#376F7E] text-xs lg:text-sm font-bold truncate">{{ customer.fullname }}</p>
                     </div>
-                    <!-- Edit Icon -->
+                    <!-- visit profile Icon -->
                     <div class="flex mx-3 mb-2 h-1/6">
                         <Link :href="route('admin.customer.show', customer.id)" class="ml-auto">
-                        <img src="/img/assets/icon/icon_user_profile.svg" alt="Customer Profile" class="h-full" />
+                        <img src="/img/assets/icon/icon_user_profile.svg" alt="Customer Profile" class="h-full hover:opacity-70 active:opacity-85" />
                         </Link>
                     </div>
                 </div>

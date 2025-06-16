@@ -3,7 +3,7 @@
         <div class="w-full flex items-center">
             <h2 class="text-black text-md ml-3 font-semibold">Add Category</h2>
             <button @click="openAddModal" class="ml-10">
-                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
+                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
             </button>
         </div>
 
@@ -11,18 +11,18 @@
         <div
             class="w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-3 md:gap-y-6 lg:gap-x-12 lg:gap-y-8 justify-start items-start content-start no-scrollbar">
             <div v-for="category in categories" :key="category.id"
-                class="bg-white w-[133px] h-[180px] md:w-[180px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col">
+                class="bg-white w-[133px] h-[180px] md:w-[180px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%] transition">
                 <div class="w-full h-2/3 bg-cover bg-top"
                     :style="{ backgroundImage: `url(${getImageUrl(category.icon)})` }" />
                 <div class="p-2">
                     <p class="text-sm lg:text-lg text-[#3E6E7A] text-center font-bold truncate">{{ category.name }}</p>
                 </div>
                 <div class="flex mt-auto mx-4 mb-4">
-                    <button @click="openEditModal(category)" class="mr-auto">
+                    <button @click="openEditModal(category)" class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_edit.svg" alt="edit"
                             class="w-6 lg:w-7 h-6 lg:h-7" />
                     </button>
-                    <button @click="openDeleteModal(category.id)" class="ml-auto">
+                    <button @click="openDeleteModal(category.id)" class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_trash.svg" alt="delete"
                             class="w-6 lg:w-7 h-6 lg:h-7" />
                     </button>
@@ -35,7 +35,7 @@
             <div
                 class="bg-white w-[261px] h-[511px] md:w-[646px] md:h-[350px] lg:w-[747px] lg:h-[400px] rounded-lg shadow p-3 md:p-6">
                 <button @click="showAddModal = false"
-                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2">
+                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                     <p class="m-auto text-white text-sm">X</p>
                 </button>
                 <h1 class="text-[#376F7E] font-semibold text-xl md:text-3xl mb-1 md:mb-2 ml-2">Add Category</h1>
@@ -49,7 +49,7 @@
                                 <input ref="addFileInput" type="file" accept="image/*" class="hidden"
                                     @change="handleAddFile" />
                                 <label @click="triggerAddFileInput"
-                                    class="flex items-center justify-between w-full rounded-3xl bg-gray-200 hover:bg-gray-300 h-14 pl-4 pr-3 md:pl-10 md:pr-4 cursor-pointer">
+                                    class="flex items-center justify-between w-full rounded-3xl bg-gray-200 h-14 pl-4 pr-3 md:pl-10 md:pr-4 cursor-pointer">
                                     <span class="text-black text-sm md:text-base font-semi">Upload Your File</span>
                                     <img src="/img/assets/icon/icon_admin_category_upload.svg" alt="Upload Icon"
                                         class="h-5 w-5 lg:h-8 lg:w-8" />
@@ -58,7 +58,7 @@
                             <h1 class="text-orange-400 text-sm lg:text-xl font-semibold text-left mt-2 md:mt-5">Category
                                 Name</h1>
                             <input v-model="addForm.name" type="text" placeholder="Write The Category Name..."
-                                class="rounded-3xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-4 md:pl-10 md:pr-4 mt-2 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0" />
+                                class="rounded-3xl w-full bg-gray-200 h-14 pl-4 md:pl-10 md:pr-4 mt-2 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0" />
                             <button type="submit"
                                 class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-4 mx-auto md:mr-0 md:ml-auto inline-block w-3/6 md:w-1/4 h-10 rounded-2xl">
                                 Save
@@ -74,7 +74,7 @@
             <div
                 class="bg-white w-[261px] h-[511px] md:w-[646px] md:h-[350px] lg:w-[747px] lg:h-[400px] rounded-lg shadow p-3 md:p-6">
                 <button @click="showEditModal = false"
-                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2">
+                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                     <p class="m-auto text-white text-sm">X</p>
                 </button>
                 <h1 class="text-[#376F7E] font-semibold text-xl md:text-3xl mb-1 md:mb-2 ml-2">Edit Category</h1>
@@ -88,7 +88,7 @@
                                 <input ref="editFileInput" type="file" accept="image/*" class="hidden"
                                     @change="handleEditFile" />
                                 <label @click="triggerEditFileInput"
-                                    class="flex items-center justify-between w-full rounded-3xl bg-gray-200 hover:bg-gray-300 h-14 pl-4 pr-3 md:pl-10 md:pr-4 cursor-pointer">
+                                    class="flex items-center justify-between w-full rounded-3xl bg-gray-200 h-14 pl-4 pr-3 md:pl-10 md:pr-4 cursor-pointer">
                                     <span class="text-black text-sm md:text-base font-semi">Upload Your File...</span>
                                     <img src="/img/assets/icon/icon_admin_category_upload.svg" alt="Upload Icon"
                                         class="h-5 w-5 lg:h-8 lg:w-8" />
@@ -97,7 +97,7 @@
                             <h1 class="text-orange-400 text-sm lg:text-xl font-semibold text-left mt-2 md:mt-5">Category
                                 Name</h1>
                             <input v-model="editForm.name" type="text" placeholder="Name"
-                                class="rounded-3xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-4 md:pl-10 md:pr-4 mt-2 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0" />
+                                class="rounded-3xl w-full bg-gray-200 h-14 pl-4 md:pl-10 md:pr-4 mt-2 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0" />
                             <button type="submit"
                                 class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-4 mx-auto md:mr-0 md:ml-auto inline-block w-3/6 md:w-1/4 h-10 rounded-2xl">
                                 Change
@@ -119,11 +119,11 @@
                         to revert this!</p>
                     <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                         <button @click="confirmDelete"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold hover:opacity-90 active:opacity-80">
                             Yes, Delete it!
                         </button>
                         <button @click="showDeleteModal = false"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2 hover:opacity-90 active:opacity-80">
                             Cancel
                         </button>
                     </div>

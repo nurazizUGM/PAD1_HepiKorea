@@ -7,7 +7,7 @@
                     <!-- Profile Picture Section -->
                     <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
                         <div class="rounded-xl bg-slate-300 flex justify-center items-center">
-                            <img class="min-h-[10rem] m-0 md:p-2 object-contain object-center" id="profile_picture"
+                            <img class="w-full min-h-[10rem] m-0 md:p-2 object-contain object-center" id="profile_picture"
                                 :src="form.photo || defaultPhoto" alt="Profile Picture" />
                         </div>
                         <button v-if="isEditing"
@@ -131,7 +131,7 @@
                                                     class="h-12 bg-gray-50 border border-[#376F7E] text-[#898383] text-sm rounded-lg focus:ring-0 focus:border-[#376F7E] block w-full md:w-2/3 lg:w-full p-2.5 ml-auto"
                                                     placeholder="New Password" :disabled="!isEditing" />
                                                 <span
-                                                    class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
+                                                    class="absolute top-[33%] right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
                                                     @click="togglePassword('new')">
                                                     <img :src="showNewPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
                                                         alt="eye icon" class="h-6 w-6" />
@@ -152,7 +152,7 @@
                                                     placeholder="Confirm Password" :required="form.new_password !== ''"
                                                     :disabled="!isEditing" />
                                                 <span
-                                                    class="absolute inset-y-0 right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
+                                                    class="absolute top-[25%] right-2 lg:right-4 pr-2 lg:pr-6 flex items-center cursor-pointer"
                                                     @click="togglePassword('confirm')">
                                                     <img :src="showConfirmPassword ? '/img/assets/icon/icon_show_eye.svg' : '/img/assets/icon/icon_hide_eye.svg'"
                                                         alt="eye icon" class="h-6 w-6" />
@@ -160,7 +160,7 @@
                                                 <p v-if="errors.new_password_confirmation" class="error">{{
                                                     errors.new_password_confirmation.join(', ') }}</p>
                                                 <Link :href="route('auth.verify')"
-                                                    class="text-end block text-[#4F7AE8] mt-2 cursor-pointer">Verify
+                                                    class="text-end block text-[#4F7AE8] mt-2 cursor-pointer hover:opacity-80 active:opacity-60">Verify
                                                 email</Link>
                                             </td>
                                         </tr>
@@ -318,7 +318,7 @@ export default {
             showOldPassword: false,
             showNewPassword: false,
             showConfirmPassword: false,
-            defaultPhoto: '/img/example/admin_order_img_user.png',
+            defaultPhoto: 'https://placehold.co/600x600',
             photoFile: null,
             errors: {},
         };
