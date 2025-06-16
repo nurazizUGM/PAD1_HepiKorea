@@ -67,6 +67,11 @@ Route::name('api.')->group(function () {
         });
     });
 
+    Route::middleware(ApiAuth::class)->prefix('notifications')->controller(AuthController::class)->group(function () {
+        Route::get('/', 'notifications');
+        Route::post('/{id}/read', 'readNotification');
+    });
+
     Route::prefix('product')->controller(ProductController::class)->group(function () {
         Route::get('latest', 'latest');
         Route::get('popular', 'popular');

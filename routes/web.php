@@ -114,27 +114,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::inertia('/', 'Admin/Dashboard')->name('dashboard');
     Route::inertia('profile', 'Admin/Profile')->name('profile');
     Route::inertia('business', 'Admin/Business')->name('business');
-
-    Route::controller(AdminProfileController::class)->group(function () {
-
-        Route::patch('profile', 'updateProfile')->name('profile.user');
-        Route::get('setting', 'setting')->name('profile.setting');
-    });
-
     Route::inertia('product', 'Admin/Product/Index')->name('product.index');
 
-    Route::prefix('category')->name('category.')->controller(AdminCategoryController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::patch('update/{category}', 'update')->name('update');
-        Route::delete('delete/{category}', 'destroy')->name('delete');
-    });
-
-    Route::prefix('carousel')->name('carousel.')->controller(AdminCarouselController::class)->group(function () {
-        Route::get('/', 'index')->name('index');
-        Route::post('store', 'store')->name('store');
-        Route::patch('update/{carousel}', 'update')->name('update');
-        Route::delete('delete/{carousel}', 'destroy')->name('delete');
+    Route::controller(AdminProfileController::class)->group(function () {
+        Route::get('setting', 'setting')->name('profile.setting');
     });
 
     Route::prefix('customer')->name('customer.')->controller(AdminCustomerController::class)->group(function () {
