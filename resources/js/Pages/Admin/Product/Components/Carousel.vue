@@ -3,7 +3,7 @@
         <div class="w-full flex items-center">
             <h2 class="text-black text-md ml-3 font-semibold">Add Carousel</h2>
             <button @click="showAddModal = true" class="ml-5">
-                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10" />
+                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
             </button>
         </div>
 
@@ -11,7 +11,7 @@
         <div
             class="w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 md:grid-cols-3 gap-y-4 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-8 justify-start items-start content-start no-scrollbar">
             <div v-for="carousel in carousels" :key="carousel.id"
-                class="bg-white w-[138px] h-[180px] md:w-[183px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col">
+                class="bg-white w-[138px] h-[180px] md:w-[183px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%]">
                 <div class="w-full h-2/3 bg-cover">
                     <img v-if="carousel.media_type === 'image'" :src="getImageUrl(carousel.media)"
                         class="w-full h-full object-cover" />
@@ -27,11 +27,11 @@
                     <p class="text-sm text-black text-center font-bold truncate">{{ carousel.title }}</p>
                 </div>
                 <div class="flex mt-auto mx-4 mb-4">
-                    <button @click="openEditModal(carousel)" class="mr-auto">
+                    <button @click="openEditModal(carousel)" class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_edit.svg" alt="edit"
                             class="w-5 h-5 lg:w-7 lg:h-7" />
                     </button>
-                    <button @click="openDeleteModal(carousel.id)" class="ml-auto">
+                    <button @click="openDeleteModal(carousel.id)" class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_trash.svg" alt="delete"
                             class="w-4 h-5 lg:w-7 lg:h-7" />
                     </button>
@@ -44,7 +44,7 @@
             <div
                 class="bg-white w-[258px] md:w-[480px] lg:w-[30vw] h-auto rounded-[15px] md:rounded-xl lg:rounded-2xl shadow p-2 md:p-4">
                 <button @click="showAddModal = false"
-                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2">
+                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                     <p class="m-auto text-white text-sm">X</p>
                 </button>
                 <form @submit.prevent="addCarousel"
@@ -68,9 +68,9 @@
                         </label>
                     </div>
                     <input v-model="addForm.title" type="text" placeholder="Title"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0" />
+                        class="rounded-2xl w-full bg-gray-200 h-12 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0" />
                     <select v-model="addForm.media_type"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0"
+                        class="rounded-2xl w-full bg-gray-200 h-12 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0"
                         @change="handleMediaTypeChange">
                         <option value="image">Type: Image</option>
                         <option value="video">Type: Video</option>
@@ -78,9 +78,9 @@
                     </select>
                     <input v-if="addForm.media_type === 'youtube'" v-model="addForm.youtube_url" type="text"
                         placeholder="Link Youtube"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-12 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0" />
+                        class="rounded-2xl w-full bg-gray-200 h-12 pl-5 pr-4 mt-5 placeholder:text-black border-0 focus:outline-none focus:ring-0" />
                     <textarea v-model="addForm.description" placeholder="Add description" rows="3"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
+                        class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-3 md:mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
                     <button type="submit"
                         class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-5 mx-auto inline-block w-full h-8 rounded-3xl">
                         Add
@@ -93,14 +93,14 @@
         <Modal :show="showEditModal" @close="showEditModal = false">
             <div class="bg-white w-[30vw] h-[75vh] rounded-lg shadow p-4">
                 <button @click="showEditModal = false"
-                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2">
+                    class="absolute bg-black w-5 h-5 flex items-center justify-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                     <p class="m-auto text-white text-sm">X</p>
                 </button>
                 <form @submit.prevent="updateCarousel" class="flex flex-col h-full text-center py-10 px-5">
                     <input v-model="editForm.title" type="text" placeholder="Name"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 h-14 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0" />
+                        class="rounded-2xl w-full bg-gray-200 h-14 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semibold border-0 focus:outline-none focus:ring-0" />
                     <textarea v-model="editForm.description" placeholder="Add info" rows="3"
-                        class="rounded-2xl w-full bg-gray-200 hover:bg-gray-300 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
+                        class="rounded-2xl w-full bg-gray-200 pl-5 pr-4 mt-5 placeholder:text-black placeholder:font-semi border-0 focus:outline-none focus:ring-0"></textarea>
                     <button type="submit"
                         class="bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white font-semibold mt-auto mx-auto inline-block w-full h-8 rounded-3xl">
                         Save
@@ -122,11 +122,11 @@
                         this!</p>
                     <div class="w-full mt-3 lg:mt-6 flex flex-row justify-center">
                         <button @click="confirmDelete"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#376F7E] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold hover:opacity-90 active:opacity-80">
                             Yes, Delete it!
                         </button>
                         <button @click="showDeleteModal = false"
-                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2">
+                            class="w-[86px] md:w-[132px] lg:w-44 h-[22px] md:h-[41px] lg:h-11 bg-[#FF9D66] rounded-[20px] shadow-lg text-white text-[10px] md:text-sm lg:text-lg font-semibold ml-2 hover:opacity-90 active:opacity-80">
                             Cancel
                         </button>
                     </div>

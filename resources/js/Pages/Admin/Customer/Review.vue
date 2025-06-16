@@ -18,7 +18,7 @@
         <div
             class="w-full lg:min-h-[49vh] mt-5 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-x-2 gap-y-3 lg:gap-8 justify-start items-start content-start">
             <div v-for="review in reviews" :key="review.id"
-                class="bg-white w-full h-[190px] md:w-[150px] md:h-[194px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col cursor-pointer mx-auto"
+                class="bg-white w-full h-[190px] md:w-[150px] md:h-[194px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col cursor-pointer mx-auto hover:scale-[102%] active:opacity-90 transition"
                 @click="openReviewModal(review)">
                 <div class="w-full h-2/3 bg-cover bg-top">
                     <img :src="getImageUrl(review.photo)" alt="Review Image"
@@ -37,7 +37,7 @@
                 class="bg-white w-[249px] h-[80vh] md:w-[664px] md:h-[260px] lg:w-[50vw] lg:h-[50vh] rounded-lg shadow relative p-2 lg:p-6">
                 <!-- Close Button -->
                 <button @click="closeReviewModal"
-                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2">
+                    class="absolute bg-black w-5 h-5 flex flex-col align-middle text-center items-center rounded-full pb-3 -top-2 -right-2 hover:invert-[20%] active:invert-[25%]">
                     <p class="m-auto text-white text-sm">X</p>
                 </button>
                 <!-- masi error di tablet -->

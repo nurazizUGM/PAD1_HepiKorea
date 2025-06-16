@@ -194,7 +194,7 @@
                         </table>
                     </div>
                     <button @click="exportOrders"
-                        class="font-semibold text-[#3E6E7A] bg-[#fff] hover:opacity-90 active:opacity-80 px-4 py-2 ml-2 rounded-full inline-flex align-middle fixed bottom-8 right-10">
+                        class="font-semibold text-[#3E6E7A] bg-[#fff] hover:invert-[3%] active:invert-[2%] px-4 py-2 ml-2 rounded-full inline-flex align-middle fixed bottom-8 right-10">
                         Export
                         <svg xmlns="http://www.w3.org/2000/svg" class="mt-1 ml-3" width="1.13em" height="1em"
                             viewBox="0 0 576 512">

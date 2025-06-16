@@ -158,7 +158,7 @@ onMounted(() => {
                         <div class="w-8/12 md:w-3/12 lg:w-2/12 flex h-full">
                             <input type="radio" v-model="selectedAddressId" :value="address.id" name="choose-address"
                                 @click="selectAddress(address.id)"
-                                class="lg:w-8 lg:h-8 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-0 ml-1 my-auto cursor-pointer">
+                                class="lg:w-8 lg:h-8 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] hover:ring-2 checked:ring-0 ml-1 my-auto cursor-pointer">
                             <div class="flex flex-col ml-3 md:ml-4">
                                 <div class="flex flex-col md:flex-row">
                                     <p class="text-[#3E6E7A] font-semibold text-[10px] lg:text-lg">
