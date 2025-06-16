@@ -20,7 +20,7 @@ const isAdmin = computed(() => page.props?.user?.role === 'ADMIN');
 const userPhoto = computed(() =>
     page.props.auth.user?.photo
         ? `/storage/${page.props.auth.user.photo}`
-        : '/img/example/admin_order_img_user.png'
+        : '/img/assets/icon/icon_user2.png'
 );
 const notifications = computed(() =>
     page.props.auth.user?.notifications
