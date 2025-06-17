@@ -13,6 +13,7 @@ export default {
             showDeleteModal: false,
             showSuccessModal: false,
             selectAll: false,
+            errorMessage: '', // Added error message state
         }
     },
     computed: {
@@ -28,6 +29,7 @@ export default {
             try {
                 const response = await fetch('/api/cart'); // Ganti dengan endpoint API Anda
                 this.carts = await response.json();
+                this.errorMessage = ''; // Clear error message on fetch
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -42,6 +44,7 @@ export default {
         },
         toggleSelectAll() {
             this.carts.forEach(cart => (cart.selected = this.selectAll));
+            this.errorMessage = ''; // Clear error message when selecting all
         },
         async confirmDelete() {
             await axios.delete('/api/cart', {
@@ -58,6 +61,11 @@ export default {
             setTimeout(() => (this.showSuccessModal = false), 2000); // Tutup otomatis setelah 2 detik
         },
         checkout() {
+            if (this.selectedCount === 0) {
+                this.errorMessage = 'Please select at least one product to proceed to checkout.';
+                return;
+            }
+            this.errorMessage = ''; // Clear error message if proceeding
             const selectedProducts = this.carts.filter(cart => cart.selected).map(cart => ({
                 product_id: cart.product.id,
                 quantity: cart.quantity,
@@ -124,7 +132,7 @@ export default {
 
                 <!-- Checkout Container -->
                 <div
-                    class="absolute w-[95%] md:w-[87vw] lg:w-[84.5vw] h-[75px] md:h-[20vh] lg:h-[25vh] bg-white rounded-2xl bottom-4 md:bottom-5 lg:bottom-5 z-10 flex flex-col md:py-5 md:px-10 py-2 px-2">
+                    class="absolute w-[95%] md:w-[87vw] lg:w-[84.5vw] h-[90px] md:h-[20vh] lg:h-[25vh] bg-white rounded-2xl bottom-4 md:bottom-5 lg:bottom-5 z-10 flex flex-col md:py-5 md:px-10 py-2 px-2">
                     <h1 class="text-black font-semibold text-[8px] md:text-sm lg:text-2xl">Checkout</h1>
                     <div class="w-full h-fit flex flex-row my-auto relative">
                         <!-- Select All and Checkbox Container -->
@@ -138,10 +146,7 @@ export default {
                             <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
                             <p
                                 class="text-black text-opacity-50 font-semibold text-[8px] md:hidden flex absolute top-4 left-5">
-                                <!-- Total ({{  }}) -->
                                 Total ({{ selectedCount }}) Product
-                                <!-- Total
-                                Product -->
                             </p>
                             <button @click="showDeleteModal = true"
                                 class="bg-white hover:bg-slate-100 outline outline-2 outline-[#3E6E7A] rounded-md md:rounded-2xl inline-flex my-auto ml-10 px-2 py-0.5 md:py-1.5 lg:py-2 md:px-8 lg:px-12">
@@ -161,6 +166,10 @@ export default {
                             Rp {{ formatPrice(totalPrice) }},-
                         </h1>
                     </div>
+                    <!-- Error Message -->
+                    <p v-if="errorMessage" id="errorMessageCheckoutZeroProductSelected" class="text-red-500 text-[8px] md:text-xs lg:text-sm font-semibold mt-2.5 lg:mt-2">
+                        {{ errorMessage }}
+                    </p>
                     <form @submit.prevent="checkout" class="ml-auto">
                         <button type="submit"
                             class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
@@ -201,8 +210,6 @@ export default {
         </div>
     </Layout>
 </template>
-
-
 
 <style scoped>
 .no-scrollbar::-webkit-scrollbar {
