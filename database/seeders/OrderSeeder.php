@@ -22,12 +22,12 @@ class OrderSeeder extends Seeder
     public function run(): void
     {
         DB::beginTransaction();
-        $user = User::where('email', 'testuser@example.com')
-            ->where('is_deleted', false)
-            ->first();
+        $user = User::where('email', 'testuser@example.com')->first();
 
         if ($user) {
-            $product = Product::inRandomOrder()->first();
+            $product = Product::inRandomOrder()
+                ->where('is_deleted', false)
+                ->first();
 
             if ($product) {
                 // unpaid order
