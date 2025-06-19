@@ -19,7 +19,7 @@ class ProductController extends Controller
                 'name' => $product->name,
                 'category' => $product->category?->name,
                 'price' => $product->price,
-                'image' => $product->images->first()->path
+                'image' => $product->images->first()?->path
             ];
         });
 
@@ -37,7 +37,7 @@ class ProductController extends Controller
                     'category' => $product->category->name,
                     'price' => $product->price,
                     'total_orders' => $product->orders_count,
-                    'image' => $product->images->first()->path
+                    'image' => $product->images->first()?->path
                 ];
             });
 
