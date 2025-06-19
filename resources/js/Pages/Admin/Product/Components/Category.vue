@@ -11,7 +11,7 @@
         <div
             class="w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-1 gap-y-3 md:gap-y-6 lg:gap-x-12 lg:gap-y-8 justify-start items-start content-start no-scrollbar">
             <div v-for="category in categories" :key="category.id"
-                class="bg-white w-[133px] h-[180px] md:w-[180px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%] transition">
+                class="bg-white w-auto h-[190px] md:w-[165px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%] transition">
                 <div class="w-full h-2/3 bg-cover bg-top"
                     :style="{ backgroundImage: `url(${getImageUrl(category.icon)})` }" />
                 <div class="p-2">

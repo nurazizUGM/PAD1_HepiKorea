@@ -9,9 +9,9 @@
 
         <!-- Carousel Cards -->
         <div
-            class="w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 md:grid-cols-3 gap-y-4 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-8 justify-start items-start content-start no-scrollbar">
+            class="w-full h-[85%] mt-5 overflow-y-scroll grid grid-cols-2 md:grid-cols-3 gap-y-4 gap-x-1 lg:grid-cols-4 lg:gap-x-12 lg:gap-y-8 justify-start items-start content-start no-scrollbar">
             <div v-for="carousel in carousels" :key="carousel.id"
-                class="bg-white w-[138px] h-[180px] md:w-[183px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%]">
+                class="bg-white w-auto h-[190px] md:w-[165px] md:h-[205px] lg:w-60 lg:h-72 rounded-lg overflow-hidden flex flex-col hover:scale-[102%]">
                 <div class="w-full h-2/3 bg-cover">
                     <img v-if="carousel.media_type === 'image'" :src="getImageUrl(carousel.media)"
                         class="w-full h-full object-cover" />
