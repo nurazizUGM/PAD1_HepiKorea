@@ -37,19 +37,13 @@ use Inertia\Inertia;
  * open /inertia/{Folder}/{View} to see the view page in /resources/js/Pages/{Folder}/{View}
  */
 Route::get('/inertia/{path}', function ($path) {
-    return dd($path);
-    return Inertia::render("{$path}");
+    $path = str_replace('.vue', '', $path);
+    return Inertia::render($path);
 })->where('path', '.*');
 
-Route::get('/inertia/{folder}/{subfolder}/{subsubfolder}/{view}', function ($folder, $subfolder, $subsubfolder, $view) {
-    return Inertia::render("{$folder}/{$subfolder}/{$subsubfolder}/{$view}");
-});
-
-Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
-
-Route::inertia('/notifications', 'Customer/Notifications')->name('notifications');
-
 Route::inertia('/', 'Customer/Home')->name('home');
+Route::inertia('/tutorial', 'Customer/Tutorial')->name('tutorial');
+Route::inertia('/notifications', 'Customer/Notifications')->name('notifications');
 
 Route::prefix('auth')->name('auth.')->group(function () {
     Route::middleware(GuestMiddleware::class)->group(function () {
@@ -94,16 +88,10 @@ Route::prefix('request-order')->group(function () {
 });
 
 Route::prefix('order')->name('order.')->controller(OrderController::class)->group(function () {
-    Route::post('/', 'store')->name('store');
-    Route::get('show/{id}', 'show')->name('show');
-
-    // Route::post('pay-shipment', 'payShipment')->name('pay-shipment');
-    // Route::get('payment-status', 'checkPaymentStatus')->name('payment-status');
-    // Route::get('arrived/{id}', 'arrived')->name('arrived');
-    // Route::get('cancel/{id}', 'cancel')->name('cancel');
-    // Route::post('review', 'review')->name('review');
-
     Route::redirect('/', '/order/unpaid')->name('index');
+    Route::get('show/{id}', function ($id) {
+        return Inertia::render('Customer/Order/Show', ['orderId' => $id]);
+    })->name('show');
     Route::get('{status}', function ($status) {
         if (!in_array($status, ['unpaid', 'processed', 'sent', 'finished', 'canceled'])) {
             return Inertia::location('/order/unpaid');
@@ -143,10 +131,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
             return Inertia::render('Admin/Order/Confirmation-detail', ['orderId' => $id]);
         })->name('confirmation');
     });
-});
-
-Route::get('/view/{view}', function ($view) {
-    return view($view);
 });
 
 // Route::get('/storage/{path}', function ($path) {

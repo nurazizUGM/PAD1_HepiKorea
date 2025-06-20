@@ -10,7 +10,7 @@ class OrderPayment extends Model
     use HasFactory;
 
     static $paymentType = ['items', 'shipment'];
-    static $status = ['pending', 'paid', 'failed'];
+    static $status = ['pending', 'success', 'failed'];
     static $PAYMENT_METHODS = ['qris', 'bri', 'bni', 'bca', 'mandiri'];
 
     protected $fillable = [

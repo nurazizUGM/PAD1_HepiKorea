@@ -48,9 +48,9 @@ export default {
         };
 
         const getImageUrl = (image) => {
-            if (image && /^http/.test(image)) return image;
-            if (image) return `/storage/${image}`;
-            return '/img/example/admin_order_img_phone.png';
+            if(!image) return '/img/assets/icon/icon_admin_order_product.svg';
+            if (/^http/.test(image)) return image;
+            return `/api/file?path=${image}`;
         };
 
         const formatPrice = (price) => {
