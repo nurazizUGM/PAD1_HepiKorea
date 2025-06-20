@@ -44,7 +44,7 @@
 
         <!-- Confirmation Cards -->
         <div
-            class="w-[65%] md:w-[70%] lg:w-[80%] h-fit ml-3 md:ml-6 lg:ml-6 grid grid-cols-1 lg:grid-cols-2 gap-4 justify-start items-start align-content-start">
+            class="w-[65%] md:w-[70%] lg:w-[80%] h-fit ml-2 md:ml-6 lg:ml-6 grid grid-cols-1 lg:grid-cols-2 gap-4 justify-start items-start align-content-start">
                         <!-- if isLoading -->
             <div v-if="isLoading" role="status"
                 class="h-32 min-h-[70vh] lg:h-[78vh] flex items-center justify-center col-span-2 bg-white rounded-lg">
@@ -69,7 +69,7 @@
             <div v-else v-for="order in filteredOrders" :key="order.id"
                 class="bg-white w-[194px] md:w-full lg:w-[26rem] h-32 md:h-[150px] lg:h-52 rounded-xl p-1 md:p-2 lg:p-2 flex flex-row hover:scale-[101%] transition-all">
                 <!-- Image -->
-                <div class="w-5/12 h-[90%] md:h-full bg-cover bg-center bg-no-repeat rounded-xl my-auto lg:my-0"
+                <div class="w-5/12 h-[90%] md:h-full bg-contain md:bg-cover bg-center bg-no-repeat rounded-xl my-auto lg:my-0"
                     :style="{ backgroundImage: `url(${getImageUrl(order.custom_order_items[0].image)})` }"></div>
                 <!-- Details -->
                 <div class="w-7/12 h-full flex flex-col px-2 md:px-5 lg:px-4 pt-1">

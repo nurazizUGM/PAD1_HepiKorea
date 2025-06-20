@@ -1,12 +1,12 @@
 <template>
     <Layout title="Profile">
-        <div class="p-4 lg:p-8 border-2 bg-[#EFEFEF] border-gray-200 rounded-2xl h-full overflow-y-auto">
-            <div class="rounded-2xl flex flex-col bg-white p-5 lg:p-10">
+        <div class="p-2 lg:p-8 border-2 bg-[#EFEFEF] border-gray-200 rounded-2xl h-full overflow-y-auto">
+            <div class="rounded-2xl flex flex-col bg-white p-2 md:p-5 lg:p-10">
                 <h1 class="text-black text-xs md:text-sm lg:text-2xl font-semibold">Profile Detail</h1>
                 <div class="grid gap-x-8 lg:gap-x-16 grid-flow-row lg:grid-cols-[2fr_4fr] mt-0 md:mt-4 lg:mt-6">
                     <!-- Profile Picture Section -->
                     <div class="bg-white h-auto flex flex-col rounded-xl mt-4">
-                        <div class="rounded-xl bg-slate-300 flex justify-center items-center">
+                        <div class="rounded-xl md:w-1/2 lg:w-full w-full bg-slate-300 flex justify-center items-center mx-auto">
                             <img class="w-full min-h-[10rem] m-0 md:p-2 object-contain object-center" id="profile_picture"
                                 :src="form.photo || defaultPhoto" alt="Profile Picture" />
                         </div>
