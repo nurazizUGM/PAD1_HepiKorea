@@ -21,10 +21,18 @@ COPY package.json package-lock.json ./
 COPY composer.json composer.lock ./
 
 # Install the dependencies
-RUN composer install && npm install
+RUN composer install --optimize-autoloader --no-scripts && npm install
 
 # Copy the rest of the application code
 COPY . .
+
+# change the permissions
+RUN chown -R www-data:www-data /app && \
+    find /app -type d -exec chmod 755 {} \; && \
+    find /app -type f -exec chmod 644 {} \;
+
+# disconver packages
+RUN php artisan package:discover --ansi
 
 # Build the assets
 RUN npm run build
