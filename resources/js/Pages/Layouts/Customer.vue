@@ -247,7 +247,7 @@ onMounted(() => {
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
                         Request Order
                         </Link>
-                        <Link :href="route('confirmed')"
+                        <Link :href="route('confirmed')" v-if="isAuthenticated"
                             class="font-semibold text-[#3E6E7A] hover:text-orange-400 text-lg md:text-xs lg:text-lg">
                         Confirmed
                         </Link>
