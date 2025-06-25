@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\AdminOrderController;
 use App\Http\Controllers\Api\RequestOrderController;
 use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\AnalyticsController;
+use App\Http\Controllers\Api\SettingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -176,5 +177,11 @@ Route::name('api.')->group(function () {
         Route::post('/{id}', 'update');
         Route::post('/{id}/set-default', 'setDefault');
         Route::delete('/{id}', 'destroy');
+    });
+
+    Route::prefix('setting')->controller(SettingController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::post('/{id}', 'update')->middleware([ApiAuth::class, Admin::class]);
+        Route::get('/settings', 'settings');
     });
 });

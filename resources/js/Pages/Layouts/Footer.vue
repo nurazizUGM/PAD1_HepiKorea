@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { usePage } from '@inertiajs/vue3';
+import axios from 'axios';
 import { onMounted, ref } from 'vue';
 
 const settings = ref({
@@ -48,10 +48,17 @@ const settings = ref({
     address: ''
 });
 
+const fetchSettings = () => {
+    axios.get('/api/setting')
+        .then(response => {
+            settings.value = response.data;
+        })
+        .catch(error => {
+            console.error('Error fetching settings:', error);
+        });
+};
+
 onMounted(() => {
-    const page = usePage();
-    if (page.props.settings) {
-        settings.value = page.props.settings;
-    }
+    fetchSettings();
 });
 </script>
