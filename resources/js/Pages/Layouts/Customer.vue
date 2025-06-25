@@ -88,7 +88,7 @@ onMounted(() => {
     <div class="font-poppins w-screen h-screen overflow-y-auto overflow-x-hidden no-scrollbar">
         <!-- Navbar -->
         <nav class="fixed top-0 z-40 w-full h-fit bg-white border-b border-gray-200 shadow-lg">
-            <div class="px-2 py-3 md:px-1 md:py-1 lg:px-5 lg:pl-3 lg:py-3">
+            <div class="px-0 py-3 md:px-1 md:py-1 lg:px-5 lg:pl-3 lg:py-3">
                 <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
                     <!-- Logo dan Burger Menu -->
                     <div class="w-full md:w-fit flex justify-start">
@@ -158,7 +158,7 @@ onMounted(() => {
                                 </div>
                             </div>
                             <div v-if="isAuthenticated" class="items-center" id="user-profile-container">
-                                <div class="flex items-center ms-3 relative">
+                                <div class="flex items-center ms-0.5 md:ms-3 relative">
                                     <button type="button"
                                         class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                                         @click="toggleUserProfile">

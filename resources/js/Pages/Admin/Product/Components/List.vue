@@ -47,7 +47,7 @@
                         <img src="/img/assets/icon/icon_admin_search_searchbar.svg" alt="search icon"
                             class="absolute left-3 w-5 h-5 text-gray-500">
                         <input v-model="searchQuery" type="text" name="search"
-                            class="block lg:w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
+                            class="block w-[65vw] lg:w-[25vw] pl-10 py-2 text-gray-900 bg-white border border-white rounded-full focus:ring-0 focus:border-none placeholder:text-sm placeholder:text-start"
                             placeholder="Search..." />
                     </div>
                     <button type="submit"
@@ -62,9 +62,9 @@
 
         <!-- Product Cards -->
         <div
-            class="w-full h-full mx-auto content-center mt-5 mb-8 grid grid-cols-2 gap-x-1 gap-y-3 md:grid-cols-4 md:gap-x-0 lg:grid-rows-[auto_1fr_auto] lg:grid-cols-7 lg:gap-x-2 lg:gap-y-3">
+            class="w-full h-full mx-auto content-center mt-5 mb-8 grid grid-cols-2 gap-x-1 gap-y-3 md:grid-cols-4 md:gap-x-2 lg:grid-rows-[auto_1fr_auto] lg:grid-cols-7 lg:gap-x- lg:gap-y-3">
             <div v-for="product in products" :key="product.id"
-                class="bg-white w-[135px] h-[175px] lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto hover:scale-[102%] transition-all">
+                class="bg-white w-auto h-[210px] md:-[175px] md:w-auto lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto hover:scale-[102%] transition-all">
                 <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto"
                     :style="{ backgroundImage: `url(${getProductImage(product)})` }" />
                 <div class="p-2">
