@@ -344,8 +344,6 @@ export default {
             // Simulate API call
             axios.post(`/api/admin/request-order/${confirmation.value.id}/confirm`, { items: confirmation.value.custom_order_items })
                 .then(response => {
-                    console.log('Confirmation submitted:', response.data);
-                    // Optionally, redirect or update the UI
                     router.visit(route('admin.order.index', { tab: 'confirmation' }));
                 })
                 .catch(error => {
@@ -397,9 +395,7 @@ export default {
 
         const totalPrice = computed(() => {
             return confirmation.value.custom_order_items.reduce((total, item) => {
-                console.log('Calculating total price for item:', item);
                 const res = total + (item.total_price || item.product_price || 0);
-                console.log('Current total:', res);
                 return res;
             }, 0);
         })
