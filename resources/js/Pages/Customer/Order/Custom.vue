@@ -161,7 +161,9 @@
 </template>
 
 <script>
+import { router } from "@inertiajs/vue3";
 import { computed, onMounted, ref } from "vue";
+import { route } from "ziggy-js";
 import Layout from "../../Layouts/Customer.vue";
 
 export default {
@@ -175,16 +177,22 @@ export default {
         const showSuccessModal = ref(false);
         const selectAll = ref(false);
 
-        const orderId = ref("");
         const params = new URLSearchParams(window.location.search);
 
         // Fungsi untuk mengambil data dari API (placeholder)
         const fetchData = async () => {
             try {
-                const response = await fetch("/api/request-order?" + params.toString());
-                items.value = await response.json();
-                console.log("Fetched items:", items.value);
+                const response = await fetch("/api/request-order?" + params.toString())
+                    .then(res => res.json())
+                    
+                if (response.status == 'error') {
+                    return router.visit(route('auth.login'));
+                }
+                items.value = response
             } catch (error) {
+                if (error.status == 401) {
+                    router.visit(route('auth.login'));
+                }
                 console.error("Error fetching data:", error);
             }
         };
