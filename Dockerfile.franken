@@ -26,9 +26,6 @@ RUN composer install --optimize-autoloader --no-scripts && npm install
 # Copy the rest of the application code
 COPY . .
 
-# change the permissions
-RUN chown -R www-data:www-data /app && chmod -R 755 /app
-
 # disconver packages
 RUN php artisan package:discover --ansi
 
