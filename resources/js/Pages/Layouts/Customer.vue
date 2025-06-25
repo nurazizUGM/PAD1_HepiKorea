@@ -22,12 +22,7 @@ const userPhoto = computed(() =>
         ? `/storage/${page.props.auth.user.photo}`
         : '/img/assets/icon/icon_user2.png'
 );
-const notifications = computed(() =>
-    page.props.auth.user?.notifications
-        ?.filter((n) => !n.is_read)
-        ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        ?.slice(0, 5) || []
-);
+const notifications = ref([])
 const notificationCount = computed(() => notifications.value.length);
 const errors = computed(() => page.props.errors || {});
 const message = computed(() => page.props.message || page.props.success);
@@ -64,17 +59,27 @@ const closeAlert = (id) => {
 // Fetch data tambahan jika diperlukan (contoh: notifikasi dari API)
 const fetchNotifications = async () => {
     // Placeholder untuk API call
-    // try {
-    //   const response = await fetch('/api/notifications');
-    //   notifications.value = (await response.json()).slice(0, 5);
-    // } catch (error) {
-    //   console.error('Error fetching notifications:', error);
-    // }
+    try {
+        const response = await fetch('/api/notifications?status=unread')
+            .then(res => res.json());
+        notifications.value = response.slice(0, 5);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
 };
+
+const getRedirectUrl = (notification) => {
+    if (!notification?.action_url) return '#'
+    if (notification.is_read) return notification.action_url
+    let url = notification.action_url
+    url += url.includes('=') ? '&' : '?'
+    url += 'notificationId=' + notification.id
+    return url
+}
 
 onMounted(() => {
     // Fetch data tambahan jika diperlukan
-    // fetchNotifications();
+    fetchNotifications();
 });
 </script>
 
@@ -145,12 +150,12 @@ onMounted(() => {
                                         </div>
                                         <ul class="py-1">
                                             <li v-for="notification in notifications" :key="notification.id">
-                                                <Link :href="notification.link || '#'"
+                                                <Link :href="notification.action_url || '#'"
                                                     class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100">
                                                 {{
                                                     notification.title }}</Link>
                                             </li>
-                                            <Link :href="route('auth.notification')"
+                                            <Link :href="route('notifications')"
                                                 class="block text-center px-4 py-2 text-[11px] md:text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                             View all</Link>
                                         </ul>
@@ -338,12 +343,12 @@ onMounted(() => {
                                     </div>
                                     <ul class="py-1">
                                         <li v-for="notification in notifications" :key="notification.id">
-                                            <Link :href="notification.link || '#'"
+                                            <Link :href="getRedirectUrl(notification)"
                                                 class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100">
                                             {{
                                                 notification.title }}</Link>
                                         </li>
-                                        <Link :href="route('auth.notification')"
+                                        <Link :href="route('notifications')"
                                             class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                         View all</Link>
                                     </ul>
