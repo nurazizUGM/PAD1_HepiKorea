@@ -17,7 +17,7 @@
                         </button>
                     </li>
                     <!-- Category Tab -->
-                    <li class="md:mx-40 lg:mx-64" role="presentation">
+                    <li class="md:mx-24 lg:mx-64" role="presentation">
                         <button @click="setActiveTab('category')" :class="[
                             'inline-block px-4 pt-4 pb-1 border-b-2 rounded-t-lg',
                             activeTab === 'category' ? 'text-black border-orange-400' : 'text-black hover:text-orange-400 border-transparent hover:border-transparent'

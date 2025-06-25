@@ -53,6 +53,7 @@ const fetchOrderDetails = (orderId) => {
                 error.value = 'Failed to retrieve order details. Please try again later.';
             }
         }).finally(() => {
+            readNotification()
             isLoading.value = false;
         });
     } catch (err) {
@@ -65,8 +66,16 @@ const props = defineProps({
     orderId: {
         type: String,
         required: true,
-    },
+    }
 });
+
+const readNotification = async () => {
+    const notificationId = new URLSearchParams(window.location.search).get('notificationId');
+    console.log('notificationId', notificationId)
+    if (notificationId) {
+        return axios.post(`/api/notifications/${notificationId}/read`)
+    }
+}
 
 onMounted(() => {
     const orderId = props.orderId || usePage().props.orderId;

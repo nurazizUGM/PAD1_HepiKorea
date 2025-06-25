@@ -22,12 +22,7 @@ const userPhoto = computed(() =>
         ? `/storage/${page.props.auth.user.photo}`
         : '/img/assets/icon/icon_user2.png'
 );
-const notifications = computed(() =>
-    page.props.auth.user?.notifications
-        ?.filter((n) => !n.is_read)
-        ?.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-        ?.slice(0, 5) || []
-);
+const notifications = ref([])
 const notificationCount = computed(() => notifications.value.length);
 const errors = computed(() => page.props.errors || {});
 const message = computed(() => page.props.message || page.props.success);
@@ -64,17 +59,27 @@ const closeAlert = (id) => {
 // Fetch data tambahan jika diperlukan (contoh: notifikasi dari API)
 const fetchNotifications = async () => {
     // Placeholder untuk API call
-    // try {
-    //   const response = await fetch('/api/notifications');
-    //   notifications.value = (await response.json()).slice(0, 5);
-    // } catch (error) {
-    //   console.error('Error fetching notifications:', error);
-    // }
+    try {
+        const response = await fetch('/api/notifications?status=unread')
+            .then(res => res.json());
+        notifications.value = response.slice(0, 5);
+    } catch (error) {
+        console.error('Error fetching notifications:', error);
+    }
 };
+
+const getRedirectUrl = (notification) => {
+    if (!notification?.action_url) return '#'
+    if (notification.is_read) return notification.action_url
+    let url = notification.action_url
+    url += url.includes('=') ? '&' : '?'
+    url += 'notificationId=' + notification.id
+    return url
+}
 
 onMounted(() => {
     // Fetch data tambahan jika diperlukan
-    // fetchNotifications();
+    fetchNotifications();
 });
 </script>
 
@@ -88,7 +93,7 @@ onMounted(() => {
     <div class="font-poppins w-screen h-screen overflow-y-auto overflow-x-hidden no-scrollbar">
         <!-- Navbar -->
         <nav class="fixed top-0 z-40 w-full h-fit bg-white border-b border-gray-200 shadow-lg">
-            <div class="px-2 py-3 md:px-1 md:py-1 lg:px-5 lg:pl-3 lg:py-3">
+            <div class="px-0 py-3 md:px-1 md:py-1 lg:px-5 lg:pl-3 lg:py-3">
                 <div class="flex flex-col md:flex-row gap-y-5 items-center justify-between align-middle">
                     <!-- Logo dan Burger Menu -->
                     <div class="w-full md:w-fit flex justify-start">
@@ -145,12 +150,12 @@ onMounted(() => {
                                         </div>
                                         <ul class="py-1">
                                             <li v-for="notification in notifications" :key="notification.id">
-                                                <Link :href="notification.link || '#'"
+                                                <Link :href="notification.action_url || '#'"
                                                     class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100">
                                                 {{
                                                     notification.title }}</Link>
                                             </li>
-                                            <Link :href="route('auth.notification')"
+                                            <Link :href="route('notifications')"
                                                 class="block text-center px-4 py-2 text-[11px] md:text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                             View all</Link>
                                         </ul>
@@ -158,7 +163,7 @@ onMounted(() => {
                                 </div>
                             </div>
                             <div v-if="isAuthenticated" class="items-center" id="user-profile-container">
-                                <div class="flex items-center ms-3 relative">
+                                <div class="flex items-center ms-0.5 md:ms-3 relative">
                                     <button type="button"
                                         class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300"
                                         @click="toggleUserProfile">
@@ -338,12 +343,12 @@ onMounted(() => {
                                     </div>
                                     <ul class="py-1">
                                         <li v-for="notification in notifications" :key="notification.id">
-                                            <Link :href="notification.link || '#'"
+                                            <Link :href="getRedirectUrl(notification)"
                                                 class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100">
                                             {{
                                                 notification.title }}</Link>
                                         </li>
-                                        <Link :href="route('auth.notification')"
+                                        <Link :href="route('notifications')"
                                             class="block text-center px-4 py-2 text-sm text-orange-400 hover:text-orange-500 hover:bg-gray-100">
                                         View all</Link>
                                     </ul>

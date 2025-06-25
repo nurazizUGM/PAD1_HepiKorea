@@ -107,7 +107,7 @@
                                 )
                                 ">
                             <img :src="getCategoryIcon(category.icon)" alt="category"
-                                class="w-12 h-12 md:h-36 lg:w-40 lg:h-40 mx-auto" />
+                                class="w-12 h-12 md:w-36 md:h-36 lg:w-40 lg:h-40 mx-auto" />
                             <h2
                                 class="text-black text-[10px] md:text-xs lg:text-lg font-semibold text-ellipsis overflow-hidden">
                                 {{ category.name }}

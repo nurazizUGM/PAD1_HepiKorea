@@ -34,7 +34,7 @@
                     <!-- User Name -->
                     <div class="w-1/4 lg:w-1/5 h-[7%] bg-[#3E6E7A] px-3 py-1 rounded-xl flex">
                         <h1 class="md:text-base lg:text-2xl text-white font-semibold my-auto">
-                            {{ confirmation?.order_detail.customer_name || confirmation?.user?.fullname }}
+                            {{ confirmation?.order_detail?.customer_name || confirmation?.user?.fullname }}
                         </h1>
                     </div>
 
@@ -42,8 +42,8 @@
                     <div
                         class="mt-3 w-full max-h-[83%] bg-white rounded-xl px-3 py-2 flex flex-col gap-y-5 overflow-y-scroll no-scrollbar">
                         <h1 class="text-black font-semibold text-sm lg:text-xl">Products</h1>
-                        <div v-for="(product, index) in confirmation.custom_order_items" :key="product.id"
-                            class="w-full lg:max-h-[220px] flex flex-col lg:flex-row flex-auto">
+                        <div v-for="(product) in confirmation.custom_order_items" :key="product.id"
+                            class="w-full lg:max-h-[16rem] flex flex-col lg:flex-row flex-auto">
                             <!-- two divider -->
                             <div class="w-full lg:w-[40%] flex flex-row">
                                 <!-- iamge container -->
@@ -60,20 +60,25 @@
                                     <h1 class="font-semibold text-[#3E6E7A] text-xs md:text-base lg:text-xl">{{
                                         product.name }}</h1>
                                     <h2 class="font-semibold text-[10px] md:text-sm lg:text-base mt-1">Rp {{
-                                        formatPrice(product.estimated_price) }},-</h2>
-                                    <div class="flex flex-row mt-1 md:mt-2 lg:mt-3 text-[10px] md:text-xs lg:text-base">
-                                        <h2 class="font-semibold">Order :</h2>
-                                        <span class="ml-2">{{ product.quantity }}</span>
-                                    </div>
-                                    <div v-if="product.max_order"
+                                        formatPrice(product.product_price || product.estimated_price) }},-</h2>
+                                    <div v-if="product.max_quantity"
                                         class="flex flex-row mt-1 md:mt-2 lg:mt-5 text-[10px] md:text-xs lg:text-base">
                                         <h2 class="font-semibold">Max Order :</h2>
-                                        <span class="ml-2">{{ product.max_order }}</span>
+                                        <span class="ml-2">{{ product.max_quantity }}</span>
+                                    </div>
+                                    <div v-else
+                                        class="flex flex-row mt-1 md:mt-2 lg:mt-3 text-[10px] md:text-xs lg:text-base">
+                                        <h2 class="font-semibold">Order :</h2>
+                                        <span class="ml-2">{{ product.quantity }}</span>
                                     </div>
                                     <!-- product link (nanti ilang pas desktop) -->
                                     <p
                                         class="flex lg:hidden text-black font-semibold text-[10px] md:text-xs lg:text-sm mt-1 md:mt-2">
-                                        Product link: {{ product.link || '...' }}
+                                        Product link:
+                                        <a :href="product.url || '#'" class="text-orange-400 hover:underline ml-1"
+                                            target="_blank" rel="noopener noreferrer">
+                                            {{ product.url ?? '...' }}
+                                        </a>
                                     </p>
                                     <!-- note container (nanti ilang pas desktop ama hape) -->
                                     <div
@@ -105,13 +110,13 @@
                                     <div class="w-fit h-fit ml-auto text-xs lg:text-base order-2 lg:order-1">
                                         <button :class="[
                                             'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold mr-1 lg:mr-3 hover:bg-[#365f6a] active:bg-[#30545e]',
-                                            product.status === 'available' ? 'bg-[#3E6E7A]' : 'bg-[#3E6E7A] opacity-50'
+                                            product.is_available ? 'bg-[#3E6E7A]' : 'bg-[#3E6E7A] opacity-50'
                                         ]" @click="openAvailabilityModal(product, true)">
                                             Available
                                         </button>
                                         <button :class="[
                                             'w-[18vw] h-[4vh] md:w-[15vw] lg:w-[9vw] lg:h-[5vh] rounded-lg text-white font-semibold hover:bg-[#365f6a] active:bg-[#30545e]',
-                                            product.status === 'unavailable' ? 'bg-[#3E6E7A] opacity-50' : 'bg-[#3E6E7A]'
+                                            product.is_available ? 'bg-[#3E6E7A] opacity-50' : 'bg-[#3E6E7A]'
                                         ]" @click="openAvailabilityModal(product, false)">
                                             Unavailable
                                         </button>
@@ -120,13 +125,17 @@
                                         <div class="w-full h-fit mt-auto flex flex-col">
                                             <p
                                                 class="hidden lg:flex text-black font-semibold text-[10px] md:text-xs lg:text-sm ml-auto mb-8">
-                                                Product link: {{ product.link || '...' }}
+                                                Product link:
+                                                <a :href="product.url || '#'" target="_blank" rel="noopener noreferrer"
+                                                    class="text-orange-400 hover:underline ml-1">
+                                                    {{ product.url ?? '...' }}
+                                                </a>
                                             </p>
                                             <div :class="[
                                                 'w-[99%] lg:w-[90%] h-fit rounded-lg shadow-md text-center font-semibold ml-auto py-2 lg:mb-2 text-[9px] lg:text-sm',
-                                                product.status === 'available' ? 'text-black' : 'text-[#FF0000]'
+                                                product.is_available ? 'text-black' : 'text-[#FF0000]'
                                             ]">
-                                                {{ product.status === 'available' ? `Available until
+                                                {{ product.is_available ? `Available until
                                                 ${product.available_until}` : 'Product Not Available' }}
                                             </div>
                                         </div>
@@ -146,7 +155,7 @@
                         <div class="w-4/6 h-full flex p-1 lg:p-4">
                             <p
                                 class="ml-4 md:ml-0 my-auto text-xs md:text-base lg:text-lg font-semibold text-orange-400">
-                                Rp {{ formatPrice(confirmation.total_price) }},-
+                                Rp {{ formatPrice(totalPrice) }},-
                             </p>
                         </div>
                         <div class="w-1/6 h-full flex">
@@ -173,51 +182,43 @@
                             <!-- Date and Time Picker -->
                             <div class="w-full lg:w-[50%] h-full flex flex-col">
                                 <h1 class="text-black text-sm md:text-base font-semibold">Availability</h1>
-                                <h1 class="text-black text-sm md:text-base font-semibold">Time</h1>
-                                <input v-model="modalForm.date" type="date"
-                                    class="mt-1 w-full h-10 rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-gray-300" />
-                                <div class="flex flex-row ml-auto mt-2">
-                                    <input v-model="modalForm.time" type="time"
-                                        class="rounded-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-0 focus:border-gray-300 w-[8.5rem] p-2.5"
-                                        min="09:00" max="18:00" />
-                                    <div class="flex flex-col justify-center items-center ml-2">
-                                        <input type="checkbox" id="toggle" class="hidden" v-model="modalForm.isPm" />
-                                        <label for="toggle">
-                                            <div
-                                                class="w-28 h-9 bg-gray-200 rounded-md p-0.5 flex items-center cursor-pointer relative">
-                                                <div :class="[
-                                                    'w-14 h-8 bg-white rounded-md transform transition-transform duration-300 ease-in-out hover:invert-[3%]',
-                                                    modalForm.isPm ? 'translate-x-[52px]' : 'translate-x-0'
-                                                ]"></div>
-                                                <span class="text-sm text-slate-500 absolute left-5">PM</span>
-                                                <span class="text-sm text-slate-500 absolute right-5">AM</span>
-                                            </div>
-                                        </label>
+                                <h1 class="text-black text-sm md:text-base font-semibold">Date</h1>
+                                <div class="relative max-w-sm">
+                                    <div
+                                        class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                        </svg>
                                     </div>
+                                    <input datepicker id="datepicker-available-until" type="text"
+                                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="Select date">
                                 </div>
                             </div>
                             <!-- Form Fields -->
                             <div class="w-full lg:w-[50%] h-full flex flex-col lg:pl-5 lg:pr-2.5">
                                 <h1>Product Price</h1>
                                 <div class="flex items-center lg:mx-auto">
-                                    <input v-model="modalForm.price" type="text"
+                                    <input v-model="modalForm.product_price" type="number"
                                         class="block w-full lg:w-[18vw] py-2 text-gray-900 bg-white shadow-md border border-white rounded-lg focus:ring-0 focus:border-none"
-                                        :placeholder="`Rp ${formatPrice(modalForm.price || 0)}`" />
-                                    <button type="button"
+                                        :placeholder="`${formatPrice(modalForm.price || 0)}`" />
+                                    <button type="button" @click="switchCurrency()"
                                         class="inline-flex items-center px-4 py-2 font-semibold text-white bg-gray-500 rounded-lg -ml-14 z-10">
-                                        IDR
+                                        {{ modalForm.currency }}
                                     </button>
                                 </div>
                                 <h1>EMS Price</h1>
-                                <input v-model="modalForm.emsPrice" type="text"
+                                <input v-model="modalForm.service_price" type="number"
                                     class="w-full h-10 bg-white shadow-md border border-white rounded-lg focus:ring-0 focus:border-none"
-                                    placeholder="EMS Price" />
+                                    placeholder="Rp EMS Price" />
                                 <h1>Max Order</h1>
-                                <input v-model="modalForm.maxOrder" type="number"
+                                <input v-model="modalForm.max_quantity" type="number"
                                     class="w-full h-10 bg-white shadow-md border border-white rounded-lg focus:ring-0 focus:border-none"
                                     placeholder="Max Order" />
                                 <h1>Note</h1>
-                                <textarea v-model="modalForm.note" rows="7"
+                                <textarea v-model="modalForm.admin_note" rows="7"
                                     class="bg-white shadow-md border border-white rounded-lg focus:ring-0 focus:border-none"
                                     placeholder="Admin Note"></textarea>
                                 <button type="submit"
@@ -236,7 +237,9 @@
 <script>
 import { Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
-import { onMounted, ref } from 'vue';
+import { Datepicker } from 'flowbite';
+import moment from 'moment';
+import { computed, onMounted, ref } from 'vue';
 import { route } from 'ziggy-js';
 import Admin from '../../Layouts/Admin.vue';
 import Modal from '../Modal.vue';
@@ -264,87 +267,90 @@ export default {
             activeTab.value = tab;
         };
 
-        const navigateToOrderTab = () => {
-            router.get(route('admin.order.index'), { tab: 'order' });
+        let datePicker;
+        const initDatePicker = (date = null) => {
+            if (datePicker) {
+                datePicker.destroy();
+            }
+
+            const datePickerElement = document.getElementById('datepicker-available-until');
+            datePicker = new Datepicker(datePickerElement, {
+                format: 'yyyy-mm-dd',
+                autohide: true,
+                minDate: new Date(),
+            });
+            datePicker.setDate(date || moment().format('YYYY-MM-DD'));
         };
 
         // Modal state
         const showAvailabilityModal = ref(false);
         const modalForm = ref({
-            date: '',
-            time: '',
-            isPm: false,
-            price: '',
-            emsPrice: '',
-            maxOrder: '',
-            note: '',
-            status: 'available',
-            productId: null,
+            id: null,
+            product_price: 0,
+            service_price: 0,
+            currency: 'IDR',
+            max_quantity: 0,
+            admin_note: '',
+            is_available: true,
+            available_until: '',
         });
 
         const openAvailabilityModal = (product, isAvailable) => {
-            modalForm.value = {
-                date: '',
-                time: '',
-                isPm: false,
-                price: product.price || '',
-                emsPrice: '',
-                maxOrder: product.max_order || '',
-                note: product.admin_note || '',
-                status: isAvailable ? 'available' : 'unavailable',
-                productId: product.id,
-            };
-            if(isAvailable == true){
-                showAvailabilityModal.value = true;
-            } else {
-                showAvailabilityModal.value = false;
+            if (!isAvailable) {
+                Object.assign(product, {
+                    is_available: false,
+                    available_until: '',
+                    max_quantity: 0,
+                    admin_note: '',
+                });
+                return;
             }
+
+            modalForm.value = {
+                ...product,
+                product_price: product.product_price || product.estimated_price || 0,
+                service_price: product.service_price || 0,
+                currency: product.currency || 'IDR',
+                max_quantity: product.max_quantity || product.quantity || 0,
+                admin_note: product.admin_note || '',
+                is_available: true,
+                available_until: product.available_until || '',
+            };
+            showAvailabilityModal.value = true;
+            setTimeout(() => {
+                initDatePicker(product.available_until);
+            }, 1000);
         };
 
         const closeAvailabilityModal = () => {
             showAvailabilityModal.value = false;
-            modalForm.value = {
-                date: '',
-                time: '',
-                isPm: false,
-                price: '',
-                emsPrice: '',
-                maxOrder: '',
-                note: '',
-                status: 'available',
-                productId: null,
-            };
         };
 
-        const saveAvailability = () => {
-            const product = confirmation.value.products.find(p => p.id === modalForm.value.productId);
-            if (product) {
-                product.status = modalForm.value.status;
-                product.admin_note = modalForm.value.note;
-                product.max_order = modalForm.value.maxOrder;
-                product.price = modalForm.value.price;
-                product.available_until = modalForm.value.date
-                    ? `${new Date(modalForm.value.date).toLocaleDateString('id-ID', {
-                        day: '2-digit',
-                        month: 'long',
-                        year: 'numeric',
-                    })} ${modalForm.value.time} ${modalForm.value.isPm ? 'PM' : 'AM'}`
-                    : product.available_until;
-                // Simulate API call
-                /*
-                await axios.post(`/api/admin/confirmation/${confirmation.value.id}/product/${product.id}`, modalForm.value);
-                */
+        const saveAvailability = async () => {
+            const item = confirmation.value.custom_order_items.find(p => p.id === modalForm.value.id);
+
+            if (modalForm.value.currency == 'KRW') {
+                modalForm.value.product_price = await krwToIdr(modalForm.value.product_price);
+                modalForm.value.currency = 'IDR';
             }
+
+            modalForm.value.total_price = modalForm.value.product_price + modalForm.value.service_price;
+            modalForm.value.available_until = datePicker ? moment(datePicker.getDate()).format('YYYY-MM-DD') : modalForm.value.available_until;
+            Object.assign(item, modalForm.value);
             closeAvailabilityModal();
         };
 
         const submitConfirmation = () => {
             // Simulate API call
-            console.log('Submitting confirmation:', confirmation.value);
-            /*
-            await axios.post(`/api/admin/confirmation/${confirmation.value.id}/submit`);
-            */
-            router.get(route('admin.order.index'), { tab: 'confirmation' });
+            axios.post(`/api/admin/request-order/${confirmation.value.id}/confirm`, { items: confirmation.value.custom_order_items })
+                .then(response => {
+                    console.log('Confirmation submitted:', response.data);
+                    // Optionally, redirect or update the UI
+                    router.visit(route('admin.order.index', { tab: 'confirmation' }));
+                })
+                .catch(error => {
+                    console.error('Error submitting confirmation:', error);
+                });
         };
 
         // Formatting
@@ -353,24 +359,56 @@ export default {
         };
 
         // Currency conversion (placeholder)
-        const krwToIdrRate = ref(11.5); // Static rate for demo
-        const fetchKrwToIdr = async () => {
+        const krwToIdrRate = ref(null);
+        const krwToIdr = async (value) => {
             try {
-                /*
-                const response = await axios.get('https://open.er-api.com/v6/latest/KRW');
-                krwToIdrRate.value = response.data.rates.IDR;
-                */
+                if (krwToIdrRate.value === null) {
+                    const response = await axios.get('https://open.er-api.com/v6/latest/KRW');
+                    krwToIdrRate.value = response.data.rates.IDR;
+                }
+                return Math.ceil(value * krwToIdrRate.value);
             } catch (error) {
                 console.error('Error fetching KRW to IDR rate:', error);
             }
         };
+
+        const idrToKrwRate = ref(null);
+        const idrToKrw = async (value) => {
+            try {
+                if (idrToKrwRate.value === null) {
+                    const response = await axios.get('https://open.er-api.com/v6/latest/IDR');
+                    idrToKrwRate.value = response.data.rates.KRW;
+                }
+                return value * idrToKrwRate.value;
+            } catch (error) {
+                console.error('Error fetching IDR to KRW rate:', error);
+            }
+        };
+
+        const switchCurrency = async () => {
+            if (modalForm.value.currency === 'IDR') {
+                modalForm.value.product_price = await idrToKrw(modalForm.value.product_price);
+                modalForm.value.currency = 'KRW';
+            } else {
+                modalForm.value.product_price = await krwToIdr(modalForm.value.product_price);
+                modalForm.value.currency = 'IDR';
+            }
+        }
+
+        const totalPrice = computed(() => {
+            return confirmation.value.custom_order_items.reduce((total, item) => {
+                console.log('Calculating total price for item:', item);
+                const res = total + (item.total_price || item.product_price || 0);
+                console.log('Current total:', res);
+                return res;
+            }, 0);
+        })
 
         // API Fetching
         const fetchConfirmation = async () => {
             try {
                 const response = await axios.get(`/api/admin/request-order/${props.orderId}`);
                 confirmation.value = response.data;
-                console.log(confirmation.value?.order_detail?.customer_name)
             } catch (error) {
                 console.error('Error fetching confirmation:', error);
             }
@@ -391,7 +429,6 @@ export default {
             confirmation,
             activeTab,
             setActiveTab,
-            navigateToOrderTab,
             showAvailabilityModal,
             modalForm,
             openAvailabilityModal,
@@ -399,9 +436,9 @@ export default {
             saveAvailability,
             submitConfirmation,
             formatPrice,
-            krwToIdrRate,
-            fetchKrwToIdr,
-            getImageUrl
+            getImageUrl,
+            switchCurrency,
+            totalPrice,
         };
     },
 };
