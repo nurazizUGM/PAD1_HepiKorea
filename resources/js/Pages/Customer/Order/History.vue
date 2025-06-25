@@ -37,6 +37,9 @@ export default {
             photoPreview: null,
         });
 
+        // Error message for review form
+        const reviewError = ref('');
+
         // Methods
         const setActiveTab = (tab) => {
             activeTab.value = tab;
@@ -188,7 +191,30 @@ export default {
             }
         };
 
+        // const submitReview = async () => {
+        //     const formData = new FormData();
+        //     formData.append('rating', reviewForm.value.rating);
+        //     formData.append('content', reviewForm.value.content);
+        //     if (reviewForm.value.photo) {
+        //         formData.append('photo', reviewForm.value.photo);
+        //     }
+        //     try {
+        //         await axios.post(`/api/order/${reviewForm.value.orderId}/review`, formData);
+        //     } catch (error) {
+        //         console.error('Error submitting review:', error);
+        //         return error;
+        //     }
+
+        //     reviewModalVisible.value = false;
+        //     successReviewModalVisible.value = true;
+        //     setTimeout(() => {
+        //         fetchData();
+        //         successReviewModalVisible.value = false;
+        //     }, 2000);
+        // };
+
         const submitReview = async () => {
+            reviewError.value = ''; // Reset error before submission
             const formData = new FormData();
             formData.append('rating', reviewForm.value.rating);
             formData.append('content', reviewForm.value.content);
@@ -197,17 +223,26 @@ export default {
             }
             try {
                 await axios.post(`/api/order/${reviewForm.value.orderId}/review`, formData);
+                reviewModalVisible.value = false;
+                successReviewModalVisible.value = true;
+                setTimeout(() => {
+                    fetchData();
+                    successReviewModalVisible.value = false;
+                }, 2000);
             } catch (error) {
-                console.error('Error submitting review:', error);
-                return;
+                if (error.response && error.response.status === 422) {
+                    console.error('Error submitting review:', error);
+                    const errors = error.response.data.errors || {};
+                    if (errors.rating) {
+                        reviewError.value = 'Please select a star rating';
+                    } else {
+                        reviewError.value = 'Failed to submit review. Please try again.';
+                    }
+                } else {
+                    console.error('Error submitting review:', error);
+                    reviewError.value = 'An unexpected error occurred.';
+                }
             }
-
-            reviewModalVisible.value = false;
-            successReviewModalVisible.value = true;
-            setTimeout(() => {
-                fetchData();
-                successReviewModalVisible.value = false;
-            }, 2000);
         };
 
         const orderStatus = (status) => {
@@ -308,7 +343,8 @@ export default {
             copyPaymentCode,
             cancelOrder,
             cancelOrderId,
-            moment
+            moment,
+            reviewError
         };
     },
 };
@@ -944,6 +980,11 @@ export default {
                             <button type="submit"
                                 class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[10px] md:text-xs lg:text-lg font-semibold rounded-md lg:rounded-2xl py-1 md:py-1.5 lg:py-2 px-7 md:px-8 lg:px-16 mx-auto mt-2.5 lg:mt-6">Save</button>
                         </form>
+                        <!-- <p v-if="reviewForm.rating === 0 && submitReview" class="text-red-500 text-[10px] md:text-xs lg:text-sm mb-2">
+                            Please select a star rating
+                        </p> -->
+                        <p v-if="reviewError" id="reviewErrorMessage" class="text-red-500 text-[10px] md:text-xs lg:text-sm font-semibold mt-2 absolute top-0 md:top-0 lg:top-2 left-[25%] lg:left-[30%]">
+                            {{ reviewError }}</p>
                     </div>
                 </div>
             </div>
