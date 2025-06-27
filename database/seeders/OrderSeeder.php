@@ -97,6 +97,7 @@ class OrderSeeder extends Seeder
                     'user_id' => $user->id,
                     'status' => 'processing',
                     'total_items_price' => $product->price,
+                    'estimated_arrival' => now()->addDays(3),
                 ]);
 
                 OrderItem::create([
