@@ -55,6 +55,18 @@ class OrderSeeder extends Seeder
                     'postal_code' => '12345',
                 ]);
 
+                OrderPayment::create([
+                    'order_id' => $order->id,
+                    'payment_type' => 'items',
+                    'amount' => $product->price,
+                    'payment_method' => 'bni',
+                    'status' => 'pending',
+                    'payment_code' => 'PAY123456',
+                    'transaction_id' => 'TRANS123456',
+                    'expired_at' => now()->addDays(1),
+                    'paid_at' => null,
+                ]);
+
                 // paid order
                 $paidOrder = Order::create([
                     'user_id' => $user->id,
