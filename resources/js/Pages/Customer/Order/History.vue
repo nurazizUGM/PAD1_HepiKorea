@@ -48,7 +48,7 @@ export default {
         };
 
         const getImageUrl = (image) => {
-            if(!image) return '/img/assets/icon/icon_admin_order_product.svg';
+            if (!image) return '/img/assets/icon/icon_admin_order_product.svg';
             if (/^http/.test(image)) return image;
             return `/api/file?path=${image}`;
         };
@@ -375,7 +375,7 @@ export default {
                         <div v-for="order in unpaidOrders" :key="order.id"
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
                             <!-- ini nanti hidden pas mobile (soalnya ganti tempat e) -->
-                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-0">
+                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="unpaid_image_product"
                                     class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
                             </div>
@@ -441,7 +441,7 @@ export default {
                     <div class="w-full h-full flex flex-col gap-y-2 md:gap-y-4 lg:gap-y-6">
                         <div v-for="order in processedOrders" :key="order.id"
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
-                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-0">
+                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="processed_image_product"
                                     class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
                             </div>
@@ -474,8 +474,10 @@ export default {
                                         <div
                                             class="w-full h-full flex bg-[#3E6E7A] text-white font-semibold text-[7px] md:text-xs lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-2 lg:p-4">
                                             <p class="my-auto">
-                                                <span v-if="order.arrivalTime">Estimated Arrival in Indonesia: {{
-                                                    order.arrivalTime }}</span>
+                                                <span v-if="order.estimated_arrival">
+                                                    Estimated Arrival in Indonesia:
+                                                    {{ moment(order.estimated_arrival).format('DD MMMM YYYY') }}
+                                                </span>
                                                 <br>
                                                 {{
                                                     order.status === 'processing' ?
@@ -504,7 +506,7 @@ export default {
                     <div class="w-full h-full flex flex-col gap-y-2 md:gap-y-4 lg:gap-y-6">
                         <div v-for="order in sentOrders" :key="order.id"
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
-                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-0">
+                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="sent_image_product"
                                     class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
                             </div>
@@ -515,9 +517,10 @@ export default {
                                             class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl">{{
-                                            order.title
-                                            }}</h1>
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                            @click="$inertia.get(route('order.show', order.id))">
+                                            {{ order.title }}
+                                        </h1>
                                         <p v-if="order.order_items > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
                                             and {{ order.order_items - 1 }} other items
@@ -543,6 +546,12 @@ export default {
                                                             'Waiting for the shipment to be sent' :
                                                             'The order is on its way to Destination Address'
                                                 }}
+                                                <span
+                                                    v-if="order.status == 'sent' && order.order_shipment?.arrival_estimation">
+                                                    <br>
+                                                    Estimated Arrival: {{ moment(order.order_shipment.arrival_estimation)
+                                                        .format('DD MMMM YYYY') }}
+                                                </span>
                                             </p>
                                         </div>
                                     </div>
@@ -555,7 +564,8 @@ export default {
                                         <button v-else-if="order.order_shipment"
                                             class="w-1/2 lg:w-5/12 h-fit rounded-2xl bg-white hover:bg-slate-50 border-2 border-[#3E6E7A] text-[8px] md:text-xs lg:text-xl text-[#3E6E7A] md:py-1 lg:py-3"
                                             @click="shipmentDetail = { ...order.order_shipment, status: order.status }">
-                                            {{ order.status === 'shipment_unpaid' ? 'Pay Shipment' : 'Shipment Detail'
+                                            {{
+                                                order.status === 'shipment_unpaid' ? 'Pay Shipment' : 'Shipment Detail'
                                             }}
                                         </button>
                                     </div>
@@ -578,7 +588,7 @@ export default {
                     <div class="w-full h-full flex flex-col gap-y-2 md:gap-y-4 lg:gap-y-6">
                         <div v-for="order in finishedOrders" :key="order.id"
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
-                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-0">
+                            <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="finish_image_product"
                                     class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
                             </div>
@@ -590,9 +600,10 @@ export default {
                                             class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1
-                                            class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer">
-                                            {{ order.title }}</h1>
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                            @click="$inertia.get(route('order.show', order.id))">
+                                            {{ order.title }}
+                                        </h1>
                                         <p v-if="order.count > 1"
                                             class="text-black text-opacity-50 font-semibold text-[9px] md:text-xs lg:text-xl">
                                             and {{ order.count - 1 }} other items
@@ -983,7 +994,8 @@ export default {
                         <!-- <p v-if="reviewForm.rating === 0 && submitReview" class="text-red-500 text-[10px] md:text-xs lg:text-sm mb-2">
                             Please select a star rating
                         </p> -->
-                        <p v-if="reviewError" id="reviewErrorMessage" class="text-red-500 text-[10px] md:text-xs lg:text-sm font-semibold mt-2 absolute top-0 md:top-0 lg:top-2 left-[25%] lg:left-[30%]">
+                        <p v-if="reviewError" id="reviewErrorMessage"
+                            class="text-red-500 text-[10px] md:text-xs lg:text-sm font-semibold mt-2 absolute top-0 md:top-0 lg:top-2 left-[25%] lg:left-[30%]">
                             {{ reviewError }}</p>
                     </div>
                 </div>
