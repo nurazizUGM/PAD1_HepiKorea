@@ -1,9 +1,10 @@
 name: Sonarqube dev-emil
 
 on:
-  push:
-    branches:
-      - development2
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - development2
 
 jobs:
   build:
