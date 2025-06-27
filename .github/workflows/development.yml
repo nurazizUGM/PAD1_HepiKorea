@@ -1,9 +1,10 @@
 name: Sonarqube development
 
 on:
-  push:
-    branches:
-      - development
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - development
 
 jobs:
   build:

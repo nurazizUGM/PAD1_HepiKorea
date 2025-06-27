@@ -259,13 +259,11 @@ export default {
             categories: [],
             newProducts: [],
             popularProducts: [],
+            lineUrl: "#",
         };
     },
     components: {
         Layout,
-    },
-    props: {
-        lineUrl: String,
     },
     methods: {
         async fetchData() {
@@ -287,6 +285,12 @@ export default {
                     ),
                     fetch("/api/product/popular").then(
                         async (res) => (this.popularProducts = await res.json())
+                    ),
+                    fetch("/api/setting").then(
+                        async (res) => {
+                            const settings = await res.json();
+                            this.lineUrl = settings.line || '#';
+                        }
                     ),
                 ]);
 

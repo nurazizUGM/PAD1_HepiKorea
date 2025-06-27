@@ -3,11 +3,13 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\Notification;
 use App\Models\Order;
 use App\Models\OrderShipment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AdminOrderController extends Controller
 {
@@ -125,6 +127,18 @@ class AdminOrderController extends Controller
             $customOrderItem->save();
         }
 
+        try {
+            Notification::create([
+                'user_id' => $order->user_id,
+                'title' => 'Order Confirmed',
+                'message' => 'Your order has been confirmed. You can now proceed to payment.',
+                'action_url' => '/request-order/confirmed?orderId=' . $order->id,
+            ]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to create notification for order confirmation: ' . $e->getMessage());
+        }
+
         return response()->json(['message' => 'Order has been confirmed']);
     }
 
@@ -138,6 +152,18 @@ class AdminOrderController extends Controller
         $order->status = 'processing';
         $order->estimated_arrival = $data['estimated_arrival'];
         $order->save();
+
+        try {
+            Notification::create([
+                'user_id' => $order->user_id,
+                'title' => 'Order Processed',
+                'message' => 'Your order has been processed and is now being prepared for shipment to indonesia.',
+                'action_url' => '/order/show/' . $order->id,
+            ]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to create notification for order processed: ' . $e->getMessage());
+        }
 
         return response()->json(['message' => 'Order has been processed']);
     }
@@ -161,6 +187,18 @@ class AdminOrderController extends Controller
             'arrival_estimation' => $data['arrival_estimation'],
         ]);
 
+        try {
+            Notification::create([
+                'user_id' => $order->user_id,
+                'title' => 'Shipment Invoice Created',
+                'message' => 'A shipment invoice has been created for your order. Please pay the invoice to proceed with the shipment.',
+                'action_url' => '/order/sent',
+            ]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to create notification for shipment invoice: ' . $e->getMessage());
+        }
+
         return response()->json(['message' => 'Shipment invoice has been sent']);
     }
 
@@ -174,7 +212,7 @@ class AdminOrderController extends Controller
         DB::beginTransaction();
         $order = Order::findOrFail($orderId);
         $order->status = 'sent';
-        
+
         $shipment = OrderShipment::where('order_id', $order->id)->first();
         if (!$shipment) {
             return response()->json(['message' => 'Shipment not found'], 404);
@@ -185,6 +223,18 @@ class AdminOrderController extends Controller
         ]);
         $order->save();
         DB::commit();
+
+        try {
+            Notification::create([
+                'user_id' => $order->user_id,
+                'title' => 'Order Sent',
+                'message' => 'Your order has been sent. You can track your shipment using the provided tracking code.',
+                'action_url' => '/order/show/' . $order->id,
+            ]);
+        } catch (\Exception $e) {
+            // Log the error or handle it as needed
+            Log::error('Failed to create notification for order sent: ' . $e->getMessage());
+        }
 
         return response()->json(['message' => 'Order has been sent']);
     }

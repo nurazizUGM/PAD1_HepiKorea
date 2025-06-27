@@ -78,6 +78,7 @@
                     <p class="text-[#376F7E] ml-2.5 lg:ml-3 font-semibold text-[10px] md:text-sm lg:text-lg">Rp {{
                         formatPrice(order.total_items_price) }}</p>
                     <button
+                        v-if="order.status == 'unconfirmed'"
                         class="w-14 lg:w-28 h-6 lg:h-8 bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-xs md:text-sm lg:text-base font-semibold rounded-md mt-auto ml-auto"
                         @click="navigateToConfirmation(order.id)">
                         Check

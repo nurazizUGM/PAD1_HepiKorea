@@ -1,5 +1,7 @@
 <script setup>
 import { Head, Link, usePage } from '@inertiajs/vue3';
+import { initDropdowns } from 'flowbite';
+import { onMounted } from 'vue';
 import { route } from 'ziggy-js';
 
 defineProps({
@@ -17,10 +19,12 @@ const getImageUrl = (image) => {
     if (image.startsWith('http')) return image;
     return `/api/file?path=${image}`;
 };
+onMounted(()=>{
+    initDropdowns();
+})
 </script>
 
 <template>
-
     <Head>
         <title>Admin{{ title ? ` - ${title}` : '' }}</title>
         <meta name="description" content="This is the authentication page." />
@@ -73,7 +77,7 @@ const getImageUrl = (image) => {
                                     <Link href="/admin/profile"
                                         class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Profile</Link>
-                                    <Link href="/admin/settings"
+                                    <Link href="/admin/business"
                                         class="block px-4 py-2 text-sm text-[#B7B7B7] hover:text-orange-400 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                                         role="menuitem">Business Preference</Link>
                                 </li>

@@ -17,10 +17,17 @@ RUN echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/max-fileupload
 WORKDIR /app
 
 # Copy the application code
-COPY . /app
+COPY package.json package-lock.json ./
+COPY composer.json composer.lock ./
 
 # Install the dependencies
-RUN composer install && npm install
+RUN composer install --optimize-autoloader --no-scripts && npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# disconver packages
+RUN php artisan package:discover --ansi
 
 # Build the assets
 RUN npm run build

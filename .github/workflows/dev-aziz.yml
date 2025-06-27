@@ -1,9 +1,10 @@
 name: Sonarqube dev-aziz
 
 on:
-  push:
-    branches:
-      - dev-aziz
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - dev-aziz
 
 jobs:
   build:

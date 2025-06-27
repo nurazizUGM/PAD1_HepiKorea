@@ -40,12 +40,7 @@ class CustomerController extends Controller
         } else {
             $reviews = Review::query();
         }
-        $reviews = $reviews->with('product', 'product.images', 'user')->get();
-        $reviews->map(function ($review) {
-            $review->product->image = $review->product->images->first()->path;
-            unset($review->product->images);
-            return $review;
-        });
+        $reviews = $reviews->with('product', 'user')->get();
 
         return response()->json($reviews);
     }
