@@ -34,7 +34,8 @@
                 <!-- Add Product Button -->
                 <button @click="$emit('create-product')" type="button"
                     class="flex gap-1 ms-3 cursor-pointer order-2 lg:order-1">
-                    <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
+                    <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon"
+                        class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
                     <h2 class="text-black text-md my-auto font-semibold hidden lg:flex">Add Product</h2>
                 </button>
             </div>
@@ -65,17 +66,20 @@
             class="w-full h-full mx-auto content-center mt-5 mb-8 grid grid-cols-2 gap-x-1 gap-y-3 md:grid-cols-4 md:gap-x-2 lg:grid-rows-[auto_1fr_auto] lg:grid-cols-7 lg:gap-x- lg:gap-y-3">
             <div v-for="product in products" :key="product.id"
                 class="bg-white w-auto h-[210px] md:-[175px] md:w-auto lg:w-40 lg:h-52 rounded-lg overflow-hidden flex flex-col overflow-y-auto hover:scale-[102%] transition-all">
-                <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto"
+                <div class="w-full h-[75%] lg:h-2/3 bg-cover bg-top mx-auto cursor-pointer"
+                    @click="navigateToProduct(product.id)"
                     :style="{ backgroundImage: `url(${getProductImage(product)})` }" />
                 <div class="p-2">
-                    <p class="text-sm font-bold truncate">{{ product.name }}</p>
+                    <p class="text-sm font-bold truncate cursor-pointer" @click="navigateToProduct(product.id)">{{ product.name }}</p>
                     <p class="text-sm font-semi">Rp. {{ formatPrice(product.price) }}</p>
                 </div>
                 <div class="flex mt-auto mx-3 mb-3">
-                    <button @click="$emit('edit-product', product.id)" class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
+                    <button @click="$emit('edit-product', product.id)"
+                        class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_product_edit.svg" alt="edit" />
                     </button>
-                    <button @click="openDeleteModal(product.id)" class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
+                    <button @click="openDeleteModal(product.id)"
+                        class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_product_trash.svg" alt="delete" />
                     </button>
                 </div>
@@ -120,7 +124,7 @@
 </template>
 
 <script>
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import axios from 'axios';
 import { onMounted, ref } from 'vue';
 import Modal from './Modal.vue';
@@ -212,6 +216,11 @@ export default {
             return getImageUrl(product.images && product.images.length > 0 ? product.images[0].path : null);
         };
 
+        const navigateToProduct = (id) => {
+            // Navigate to product details page
+            router.visit(`/product/${id}`);
+        };
+
         onMounted(() => {
             fetchCategories();
             fetchData();
@@ -233,6 +242,7 @@ export default {
             confirmDelete,
             getImageUrl,
             getProductImage,
+            navigateToProduct,
         };
     },
 };
