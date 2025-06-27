@@ -42,7 +42,7 @@ class CustomerController extends Controller
         }
         $reviews = $reviews->with('product', 'product.images', 'user')->get();
         $reviews->map(function ($review) {
-            $review->product->image = $review->product->images->first()->path;
+            $review->product->image = $review->product->images->first()?->path;
             unset($review->product->images);
             return $review;
         });
