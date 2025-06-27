@@ -16,13 +16,23 @@ class CarouselController extends Controller
 
     public function create(Request $request)
     {
-        $data = $request->validate([
+        $request->validate([
             'title' => 'required|string',
             'description' => 'required|string',
             'media_type' => 'required|in:image,video,youtube',
-            'media' => 'required_if:media_type,image,video|file|mimes:jpeg,jpg,png,mp4|max:2048',
-            'youtube_url' => 'required_if:media_type,youtube',
         ]);
+
+        if ($request->media_type == 'youtube') {
+            $request->validate([
+                'youtube_url' => 'required|url',
+            ]);
+        } else {
+            $request->validate([
+                'media' => 'required|file|mimes:jpeg,jpg,png,mp4|max:2048',
+            ]);
+        }
+
+        $data = $request->only(['title', 'description', 'media_type']);
 
         // store carousel media
         if ($request->media_type == 'youtube') {

@@ -3,7 +3,8 @@
         <div class="w-full flex items-center">
             <h2 class="text-black text-md ml-3 font-semibold">Add Carousel</h2>
             <button @click="showAddModal = true" class="ml-5">
-                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon" class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
+                <img src="/img/assets/icon/icon_admin_product_plus.svg" alt="plus icon"
+                    class="w-10 h-10 hover:invert-[20%] active:invert-[25%]" />
             </button>
         </div>
 
@@ -27,11 +28,13 @@
                     <p class="text-sm text-black text-center font-bold truncate">{{ carousel.title }}</p>
                 </div>
                 <div class="flex mt-auto mx-4 mb-4">
-                    <button @click="openEditModal(carousel)" class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
+                    <button @click="openEditModal(carousel)"
+                        class="mr-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_edit.svg" alt="edit"
                             class="w-5 h-5 lg:w-7 lg:h-7" />
                     </button>
-                    <button @click="openDeleteModal(carousel.id)" class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
+                    <button @click="openDeleteModal(carousel.id)"
+                        class="ml-auto hover:opacity-70 active:opacity-60 transition-opacity">
                         <img src="/img/assets/icon/icon_admin_category_trash.svg" alt="delete"
                             class="w-4 h-5 lg:w-7 lg:h-7" />
                     </button>
@@ -49,7 +52,7 @@
                 </button>
                 <form @submit.prevent="addCarousel"
                     class="flex flex-col h-full text-center md:px-2 md:py-2 lg:py-3 lg:px-3">
-                    <div class="relative w-full h-56 bg-gray-200 rounded-2xl">
+                    <div class="relative w-full h-56 bg-gray-200 rounded-2xl" v-if="addForm.media_type != 'youtube'">
                         <input ref="addMediaInput" type="file"
                             :accept="addForm.media_type === 'image' ? 'image/*' : 'video/*'" class="hidden"
                             @change="handleAddMedia" />
@@ -188,7 +191,7 @@ export default {
                 formData.append('media_type', addForm.value.media_type);
                 formData.append('description', addForm.value.description);
                 if (addForm.value.media_type === 'youtube') {
-                    formData.append('media', addForm.value.youtube_url);
+                    formData.append('youtube_url', addForm.value.youtube_url);
                 } else if (addMediaInput.value.files[0]) {
                     formData.append('media', addMediaInput.value.files[0]);
                 }
