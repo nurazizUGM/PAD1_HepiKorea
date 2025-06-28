@@ -5,6 +5,7 @@ import { router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import moment from 'moment';
 import Layout from '../../Layouts/Customer.vue';
+import { route } from 'ziggy-js';
 
 const order = ref({});
 const isLoading = ref(true);
@@ -75,6 +76,10 @@ const readNotification = async () => {
     if (notificationId) {
         return axios.post(`/api/notifications/${notificationId}/read`)
     }
+}
+
+const handleBack = () => {
+    router.back()
 }
 
 onMounted(() => {
@@ -232,6 +237,11 @@ onMounted(() => {
                         Rp {{ priceFormatter(order.total_items_price) }},-
                     </p>
                 </div>
+            </div>
+
+            <!-- back button -->
+            <div class="mt-2 md:mt-3 lg:mt-6 ml-1 bg-[#3E6E7A] w-2/12 md:w-[12%] lg:w-1/12 text-center p-1 md:p-2 lg:p-3 rounded-xl lg:rounded-2xl cursor-pointer hover:opacity-90 active:opacity-85"  @click="router.get('/order')">
+                <p class="text-white font-semibold text-xs md:text-base lg:text-lg">Back</p>
             </div>
         </div>
     </Layout>
