@@ -5,7 +5,6 @@ import { router, usePage } from '@inertiajs/vue3';
 import axios from 'axios';
 import moment from 'moment';
 import Layout from '../../Layouts/Customer.vue';
-import { route } from 'ziggy-js';
 
 const order = ref({});
 const isLoading = ref(true);
