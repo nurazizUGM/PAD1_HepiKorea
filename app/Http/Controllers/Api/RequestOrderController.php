@@ -118,7 +118,7 @@ class RequestOrderController extends Controller
                 return $item->order->status == 'unconfirmed' ? 1 : 0;
             });
 
-        return response()->json($items);
+        return response()->json($items->values());
     }
 
     public function calculateItems(Request $request)
