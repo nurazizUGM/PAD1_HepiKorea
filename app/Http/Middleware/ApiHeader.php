@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApiHeader
@@ -17,6 +19,15 @@ class ApiHeader
     {
         // add Accept: application/json header
         $request->headers->set('Accept', 'application/json');
+
+        if ($request->hasHeader('Authorization')) {
+            $bearerToken = $request->header('Authorization');
+            $token = PersonalAccessToken::findToken(str_replace('Bearer ', '', $bearerToken));
+
+            if ($token) {
+                Auth::setUser($token->tokenable);
+            }
+        }
         return $next($request);
     }
 }
