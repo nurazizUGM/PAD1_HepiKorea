@@ -32,7 +32,7 @@
             <div class="px-5 pt-2 rounded-lg h-[80vh] overflow-y-scroll no-scrollbar">
                 <div class="flex flex-col h-full w-full pb-3">
                     <!-- User Name -->
-                    <div class="w-1/4 lg:w-1/5 h-[7%] bg-[#3E6E7A] px-3 py-1 rounded-xl flex">
+                    <div class="w-fit min-w-1/4 lg:min-w-1/6 h-[5%] lg:h-[7%] bg-[#3E6E7A] px-3 py-1 rounded-xl flex">
                         <h1 class="md:text-base lg:text-2xl text-white font-semibold my-auto">
                             {{ confirmation?.order_detail?.customer_name || confirmation?.user?.fullname }}
                         </h1>
@@ -43,7 +43,7 @@
                         class="mt-3 w-full max-h-[83%] bg-white rounded-xl px-3 py-2 flex flex-col gap-y-5 overflow-y-scroll no-scrollbar">
                         <h1 class="text-black font-semibold text-sm lg:text-xl">Products</h1>
                         <div v-for="(product) in confirmation.custom_order_items" :key="product.id"
-                            class="w-full lg:max-h-[16rem] flex flex-col lg:flex-row flex-auto">
+                            class="w-full max-w-full lg:min-h-[12rem] flex flex-col lg:flex-row flex-auto overflow-x-clip">
                             <!-- two divider -->
                             <div class="w-full lg:w-[40%] flex flex-row">
                                 <!-- iamge container -->
@@ -124,10 +124,10 @@
                                     <div class="w-full h-full flex flex-col order-1 lg:order-2 mb-4">
                                         <div class="w-full h-fit mt-auto flex flex-col">
                                             <p
-                                                class="hidden lg:flex text-black font-semibold text-[10px] md:text-xs lg:text-sm ml-auto mb-8">
+                                                class="hidden lg:flex text-black font-semibold text-[10px] md:text-xs lg:text-sm ml-auto mb-8 max-w-[99%] lg:mt-1">
                                                 Product link:
                                                 <a :href="product.url || '#'" target="_blank" rel="noopener noreferrer"
-                                                    class="text-orange-400 hover:underline ml-1">
+                                                    class="text-orange-400 hover:underline ml-1 text-ellipsis overflow-hidden">
                                                     {{ product.url ?? '...' }}
                                                 </a>
                                             </p>
