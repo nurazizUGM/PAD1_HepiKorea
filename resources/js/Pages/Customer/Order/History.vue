@@ -377,7 +377,7 @@ export default {
                             <!-- ini nanti hidden pas mobile (soalnya ganti tempat e) -->
                             <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="unpaid_image_product"
-                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
+                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto hover:opacity-80 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                             </div>
                             <div class="w-full md:w-[80%] flex flex-col">
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row justify-center mt-1">
@@ -387,7 +387,7 @@ export default {
                                             class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer hover:text-orange-400"
                                             @click="$inertia.get(route('order.show', order.id))">
                                             {{ order.title }}
                                         </h1>
@@ -443,7 +443,7 @@ export default {
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
                             <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="processed_image_product"
-                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
+                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto hover:opacity-80 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                             </div>
                             <div class="w-full md:w-[80%] flex flex-col">
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row justify-center mt-1">
@@ -453,7 +453,7 @@ export default {
                                             class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer hover:text-orange-400"
                                             @click="$inertia.get(route('order.show', order.id))">
                                             {{ order.title }}
                                         </h1>
@@ -472,7 +472,7 @@ export default {
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
                                     <div class="w-4/6 md:w-1/2 mx-auto">
                                         <div
-                                            class="w-full h-full flex bg-[#3E6E7A] text-white font-semibold text-[7px] md:text-xs lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-2 lg:p-4">
+                                            class="w-full h-full flex bg-[#3E6E7A] text-white font-semibold text-[7px] md:text-xs lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-2 lg:p-4 hover:opacity-90 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                                             <p class="my-auto">
                                                 <span v-if="order.estimated_arrival">
                                                     Estimated Arrival in Indonesia:
@@ -508,16 +508,16 @@ export default {
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
                             <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="sent_image_product"
-                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
+                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto hover:opacity-80 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                             </div>
                             <div class="w-full md:w-[80%] flex flex-col">
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row justify-center mt-1">
                                     <div class="md:w-[20%] md:hidden flex mr-1 lg:mr-0">
                                         <img :src="getImageUrl(order.image)" alt="sent_image_product"
-                                            class="h-14 lg:h-48 object-contain mx-auto">
+                                            class="h-14 lg:h-48 object-contain mx-auto hover:opacity-80 cursor-pointer">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer hover:text-orange-400"
                                             @click="$inertia.get(route('order.show', order.id))">
                                             {{ order.title }}
                                         </h1>
@@ -537,7 +537,7 @@ export default {
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
                                     <div class="w-[52%] flex items-end">
                                         <div
-                                            class="w-full h-fit lg:h-full bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-3 lg:p-4">
+                                            class="w-full h-fit lg:h-full bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:p-3 lg:p-4 hover:opacity-90 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                                             <p class="my-auto">
                                                 {{
                                                     order.status === 'shipment_unpaid' ?
@@ -590,7 +590,7 @@ export default {
                             class="w-full h-fit min-h-[94px] md:min-h-[164px] lg:h-full bg-white rounded-2xl flex flex-row p-2 md:p-4 lg:py-8 lg:px-8">
                             <div class="w-[20%] hidden md:flex mr-1 lg:mr-2">
                                 <img :src="getImageUrl(order.image)" alt="finish_image_product"
-                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto">
+                                    class="h-14 md:h-32 lg:h-48 object-contain mx-auto hover:opacity-80 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                             </div>
                             <div class="w-full md:w-[80%] flex flex-col">
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row justify-center mt-1">
@@ -600,7 +600,7 @@ export default {
                                             class="h-14 lg:h-48 object-contain mx-auto">
                                     </div>
                                     <div class="md:w-[34%] lg:w-[33%] h-full flex flex-col">
-                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer"
+                                        <h1 class="text-black font-semibold text-[9px] md:text-xs lg:text-xl cursor-pointer hover:text-orange-400"
                                             @click="$inertia.get(route('order.show', order.id))">
                                             {{ order.title }}
                                         </h1>
@@ -621,7 +621,7 @@ export default {
                                 <div class="w-full h-fit md:h-1/2 lg:h-1/2 flex flex-row mt-1 lg:mt-0">
                                     <div class="w-1/2 mt-auto lg:my-0 mr-1 lg:mr-0">
                                         <div
-                                            class="w-fit bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:py-2 md:px-3">
+                                            class="w-fit bg-[#3E6E7A] text-white font-semibold text-[8px] md:text-[10px] lg:text-base rounded-lg lg:rounded-2xl shadow-md p-1 md:py-2 md:px-3 hover:opacity-90 cursor-pointer" @click="$inertia.get(route('order.show', order.id))">
                                             <p>Status: {{ orderStatus(order.status) }}</p>
                                         </div>
                                     </div>

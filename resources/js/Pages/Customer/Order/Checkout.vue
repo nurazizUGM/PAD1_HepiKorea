@@ -384,7 +384,7 @@ export default {
                             <div class="w-[25%] hidden md:w-[20%] md:flex justify-end mt-2">
                                 <p class="mb-auto text-orange-400 font-semibold text-[8px] md:text-sm lg:text-xl">Rp {{
                                     formatPrice(item.total)
-                                    }},-</p>
+                                }},-</p>
                             </div>
                         </div>
                         <div class="w-full h-fit flex flex-col mt-0.5 lg:mt-6">
@@ -440,10 +440,11 @@ export default {
         <!-- Choose Payment Modal -->
         <div v-if="showChoosePaymentModal"
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-            <div class="relative bg-white w-[60vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow p-4">
-                <button @click="showChoosePaymentModal = false"
-                    class="absolute bg-black w-6 h-6 flex flex-col align-middle text-center items-center scale-90 rounded-full pb-3 -top-2 -right-2">
-                    <p class="m-auto text-white text-base">X</p>
+            <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow p-4 relative">
+                <button
+                    class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
+                    @click="showChoosePaymentModal = false">
+                    <p class="text-white text-md">X</p>
                 </button>
                 <div class="w-full h-full flex flex-col py-1 px-2 md:p-2 lg:px-10 lg:py-10">
                     <form @submit.prevent="handlePayment" class="w-full h-full flex flex-col">
