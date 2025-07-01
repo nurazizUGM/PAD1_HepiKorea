@@ -42,7 +42,7 @@ export default {
                         return {
                             ...data,
                             product: { price: data.total_price, image: data.image },
-                            quantity: item.quantity || data.quantity,
+                            quantity: (item.quantity || data.quantity) > data.max_quantity ? data.max_quantity : (item.quantity || data.quantity),
                             total: data.total_price * (item.quantity || data.quantity),
                             note: item.admin_note || '',
                         };
@@ -116,7 +116,9 @@ export default {
 
         // Tambah kuantitas
         const addQty = (item) => {
-            console.log('Adding quantity for item:', item);
+            if (item.max_quantity && item.quantity >= item.max_quantity) {
+                return; // Prevent adding more than max quantity
+            }
             item.quantity += 1;
             item.total = item.product.price * item.quantity;
             updateUrl();
@@ -257,7 +259,6 @@ export default {
         });
 
         onUnmounted(() => {
-            console.log('Unmounted Checkout');
             if (cpInterval.value) {
                 clearInterval(cpInterval.value);
             }
