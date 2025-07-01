@@ -110,7 +110,7 @@ class AdminOrderController extends Controller
             'items.*.max_quantity' => 'required|numeric',
             'items.*.admin_note' => 'nullable|string',
             'items.*.is_available' => 'required|boolean',
-            'items.*.available_until' => 'required|date',
+            'items.*.available_until' => 'nullable|date',
         ]);
 
         $order = Order::findOrFail($orderId);

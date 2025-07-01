@@ -84,7 +84,7 @@
                                 class="w-3 h-3 md:w-6 md:h-6 hover:bg-slate-100 rounded-sm outline outline-[#3E6E7A] bg-transparent checked:bg-[#3E6E7A] hover:checked:bg-[#37626d] focus:outline-[#3E6E7A] active:ring-[#3E6E7A] focus:border-[#3E6E7A] my-auto" />
                             <p
                                 class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base ml-2 md:ml-6 my-auto">
-                                Select All ({{ selectedCount }})
+                                Select All ({{ items?.length || 0 }})
                             </p>
 
                             <!-- jumlah item yang dipilih tapi cuma muncul di mobile -->
@@ -104,7 +104,7 @@
                         <!-- Text Count Total Product -->
                         <p
                             class="text-black text-opacity-50 font-semibold text-[8px] md:text-xs lg:text-base mx-auto lg:ml-auto lg:mr-2 my-auto hidden md:flex">
-                            Total ({{ items.length }}) Product
+                            Total ({{ selectedCount }}) Product
                         </p>
                         <!-- Total Price -->
                         <h1
@@ -112,8 +112,8 @@
                             Rp {{ formatPrice(totalPrice) }}
                         </h1>
                     </div>
-                    <button
-                        class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
+                    <button :disabled="!items.some(item => item.selected && item.is_available)" @click="checkout"
+                        class="w-fit bg-[#3E6E7A] hover:bg-[#37626d] active:bg-[#325862] disabled:bg-[#44555a] text-white text-[8px] md:text-xs lg:text-2xl font-semibold rounded-md md:rounded-2xl py-0.5 md:py-2 md:px-7 lg:px-10 ml-auto">
                         Checkout
                     </button>
                 </div>
@@ -184,7 +184,7 @@ export default {
             try {
                 const response = await fetch("/api/request-order?" + params.toString())
                     .then(res => res.json())
-                    
+
                 if (response.status == 'error') {
                     return router.visit(route('auth.login'));
                 }
@@ -215,7 +215,7 @@ export default {
         const totalPrice = computed(() => {
             return items.value
                 .filter((item) => item.selected)
-                .reduce((sum, item) => sum + item.price, 0);
+                .reduce((sum, item) => sum + (item.total_price || item.estimated_price), 0);
         });
 
         // Hitung jumlah item yang dipilih
@@ -241,6 +241,15 @@ export default {
             setTimeout(() => (showSuccessModal.value = false), 2000); // Tutup otomatis setelah 2 detik
         };
 
+        const checkout = () => {
+            const selectedItems = items.value.filter((item) => item.selected).map(i => ({ id: i.id }));
+            if (selectedItems.length > 0) {
+                router.get(route('checkout'), { products: JSON.stringify(selectedItems), request_order: true });
+            } else {
+                alert("Please select at least one product to checkout.");
+            }
+        };
+
         // Inisialisasi data (gunakan fetchData saat API siap)
         onMounted(() => {
             fetchData();
@@ -257,6 +266,7 @@ export default {
             selectedCount,
             toggleSelectAll,
             confirmDelete,
+            checkout,
         };
     },
 };

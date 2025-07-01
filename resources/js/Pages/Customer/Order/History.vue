@@ -892,7 +892,7 @@ export default {
                         <form @submit.prevent="payShipment" class="w-full h-full flex flex-col">
                             <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl">Bank
                             </h1>
-                            <div class="w-full h-fit flex flex-row mt-2">
+                            <!-- <div class="w-full h-fit flex flex-row mt-2">
                                 <img src="/img/assets/icon/icon_checkout_bri.svg" alt=""
                                     class="w-[40px] h-[12px] md:-24 md:h-10 object-contain">
                                 <label for="bri"
@@ -900,7 +900,7 @@ export default {
                                     BRI</label>
                                 <input type="radio" v-model="shipmentPaymentMethod" value="bri" id="bri"
                                     class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                            </div>
+                            </div> -->
                             <div class="w-full h-fit flex flex-row mt-4">
                                 <img src="/img/assets/icon/logo_checkout_mandiri.png" alt=""
                                     class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">
