@@ -8,8 +8,10 @@ export default {
         Layout,
     },
     setup() {
-        // Dummy data sementara
+        // query params
         const products = ref([])
+        const requestOrder = ref(false);
+
         const items = ref([]);
         const addresses = ref([])
         const address = ref({});
@@ -33,7 +35,19 @@ export default {
         // Fungsi untuk mengambil data dari API (placeholder)
         const fetchData = async () => {
             try {
-                if (products.value.length > 0) {
+                if (requestOrder.value && products.value.length > 0) {
+                    items.value = await Promise.all(products.value.map(async (item) => {
+                        const response = await fetch(`/api/request-order/${item.id}`);
+                        const data = await response.json();
+                        return {
+                            ...data,
+                            product: { price: data.total_price, image: data.image },
+                            quantity: (item.quantity || data.quantity) > data.max_quantity ? data.max_quantity : (item.quantity || data.quantity),
+                            total: data.total_price * (item.quantity || data.quantity),
+                            note: item.admin_note || '',
+                        };
+                    }));
+                } else if (products.value.length > 0) {
                     items.value = await Promise.all(products.value.map(async (product) => {
                         const response = await fetch(`/api/product/${product.product_id}`);
                         const data = await response.json();
@@ -69,7 +83,7 @@ export default {
         function updateUrl() {
             const url = new URL(window.location.href);
             const p = items.value.map(item => ({
-                product_id: item.product.id,
+                ...(requestOrder ? { id: item.id } : { product_id: item.product.id }),
                 quantity: item.quantity,
             }));
             url.searchParams.set('products', JSON.stringify(p));
@@ -102,6 +116,9 @@ export default {
 
         // Tambah kuantitas
         const addQty = (item) => {
+            if (item.max_quantity && item.quantity >= item.max_quantity) {
+                return; // Prevent adding more than max quantity
+            }
             item.quantity += 1;
             item.total = item.product.price * item.quantity;
             updateUrl();
@@ -133,12 +150,12 @@ export default {
                 payment_method: paymentMethod.value,
                 addressId: address.value.id,
                 items: items.value.map(item => ({
-                    productId: item.product.id,
+                    productId: item.product.id || item.id,
                     quantity: item.quantity,
                 })),
             };
 
-            fetch('/api/order', {
+            fetch(requestOrder.value ? '/api/request-order/checkout' : '/api/order', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(orderData),
@@ -236,12 +253,12 @@ export default {
         onMounted(async () => {
             const params = new URLSearchParams(window.location.search);
             products.value = JSON.parse(params.get('products')) || [];
+            requestOrder.value = params.get('request_order') == 'true';
             fetchData();
             fetchAddresses();
         });
 
         onUnmounted(() => {
-            console.log('Unmounted Checkout');
             if (cpInterval.value) {
                 clearInterval(cpInterval.value);
             }
@@ -426,14 +443,14 @@ export default {
             class="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
             <div class="bg-white w-[60vw] md:w-[40vw] lg:w-[25vw] h-auto rounded-[30px] shadow p-4 relative">
                 <button
-                        class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
-                        @click="showChoosePaymentModal = false">
-                        <p class="text-white text-md">X</p>
-                    </button>
+                    class="absolute bg-black w-6 h-6 flex items-center justify-center rounded-full -top-2 -right-2 lg:-top-1 lg:-right-1 scale-75 md:scale-[85%] lg:scale-100"
+                    @click="showChoosePaymentModal = false">
+                    <p class="text-white text-md">X</p>
+                </button>
                 <div class="w-full h-full flex flex-col py-1 px-2 md:p-2 lg:px-10 lg:py-10">
                     <form @submit.prevent="handlePayment" class="w-full h-full flex flex-col">
                         <h1 class="text-[#898383] text-opacity-60 font-bold text-[10px] md:text-sm lg:text-xl">Bank</h1>
-                        <div class="w-full h-fit flex flex-row mt-2">
+                        <!-- <div class="w-full h-fit flex flex-row mt-2">
                             <img src="/img/assets/icon/icon_checkout_bri.svg" alt=""
                                 class="w-[40px] h-[12px] md:-24 md:h-10 object-contain">
                             <label for="bri"
@@ -441,7 +458,7 @@ export default {
                                 BRI</label>
                             <input type="radio" v-model="paymentMethod" value="bri" id="bri"
                                 class="ml-auto my-auto w-[12px] h-[12px] md:w-7 md:h-7 border-4 border-[#3E6E7A] checked:bg-[#3E6E7A] checked:ring-[#3E6E7A]">
-                        </div>
+                        </div> -->
                         <div class="w-full h-fit flex flex-row mt-4">
                             <img src="/img/assets/icon/logo_checkout_mandiri.png" alt=""
                                 class="w-[40px] h-[22px] md:w-28 md:h-12 object-contain">

@@ -39,7 +39,7 @@ class AdminOrderController extends Controller
             ->get()
             ->map(function ($order) {
                 if ($order->orderItems) {
-                    $product = $order->orderItems->first()->product;
+                    $product = $order->orderItems->first()?->product;
                     if ($product && $product->images->count() > 0) {
                         $order->image = $product->images->first()->path;
                     } else {
@@ -82,6 +82,7 @@ class AdminOrderController extends Controller
         }
 
         $orders = $orders->with(['user', 'orderItems', 'orderItems.product', 'customOrderItems'])
+            ->whereHas('customOrderItems')
             ->orderByRaw("FIELD(status, 'unconfirmed', 'confirmed')")
             ->orderBy('created_at', 'desc')
             ->get();
@@ -110,7 +111,7 @@ class AdminOrderController extends Controller
             'items.*.max_quantity' => 'required|numeric',
             'items.*.admin_note' => 'nullable|string',
             'items.*.is_available' => 'required|boolean',
-            'items.*.available_until' => 'required|date',
+            'items.*.available_until' => 'nullable|date',
         ]);
 
         $order = Order::findOrFail($orderId);

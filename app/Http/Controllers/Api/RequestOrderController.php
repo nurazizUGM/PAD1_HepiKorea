@@ -42,7 +42,7 @@ class RequestOrderController extends Controller
         } else {
             $user = User::where('email', User::$guestEmail)->first();
         }
-        
+
         DB::beginTransaction();
         $order = Order::create([
             'user_id' => $user->id,
@@ -102,7 +102,7 @@ class RequestOrderController extends Controller
         }
 
         $items = CustomOrderItem::whereHas('order', function ($query) {
-            $query->where('type', 'custom');
+            $query->where('type', 'custom')->whereIn('status', ['unconfirmed', 'confirmed']);
         })->with('order');
 
         if (isset($data['orderId'])) {
@@ -121,49 +121,40 @@ class RequestOrderController extends Controller
         return response()->json($items->values());
     }
 
-    public function calculateItems(Request $request)
+    public function getOne(string $itemId)
     {
-        $data = $request->validate([
-            'itemsId' => 'required|array|exists:custom_order_items,id',
-        ]);
-
-        $items = CustomOrderItem::whereIn('id', $data['itemsId']);
-        $unconfirmed = $items->clone->whereHas('order', function ($query) {
-            $query->where('status', 'unconfirmed');
-        })->count();
-
-        if ($unconfirmed > 0) {
+        $item = CustomOrderItem::with('order')->findOrFail($itemId);
+        if ($item->order->status != 'confirmed') {
             return response()->json([
                 'status' => 'error',
-                'message' => 'There are unconfirmed items in the order',
+                'message' => 'Item is not unconfirmed',
             ]);
         }
-
-        $items = $items->with('order')->get();
-        return  response()->json($items);
+        return response()->json($item);
     }
 
     public function checkout(Request $request)
     {
+        $user = User::find(Auth::id());
         $data = $request->validate([
             'items' => 'required|array',
-            'items.*.itemId' => 'required|exists:custom_order_items,id',
+            'items.*.productId' => 'required|exists:custom_order_items,id',
             'items.*.quantity' => 'required|integer|min:1',
             'payment_method' => 'required|string|in:qris,bca,bni,bri,mandiri',
+            'addressId' => 'integer|exists:addresses,id',
         ]);
 
         DB::beginTransaction();
         $order = Order::create([
-            'user_id' => Auth::id(),
+            'user_id' => $user->id,
             'type' => 'custom',
             'status' => 'unpaid',
             'total_items_price' => 0,
             'service_price' => 0,
         ]);
 
-        $totalPrice = 0;
         foreach ($data['items'] as $item) {
-            $orderItem = CustomOrderItem::find($item['itemId']);
+            $orderItem = CustomOrderItem::find($item['productId']);
             if (!$orderItem) {
                 return response()->json([
                     'status' => 'error',
@@ -175,54 +166,74 @@ class RequestOrderController extends Controller
                     'message' => 'Item is not confirmed',
                 ]);
             }
-            $orderItem->quantity -= $item['quantity'];
-            $orderItem->order_id = $order->id;
-            $orderItem->save();
 
-            $totalPrice += $orderItem->total_price * $item['quantity'];
-            if ($orderItem->order->service_price > $order->service_price) {
-                $order->service_price = $orderItem->order->service_price;
-            }
+            $orderItem->update([
+                'order_id' => $order->id,
+                'quantity' => $item['quantity'],
+            ]);
+
+            $order->total_items_price += $orderItem->total_price * $item['quantity'];
         }
 
-        $order->total_items_price = $totalPrice;
         $order->save();
+        $address = $user->addresses()->find($data['addressId']);
+
+        $order->orderDetail()->create([
+            'customer_name' => $address->name ?? $user->fullname,
+            'customer_email' => $address->email ?? $user->email,
+            'customer_phone' => $address->phone ?? $user->phone,
+            'customer_address' => $address->address,
+            'province' => $address->province,
+            'city' => $address->city,
+            'postal_code' => $address->postal_code,
+        ]);
 
         $orderPayment = new OrderPayment([
             'order_id' => $order->id,
             'payment_type' => 'items',
             'status' => 'pending',
-            'amount' => $totalPrice,
+            'amount' => $order->total_items_price,
             'payment_method' => $data['payment_method'],
         ]);
 
-
         $paymentData = [
-            "payment_type" => "qris",
             "transaction_details" => [
-                "gross_amount" => intval($totalPrice),
+                "gross_amount" => intval($order->total_items_price),
                 "order_id" => "hk-" . Carbon::now()->timestamp,
             ],
             "custom_expiry" => [
                 "expiry_duration" => 24,
                 "unit" => "hour"
-            ]
+            ],
         ];
 
         if ($data['payment_method'] == 'qris') {
+            $paymentData['payment_type'] = 'qris';
             $paymentData['qris'] = [
-                "acquirer" => "gopay"
+                'acquirer' => 'airpay shopee',
+                // 'acquirer' => 'gopay',
             ];
+
             $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['actions'][0]['url'];
+        } else if ($data['payment_method'] == 'mandiri') {
+            $paymentData['payment_type'] = 'echannel';
+            $paymentData["echannel"] = [
+                "bill_info1" => "Payment for hepikorea order",
+                "bill_info2" => "Thank you for your purchase!"
+            ];
+
+            $res = $this->paymentService->post('/v2/charge', $paymentData);
+            $orderPayment->payment_code = $res['biller_code'] . '-' . $res['bill_key'];
         } else {
-            $paymentData['bank_transfer'] = [
+            $paymentData['payment_type'] = 'bank_transfer';
+            $paymentData["bank_transfer"] = [
                 "bank" => $data['payment_method']
             ];
+
             $res = $this->paymentService->post('/v2/charge', $paymentData);
             $orderPayment->payment_code = $res['va_numbers'][0]['va_number'];
         }
-
 
         $orderPayment->expired_at = Carbon::parse($res['expiry_time']);
         $orderPayment->transaction_id = $res['transaction_id'];
